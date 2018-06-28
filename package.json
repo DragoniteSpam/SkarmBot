@@ -1,0 +1,15 @@
+{
+  "name": "EyanSays",
+  "version": "1.3.0",
+  "description": "Yo ho ho ho, yo ho ho ho.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "nodemon bot.js"
+  },
+  "author": "Dragonite",
+  "license": "MIT",
+  "dependencies": {
+    "discordie": "^0.5.5",
+    "twitch-get-stream": "^0.4.0"
+  }
+}
