@@ -226,8 +226,15 @@ var earthbound = null;
 var botCanAnnounce = true;
 // I still don't actually know what this is for?
 client.connect({
-token: "MzE5MjkxMDg2NTcwOTEzODA2.DSFhww.FZ8I1T7Evls72hIHEcTXjX_rqAc"
+	token: getToken();
+	//"MzE5MjkxMDg2NTcwOTEzODA2.DSFhww.FZ8I1T7Evls72hIHEcTXjX_rqAc"
 });
+function getToken(){
+	fs.readFile("token.txt", function(err, data){
+		if(err){throw "we're all fucked";}
+		return data.toString();
+	})
+}
 
 // What happens when you first connect
 client.Dispatcher.on(events.GATEWAY_READY, e => {
