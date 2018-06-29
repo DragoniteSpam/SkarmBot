@@ -208,6 +208,7 @@ var timer5min = setInterval(function(){
 var myName="SuperSkarm";
 
 var myNick="Skarm";
+var token=null;
 
 var botCanSendUserCommands=true;
 var botCanYellAtCandy=true;
@@ -224,16 +225,16 @@ var enlightened = null;
 var earthbound = null;
 
 var botCanAnnounce = true;
+
+getToken();
+
 // I still don't actually know what this is for?
 client.connect({
-	token: getToken();
+	token: token
 	//"MzE5MjkxMDg2NTcwOTEzODA2.DSFhww.FZ8I1T7Evls72hIHEcTXjX_rqAc"
 });
 function getToken(){
-	fs.readFile("token.txt", function(err, data){
-		if(err){throw "we're all fucked";}
-		return data.toString();
-	})
+	token=fs.readFileSync("token.txt").toString();
 }
 
 // What happens when you first connect
