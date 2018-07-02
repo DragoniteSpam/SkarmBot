@@ -74,6 +74,14 @@ class User {
 	}
 }
 
+class Shanty {
+    constructor(filename){
+        this.filename=filename;
+        this.lines=[];
+        this.linesPerMessage=1;
+    }
+}
+
 // Images
 
 var waifus=[
@@ -123,6 +131,28 @@ var hotDateResponses=[
 var lastDateResponses=[
 	"10^98 AD, or whenever the heat death of the universe is currently forecasted to happen",
 ]
+
+var shanties=[
+    loadShanty("drunken_sailor.shanty"),
+    loadShanty("age_of_agression.shanty"),
+    loadShanty("ragnar_the_red.shanty"),
+]
+
+function loadShanty(filename){
+    var lines=fs.readFileSync("./shanties/"+filename).toString().split('\n');
+    var song=new Shanty(filename);
+    for (var i=0; i<lines.length; i++){
+        if (i==0){
+            song.linesPerMessage=parseInt(lines[i]);
+            if (isNaN(song.linesPerMessage)){
+                throw "you done goofed in "+filename+" (shanty file must start with the number of lines per message (probably 2 or 4))";
+            }
+        } else {
+            song.lines.push(lines[i]);
+        }
+    }
+    return song;
+}
 
 // These get cleared every once in a while
 var deletionQueue=[];
@@ -218,6 +248,8 @@ var last500General=[];
 var last500Action=[];
 var last500Dleet=[];
 var hasBuggedDracoAboutPins=false;
+var currentlySinging=null;
+var currentLineSinging=-1;
 
 var DRAGONITE_OBJECT=null;
 var ZEAL = null;
@@ -987,6 +1019,23 @@ function utilityKenobi(e){
 	sms(e.message.channel,"<:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>");
 	e.message.delete();
 }
+//sings us a random shanty bit
+/*function getShanty(){ 
+	var lines;
+	sien("got this far");
+	fs.readFile("shanty.txt", function(err, data){
+		if(err){
+			sms(channel,"It sunk");
+			return "";
+		} else {
+			lines = data.toString().split("---");
+		}
+	});
+	//var lines= fs.readFileSync("shanty.txt").toString().split("---");
+	that = lines[Math.floor(Math.random() * lines.length)];
+	sien(that);
+	return that;
+}*/
 // Pulls a random line from the text file
 function sendRandomFileLine(filename, channel){
 	var lines;
@@ -1397,9 +1446,9 @@ function REACT(message, id){
 		return true;
 	}
 	//who to ship
-	if(message.content.includes("ship") && (Math.random() <.05 ||(id == "199725993416589313" && Math.random() < .2))){
-		sms(message.channel,"All aboard the S.S. Aqua!");
-	}
+	/*if(message.content.includes("ship") && (Math.random() <.05 ||(id == "199725993416589313" && Math.random() < .2))){
+		sms(message.channel,getShanty());
+	}*/
 	// getting a date
 	if (!utilityIsAction(message.content)){
 		if (message.content.includes("hot date")&&Math.random()<0.25){
@@ -1586,21 +1635,43 @@ function REACT(message, id){
 		botCanSpeak=false;
 		message.channel.sendTyping();
 		setTimeout(function(){
-			if (utilityIsAction(message.content)){
-				sendRandomLineGeneralAction(message);
-			} else {
-				if (Math.random()*100<20){
-					sendRandomLine(message);
-                } else if (Math.random()*100<3){
-                    sendRandomLinePun(message);
-				} else {
-					sendRandomLineGeneral(message);
-				}
-			}
+            if (currentLineSinging>-1){
+                sms(message.channel, getShantyBlock(currentlySinging, currentLineSinging));
+            } else {
+                if (Math.random()*100<5||message.channel.id=="411716622101774337"){
+                    currentlySinging=shanties[Math.floor(Math.random()*shanties.length)];
+                    sms(message.channel, getShantyBlock(currentlySinging, 0));
+                } else if (utilityIsAction(message.content)){
+                    sendRandomLineGeneralAction(message);
+                } else {
+                    if (Math.random()*100<20){
+                        sendRandomLine(message);
+                    } else if (Math.random()*100<3){
+                        sendRandomLinePun(message);
+                    } else {
+                        sendRandomLineGeneral(message);
+                    }
+                }
+            }
 		}, Math.random()*2000+1000);
 		return true;
 	}
 	return false;
+}
+
+function getShantyBlock(song, start){
+    var block="";
+    for (currentLineSinging=start; currentLineSinging<song.linesPerMessage+start; currentLineSinging++){
+        if (currentLineSinging<song.lines.length){
+            block=block+song.lines[currentLineSinging]+"\n";
+        } else {
+            currentLineSinging=-1;
+        }
+    }
+    if (currentLineSinging==song.lines.length){
+        currentLineSinging=-1;
+    }
+    return block;
 }
 
 /*
