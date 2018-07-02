@@ -1107,6 +1107,7 @@ function processShanties(){
 			for (var i=0; i<names.length; i++){
                 shanties.push(loadShanty(names[i].trim()))
             }
+			sien("Shanties updated");
 		}
 	})
 }

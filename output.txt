@@ -1,12 +1,1 @@
 Connected as EyanSays (Skarm). Yippee!
-fs.js:549
-  return binding.open(pathModule._makeLong(path), stringToFlags(flags), mode);
-                 ^
-
-Error: ENOENT: no such file or directory, open './shanties/bully_in_the-alley.shanty'
-    at Error (native)
-    at Object.fs.openSync (fs.js:549:18)
-    at Object.fs.readFileSync (fs.js:397:15)
-    at loadShanty (/home/ubuntu/bots/EyanSays/bot.js:154:18)
-    at /home/ubuntu/bots/EyanSays/bot.js:1108:31
-    at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:380:3)
