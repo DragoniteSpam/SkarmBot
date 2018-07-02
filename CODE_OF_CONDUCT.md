@@ -1,4 +1,4 @@
-900on't do anything your mother would disapprove of
+# Don't do anything your mother would disapprove of
 
 Please don't screw with, vandalize, or otherwise make my life miserable by doing things that you know you shouldn't be doing. I can probably revert malicious changes but I really have no idea what I'm doing and it will probably take way more time out of my day than necessary.
 
