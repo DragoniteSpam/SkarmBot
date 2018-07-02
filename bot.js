@@ -132,10 +132,24 @@ var lastDateResponses=[
 	"10^98 AD, or whenever the heat death of the universe is currently forecasted to happen",
 ]
 
+//keep this alphabetized plz
 var shanties=[
-    loadShanty("drunken_sailor.shanty"),
+	//skyrim songs first
     loadShanty("age_of_agression.shanty"),
+	loadShanty("age_of_oppression.shanty"),
     loadShanty("ragnar_the_red.shanty"),
+	loadShanty("tale_of_the_tongues.shanty"),
+	loadShanty("the_dragonborn_comes.shanty"),
+	//ac4
+	loadShanty("billy_riley.shanty"),
+	loadShanty("blow_the_candles_out.shanty"),
+	loadShanty("bully_in_the_alley.shanty"),
+	//captain Kidd exempt
+	loadShanty("cheerly_man.shanty"),
+	loadShanty("derby_ram.shanty"),
+	loadShanty("drunken_sailor.shanty"),
+	
+	
 ]
 
 function loadShanty(filename){
@@ -1624,8 +1638,7 @@ function REACT(message, id){
 		|| message.content.toLowerCase().includes("birdbrain")
 		||	(message.content.toLowerCase().includes("filthy heap of metal binary spaghetti")
 			||message.content.toLowerCase().includes("bot") 
-			&& Math.random() <.01
-			)
+			&& Math.random() <.01)
 		)
 	||	message.content.toLowerCase().startsWith(myNick.toLowerCase())
 		)&&(message.content.match(new RegExp(" ", "g"))
