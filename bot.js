@@ -135,7 +135,7 @@ var lastDateResponses=[
 //keep this alphabetized plz
 var shanties=[
 	//skyrim songs first
-    loadShanty("age_of_agression.shanty"),
+    /*loadShanty("age_of_agression.shanty"),
 	loadShanty("age_of_oppression.shanty"),
     loadShanty("ragnar_the_red.shanty"),
 	loadShanty("tale_of_the_tongues.shanty"),
@@ -147,9 +147,7 @@ var shanties=[
 	//captain Kidd exempt
 	loadShanty("cheerly_man.shanty"),
 	loadShanty("derby_ram.shanty"),
-	loadShanty("drunken_sailor.shanty"),
-	
-	
+	loadShanty("drunken_sailor.shanty"),*/
 ]
 
 function loadShanty(filename){
@@ -302,7 +300,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 			if (channel!=null){
 				sms(channel, "we back");
 			}*/
-
+    processShanties();
 });
 //what the bot does whenever a message is deleted
 client.Dispatcher.on(events.MESSAGE_DELETE, e=> {
@@ -576,9 +574,11 @@ function massConditioning(e, message, msg){
 		// Censor functions
 		else if (message.startsWith("e!censor")){
 			censorCommandSet(e.message);
-		}
-		else if (message==="e!crash"){
+        // More misc. functions
+		} else if (message==="e!crash"){
             utilityCrash(e);
+        } else if (message==="e!shanties"){
+            processShanties();
         }
 		// Lol
 		if (botCanSendUserCommands){
@@ -1092,6 +1092,20 @@ function sendRandomFileLine(filename, channel){
                         }
                     });
                 }
+            }
+		}
+	})
+}
+
+function processShanties(){
+    shanties=[];
+	fs.readFile("./shanties/shanties.log", function(err, data){
+		if(err){
+			throw err;
+		} else {
+			var names=data.toString().split('\n');
+			for (var i=0; i<names.length; i++){
+                shanties.push(loadShanty(names[i].trim()))
             }
 		}
 	})
@@ -1650,10 +1664,16 @@ function REACT(message, id){
 		setTimeout(function(){
             if (currentLineSinging>-1){
                 sms(message.channel, getShantyBlock(currentlySinging, currentLineSinging));
+                setTimeout(function(){
+                    currentLineSinging=-1;
+                }, 15000*60);
             } else {
                 if (Math.random()*100<5||message.channel.id=="411716622101774337"){
                     currentlySinging=shanties[Math.floor(Math.random()*shanties.length)];
                     sms(message.channel, getShantyBlock(currentlySinging, 0));
+                    setTimeout(function(){
+                        currentLineSinging=-1;
+                    }, 15000*60);
                 } else if (utilityIsAction(message.content)){
                     sendRandomLineGeneralAction(message);
                 } else {
