@@ -151,19 +151,22 @@ var shanties=[
 ]
 
 function loadShanty(filename){
-    var lines=fs.readFileSync("./shanties/"+filename).toString().split('\n');
-    var song=new Shanty(filename);
-    for (var i=0; i<lines.length; i++){
-        if (i==0){
-            song.linesPerMessage=parseInt(lines[i]);
-            if (isNaN(song.linesPerMessage)){
-                throw "you done goofed in "+filename+" (shanty file must start with the number of lines per message (probably 2 or 4))";
+    if (fs.existsSync("./shanties/"+filename)){
+        var lines=fs.readFileSync("./shanties/"+filename).toString().split('\n');
+        var song=new Shanty(filename);
+        for (var i=0; i<lines.length; i++){
+            if (i==0){
+                song.linesPerMessage=parseInt(lines[i]);
+                if (isNaN(song.linesPerMessage)){
+                    throw "you done goofed in "+filename+" (shanty file must start with the number of lines per message (probably 2 or 4))";
+                }
+            } else {
+                song.lines.push(lines[i]);
             }
-        } else {
-            song.lines.push(lines[i]);
         }
+        return song;
     }
-    return song;
+    return null;
 }
 
 // These get cleared every once in a while
@@ -1105,7 +1108,10 @@ function processShanties(){
 		} else {
 			var names=data.toString().split('\n');
 			for (var i=0; i<names.length; i++){
-                shanties.push(loadShanty(names[i].trim()))
+                var song=loadShanty(names[i].trim());
+                if (song!=null){
+                    shanties.push(song)
+                }
             }
 			sien("Shanties updated");
 		}
