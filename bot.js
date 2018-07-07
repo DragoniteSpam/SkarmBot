@@ -183,6 +183,7 @@ var totalCensoredLines=0;
 var dragoniteActive=0;
 var masterActive=0;
 var kingActive=5;
+var messagesThisCycle = 0;
 var generallyAnnoying = false;
 utilityCreateUserTable();
 utilityLoadBotStats();
@@ -287,8 +288,9 @@ function getToken(){
 // What happens when you first connect
 client.Dispatcher.on(events.GATEWAY_READY, e => {
 	console.log("Connected as " + client.User.username+" ("+myNick+"). Yippee!");
-	//client.User.setGame("Type \"e!help\" !");
-    client.User.setGame("discordie ");
+	//sets the default game to e!help
+	var game={name: "e!help | never trust a bunny", type: 0};
+    client.User.setGame(game);
 	twitchGetIsLive(null);
 	twitchGetLastStreamDate();
 	censorLoadList();
@@ -1327,6 +1329,7 @@ function utilityBotStats(e){
 	string=string+"Uptime, probably: "+uptimeDays+" days, "+uptimeHours+" hours, "+uptimeMinutes+" minutes, "+uptimeSeconds+" seconds\n";
 	string=string+"Commands recieved since we started caring: "+totalBotCommands+"\n";
 	string=string+"Lines censored since we started caring: "+totalCensoredLines+"\n";
+	string= string+"Messages sent this cycle: " + messagesThisCycle+ "\n";
 	if (e.message.author.id==MASTER){
 		string=string+"Heap usage: shove it up your @$$, Magus"
 	}
@@ -1997,10 +2000,12 @@ function catSend(channel){
 // Sets the currently playing game
 function utilityGame(e){
 	if (userHasKickingBoots(e.message.author, e.message.channel)){
-		client.User.setGame(e.message.content.replace("e!game ", ""));
+        var game={name: e.message.content.replace("e!game ", ""), type: 0};
+		client.User.setGame(game);
+        
 		sms(e.message.channel,"New game: "+e.message.content.replace("e!game ", ""));
 	} else {
-		sms(e.message.channel,"You don't have permission to do that, sorry.");
+		sms(e.message.channel,"You don't have permission to do that!");
 	}
 }
 
@@ -2544,6 +2549,7 @@ function sien(message){
 //route all channel.send messages through this one for ease of fixing issues
 function sms(channel, message){
 	try{
+		messagesThisCycle++;
 		return channel.sendMessage(message);
 	}
 	catch(err){
