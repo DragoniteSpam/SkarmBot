@@ -28,6 +28,7 @@ const MODLOG="344295609194250250";
 const MASTER="162952008712716288";
 const DRAGONITE="137336478291329024";
 const ZEAL_ID="304073163669766158";
+const PRIMA="425428688830726144";
 //Skarm channels
 const dataGen = "409856900469882880";
 const dataAct = "409860642942615573";
@@ -36,19 +37,24 @@ const MEyTA = "409870100385103899";
 //roles 
 const EARTHBOUND = "305101211072462848";
 const ENLIGHTENED = "338043707485978624";
+const REDGAOLER="305450620754591756";
+const MASAMUNE="305450671992340480";
 const PINK = "305450786001911808";
 const PINKER = "407725604910399489";
 
 // misc constants
 
 const MAX_LOGGED_LINES=8000;
+const BIG_BROTHER_TIMEOUT=0;
 
 // Classes
 
 class User {
-	constructor(name, discriminator){
+	constructor(name, discriminator, id){
 		this.name=name;
 		this.discriminator=discriminator;
+        this.id=id;
+        
 		this.swears=0;
 		this.slaps=0;
 		this.zeal=0;
@@ -71,6 +77,9 @@ class User {
 		this.totalWarnings=0;
 		
 		this.todayWasWarned=false;
+        
+        this.refString="";
+        this.talkTimer=BIG_BROTHER_TIMEOUT;
 	}
 }
 
@@ -134,20 +143,6 @@ var lastDateResponses=[
 
 //keep this alphabetized plz
 var shanties=[
-	//skyrim songs first
-    /*loadShanty("age_of_agression.shanty"),
-	loadShanty("age_of_oppression.shanty"),
-    loadShanty("ragnar_the_red.shanty"),
-	loadShanty("tale_of_the_tongues.shanty"),
-	loadShanty("the_dragonborn_comes.shanty"),
-	//ac4
-	loadShanty("billy_riley.shanty"),
-	loadShanty("blow_the_candles_out.shanty"),
-	loadShanty("bully_in_the_alley.shanty"),
-	//captain Kidd exempt
-	loadShanty("cheerly_man.shanty"),
-	loadShanty("derby_ram.shanty"),
-	loadShanty("drunken_sailor.shanty"),*/
 ]
 
 function loadShanty(filename){
@@ -209,16 +204,21 @@ var timer60 = setInterval(function(){
 	utilitySaveStats();
 	utilitySaveBotStats();
 	botCanSendUserCommands=true;
-	if(dragoniteActive>0){
+	/*if(dragoniteActive>0){
 		dragoniteActive--;
 	}
 	if(masterActive>0){
 		masterActive--;
-	}
+	}*/
 	generallyAnnoying = false;
 	if(kingActive>0){
 		kingActive--;
 	}
+    for (var user in userTable){
+        if (userTable[user].refString.length>0){
+            userTable[user].talkTimer--;
+        }
+    }
 	//sien("minute tick");
 }, 60000);
 
@@ -349,7 +349,7 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e=> {
 		}
 	} else if (e.emoji.name==="KingofApproval"){
         if (e.user.id!=ZEAL_ID){
-            console.log("Illegitimate KingOfApproval user found! ["+e.user.username+"]" /*+" Warning sent."*/);
+            //console.log("Illegitimate KingOfApproval user found! ["+e.user.username+"]" /*+" Warning sent."*/);
 /*            e.user.openDM().then(function(dm){
 				dm.sendMessage("Hey, hey, hey! The `KingOfApproval` emote is supposed to be for Eyan's use only, so try to lay off using it in reactions, aye aye?");
 				dm.sendMessage("(Between you and me the idea is stupid, but Eyan insisted on it, so there we have it.)");
@@ -359,12 +359,12 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e=> {
                 dm.sendMessage("\*pokes\* "+e.user.username+" used the KingOfApproval emote, have a word with them, aye aye?");
                 dm.close();
             });*/
-			sien(e.user.username+" used KingofApproval");
-            if (e.message==null){
+			//sien(e.user.username+" used KingofApproval");
+            /*if (e.message==null){
                 console.log(" => Message is null for some reason");
             } else {
                 e.message.removeReaction(e.emoji, e.user);
-            }
+            }*/
         }
     }
 });
@@ -443,7 +443,36 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 		return false;
 	}
 	var author = e.message.author;
-	var message=e.message.content.toLowerCase();
+    var message=e.message.content.toLowerCase();
+    
+    var usernameString=authorString(author);
+	var user;
+	if (usernameString in userTable){
+		user=userTable[usernameString];
+	} else {
+		user=new User(author.username, author.discriminator, author.id);
+		userTable[usernameString]=user;
+	}
+    user.talkTimer=BIG_BROTHER_TIMEOUT;
+    
+    for (var user in userTable){
+        var member=userTable[user];
+        if (member.refString.length>0){
+            if (message.includes(member.refString)){
+                console.log(member.talkTimer);
+                if (member.talkTimer<=0){
+                    var discordUser=client.Users.get(member.id);
+                    discordUser.openDM().then(function(dm){
+                        var quote=e.message.content+" ("+e.message.author.username+")";
+                        dm.sendMessage("Your ref string was mentioned!\n```"+quote+"``` in <#"+e.message.channel_id+">");
+                        dm.sendMessage("_This is an automated message, courtesy of SkarmBot's Reference String feature. You can turn it off by typing `e!setref` without a parameter in any channel the bot is present in (preferably one reserved for such spam)._");
+                    });
+                    member.talkTimer=BIG_BROTHER_TIMEOUT;   // this is so you dont get bombarded by messages if people say your name a lot (gummy)
+                }
+            }
+        }
+    }
+    
 	var msg = message.split(" ");
 	censor(e.message);
 	//utilitySaveLine(message);
@@ -584,6 +613,24 @@ function massConditioning(e, message, msg){
             utilityCrash(e);
         } else if (message==="e!shanties"){
             processShanties();
+        } else if (message==="e!save"){
+            utilitySaveStats();
+        }
+        // Set/remove Big Brother
+        if (message.startsWith("e!setref")){
+            if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
+                var spl=message.split(" ");
+                var user=userTable[authorString(e.message.author)];
+                if (spl.length>=2){
+                    user.refString=spl[1];
+                    sms(e.message.channel, "**"+user.name+",** your reference string has been set to **"+spl[1]+"**");
+                } else {
+                    user.refString="";
+                    sms(e.message.channel, "**"+user.name+",** your reference string has been removed!");
+                }
+            } else {
+                sms(e.message.channel, "**"+e.message.author.username+",** you need to be Red Gaoler or higher to set your reference string!");
+            }
         }
 		// Lol
 		if (botCanSendUserCommands){
@@ -630,7 +677,7 @@ function /* boolean*/ utilPins(e, msg){
 }
 
 function notifiers(e, message){
-	if (message.includes("drago") || message.includes("dova")){
+	/*if (message.includes("drago") || message.includes("dova")){
 		if(dragoniteActive < 1){
 			sms(client.Channels.get("417833536519798795"),message  +  " from "    +  e.message.author.username +" in <#" +e.message.channel_id +  ">, <@!137336478291329024>");  
 		}
@@ -648,11 +695,11 @@ function notifiers(e, message){
 	}
 	if (messageAuthorEquals(e.message, "162952008712716288")){
 		masterActive = 3;
-	}
+	}*/
 	if (messageAuthorEquals(e.message, "304073163669766158")){
 		kingActive = 3;
 	}
-	if (menKing(message) || message.includes("eyan")|| message.includes("zeal")){
+	if (/*menKing(message) ||*/ message.includes("eyan")/*|| message.includes("zeal")*/){
 		if(kingActive < 1){
 			sms(client.Channels.get("452566957611548679"), message  +  " from "    +  e.message.author.username +" in <#" +e.message.channel_id +  ">");  
 		}
@@ -876,29 +923,41 @@ function roleGet(id){
 	return null;
 }
 
-function userRank(e){
-	var mem = getMember(e.message.author.id);
-	if(mem.hasRole(roleGet("305450320488562709"))){
+function userRank(user){
+    // user is an IUser, not an IGuildMember, which just makes things confusing
+    var member=getMember(user.id);
+	if(member.hasRole(roleGet("305450320488562709"))){
 		return 1;
-	} if(mem.hasRole(roleGet("305450391573757962"))){
+	}
+    if(member.hasRole(roleGet("305450391573757962"))){
 		return 2;
-	} if(mem.hasRole(roleGet("305450528995934229"))){
+	}
+    if(member.hasRole(roleGet("305450528995934229"))){
 		return 3;
-	} if(mem.hasRole(roleGet("305450620754591756"))){
+	}
+    if(member.hasRole(roleGet(REDGAOLER))){
 		return 4;
-	} if(mem.hasRole(roleGet("305450671992340480"))){
+	}
+    if(member.hasRole(roleGet(MASAMUNE))){
 		return 5;
-	} if(mem.hasRole(roleGet(PINK)) || mem.hasRole(roleGet(PINKER))){
+	}
+    if(member.hasRole(roleGet(PINK)) || member.hasRole(roleGet(PINKER))){
 		return 6;
 	} 
 	return 0;
-	
+}
+
+function hasBigBrotherRank(user){
+    return (userRank(user)>=4);
 }
 
 function getMember(id){
-	for(var i = 0; i<zelos.members.length&& !done; i++)
-		if(zelos.members[i].id == id)
+    var zelos=ZEAL;
+	for(var i = 0; i<zelos.members.length; i++){
+		if(zelos.members[i].id == id){
 			return zelos.members[i];
+        }
+    }
 	sien("shit");
 }
 /*
@@ -1255,7 +1314,7 @@ function STATS(message){
 	if (usernameString in userTable){
 		user=userTable[usernameString];
 	} else {
-		user=new User(message.author.username);
+		user=new User(message.author.username, message.author.discriminator, message.author.id);
 		userTable[usernameString]=user;
 	}
 	user.lines++;
@@ -1811,7 +1870,7 @@ function censorClearDeletionQueueLong(){
 function censorUpdateSwearTable(user){
 	var n=authorString(user);
 	if (!(n in userTable)){
-		userTable[n]=new User(user.username, user.discriminator);
+		userTable[n]=new User(user.username, user.discriminator, user.id);
 		userTable[n].swears=1;
 	} else {
 		userTable[n].swears++;
@@ -2034,47 +2093,18 @@ function utilitySandwich(e){
 }
 // Loads in the stored values from the swear table.
 function utilityCreateUserTable(){
-	var lines;
-	fs.readFile("stats.csv", function(err, data){
-		if(err){
-			throw err;
-		}
-		lines = data.toString().split('\n');
-		for (var i=0; i<lines.length; i++){
-			if (lines[i].includes(",undefined")){
-			} else {
-				var spl=lines[i].split(",");
-				
-				var user=new User(spl[0].split("#")[0], spl[0].split("#")[1]);
-				userTable[spl[0]]=user;
-				user.swears=Number(spl[1]);
-				user.slaps=Number(spl[2]);
-				user.zeal=Number(spl[3]);
-				user.toilet=Number(spl[4]);
-				
-				user.actions=Number(spl[5]);
-				user.questions=Number(spl[6]);
-				user.exclamations=Number(spl[7]);
-				
-				user.lines=Number(spl[8]);
-				user.secretWord=Number(spl[9]);
-				user.secretWordAdd=Number(spl[10]);
-				
-				if (spl.length>=12){
-					user.elvia=Number(spl[11]);
-				}
-				if (spl.length>=13){
-					user.todayActions=Number(spl[12]);
-					user.todayViolence=Number(spl[13]);
-					user.todayWarnings=Number(spl[14]);
-					user.totalWarnings=Number(spl[15]);
-				}
-				if (spl.length>=17){
-					user.silver=Number(spl[16]);
-				}
-			}
-		}
-	});
+    var obj;
+    fs.readdir("./users/", (err, files) => {
+        files.forEach(file => {
+            fs.readFile("./users/"+file, 'utf8', function (err, data){
+                if (err){
+                    console.log(err);
+                }
+                obj=JSON.parse(data);
+                userTable[obj.id]=obj;
+            });
+        });
+    });
 }
 
 function utilitySaveBotStats(){
@@ -2107,22 +2137,13 @@ function utilityLoadBotStats(){
  function utilitySaveStats(){
 	var saveString="";
 	for (var n in userTable){
-		var user=userTable[n];
-		saveString=saveString+n+","+user.swears+
-			","+user.slaps+","+user.zeal+","+user.toilet+
-			","+user.actions+","+user.questions+","+user.exclamations+
-			","+user.lines+","+user.secretWord+","+user.secretWordAdd+
-			","+user.elvia+
-			
-			","+user.todayActions+","+user.todayViolence+","+user.todayWarnings+","+user.totalWarnings+
-			","+user.silver+
-			"\r\n";
-	}
-	fs.writeFile("stats.csv", saveString, function(err) {
-		if(err) {
-			return console.log(err);
-		}
-	});
+        var json=JSON.stringify(userTable[n]);
+        fs.writeFile("./users/"+userTable[n].id+".zeal", json, function(err){
+            if (err){
+                console.log(err);
+            }
+        });
+    }
  }
 // Utility that prints out the number of lines in the bot's learned database.
 function utiliyLineCount(e){
@@ -2384,7 +2405,8 @@ function authorEquals(author, id){
 }
 
 function authorString(user){
-	return user.username+"#"+user.discriminator;
+	//return user.username+"#"+user.discriminator;
+    return user.id;
 }
 // Because for some inane reason JavaScript does not include this on its own. Inefficient.
 function replaceAll(string, toReplace, newString){
