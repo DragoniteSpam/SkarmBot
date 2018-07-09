@@ -1124,10 +1124,10 @@ function sendRandomFileLine(filename, channel){
 			lines = data.toString().split('\n');
 			var line="";
 			do {
-                // This is bad and I should feel bad (makes Squid's name pop up more often in conversation)
+                // This is bad and I should feel bad (makes drago's name pop up more often in conversation)
                 for (var i=0; i<5; i++){
                     line=lines[Math.floor(Math.random()*lines.length)];
-                    if (line.toLowerCase().includes("squid")){
+                    if (line.toLowerCase().includes("drago")){
                         break;
                     }
                 }

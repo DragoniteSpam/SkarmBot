@@ -682,3 +682,21 @@ or ask skarm would put it "what moron thought of that idea"
     corphish had 85% control
 ~~What does Skarm have to do with this?~~
     i mean let's be real, xc1's menus are awesome considering the stupid amount of things that they do
+_whacks guy with skarm_
+    _whacks squid on the head with it_
+Why did Skarm hurt me when I wasn’t around?
+    woot time to go charge my switch then
+Honestly, I’m starting to get tired of Skarm going after me a majority of the time
+    you know i did tell you to come like forever ago
+skarm should now go after me more often instead of squid now:
+```js
+                // This is bad and I should feel bad (makes drago's name pop up more often in conversation)
+                for (var i=0; i<5; i++){
+                    line=lines[Math.floor(Math.random()*lines.length)];
+                    if (line.toLowerCase().includes("drago")){
+                        break;
+                    }
+                }```
+    only ida likes me here 😭
+im pretty sure ida doesn't like skarm at all
+    funny you mention that, that was what i had in mind
