@@ -45,7 +45,7 @@ const PINKER = "407725604910399489";
 // misc constants
 
 const MAX_LOGGED_LINES=8000;
-const BIG_BROTHER_TIMEOUT=0;
+const BIG_BROTHER_TIMEOUT=10;
 
 // Classes
 
