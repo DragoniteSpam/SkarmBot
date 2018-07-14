@@ -80,6 +80,7 @@ class User {
         
         this.refString="";
         this.talkTimer=BIG_BROTHER_TIMEOUT;
+        this.hasBeenNotifiedOfAutomatedMessage=false;
 	}
 }
 
@@ -465,7 +466,16 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
                     discordUser.openDM().then(function(dm){
                         var quote=e.message.content+" ("+e.message.author.username+")";
                         dm.sendMessage("Your ref string was mentioned!\n```"+quote+"``` in <#"+e.message.channel_id+">");
-                        dm.sendMessage("_This is an automated message, courtesy of SkarmBot's Reference String feature. You can turn it off by typing `e!setref` without a parameter in any channel the bot is present in (preferably one reserved for such spam)._");
+                        if (!member.hasBeenNotifiedOfAutomatedMessage){
+                            dm.sendMessage("_This is an automated message, courtesy of SkarmBot's Reference String feature. You can turn "+
+                                "it off by typing `e!setref` without a parameter in any channel the bot is present in (preferably one reserved for such spam)._").then(function(message, err){
+                                    if (err){
+                                        throw err;
+                                    }
+                                    message.pin();
+                                });
+                            member.hasBeenNotifiedOfAutomatedMessage=true;
+                        }
                     });
                     member.talkTimer=BIG_BROTHER_TIMEOUT;   // this is so you dont get bombarded by messages if people say your name a lot (gummy)
                 }
@@ -1746,9 +1756,9 @@ function REACT(message, id){
                 } else if (utilityIsAction(message.content)){
                     sendRandomLineGeneralAction(message);
                 } else {
-                    if (Math.random()*100<20){
+                    if (Math.random()*100<30){
                         sendRandomLine(message);
-                    } else if (Math.random()*100<3){
+                    } else if (Math.random()*100<4){
                         sendRandomLinePun(message);
                     } else {
                         sendRandomLineGeneral(message);
@@ -2101,6 +2111,9 @@ function utilityCreateUserTable(){
                     console.log(err);
                 }
                 obj=JSON.parse(data);
+                if (obj.hasBeenNotifiedOfAutomatedMessage===undefined){
+                    obj.hasBeenNotifiedOfAutomatedMessage=false;
+                }
                 userTable[obj.id]=obj;
             });
         });

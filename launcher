@@ -1,3 +1,3 @@
 cd /home/ubuntu/bots/EyanSays
 sudo chmod 666 generallines.txt
-node bot.js > output.txt 2>&1 &
+sudo node bot.js > output.txt 2>&1 &
