@@ -764,3 +764,5 @@ skarm's code has more bugs
     i didnt like that one
 hey master i got skarm to pin the "automated message" message and then not send it again so the next time you get the double message \*should\* be the last
     if you were told simply to disprove a formula's ability to only generate primes then why do you need to make a new formula with the same objective?
+hey master should i post an announcement saying masa mune people can set their skarm ref strings now, or do you want to give it some more testing first?
+    if i make myself to apparent i will get mugged
