@@ -490,7 +490,6 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	if (!e.message.deleted){ 
 		notifiers(e, message);
 		massConditioning(e, message, msg);
-		
 		//Everything else
 		statsWillOfD(e.message);
 		STATS(e.message);
@@ -936,6 +935,18 @@ function roleGet(id){
 function userRank(user){
     // user is an IUser, not an IGuildMember, which just makes things confusing
     var member=getMember(user.id);
+	if(member.hasRole(roleGet("319745428700790784"))){
+		return 10;
+	}
+	if(member.hasRole(roleGet("305100692933050368"))){
+		return 9;
+	}
+	if(member.hasRole(roleGet("305100589514227712"))){
+		return 8;
+	}
+	if(member.hasRole(roleGet(ENLIGHTENED))){
+		return 7;
+	}
 	if(member.hasRole(roleGet("305450320488562709"))){
 		return 1;
 	}
@@ -954,6 +965,7 @@ function userRank(user){
     if(member.hasRole(roleGet(PINK)) || member.hasRole(roleGet(PINKER))){
 		return 6;
 	} 
+	
 	return 0;
 }
 
