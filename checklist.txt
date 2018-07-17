@@ -2,6 +2,7 @@
 2. Write Raspian Lite image to SD card.
 3. Boot Pi.
 4. Enable SSH on Pi (sudo raspi-config -> Interfacing options -> SSH)
+5. Enable WiFi on the Pi (sudo raspi-config -> Network options -> WiFi stuff)
 5. Install nodeJS on Pi.
 6. Transfer bot files from computer to Pi.
 7. cd /home/pi/bots/EyanBot -> chmod 755 launcher

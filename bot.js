@@ -79,8 +79,11 @@ class User {
 		this.todayWasWarned=false;
         
         this.refString="";
+        this.blockRefString=false;
         this.talkTimer=BIG_BROTHER_TIMEOUT;
         this.hasBeenNotifiedOfAutomatedMessage=false;
+        this.pointEligible=true;
+        this.points=0;
 	}
 }
 
@@ -121,8 +124,7 @@ var cats=[
 // Banned words, and stuff like that
 var banned=[
 ]
-var beaned=[
-]
+
 var violentVerbs=[
 	"kicks",
 	"slaps",
@@ -249,6 +251,12 @@ var timer5min = setInterval(function(){
 	}
 	fetchPinnedAuto(client.Channels.get(GENERAL));
 }, 300000);
+
+var timerHour=setInterval(function(){
+	for (var user in userTable){
+		userTable[user].pointEligible=true;
+	}
+}, 3600*1000);
 
 // extra stuff
 
@@ -446,6 +454,48 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	var author = e.message.author;
     var message=e.message.content.toLowerCase();
     
+    // colloquially known as ref strings
+    bigBrother(e, author, message);
+    
+    // idk what the point of this is, tee hee hee
+    hourlyPoints(author, message);
+    
+	var msg = message.split(" ");
+	censor(e.message);
+	//utilitySaveLine(message);
+	// Help
+	if (!e.message.deleted){ 
+		notifiers(e, message);
+		massConditioning(e, message, msg);
+		//Everything else
+		statsWillOfD(e.message);
+		STATS(e.message);
+		if (!utilityMessageWasWrittenByMe(e.message)){
+			if (!REACT(e.message, e.message.author.id)){
+                if (e.message.channel!=OCEANPALACE){
+					if (e.message.mentions.length==0&&e.message.mention_roles.length==0&&!e.message.mentions_everyone){
+                        if (messageAuthorEquals(e.message, "304073163669766158")){	
+							if (false){
+                            	if (Math.random()*100<25){
+                                	add(e.message);
+                            	}
+                       		}
+						} 
+						else 
+							if(!e.message.content.startsWith("=")&& !e.message.content.includes("http")&& !e.message.content.startsWith("t!")&&!(e.message.content.startsWith("_ascii") && e.message.content.startsWith("_play "))){
+                            	if (
+									(Math.random()*100<25 || e.message.content.indexOf("alpine")>-1) && canCreateInvites(e.message.author, e.message.channel)){
+										addGeneral(e.message);
+							}
+                      	}
+                    }
+				}
+			}
+		}
+	}
+});
+
+function bigBrother(e, author, message){
     var usernameString=authorString(author);
 	var user;
 	if (usernameString in userTable){
@@ -482,41 +532,22 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
             }
         }
     }
-    
-	var msg = message.split(" ");
-	censor(e.message);
-	//utilitySaveLine(message);
-	// Help
-	if (!e.message.deleted){ 
-		notifiers(e, message);
-		massConditioning(e, message, msg);
-		//Everything else
-		statsWillOfD(e.message);
-		STATS(e.message);
-		if (!utilityMessageWasWrittenByMe(e.message)){
-			if (!REACT(e.message, e.message.author.id)){
-                if (e.message.channel!=OCEANPALACE){
-					if (e.message.mentions.length==0&&e.message.mention_roles.length==0&&!e.message.mentions_everyone){
-                        if (messageAuthorEquals(e.message, "304073163669766158")){	
-							if (false){
-                            	if (Math.random()*100<25){
-                                	add(e.message);
-                            	}
-                       		}
-						} 
-						else 
-							if(!e.message.content.startsWith("=")&& !e.message.content.includes("http")&& !e.message.content.startsWith("t!")&&!(e.message.content.startsWith("_ascii") && e.message.content.startsWith("_play "))){
-                            	if (
-									(Math.random()*100<25 || e.message.content.indexOf("alpine")>-1) && canCreateInvites(e.message.author, e.message.channel)){
-										addGeneral(e.message);
-							}
-                      	}
-                    }
-				}
-			}
-		}
-	}
-});
+}
+
+function hourlyPoints(author, message){
+    var usernameString=authorString(author);
+    var user;
+    if (usernameString in userTable){
+        user=userTable[usernameString];
+    } else {
+        user=new User(author.username, author.discriminator, author.id);
+        userTable[usernameString]=user;
+    }
+    if (user.pointEligible){
+        user.points++;
+        user.pointEligible=false;
+    }
+}
 
 function massConditioning(e, message, msg){
 	if (message=="e!help"){
@@ -625,8 +656,8 @@ function massConditioning(e, message, msg){
         } else if (message==="e!save"){
             utilitySaveStats();
         }
-        // Set/remove Big Brother
-        if (message.startsWith("e!setref")){
+        // Set/remove Big Brother (and do other things with ref strings)
+        else if (message.startsWith("e!setref")){
             if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
                 var spl=message.split(" ");
                 var user=userTable[authorString(e.message.author)];
@@ -639,6 +670,32 @@ function massConditioning(e, message, msg){
                 }
             } else {
                 sms(e.message.channel, "**"+e.message.author.username+",** you need to be Red Gaoler or higher to set your reference string!");
+            }
+        }
+        else if (message.startsWith("e!blockref")){
+            if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
+                var user=userTable[authorString(e.message.author)];
+                if (user.refString.length>0){
+                    user.blockRefString=true;
+                    sms(e.message.channel, "Skarm should no longer say your ref string in regurgitated lines! (Use `e!unblockref` to turn this feature off.)");
+                } else {
+                    sms(e.message.channel, "You have no ref string set! You can set one with `e!setref <word>`.");
+                }
+            } else {
+                sms(e.message.channel, "You can't do this quite yet. Wait for Red Gaoler rank and then you can use that command! (If enough non-Gaolers request this feature it'll probably be enabled later).")
+            }
+            
+        } else if (message.startsWith("e!unblockref")){
+            if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
+                var user=userTable[authorString(e.message.author)];
+                if (user.refString.length>0){
+                    user.blockRefString=false;
+                    sms(e.message.channel, "Skarm can say your ref string in regurgitated lines again!");
+                } else {
+                    sms(e.message.channel, "You have no ref string set! You can set one with `e!setref <word>`.");
+                }
+            } else {
+                sms(e.message.channel, "You can't do this quite yet. Wait for Red Gaoler rank and then you can use that command! (If enough non-Gaolers request this feature it'll probably be enabled later).")
             }
         }
 		// Lol
@@ -1151,6 +1208,15 @@ function sendRandomFileLine(filename, channel){
                     line=lines[Math.floor(Math.random()*lines.length)];
                     if (line.toLowerCase().includes("drago")){
                         break;
+                    }
+                }
+                // This is also bad and I should feel bad.
+                for (var usernameString in userTable){
+                    var user=userTable[usernameString];
+                    if (user.refString.length>0&&user.blockRefString){
+                        if (line.includes(user.refString)){
+                            line="";
+                        }
                     }
                 }
 			} while (line.length<2);

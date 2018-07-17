@@ -7383,3 +7383,252 @@ the users folder has been there?
 for the record i don't know what half of these do
 good to know
 4.2 maybe
+lightweight
+pc from the three days made me tired
+so i was going to remark on how i've never had any problems with sony vegas crashing but then it decided to freeze on me for no reason
+this is fun
+you know what? that's like the third time in as many days that i've posted osmething to the wrong server
+that’s embarrassing drago and you should feel bad
+i would do that if i could get passed the bear
+good job
+whats your point?
+what is the music of life?
+what is the gift of death?
+im an expert
+i fell off the ether mine a good four or five times
+i feel like going outside
+the fuck is this shit
+again
+and now i visited the moon
+the moon is where they banish people to over there
+third time being banished
+adulting is overrated
+in this windy old weather
+stormy old weather
+we all come together
+it’s actually kind of stormy here
+rainy here
+well
+thats why i am saying it out loud here
+well if he doesn't have a source that means he isn't stealing them from me good
+pretty sure skarm has to be lower case
+correct.
+he started one, but never finished.
+i'm pretty sure that's the default
+every ten levels
+and i forgot how to check
+it grows exponentialy
+see thing
+pretty much.
+bonus points if you never had one in the first place
+that's a rear wheel drive car on a dyno (a tool used to measure power output in a car)
+it kinda snuck up on me
+wow apparently the league community turned into a bunch of damn snowflakes, i can't say anything in chat anymore without getting banned
+asking for help or asking people to stop dying is apparently a bannable offense
+i’m back from work ya ninnies
+its summer, who tf is giving you homework?
+i guess dragonite
+satan
+same
+you just happen to be a person doing that here
+one of many
+i am more insane than everyone here
+well except skarm
+a person just posted a pic of his pc and damn that liquid cooling looks amazing
+well rainbow colour
+well you better send pics
+well i think it's okay to send here since the guy sent it in a server that has over 3000 people
+nice rgb indeedalso gummy rainbow isnt a color
+yeah 11k
+that is what he told us
+plus the other stuff soooo $700?
+you two please
+logitech gaming owns astro now?
+but made with science
+i have the non rgb version of this mouse
+scrub
+sponsor by logitech g
+wow never saw a pre built one before
+i had no clue what i was doing
+and they did great though was hard through discord
+but 5 days
+thats how everything breaks
+i been keeping an eye one it
+sadly
+im singing right now master
+and why am i in charge of the vc? thats drago's job
+get rainy to talk to you
+though i notice besides eyan, when i join many people join vc as well
+you just have something to always talk about
+well you guys suck one day i won't be around
+except when eyan streams
+im talking about a normal day without gummy
+i was thinking closer to 2%
+well get ida
+what's going on?
+i am retiring
+from being the shitposter of this server because i can't think of ideas
+gummy you ninny
+i'm not sure why i was pinged
+also is this true demon lord
+magus9000 - today at 11:49 pm
+does gummy carry a majority of voice calls here?
+yeah
+no one likes staring at the sun and yet here we are all orbiting around it
+speak for yourself
+hmmm
+guess i am the sun since i was always bright
+no seriously i really wanna retire from shitposter who wants the job?
+and they turn out like you
+and i'm considering the same for you, just need your legal guardians to sign off on it
+flubs is flubs but he can do my shit posting job
+its easy
+darn
+that should speak for itself
+it'll still be a while before i even catch up to eyan here
+though i don’t say much anymore
+and?
+it was just interesting to look back
+you said yourself, drago, and ida
+all of you have access there
+that isn’t pony base
+lucky you
+i got attacked by a rabbit
+give me a dollar
+break time
+*breaks gummy’s 10 cents*
+more power to him, i say.
+im actually really surprised
+i always heard the term “walkthrough” instead of “let’s play”
+as "let us play [together]" or something like that.
+dardoch is a bish
+whoa sneaky back on c9's stage team
+i have one of those
+but without working arms
+i just pm him 3 hours ago asking if he was dead or in jail
+it's okay drago i can defend myself
+apologies.
+i'll step down.
+like 1% of my deaths were caused by falling off the world though
+(๑•͈ᴗ•͈)b
+reboot first
+yeah
+thinkingface
+gandi will fuck you up
+then a bunch of them appeared
+also i thought your town was literally all farm
+send me a steal
+and um a fried chicken steak would be nice as well
+i mean uh
+flubs you okay?
+i assume you were in jail
+many things and i hate typing on my phone so ill explain whenever im not on my phone
+not that short
+omg you went to the uk didn’t you?
+close actually
+so im kinda like you now
+so yeah
+france?
+you are in france
+really?
+verona?
+bari
+i thought you ended up in jail or a breakup
+dragonite
+i should edit that quote but it's honesly funnier this way
+exactly
+don’t go to venice though
+its not happening. im here for a reason, and its not to enjoy myself
+im visiting my great grandpa you weirdos
+there are still living flubioids?
+theres no way i havent mentioned that
+im very roman
+til rome.equals(china)
+417 days or 14 months or 1.14 years or about the average time it takes for someone to climb out of bronze
+of fucking course it is
+theres this one town that i visited with my dad a few years back that is literally owned by the mafia
+flubs make me pizza
+so not dying is a skill by that logic
+well tbh it explains why benny comes to my house everyday
+protection of the kneecaps money
+i met this wonderful little man last week. he sold me things at prices that made me think he stole them. but they were quite nice so i didnt mind
+probably
+i’m back from work ya ninnies
+and i see flubs is not dead yet
+those arent flubses
+not anymore
+no she didnt
+and needs you to be my wingman
+because they're fun
+because the flat sun can only aim at a slice of the earth at a time
+ok im gonna go eat and then not be here for a while. do stuff while im gone so i can not know about it.
+good?
+shouldn't it be gummy?
+it'll be case insensitive
+we figured it out
+```js
+var spl=message.split(" ");
+                var user=usertable[authorstring(e.message.author)];
+                if (spl.length>=2)
+                    user.refstring=spl[1];```
+anyway i looked at the code and it should be okay, since it checks `message.tolowercase().includes(refstring which is already lower case)`
+well that's unusual, for my code
+very unusual for your code indeed
+hai friends ^w^
+hello there
+that is spanish
+....wow
+you are good
+it's your name
+hey i can do better
+we don't talk about that
+no bad
+i feel like this is the 5th time the fishing pole story has come up now
+what no
+we'll call it the fishing pole incident
+we'll call it people for get about that
+i tried to but i can't get any msgs off my skype
+yeah thatll do it
+so you would have to import them on your end
+good job
+good job riot
+lol xd
+fuck yeah
+you get used to it after a while
+~~we’re all just crazy~~
+don't listen to him
+stacks?
+what stacks does shen have
+i vote option a.
+void fissue in the void
+(◕ ε ◕)
+read that as shower with you the first time
+hey master i'm bored and it's too early to make food, tell me something to do with the bot
+that shouldnt be too difficult or something
+you know you could autohotkey like the rest of us
+good job benny (๑•͈ᴗ•͈)b
+and even though you sniped me in saying that i'm gonna type it anyway
+i only cook bad food
+i hate mobile keyboards
+you went from rarity to coco
+i was trixie last week
+update: my cooking at least smells remotely like food. that's usually a good sign right?
+it was the potatoes' fault honestly
+same buddy
+i said often you troll
+you also like rarity <:kappa:374346980136058893>
+never insult my waifu
+no you fools thats this place in 14000 years
+i tell her that on a daily basis
+gummy, you really need to read a book on how to make good insults
+i am
+average in us is about 5'4 female, 5'9 male
+it hasn't kernel panicked yet anyway
+who needs the ground really
+¯\_(ツ)_/¯
+/rage
+well, you’re no help
+you expected otherwise?
+i could probably tie that into the ref string thing once that's complete
+not too much longer
+we all do
