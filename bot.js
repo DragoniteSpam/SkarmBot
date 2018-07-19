@@ -510,9 +510,8 @@ function bigBrother(e, author, message){
         var member=userTable[user];
         if (member.refString.length>0){
             if (message.includes(member.refString)){
-                console.log(member.talkTimer);
-                if (member.talkTimer<=0){
-                    var discordUser=client.Users.get(member.id);
+                var discordUser=client.Users.get(member.id);
+                if (member.talkTimer<=0&&canViewChannel(discordUser, e.message.channel)){
                     discordUser.openDM().then(function(dm){
                         var quote=e.message.content+" ("+e.message.author.username+")";
                         dm.sendMessage("Your ref string was mentioned!\n```"+quote+"``` in <#"+e.message.channel_id+">");
@@ -528,10 +527,16 @@ function bigBrother(e, author, message){
                         }
                     });
                     member.talkTimer=BIG_BROTHER_TIMEOUT;   // this is so you dont get bombarded by messages if people say your name a lot (gummy)
+                } else {
+                    console.log(member.name+" was mentioned, but in a channel they can't view");
                 }
             }
         }
     }
+}
+
+function canViewChannel(user, channel){
+    return user.can(discordie.Permissions.General.READ_MESSAGES, channel);
 }
 
 function hourlyPoints(author, message){
@@ -663,7 +668,7 @@ function massConditioning(e, message, msg){
                 var user=userTable[authorString(e.message.author)];
                 if (spl.length>=2){
                     user.refString=spl[1];
-                    sms(e.message.channel, "**"+user.name+",** your reference string has been set to **"+spl[1]+"**");
+                    sms(e.message.channel, "**"+user.name+",** your reference string has been set to **"+spl[1]+"**. (You might want to edit your privacy settings to allow DMs from server members.)");
                 } else {
                     user.refString="";
                     sms(e.message.channel, "**"+user.name+",** your reference string has been removed!");
