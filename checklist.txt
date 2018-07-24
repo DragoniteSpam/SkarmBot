@@ -4,6 +4,8 @@
 4. Enable SSH on Pi (sudo raspi-config -> Interfacing options -> SSH)
 5. Enable WiFi on the Pi (sudo raspi-config -> Network options -> WiFi stuff)
 5. Install nodeJS on Pi.
-6. Transfer bot files from computer to Pi.
-7. cd /home/pi/bots/EyanBot -> chmod 755 launcher
-8. bash launcher
+6. Install Git on Pi. (sudo apt-get install git)
+7. Transfer bot files from computer to Pi. (git clone https://github.com/DragoniteSpam/SkarmBot.git)
+8. Move token.txt to Skarm's file via winscp
+9. cd /home/pi/bots/SkarmBot -> chmod 755 launcher
+10. bash launcher
