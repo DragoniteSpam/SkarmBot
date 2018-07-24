@@ -6,6 +6,7 @@
 5. Install nodeJS on Pi.
 6. Install Git on Pi. (sudo apt-get install git)
 7. Transfer bot files from computer to Pi. (git clone https://github.com/DragoniteSpam/SkarmBot.git)
-8. Move token.txt to Skarm's file via winscp
-9. cd /home/pi/bots/SkarmBot -> chmod 755 launcher
-10. bash launcher
+8. Set up git (git init, git config --global user.email "whatever", git config --global user.name "whatever")
+9. Move token.txt to Skarm's file via winscp
+10. cd /home/pi/bots/SkarmBot -> chmod 755 launcher
+11. bash launcher
