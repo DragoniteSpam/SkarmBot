@@ -1,3 +1,4 @@
+# the Linux/RasPi launcher
 cd /home/pi/bots/SkarmBot
 sudo chmod 666 generallines.txt
 sudo node bot.js > output.txt 2>&1 &
