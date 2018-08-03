@@ -536,7 +536,10 @@ function bigBrother(e, author, message){
 }
 
 function canViewChannel(user, channel){
-    return user.can(discordie.Permissions.General.READ_MESSAGES, channel);
+    if (user===null||channel===null){
+        return false;
+    }
+    return user.can(discordie.Permissions.Text.READ_MESSAGES, channel);
 }
 
 function hourlyPoints(author, message){
