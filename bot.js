@@ -441,7 +441,7 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 		return false;
 	}
 	// Don't do anything in Woe, Mod Chat or Mod Log
-	if (e.message.channel.id==WOE||e.message.channel.id==MODCHAT||e.message.channel.id==MODLOG){
+	if (e.message.channel.id==WOE||e.message.channel.id==MODLOG){
 		if (e.message.content.toLowerCase().startsWith("role ")){
 			utilityUpdateEarth(e);
 		}
@@ -461,7 +461,9 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
     hourlyPoints(author, message);
     
 	var msg = message.split(" ");
-	censor(e.message);
+	if(!e.message.channel.id==MODCHAT){
+		censor(e.message);
+	}
 	//utilitySaveLine(message);
 	// Help
 	if (!e.message.deleted){ 
@@ -484,7 +486,7 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 						else 
 							if(!e.message.content.startsWith("=")&& !e.message.content.includes("http")&& !e.message.content.startsWith("t!")&&!(e.message.content.startsWith("_ascii") && e.message.content.startsWith("_play "))){
                             	if (
-									(Math.random()*100<25 || e.message.content.indexOf("alpine")>-1) && canCreateInvites(e.message.author, e.message.channel)){
+									(Math.random()*100<25 || e.message.content.indexOf("alpine")>-1) && canCreateInvites(e.message.author, e.message.channel) && !e.message.channel.id==MODCHAT){
 										addGeneral(e.message);
 							}
                       	}
