@@ -1632,7 +1632,12 @@ function REACT(message, id){
 	if((message.content=="<:HelloThere:305560404715896832>" || message.content=="<:HelloThere:422567230392500234>")&& (Math.random()<.95 || message.author.username == "KingofZeal")){
 		return helloThere(message);
     }
-	if(message.content.toLowerCase() == "thanks skarm" && Math.random() < .2){
+	//Thanos did nothing wrong
+	if(message.content.toLowerCase() == "perfectly balanced"){
+		sms(e.message.channel,"As all things should be");
+	}
+	//gratitude
+	if(message.content.toLowerCase() == "thanks skarm" && Math.random() < .4){
 		sms(e.message.channel,"Anytime");
 	}
 	//today's date
@@ -2594,7 +2599,8 @@ function helpMods(e){
 	var prefix="~~The mods are beyond help~~";
 	var message="Anyway . . . if you have kicking boots, there are a few control panels you can access. "+
 		"(Or at least there's one important control panel at the moment, more may be added in the future.)\n"+
-		"e!censor\n\n";
+		"e!censor\n"+
+		"e!refresh\n";
 		
 	sms(e.message.channel, prefix+"```"+message+"```");
 }
