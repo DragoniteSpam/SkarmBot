@@ -470,25 +470,27 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 		notifiers(e, message);
 		massConditioning(e, message, msg);
 		//Everything else
+        statsMaster9000(e.message);
 		statsWillOfD(e.message);
 		STATS(e.message);
+        // Can't be one of your own lines
 		if (!utilityMessageWasWrittenByMe(e.message)){
+            // Can't respond if you did other miscellaneous things with this line
 			if (!REACT(e.message, e.message.author.id)){
-                if (e.message.channel!=OCEANPALACE){
+                console.log("Passed the reaction check");
+                // Can't be from bot chat or mod chat
+                if (e.message.channel!=OCEANPALACE && e.message.channel.id!=MODCHAT){
+                    console.log("Passed the channel check");
+                    // Can't mention any people, places, things or ideas
 					if (e.message.mentions.length==0&&e.message.mention_roles.length==0&&!e.message.mentions_everyone){
-                        if (messageAuthorEquals(e.message, "304073163669766158")){	
-							if (false){
-                            	if (Math.random()*100<25){
-                                	add(e.message);
-                            	}
-                       		}
-						} 
-						else 
-							if(!e.message.content.startsWith("=")&& !e.message.content.includes("http")&& !e.message.content.startsWith("t!")&&!(e.message.content.startsWith("_ascii") && e.message.content.startsWith("_play "))){
-                            	if (
-									(Math.random()*100<25 || e.message.content.indexOf("alpine")>-1) && canCreateInvites(e.message.author, e.message.channel) && !e.message.channel.id==MODCHAT){
-										addGeneral(e.message);
-							}
+                        console.log("Passed the mentions check");
+                        // Don't start with an Ayana command or a Tatsu command
+                        if(!e.message.content.startsWith("=")&& !e.message.content.includes("http")&& !e.message.content.startsWith("t!")){
+                            console.log("Passed the bot command/link check");
+                            // There's a 25% chance of recording the message
+                            if (Math.random()*100<25){
+                                addGeneral(e.message);
+                            }
                       	}
                     }
 				}
@@ -714,6 +716,10 @@ function massConditioning(e, message, msg){
 				annoyWill(e.message.channel);
 				totalBotCommands++;
 				botCanSendUserCommands=false;
+            } else if (message==="e!master"){
+                annoyMaster(e.message.channel);
+                totalBotCommands++;
+                botCanSendUserCommands=false;
 			}else if (message == "!pink"){
 				totalBotCommands++;
 				utilityPink(e);
@@ -1120,11 +1126,6 @@ function userHasKickingBoots(author, channel){
 	return author.can(discordie.Permissions.General.KICK_MEMBERS, channel);
 }
 
-//Checks to see if the user can create an instant invite
-function canCreateInvites(author, channel){
-	return author.can(discordie.Permissions.General.CREATE_INSTANT_INVITE, channel);
-}
-
 // Send a random line
 function sendRandomLine(message){
     fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
@@ -1365,6 +1366,24 @@ function annoyWill(channel){
 	}
 }
 
+// Another stats printout.
+function annoyMaster(channel){
+	var balance=stats.Master.balance;
+	var treason=stats.Master.treason;
+	var hello=stats.Master.hello;
+    var explo=stats.Master.explo;
+	var messages=stats.Master.messages;
+	if (messages==0){
+		sms(channel,"\\*\\*\\*Master has not recorded any messages yet. Somehow.\\*\\*\\*");
+	} else {
+		sms(channel,"```Percentage of Master9000's messages that contain \"balance:\" "+(100*balance/messages).toFixed(2)+"%\n"+
+			"Percentage of Master9000's messages that contain \"treason:\" "+(100*treason/messages).toFixed(2)+"%\n"+
+			"Percentage of Master9000's messages that contain \"hello:\" "+(100*hello/messages).toFixed(2)+"%\n"+
+            "Percentage of Master9000's messages that contain \"explo[A-Za-z0-9]*:\" \n\n"+
+			"Master9000's total messages: "+messages+"```");
+	}
+}
+
 // Various salts.
 function annoyDeci(channel){
 	 var responses=["2 Na + Cl(2) → 2 NaCl",
@@ -1382,6 +1401,30 @@ function annoyCandyman(channel){
  *       Stats      *
  ********************
  */
+
+// Because Master is a butthead
+function statsMaster9000(message){
+    if (messageAuthorEquals(message, MASTER)){
+        var text=message.content.toLowerCase();
+        if (text.includes("treason")){
+            stats.Master.treason++;
+        }
+        if (text.includes("balance")){
+            stats.Master.balance++;
+            if (Math.random()<0.45){
+                sms(message.channel, "ಠ_ಠ");
+            }
+        }
+        if (text.includes("hello there")){
+            stats.Master.hello++;
+        }
+        if (text.includes("explo")){
+            stats.Master.explo++;
+        }
+        stats.Master.messages++;
+        fs.writeFileSync('stats.ini', ini.stringify(stats));
+    }
+}
 
 // Because I swear she says this in every single message (sometimes both).
 function statsWillOfD(message){
@@ -2574,6 +2617,7 @@ function helpLol(e){
 	var message="Poking fun at people\n\n"+
 		myNick+" has a few commands for messing with people. Currently available are:\n\n"+
 		"e!will\n"+
+        "e!master\n"+
 		"\n"+
 		"Exactly how to get your own command is a secret.";
 	

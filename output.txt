@@ -1,112 +1,27 @@
 Connected as EyanSays (Skarm). Yippee!
 SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Demon_Lord was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Demon_Lord was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Demon_Lord was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Master9000 was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
+Passed the reaction check
+Passed the channel check
+Passed the mentions check
+Passed the bot command/link check
+Passed the reaction check
+Passed the channel check
+Passed the mentions check
+Passed the bot command/link check
+(node:28380) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): Error: Forbidden (Cannot send messages to this user)
+Passed the reaction check
+Passed the channel check
+Passed the mentions check
+Passed the bot command/link check
+Passed the reaction check
+Passed the channel check
+Passed the mentions check
+Passed the bot command/link check
+Passed the reaction check
+Passed the channel check
+Passed the mentions check
+Passed the bot command/link check
+Passed the reaction check
+Passed the channel check
+Passed the mentions check
+Passed the bot command/link check
