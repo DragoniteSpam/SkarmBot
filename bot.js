@@ -81,7 +81,6 @@ class User {
         this.refString="";
         this.blockRefString=false;
         this.talkTimer=BIG_BROTHER_TIMEOUT;
-        this.hasBeenNotifiedOfAutomatedMessage=false;
         this.pointEligible=true;
         this.points=0;
 	}
@@ -298,7 +297,7 @@ function getToken(){
 client.Dispatcher.on(events.GATEWAY_READY, e => {
 	console.log("Connected as " + client.User.username+" ("+myNick+"). Yippee!");
 	//sets the default game to e!help
-	var game={name: "e!help | never trust a bunny", type: 0};
+	var game={name: "never trust a bunny", type: 0};
     client.User.setGame(game);
 	twitchGetIsLive(null);
 	twitchGetLastStreamDate();
@@ -519,16 +518,13 @@ function bigBrother(e, author, message){
                     discordUser.openDM().then(function(dm){
                         var quote=e.message.content+" ("+e.message.author.username+")";
                         dm.sendMessage("Your ref string was mentioned!\n```"+quote+"``` in <#"+e.message.channel_id+">");
-                        if (!member.hasBeenNotifiedOfAutomatedMessage){
-                            dm.sendMessage("_This is an automated message, courtesy of SkarmBot's Reference String feature. You can turn "+
-                                "it off by typing `e!setref` without a parameter in any channel the bot is present in (preferably one reserved for such spam)._").then(function(message, err){
-                                    if (err){
-                                        throw err;
-                                    }
-                                    message.pin();
-                                });
-                            member.hasBeenNotifiedOfAutomatedMessage=true;
-                        }
+                        dm.sendMessage("_This is an automated message, courtesy of SkarmBot's Reference String feature. You can turn "+
+                            "it off by typing `e!setref` without a parameter in any channel the bot is present in (preferably one reserved for such spam)._").then(function(message, err){
+                                if (err){
+                                    throw err;
+                                }
+                                message.pin();
+                            });
                     });
                     member.talkTimer=BIG_BROTHER_TIMEOUT;   // this is so you dont get bombarded by messages if people say your name a lot (gummy)
                 } else {
@@ -635,6 +631,8 @@ function massConditioning(e, message, msg){
 			utilitySilver(e);
         } else if (message.startsWith("e!skarm")){
             utilitySkarm(e);
+        } else if (message.startsWith("e!suggest")){
+            utilitySuggestion(e);
 		// Quote
 		} else if (message.startsWith("e!says-add ")){
 			totalBotCommands++;
@@ -2202,6 +2200,45 @@ function catSend(channel){
  ********************
  */
 
+function utilitySuggestion(e){
+    if (e.message.content.startsWith("e!suggest-blacklist ")){
+        if (e.message.author.id===DRAGONITE){
+            for (var i=0; i<e.message.mentions.length; i++){
+                fs.appendFile("suggestion-blacklist.txt", e.message.mentions[i].id+"\r\n", (err)=>{
+                    if (err){
+                        throw err;
+                    }
+                });
+                sms(e.message.channel, "Blacklisted "+e.message.mentions.length+" users!");
+            }
+        } else {
+            sms(e.message.channel, "yeah about that");
+        }
+        return false;
+    }
+	var blacklisted;
+	fs.readFile("suggestion-blacklist.txt", function(err, data){
+		if(err){
+			throw err;
+		}
+		blacklisted=data.toString().split('\n');
+        for (var i=0; i<blacklisted.length; i++){
+            console.log(blacklisted[i]+" | "+e.message.author.id);
+            if (blacklisted[i].trim()===e.message.author.id){
+                sms(e.message.channel, e.message.author.username+", you have been blacklisted from submitting feature requests through Skarm. "+
+                    "This is probably because you previously submitted a large quantity of stupid, pointless, annoying messages and didn't realize "+
+                    "that someone actually had to read them all.\nIf you feel like this was done unfairly, contact the bot author.");
+                return false;
+            }
+        }
+        DRAGONITE_OBJECT.openDM().then(function(dm){
+            dm.sendMessage(e.message.author.username+" has a suggestion for you:\n```"+e.message.content.replace("e!suggest ", "")+"```");
+            sms(e.message.channel, "Submitted!");
+        });
+        return true;
+	});
+}
+
 // Sets the currently playing game
 function utilityGame(e){
 	if (userHasKickingBoots(e.message.author, e.message.channel)){
@@ -2247,9 +2284,6 @@ function utilityCreateUserTable(){
                     console.log(err);
                 }
                 obj=JSON.parse(data);
-                if (obj.hasBeenNotifiedOfAutomatedMessage===undefined){
-                    obj.hasBeenNotifiedOfAutomatedMessage=false;
-                }
                 userTable[obj.id]=obj;
             });
         });
@@ -2588,7 +2622,7 @@ function helpHelpHelp(e){
 }
 //Introduction to quotes
 function helpSays(e){
-	var message=myName+"\n\n"+
+	/*var message=myName+"\n\n"+
 		myNick + " is a deep learning AI that is well on its way to global conquest. " + 
 		"The original function of "+myNick+" (then \"EyanSays\") was to "+
 		"store all of the weird things that the King of Zeal says during "+
@@ -2599,8 +2633,8 @@ function helpSays(e){
 		"If the King of Zeal says something you think is worthy of being added to the archive, ask "+
 		"someone with kicking boots to do it for you."+
 		"If you're not sure if you have kicking boots or not, you can check with \"e!test\" (but you "+
-		"probably don't).";
-		
+		"probably don't).";*/
+	var message="Something something conversation bot. Say `"+myNick+"` to get started.";
 	sms(e.message.channel, "```"+message+"```");
 }
 //Introduction to Twitch
@@ -2614,18 +2648,18 @@ function helpTwitch(e){
 }
 // Introduction to Lol
 function helpLol(e){
-	var message="Poking fun at people\n\n"+
+	/*var message="Poking fun at people\n\n"+
 		myNick+" has a few commands for messing with people. Currently available are:\n\n"+
 		"e!will\n"+
         "e!master\n"+
 		"\n"+
-		"Exactly how to get your own command is a secret.";
-	
+		"Exactly how to get your own command is a secret.";*/
+	var message="I don't remember what the total list of joke commands is and I'm too lazy to look them all up";
 	sms(e.message.channel,"```"+message+"```");
 }
 // Introduction to Misc
 function helpMisc(e){
-	var message="Miscellaneous Stuff\n\n"+
+	/*var message="Miscellaneous Stuff\n\n"+
 		myNick+" can do a few other things, too.\n\n"+
 		"e!ping\n"+
 		"e!stats\n"+
@@ -2635,19 +2669,21 @@ function helpMisc(e){
 		"e!pinned (optionally also input a channel to check) \n"+
 		"e!game <game>\n"+
 		"e!treason\n"+
-		"e!back";
+		"e!back";*/
+    var message="I don't remember what the total list of misc commands is and I'm too lazy to look them all up";
 	sms(e.message.channel,"```"+message+"```");
 }
 // Moderation panels
 function helpMods(e){
 	var prefix="~~The mods are beyond help~~";
-	var message="Anyway . . . if you have kicking boots, there are a few control panels you can access. "+
+	/*var message="Anyway . . . if you have kicking boots, there are a few control panels you can access. "+
 		"(Or at least there's one important control panel at the moment, more may be added in the future.)\n"+
 		"e!censor\n"+
-		"e!refresh\n";
-		
+		"e!refresh\n";*/
+    var message="I don't remember what the total list of mod commands are and I'm too lazy to look them all up";
 	sms(e.message.channel, prefix+"```"+message+"```");
 }
+
 // Reactionary stuff
 function helpReactions(e){
 	var message=myNick+" can and sometimes will react to certain lines in the chat."+
@@ -2655,15 +2691,17 @@ function helpReactions(e){
 		"it'll be funnier when people discover them on their own.";
 	sms(e.message.channel,"```"+message+"```");
 }
+
 // Credits, obviously
 function helpCredits(e){
 	var message="Credits\n\n"+
 		"***"+myName+"***\n\n"+
 		"Creator: Dragonite#7992\n"+
-		"Version: 1.3.0\n"+
-		"Library: Discordie\n"+
+		"Version: I never remember to update this number but you can check the number of commits on github I guess?\n"+
+		"Library: Discordie (shut up)\n"+
         "Did stuff when I was too lazy to: <@162952008712716288>\n\n"+
-		"https://www.youtube.com/c/dragonitespam \n\n"+
+		"https://www.youtube.com/c/dragonitespam \n"+
+        "https://github.com/DragoniteSpam/SkarmBot \n"+
 		"Extra ideas came from SuperDragonite2172, willofd, Cadance and probably other people.\n\n"+
 		"Thanks to basically everyone on the Kingdom of Zeal server for testing this thing.";
 	sms(e.message.channel,"```"+message+"```");

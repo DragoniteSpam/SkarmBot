@@ -1187,3 +1187,4 @@ _think of trigonometry that isn't x = cos(t); y = -sin(t)_
 _melts into a puddle_
 _hangs gummy on a musket_
 _takes a shot_
+*noms candy*
