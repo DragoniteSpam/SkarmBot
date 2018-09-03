@@ -2136,11 +2136,7 @@ function censorCommandSet(message){
 		} else if (command[0]==="-all"){
 			//message.author.openDM().then(function(dm){
 			client.Users.get(message.author.id).openDM().then(function(dm){
-				var str="";
-				for (var i=0; i<banned.length; i++){
-					str=str+banned[i][0]+","+banned[i][1]+","+banned[i][2]+"\n";
-				}
-				dm.sendMessage("```Banned words in the server:\nWord,Instruction,Replacement\n"+str+"```");
+                dm.uploadFile("swears.csv", "swears.csv", "Banned words in the server");
 			});
 			sms(message.channel,"Sent you a thing (hopefully)!");
 		} else if (command[0]==="-all-help"){

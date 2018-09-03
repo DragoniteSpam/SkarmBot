@@ -3362,3 +3362,5 @@ Deleted: not like it hasn't been already by Demon_Lord
 Deleted: !clear 2 by Master9000
 Deleted: t!math log 50000 by Master9000
 Deleted: e!kenobi by Dragonite
+Deleted: t!math 58*60*58 by Master9000
+Deleted: t!math 265.25/12 by Master9000
