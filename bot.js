@@ -476,16 +476,12 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 		if (!utilityMessageWasWrittenByMe(e.message)){
             // Can't respond if you did other miscellaneous things with this line
 			if (!REACT(e.message, e.message.author.id)){
-                console.log("Passed the reaction check");
                 // Can't be from bot chat or mod chat
                 if (e.message.channel!=OCEANPALACE && e.message.channel.id!=MODCHAT){
-                    console.log("Passed the channel check");
                     // Can't mention any people, places, things or ideas
 					if (e.message.mentions.length==0&&e.message.mention_roles.length==0&&!e.message.mentions_everyone){
-                        console.log("Passed the mentions check");
                         // Don't start with an Ayana command or a Tatsu command
                         if(!e.message.content.startsWith("=")&& !e.message.content.includes("http")&& !e.message.content.startsWith("t!")){
-                            console.log("Passed the bot command/link check");
                             // There's a 25% chance of recording the message
                             if (Math.random()*100<25){
                                 addGeneral(e.message);
@@ -1675,11 +1671,11 @@ function REACT(message, id){
     }
 	//Thanos did nothing wrong
 	if(message.content.toLowerCase() == "perfectly balanced"){
-		sms(e.message.channel,"As all things should be");
+		sms(message.channel,"As all things should be");
 	}
 	//gratitude
 	if(message.content.toLowerCase() == "thanks skarm" && Math.random() < .4){
-		sms(e.message.channel,"Anytime");
+		sms(message.channel,"Anytime");
 	}
 	//today's date
 	if(message.content.includes("dating today") && Math.random() <.75){
