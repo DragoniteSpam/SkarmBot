@@ -2797,14 +2797,21 @@ function wolfram(e){
             sms(e.message.channel, "Something broke :(");
         } else {
             var display="";
-            for(var a=0; a<result.queryresult.pod.length; a++){
-                var pod = result.queryresult.pod[a];
-                display=display+pod.$.title+": \n";
-                for(var b=0; b<pod.subpod.length; b++){
-                    var subpod = pod.subpod[b];
-                    for(var c=0; c<subpod.plaintext.length; c++){
-                        var text = subpod.plaintext[c];
-                        display=display+'\t'+text+"\n";
+            if (result===undefined){
+                display="welp, that search didn't go as planned";
+            } else if (result.queryresult.pod===undefined){
+                display="(something broke)";
+            } else {
+                console.log("\n\n"+result+"\n\n");
+                for(var a=0; a<result.queryresult.pod.length; a++){
+                    var pod = result.queryresult.pod[a];
+                    display=display+pod.$.title+": \n";
+                    for(var b=0; b<pod.subpod.length; b++){
+                        var subpod = pod.subpod[b];
+                        for(var c=0; c<subpod.plaintext.length; c++){
+                            var text = subpod.plaintext[c];
+                            display=display+'\t'+text+"\n";
+                        }
                     }
                 }
             }
