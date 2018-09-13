@@ -4,6 +4,8 @@
 const discordie = require("discordie");
 const twitch = require('twitch-get-stream')('jm6wh6ctwjg97ljlffp8ds062uzkd7');
 const fs=require("fs"), ini=require("ini");
+const tempwolfy=require("node-wolfram");
+const wolfy=new tempwolfy(fs.readFileSync("wolfram.txt").toString());
 // create the discord client obj
 const client = new discordie({autoReconnect:true});
 const events = discordie.Events;
@@ -307,7 +309,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	
 	var channel=client.Channels.get("394225765077745665");
 			if (channel!=null){
-				sms(channel,"I'm alive again <@!" + MASTER + "> " + Date.now());
+				//sms(channel,"I'm alive again <@!" + MASTER + "> " + Date.now());
 			}
 	/*channel=client.Channels.get("305548986155008000");
 			if (channel!=null){
@@ -734,6 +736,9 @@ function massConditioning(e, message, msg){
 			} else if(message.startsWith("e!google")){
 				totalBotCommands++;
 				google(e);
+            } else if (message.startsWith("e!wolfram")){
+                totalBotCommands++;
+                wolfram(e);
 			} else if (message==="e!rainy"){
 				totalBotCommands++;
 				sms(e.message.channel, "cease!");
@@ -2695,7 +2700,8 @@ function helpCredits(e){
 		"https://www.youtube.com/c/dragonitespam \n"+
         "https://github.com/DragoniteSpam/SkarmBot \n"+
 		"Extra ideas came from SuperDragonite2172, willofd, Cadance and probably other people.\n\n"+
-		"Thanks to basically everyone on the Kingdom of Zeal server for testing this thing.";
+		"Thanks to basically everyone on the Kingdom of Zeal server for testing this thing.\n\n"+
+        "Wolfram-Alpha is awesome: https://www.npmjs.com/package/node-wolfram";
 	sms(e.message.channel,"```"+message+"```");
 }
 
@@ -2777,4 +2783,32 @@ function google(e){
 		ret+= f[a] + "+";
 	}
 	sms(e.message.channel,ret);	
+}
+
+function wolfram(e){
+	var f = e.message.content.replace("e!wolfram ", "").split(" ");
+	var query = "";
+	for(var a =0; a<f.length; a++){
+		query=query+f[a] + " ";
+	}
+    wolfy.query(query, function(err, result){
+        if (err){
+            console.log(err);
+            sms(e.message.channel, "Something broke :(");
+        } else {
+            var display="";
+            for(var a=0; a<result.queryresult.pod.length; a++){
+                var pod = result.queryresult.pod[a];
+                display=display+pod.$.title+": \n";
+                for(var b=0; b<pod.subpod.length; b++){
+                    var subpod = pod.subpod[b];
+                    for(var c=0; c<subpod.plaintext.length; c++){
+                        var text = subpod.plaintext[c];
+                        display=display+'\t'+text+"\n";
+                    }
+                }
+            }
+            sms(e.message.channel, "```"+display+"```");
+        }
+    });
 }
