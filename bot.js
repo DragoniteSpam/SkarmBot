@@ -1909,10 +1909,18 @@ function REACT(message, id){
 function getShantyBlock(song, start){
     var block="";
     for (currentLineSinging=start; currentLineSinging<song.linesPerMessage+start; currentLineSinging++){
-        if (currentLineSinging<song.lines.length){
-            block=block+song.lines[currentLineSinging]+"\n";
-        } else {
-            currentLineSinging=-1;
+        try {
+            if (currentLineSinging<song.lines.length){
+                block=block+song.lines[currentLineSinging]+"\n";
+            } else {
+                currentLineSinging=-1;
+                break;
+            }
+        } catch (error){
+            DRAGONITE_OBJECT.openDM().then(function(dm){
+                dm.sendMessage("Oh no, something went wrong in my shanty block again:");
+                dm.sendMessage("```"+error.toString()+"```");
+            });
         }
     }
     if (currentLineSinging==song.lines.length){

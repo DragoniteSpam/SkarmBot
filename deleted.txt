@@ -3401,3 +3401,57 @@ Deleted: Salt by Maverick
 Deleted: e!will by Maverick
 Deleted: spazzer dont be a butt by Master9000
 Deleted:  by MajesticEclipse02
+Deleted: nani? by Aqua
+Deleted: 3 by SuperGummying
+Deleted: ```java
+    
+    public void onMessageReceived(MessageReceivedEvent e) {
+        if(e.getAuthor().isBot()) return;
+        
+        Message message = e.getMessage();
+        String content = message.getContentRaw().toLowerCase();
+        MessageChannel channel = e.getChannel();
+        String[] words = content.split(" ");
+        try {
+            if(content.indexOf(Cons.prefix)== 0) {
+                commandReplies(message, content.substring(Cons.prefix.length()), channel, words, e);
+            }
+            inevitable(message, content, channel, words, e);
+            notifications(message, content, channel, words, e);
+        } catch (LoginException e1) {
+            log("Login exception something or other");        
+        }
+    }
+    
+    //place for all !commands
+    private void commandReplies(Message message, String content, MessageChannel channel, String[] words,
+            MessageReceivedEvent e) {
+        if(content.equals("shutdown")) {
+            shutdown(message, content, channel, words, e);
+        } else if(words[0].toLowerCase().equals("!notify")) {
+            notify(message, content, channel, words, e);
+        }
+        if(content.equals("ping")) {
+            Main.sms(channel, "pong " + e.getJDA().getPing());
+            return;
+        }
+        
+    }
+    /**
+     * the main feature of the bot:
+     * input strings to be PM'd about being mentioned in
+     * have bot poke you if string occurs while youre afk
+     * laugh at inferior string trigger from high ground of string[] 
+    */
+    private void notifications //etc.
+``` by Master9000
+Deleted: Home by Master9000
+Deleted:  by Dimasius
+Deleted: notification by Master9000
+Deleted: *drives Kugally to mcdees* by Maverick
+Deleted:  by Dan
+Deleted: <@!162952008712716288> 🖕 by Spazzer the Great
+Deleted: Play by Aqua
+Deleted: ??? by Master9000
+Deleted: SuperOreo by Master9000
+Deleted: <:GWomoDrakeYea:407618577969971210> My man by Kireina
