@@ -6,6 +6,40 @@ const twitch = require('twitch-get-stream')('jm6wh6ctwjg97ljlffp8ds062uzkd7');
 const fs=require("fs"), ini=require("ini");
 const tempwolfy=require("node-wolfram");
 const wolfy=new tempwolfy(fs.readFileSync("wolfram.txt").toString());
+const request=require("request");
+
+function wikipedia(){
+    var query="Chicken";
+    var base_url="https://en.wikipedia.org/w/api.php?";
+    var api="action=query&format=json&prop=extracts&explaintext=1&exintro=1&callback=?&titles="+query;
+    
+    //var api="action=opensearch&format=json&search="+query;
+    /*request(base_url+api, function(err, response, body){
+        if (err){
+            console.log("something went wrong");
+        } else {
+            if (body.includes("\"extract\":")){
+                var extract="";
+            }
+        }
+    });*/
+    /*jQuery.getJSON(base_url+api, function(data){
+        for (var i in data.query.pages) {
+            if (data.query.pages.hasOwnProperty(i)){
+                var page=data.query.pages[i];
+                if (page.extract===undefined){
+                    entryWikiExtract[replaceAll(page.title, " ", "").toLowerCase()]="[Wikipedia does not have an article on \""+page.title+".\" How unfortunate.]";
+                } else {
+                    entryWikiExtract[replaceAll(page.title, " ", "").toLowerCase()]=page.extract.replace(/\n/g, "\n\n");
+                }
+            }
+        }
+        fadeOutLoading();
+    });*/
+}
+
+//wikipedia();
+
 // create the discord client obj
 const client = new discordie({autoReconnect:true});
 const events = discordie.Events;
