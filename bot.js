@@ -333,8 +333,8 @@ function getToken(){
 client.Dispatcher.on(events.GATEWAY_READY, e => {
 	console.log("Connected as " + client.User.username+" ("+myNick+"). Yippee!");
 	//sets the default game to e!help
-	var game={name: "never trust a bunny", type: 0};
-    client.User.setGame(game);
+	/*var game={name: "never trust a bunny", type: 0};
+    client.User.setGame(game);*/
 	twitchGetIsLive(null);
 	twitchGetLastStreamDate();
 	censorLoadList();
@@ -350,6 +350,13 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 				sms(channel, "we back");
 			}*/
     processShanties();
+    
+	fs.readFile("bot.js", function(err, data){
+		if(err){
+			throw err;
+		}
+        client.User.setGame({name: data.toString().split('\n').length+" lines of spaghetti", type: 0});
+	});
 });
 //what the bot does whenever a message is deleted
 client.Dispatcher.on(events.MESSAGE_DELETE, e=> {
@@ -2403,7 +2410,6 @@ function utilityActCount(e){
 		lines = data.toString().split('\n');
 		sms(e.message.channel,lines.length+" lines in "+myNick+"'s General quote log.");
 	})
-	
 }
 // Prints out the high score table for the censor
 function utilityStats(e){
