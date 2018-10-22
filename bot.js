@@ -784,7 +784,7 @@ function massConditioning(e, message, msg){
             } else if (message.startsWith("e!wolfram")){
                 totalBotCommands++;
                 wolfram(e);
-            } else if (message.startsWith("e!so")){
+            } else if (message.startsWith("e!so ")){
                 totalBotCommands++;
                 stackOverflow(e);
 			} else if (message==="e!rainy"){
@@ -2854,7 +2854,7 @@ function stackOverflow(e){
         sms(e.message.channel, "do it yourself");
         return false;
     }
-	var f = e.message.content.substring(8).split(" ");
+	var f = e.message.content.replace("e!so ", "").split(" ");
 	var query = "https://stackoverflow.com/search?q=";
 	for(var a =0; a<f.length; a++){
 		query+= f[a] + "+";
