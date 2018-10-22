@@ -3487,3 +3487,68 @@ Deleted: https://cdn.discordapp.com/attachments/187088774683951104/4975401726073
 Deleted:  by SuperGummying
 Deleted: Yes by SquidofSpookinator
 Deleted: hmmm by Master9000
+Deleted: Eggnog is so good by Aqua
+Deleted: https://discord.gg/nzzCXMY by FatBat
+Deleted: Cun—nevermind by ChaosGhoul
+Deleted: t!math 5/12 by Master9000
+Deleted: e!google songdubs argothenaut by Master9000
+Deleted: https://www.change.org/p/make-it-legal-to-shoot-kids-in-fortnite-costumes-on-halloween?recruiter=899304540&utm_source=share_petition&utm_medium=copylink&utm_campaign=psf_combo_share_abi.pacific_abi_gmail_send.variation.pacific_abi_select_all_contacts.select_all.pacific_email_copy_en_gb_4.v1.pacific_email_copy_en_us_5.v1.pacific_email_copy_en_us_3.control.lightning_share_by_medium_message.control.lightning_2primary_share_options_more.control by </3
+Deleted:  by SuperDragonite2172
+Deleted: Guys. by Virus_Razor
+Deleted: https://cdn.discordapp.com/attachments/497997575908098048/500785265447534592/Illegal_gay_Muslim_Aladdin.mp4 by can i die?
+Deleted:  by SuperDragonite2172
+Deleted: !thonk     . by Master9000
+Deleted: plant studying is not going well by superheronerd
+Deleted: =m l by Master9000
+Deleted: @everyone 
+
+Discord has changed their Terms of Service!
+
+Unfortunately, this change comes with a revocation of your legal rights. Discord has revoked your right to sue (you must go through an arbitrator) and to congregate as a class action lawsuit.
+
+Luckily, there is an opt-out for the clause, in which you must email arbitration-opt-out@discord.com, but you must do it within 30 days or you can no longer opt-out.
+
+YOU CANNOT DELETE OR DEACTIVATE YOUR ACCOUNT TO OPT-OUT OF THE ARBITRATION CLAUSE
+
+You can see the added clauses for yourself here: https://gist.github.com/Rapptz/c93697c9d59ec2f0d8071b7d0e907632
+
+I will attempt to answer some common questions.
+
+Is this enforceable?
+
+In the United States, yes. This was decided by the Supreme Court in 2011.
+
+In Europe, no. There are many clauses, a relevant one is Article 77 of the GDPR ("Right to lodge a complaint with a supervisory authority").
+
+Why does this matter?
+
+Without the ability to congregate for a class action lawsuit, if Discord ever leaks your data or does something catastrophically bad to a large portion of the population you have no way to representatively sue together without each of you individually suing via the arbitrator. 
+
+
+
+Essentially: 
+
+1. Your right to file a complaint in the court of law is removed. 
+2. The arbitration system tends to heavily favour the company rather than the consumer.
+3. Since your right to pool similar complaints together is taken away, the amount of damage you can do to a company that has wronged you significantly is limited to those who are willing to arbitrate.
+
+
+What you need to do to opt-out
+Email arbitration-opt-out@discord.com from the email associated with your account, with the following (no special formatting required): 
+Subject: Opt-out from the arbitration clause
+Content: I'd like to opt-out from your arbitration clause. user#0000 by Zek
+Deleted: Without the ability to congregate for a class action lawsuit, if Discord ever leaks your data or does something catastrophically bad to a large portion of the population you have no way to representatively sue together without each of you individually suing via the arbitrator. 
+
+Essentially: 
+
+1. Your right to file a complaint in the court of law is removed. 
+2. The arbitration system tends to heavily favour the company rather than the consumer.
+3. Since your right to pool similar complaints together is taken away, the amount of damage you can do to a company that has wronged you significantly is limited to those who are willing to arbitrate.
+
+
+What you need to do to opt-out
+Email arbitration-opt-out@discord.com from the email associated with your account, with the following (no special formatting required): 
+Subject: Opt-out from the arbitration clause
+Content: I'd like to opt-out from your arbitration clause. user#0000 by Zek
+Deleted:  by Master9000
+Deleted:  by Master9000

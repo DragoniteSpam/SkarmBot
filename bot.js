@@ -104,6 +104,7 @@ class User {
 		this.elvia=0;
 		
 		this.lines=0;
+        this.characters=0;
 		this.secretWord=0;
 		this.secretWordAdd=0;
 		
@@ -647,6 +648,9 @@ function massConditioning(e, message, msg){
 		} else if (message=="e!stats"){
 			totalBotCommands++;
 			utilityStats(e);
+        } else if (message.startsWith("e!user")){
+            totalBotCommands++;
+            utilityUserStats(e);
 		} else if (message=="e!ping"){
 			totalBotCommands++;
 			utilityPing(e);
@@ -780,6 +784,9 @@ function massConditioning(e, message, msg){
             } else if (message.startsWith("e!wolfram")){
                 totalBotCommands++;
                 wolfram(e);
+            } else if (message.startsWith("e!so")){
+                totalBotCommands++;
+                stackOverflow(e);
 			} else if (message==="e!rainy"){
 				totalBotCommands++;
 				sms(e.message.channel, "cease!");
@@ -1499,6 +1506,7 @@ function STATS(message){
 		userTable[usernameString]=user;
 	}
 	user.lines++;
+    user.characters=user.characters+message.content.length;
 	
 	if (string.includes("slap")&&utilityIsAction(string)){
 		user.slaps++;
@@ -2330,6 +2338,9 @@ function utilityCreateUserTable(){
                     console.log(err);
                 }
                 obj=JSON.parse(data);
+                if (typeof obj.characters==="undefined"){
+                    obj.characters=0;
+                }
                 userTable[obj.id]=obj;
             });
         });
@@ -2459,6 +2470,11 @@ function utilityStats(e){
 	statsString+=highscoreList[1].name+" was "+utilityComparisonString(highscoreList[0].lines, highscoreList[1].lines)+", with "+highscoreList[1].lines+" of the things.";
 	//statsString+="\n\n*Note that this only counts stats collected while Dragonite's computer was turnd on.";
 	sms(e.message.channel,"```"+statsString+"```");
+}
+
+function utilityUserStats(e){
+    /*characters counted is after 12:50 AM 22 October 2018 UTC*/
+    sms(e.message.channel, "_Dragonite was too lazy to properly implement this. If you want to use it, you should probably go bother him about fixing it._");
 }
 	
 function utilityComparisonString(a, b){
@@ -2831,6 +2847,19 @@ function google(e){
 		ret+= f[a] + "+";
 	}
 	sms(e.message.channel,ret);	
+}
+
+function stackOverflow(e){
+    if (e.message.author==MASTER){
+        sms(e.message.channel, "do it yourself");
+        return false;
+    }
+	var f = e.message.content.substring(8).split(" ");
+	var query = "https://stackoverflow.com/search?q=";
+	for(var a =0; a<f.length; a++){
+		query+= f[a] + "+";
+	}
+	sms(e.message.channel, query);	
 }
 
 function wolfram(e){
