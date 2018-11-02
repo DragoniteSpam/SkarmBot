@@ -483,6 +483,10 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	if (e.message.isPrivate){
 		return false;
 	}
+    // ignore @everyone 
+    if (e.message.content.toLowerCase().includes("@everyone")){
+            return false;
+    }
 	// Don't do anything in Woe, Mod Chat or Mod Log
 	if (e.message.channel.id==WOE||e.message.channel.id==MODLOG){
 		if (e.message.content.toLowerCase().startsWith("role ")){
