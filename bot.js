@@ -483,8 +483,8 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	if (e.message.isPrivate){
 		return false;
 	}
-    // ignore @everyone 
-    if (e.message.content.toLowerCase().includes("@everyone")){
+    // ignore messages that mention anyone or anything
+    if (e.message.content.toLowerCase().includes("@")){
             return false;
     }
 	// Don't do anything in Woe, Mod Chat or Mod Log
