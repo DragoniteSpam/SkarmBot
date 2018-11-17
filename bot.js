@@ -108,7 +108,7 @@ class User {
 		this.secretWord=0;
 		this.secretWordAdd=0;
 		
-		this.todayActions=0;
+		this.todayMessages=0;
 		this.todayViolence=0;
 		this.todayWarnings=0;
 		this.totalWarnings=0;
@@ -162,13 +162,26 @@ var banned=[
 ]
 
 var violentVerbs=[
-	"kicks",
-	"slaps",
-	"hits",
-	"smacks",
-	"destroys",
-	"kills",
-	"punches",
+	["kicks", 1],
+	["slaps", 1],
+	["hits", 1],
+	["smacks", 1],
+	["destroys", 1],
+	["kills", 1],
+	["punches", 1],
+    ["anthrax", 2],
+    ["marijuana", 1],
+    ["heroin", 2],
+    ["opium", 2],
+    ["ketamine", 2],
+    ["cocaine", 2],
+    ["methamphetamine", 2],
+    ["lsd", 2],
+    ["republican", 1],
+    ["democrat", 1],
+    ["communis", 2],
+    ["nazi", 3],
+    ["fascis", 3]
 ]
 
 var hotDateResponses=[
@@ -270,7 +283,7 @@ var timer5min = setInterval(function(){
 	if (now.getHours()==4&&now.getMinutes()<10){
 		for (var string in userTable){
 			var user=userTable[string];
-			user.todayActions=0;
+			user.todayMessages=0;
 			user.todayViolence=0;
 			user.todayWarnings=0;
 			if (now.getDay()==0){
@@ -632,9 +645,6 @@ function massConditioning(e, message, msg){
 		// Utilities
 		} else if (message=="e!size"){
 			utiliyLineCount(e);
-			totalBotCommands++;
-		} else if (message.startsWith("e!kill")){
-			utilityKill(e);
 			totalBotCommands++;
 		} else if (message=="e!sgen"){
 			utilityGenCount(e);
@@ -1510,6 +1520,7 @@ function STATS(message){
 		userTable[usernameString]=user;
 	}
 	user.lines++;
+    user.todayMessages++;
     user.characters=user.characters+message.content.length;
 	
 	if (string.includes("slap")&&utilityIsAction(string)){
@@ -1533,31 +1544,27 @@ function STATS(message){
 	if (string.toLowerCase().includes("elvia")){
 		user.elvia++;
 	}
-	
-	if (utilityIsAction(string)){
-		user.todayActions++;
-		for (var i=0; i<violentVerbs.length; i++){
-			if (string.includes(violentVerbs[i])){
-				user.todayViolence++;
-				if (!user.todayWasWarned&&user.todayWarnings<2){
-					// can send a warning?
-					if (user.todayActions>10&&user.todayViolence/user.todayActions>0.06){
-						user.todayWasWarned=true;
-						user.todayWarnings++;
-						user.totalWarnings++;
-						// alert
-						DRAGONITE_OBJECT.openDM().then(function(dm){
-							dm.sendMessage(message.author.username+" is being a wee bit violent. Have a word with them, maybe?");
-							dm.sendMessage("Message: ```"+string+"```");
-						});
-						// Alert 
-						sms(client.Channels.get("344295609194250250"), message.author.username+" is being a wee bit violent. Have a word with them, maybe?\n"+
-							"\tOffending message: ```"+string+"```");
-					}
-				}
-			}
-		}
-	}
+    // violence, etc. checker
+    for (var i=0; i<violentVerbs.length; i++){
+        if (string.includes(violentVerbs[i][0])){
+            user.todayViolence=user.todayViolence+violentVerbs[i][1];
+            if (!user.todayWasWarned&&user.todayWarnings<5){
+                // can send a warning?
+                if (user.todayMessages>5&&user.todayViolence/user.todayMessages>0.06){
+                    user.todayWasWarned=true;
+                    user.todayWarnings++;
+                    // alert
+                    DRAGONITE_OBJECT.openDM().then(function(dm){
+                        dm.sendMessage(message.author.username+" is being a wee bit questionable in <#"+message.channel_id+">. Have a word with them, maybe?");
+                        dm.sendMessage("Message: ```"+string+"```");
+                    });
+                    // Alert 
+                    sms(client.Channels.get("344295609194250250"), message.author.username+" is being a wee bit questionable in <#"+message.channel_id+">. Have a word with them, maybe?\n"+
+                        "\tOffending message: ```"+string+"```");
+                }
+            }
+        }
+    }
 	if (botCanSendUserCommands){
 		if (string.includes("is back")||string.includes("has returned")||string.includes("m back")){
 			statsGeneral.everything.back++;
@@ -2345,6 +2352,9 @@ function utilityCreateUserTable(){
                 if (typeof obj.characters==="undefined"){
                     obj.characters=0;
                 }
+                if (typeof obj.todayMessages==="undefined"){
+                    obj.todayMessages=0;
+                }
                 userTable[obj.id]=obj;
             });
         });
@@ -2533,14 +2543,6 @@ function utilityIsAction(string){
 function utilityPingTimeElapsed(message, now){
 	var n=Date.now()-now;
 	message.edit(message.content+": `"+n+" ms`");
-}
-//kill
-function utilityKill(e){
-    if (Math.random()*100<10){
-        sms(e.message.channel, "_"+ violentVerbs[Math.floor(Math.random() * violentVerbs.length)]+" e.message.author.username_");
-    } else {
-        sms(e.message.channel, "_"+ violentVerbs[Math.floor(Math.random() * violentVerbs.length)]+" "+e.message.author.username+"_");
-    }
 }
 // Mentions the bot?
 function utilityMentionsMe(message){
