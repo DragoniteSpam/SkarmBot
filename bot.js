@@ -514,6 +514,13 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	var author = e.message.author;
     var message=e.message.content.toLowerCase();
     
+    // hard-coding gummy stuff
+    if (author.id==="199725993416589313"){
+        if (message.includes(" ex")){
+            e.message.delete();
+        }
+    }
+    
     // colloquially known as ref strings
     bigBrother(e, author, message);
     

@@ -1,9 +1,8 @@
 Connected as EyanSays (Skarm). Yippee!
-caught hey skarm nazi in Skarm the server
-caught  in Skarm the server
+message from valid user
+message from valid user
+message triggered filter
+message from valid user
+message from valid user
 SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-Dragonite was mentioned, but in a channel they can't view
-FLUBS was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
-SuperGummying was mentioned, but in a channel they can't view
+^C
