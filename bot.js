@@ -519,6 +519,9 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
         if (message.includes(" ex")){
             e.message.delete();
         }
+        if (message.includes("gf")){
+            e.message.delete();
+        }
     }
     
     // colloquially known as ref strings
@@ -578,21 +581,25 @@ function bigBrother(e, author, message){
         if (member.refString.length>0){
             if (message.includes(member.refString)){
                 var discordUser=client.Users.get(member.id);
-                if (member.talkTimer<=0&&canViewChannel(discordUser, e.message.channel)){
-                    discordUser.openDM().then(function(dm){
-                        var quote=e.message.content+" ("+e.message.author.username+")";
-                        dm.sendMessage("Your ref string was mentioned!\n```"+quote+"``` in <#"+e.message.channel_id+">");
-                        /*dm.sendMessage("_This is an automated message, courtesy of SkarmBot's Reference String feature. You can turn "+
-                                                                "it off by typing `e!setref` without a parameter in any channel the bot is present in (preferably one reserved for such spam)._").then(function(message, err){
-                                                                    if (err){
-                                                                        throw err;
-                                                                    }
-                                                                    message.pin();
-                                                                });*/
-                    });
-                    member.talkTimer=BIG_BROTHER_TIMEOUT;   // this is so you dont get bombarded by messages if people say your name a lot (gummy)
-                } else {
-                    console.log(member.name+" was mentioned, but in a channel they can't view");
+                try {
+                    if (member.talkTimer<=0&&canViewChannel(discordUser, e.message.channel)){
+                        discordUser.openDM().then(function(dm){
+                            var quote=e.message.content+" ("+e.message.author.username+")";
+                            dm.sendMessage("Your ref string was mentioned!\n```"+quote+"``` in <#"+e.message.channel_id+">");
+                            /*dm.sendMessage("_This is an automated message, courtesy of SkarmBot's Reference String feature. You can turn "+
+                                                                    "it off by typing `e!setref` without a parameter in any channel the bot is present in (preferably one reserved for such spam)._").then(function(message, err){
+                                                                        if (err){
+                                                                            throw err;
+                                                                        }
+                                                                        message.pin();
+                                                                    });*/
+                        });
+                        member.talkTimer=BIG_BROTHER_TIMEOUT;   // this is so you dont get bombarded by messages if people say your name a lot (gummy)
+                    } else {
+                        console.log(member.name+" was mentioned, but in a channel they can't view");
+                    }
+                } catch (e){
+                    console.log(user+" can't view the channel they were mentioned in for whatever reason");
                 }
             }
         }

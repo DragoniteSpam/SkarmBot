@@ -1,8 +1,102 @@
 Connected as EyanSays (Skarm). Yippee!
-message from valid user
-message from valid user
-message triggered filter
-message from valid user
-message from valid user
+Connected as EyanSays (Skarm). Yippee!
+FLUBS was mentioned, but in a channel they can't view
+KugallyBlitz was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+Master9000 was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+Demon_Lord was mentioned, but in a channel they can't view
+(node:12044) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): Error: connect ETIMEDOUT 104.16.59.5:443
+(node:12044) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): Error: connect ETIMEDOUT 104.16.59.5:443
+Connected as EyanSays (Skarm). Yippee!
+(node:12044) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 3): Error: connect ETIMEDOUT 104.16.59.5:443
+Dragonite was mentioned, but in a channel they can't view
+Rainy was mentioned, but in a channel they can't view
+Connected as EyanSays (Skarm). Yippee!
+KugallyBlitz was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+Neon Strike Kitty was mentioned, but in a channel they can't view
+Neon Strike Kitty was mentioned, but in a channel they can't view
 SuperGummying was mentioned, but in a channel they can't view
-^C
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+Neon Strike Kitty was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+Neon Strike Kitty was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+Neon Strike Kitty was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+Neon Strike Kitty was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+(node:12044) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 4): Error: read ECONNRESET
+FLUBS was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+KugallyBlitz was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+Master9000 was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+Master9000 was mentioned, but in a channel they can't view
+(node:12044) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 5): Error: Not Found (Unknown Message)
+Master9000 was mentioned, but in a channel they can't view
+Master9000 was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+C:\bots\SkarmBot\node_modules\discordie\lib\interfaces\IPermissions.js:146
+    if (!member) throw new Error("User is not a member of the context");
+                 ^
+
+Error: User is not a member of the context
+    at Function.resolveRaw (C:\bots\SkarmBot\node_modules\discordie\lib\interfaces\IPermissions.js:146:24)
+    at IUser.can (C:\bots\SkarmBot\node_modules\discordie\lib\interfaces\IUser.js:231:26)
+    at canViewChannel (C:\bots\SkarmBot\bot.js:609:17)
+    at bigBrother (C:\bots\SkarmBot\bot.js:584:42)
+    at DiscordieDispatcher.client.Dispatcher.on.e (C:\bots\SkarmBot\bot.js:528:5)
+    at emitOne (events.js:96:13)
+    at DiscordieDispatcher.emit (events.js:188:7)
+    at DiscordieDispatcher.emit (C:\bots\SkarmBot\node_modules\discordie\lib\core\DiscordieDispatcher.js:37:16)
+    at Discordie.handler (C:\bots\SkarmBot\node_modules\discordie\lib\networking\messages\gateway\message_create.js:12:19)
+    at Discordie.processMessage (C:\bots\SkarmBot\node_modules\discordie\lib\core\MessageHandlerCache.js:11:55)
