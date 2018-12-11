@@ -80,7 +80,6 @@ function processFiltered(){
         for (var questName in actual){
             var quest=actual[questName];
             if (quest.length>0){
-                //output=output+questName;
                 for (var i=0; i<quest.length; i++){
                     output[fc]=output[fc]+quest[i]+"\r\n";
                     if (lineLimit>0){
@@ -95,11 +94,7 @@ function processFiltered(){
         }
         
         for (var i=0; i<output.length; i++){
-            var ps="";
-            if (output[i].length>1){
-                ps=i+"";
-            }
-            fs.writeFile("./output"+ps+".skyrim", output[i], function(err) {
+            fs.writeFile("./output"+i+".skyrim", output[i], function(err) {
                 if(err) {
                     console.log("Something blew up. Oh noes!");
                     throw err;

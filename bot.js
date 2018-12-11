@@ -83,6 +83,12 @@ const PINKER = "407725604910399489";
 const MAX_LOGGED_LINES=8000;
 const BIG_BROTHER_TIMEOUT=10;
 
+// talk odds
+
+var esOddsSkyrim=25;
+var esOddsRandomLine=30;
+var esOddsRandomPun=4;
+
 // Classes
 
 class User {
@@ -1211,6 +1217,19 @@ function sendRandomLine(message){
 	sendRandomFileLine("line.txt", message.channel);
 }
 
+function sendRandomLineSkyrim(message){
+    fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
+        if (err){
+            throw err;
+        }
+    });
+    var file;
+    do {
+        file="./skyrim/output"+Math.floor(Math.random()*50)+".skyrim";
+    } while (!fs.existsSync(file));
+	sendRandomFileLine(file, message.channel);
+}
+
 function sendRandomLinePun(message){
     fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
         if (err){
@@ -1311,7 +1330,7 @@ function sendRandomFileLine(filename, channel){
                     throw err;
                 }
             });
-			sms(channel,line);
+			sms(channel, line.toLowerCase());
             // Pruning
             if (lines.length>MAX_LOGGED_LINES){
                 var freshArray=[];
@@ -1635,7 +1654,11 @@ function utilitySilver(e){
 }
 
 function utilitySkarm(e){
-    sms(e.message.channel, "_hides behind "+e.message.author.username+"_");
+    sms(e.message.channel, "odds of skyrim: "+esOddsSkyrim+"%\n"+
+        "odds of puns: "+esOddsRandomPun+"%\n"+
+        "odds of something else: "+esOddsRandomLine+"%\n"+
+        "odds of something relatively normal: whatever's left*\n\n"+
+        "* these odds are actually wrong");
 	return false;
 }
 
@@ -1956,18 +1979,20 @@ function REACT(message, id){
                     currentLineSinging=-1;
                 }, 15000*60);
             } else {
-                if (Math.random()*100<5||message.channel.id=="411716622101774337"){
+                if (Math.random()*100<2.5||message.channel.id=="411716622101774337"){
                     currentlySinging=shanties[Math.floor(Math.random()*shanties.length)];
                     sms(message.channel, getShantyBlock(currentlySinging, 0));
                     setTimeout(function(){
                         currentLineSinging=-1;
-                    }, 15000*60);
+                    }, 5000*60);
                 } else if (utilityIsAction(message.content)){
                     sendRandomLineGeneralAction(message);
                 } else {
-                    if (Math.random()*100<30){
+                    if (Math.random()*100<esOddsSkyrim&&isWeekend()){
+                        sendRandomLineSkyrim(message);
+                    } else if (Math.random()*100<esOddsRandomLine){
                         sendRandomLine(message);
-                    } else if (Math.random()*100<4){
+                    } else if (Math.random()*100<esOddsRandomPun){
                         sendRandomLinePun(message);
                     } else {
                         sendRandomLineGeneral(message);
@@ -2915,4 +2940,9 @@ function wolfram(e){
             sms(e.message.channel, "```"+display+"```");
         }
     });
+}
+
+function isWeekend(){
+    var day=Date.now().getDay();
+    return (day==6)||(day==0);
 }
