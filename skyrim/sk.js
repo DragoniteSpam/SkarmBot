@@ -1,26 +1,39 @@
 const fs=require("fs");
 
+const DATA={
+    // output style
+    filtered: 0,
+    sorted: 1,
+};
+
+var style=DATA.filtered;
+var lineLimit=0;
+
 // process.argv[0] => nodejs install path
 // process.argv[1] => this file
-// process.argv[2] => [output style (/filtered, /sorted)]
-switch (process.argv.length){
-    case 3:
-        switch (process.argv[2]){
-            case "/filtered":
-                processFiltered();
-                break;
-            case "/sorted":
-                processSorted();
-                break;
-            default:
-                console.log("don't know what that means. usage:");
-                console.log("\tnode sk.js [/filtered, /sorted]");
-                break;
+// arguments: /filtered, /sorted,/lines={n}
+for (var i=2; i<process.argv.length; i++){
+    var arg=process.argv[i];
+    
+    if (arg==="/filtered"){
+        style=DATA.filtered;
+    } else if (arg==="/sorted"){
+        style=DATA.sorted;
+    } else if (arg.startsWith("/lines=")){
+        try {
+            lineLimit=parseInt(arg.replace("/lines=", ""));
+        } catch (error){
+            console.log("error in /lines={n}, somehow");
         }
-        break;
-    case 2:
-        processFiltered();
-        break;
+    } else {
+        console.log("don't know what this argument means: "+arg);
+    }
+}
+
+if (style==DATA.filtered){
+    processFiltered();
+} else {
+    processSorted();
 }
 
 function processFiltered(){
@@ -60,25 +73,39 @@ function processFiltered(){
             }
         }
         
-        var output="";
+        var n=0;
+        var fc=0;
+            
+        var output=[""];
         for (var questName in actual){
             var quest=actual[questName];
             if (quest.length>0){
                 //output=output+questName;
                 for (var i=0; i<quest.length; i++){
-                    output=output+quest[i]+"\r\n";
+                    output[fc]=output[fc]+quest[i]+"\r\n";
+                    if (lineLimit>0){
+                        if (++n>=lineLimit){
+                            n=0;
+                            output.push("");
+                            fc++;
+                        }
+                    }
                 }
-                
-                //output=output+"\r\n\r\n";
             }
         }
         
-        fs.writeFile("./output.skyrim", output, function(err) {
-            if(err) {
-                console.log("Something blew up. Oh noes!");
-                throw err;
+        for (var i=0; i<output.length; i++){
+            var ps="";
+            if (output[i].length>1){
+                ps=i+"";
             }
-        });
+            fs.writeFile("./output"+ps+".skyrim", output[i], function(err) {
+                if(err) {
+                    console.log("Something blew up. Oh noes!");
+                    throw err;
+                }
+            });
+        }
     });
 }
 
@@ -119,6 +146,8 @@ function processSorted(){
             }
             return lta.length-ltb.length;
         });
+        
+        // dont feel like splitting up the sorted lists into multiple files so ehhhh
         
         var output="";
         var debugoutput="";
