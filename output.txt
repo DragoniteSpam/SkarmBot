@@ -1,2 +1,11 @@
 Connected as EyanSays (Skarm). Yippee!
-^C
+C:\bots\SkarmBot\bot.js:2948
+    var day=Date.now().getDay();
+                       ^
+
+TypeError: Date.now(...).getDay is not a function
+    at isWeekend (C:\bots\SkarmBot\bot.js:2948:24)
+    at Timeout._onTimeout (C:\bots\SkarmBot\bot.js:1993:57)
+    at ontimeout (timers.js:386:11)
+    at tryOnTimeout (timers.js:250:5)
+    at Timer.listOnTimeout (timers.js:214:5)

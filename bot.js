@@ -2945,6 +2945,6 @@ function wolfram(e){
 }
 
 function isWeekend(){
-    var day=Date.now().getDay();
+    var day=new Data(Date.now()).getDay();
     return (day==6)||(day==0);
 }
