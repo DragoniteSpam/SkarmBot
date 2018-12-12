@@ -1765,7 +1765,9 @@ function REACT(message, id){
 	/*
 	 * Specific reactions
 	 */
-	 
+	 if(message.author.id=="214587785510780929" && Math.random()>.95){
+		sms(message.channel, "Bella go learn to drive");	 
+	 }
 	 
 	//Hello There 
 	if((message.content=="<:HelloThere:305560404715896832>" || message.content=="<:HelloThere:422567230392500234>")&& (Math.random()<.95 || message.author.username == "KingofZeal")){
