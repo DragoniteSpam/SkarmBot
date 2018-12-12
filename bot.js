@@ -1765,7 +1765,7 @@ function REACT(message, id){
 	/*
 	 * Specific reactions
 	 */
-	 if(message.author.id=="214587785510780929" && Math.random()>.95){
+	 if(message.author.id=="214587785510780929" && Math.random()*100<2){
 		sms(message.channel, "Bella go learn to drive");	 
 	 }
 	 
