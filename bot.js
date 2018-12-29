@@ -88,6 +88,7 @@ const BIG_BROTHER_TIMEOUT=10;
 var esOddsSkyrim=25;
 var esOddsRandomLine=30;
 var esOddsRandomPun=4;
+var esOddsQuestion=20;
 
 // Classes
 
@@ -825,9 +826,49 @@ function massConditioning(e, message, msg){
 				totalBotCommands++;
 				sms(e.message.channel, "cease!");
 		}
+        if (lineIsQuestion(message)&&Math.random()*100<esOddsQuestion){
+            sendRandomLineGeneral(e.message);
+        }/*
+        this doesnt work
+        else if (lineIsHmm(message)){
+            sms(e.message.channel, ":thinking:");
+        }*/
 	}
 }
 
+function /*boolean*/ lineIsQuestion(line){
+    var questionwords=[
+        "who",
+        "what",
+        "when",
+        "where",
+        "why",
+        "how",
+    ];
+    /*
+    most questions in the zelian dialect of english don't end in question marks
+    if (!line.endsWith("?")){
+        return false;
+    }
+    */
+    
+    line=line.toLowerCase();
+    
+    for (var i=0; i<questionwords.length; i++){
+        if (line.startsWith(questionwords[i])){
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+function /*boolean*/ lineIsHmm(line){
+    line=line.toLowerCase();
+    var hmm=/[H][m]+/g;
+    var match=line.match(hmm);
+    return match!=null&&line==match[0];
+}
 
 function /* boolean*/ utilPins(e, msg){
 	if(msg[0] != "e!pinned") return false;
@@ -1303,7 +1344,7 @@ function sendRandomFileLine(filename, channel){
 	var lines;
 	fs.readFile(filename, function(err, data){
 		if(err){
-			sms(channel,"No quotes for that user!");
+			sms(channel,"No quotes in that file!");
 		} else {
 			lines = data.toString().split('\n');
 			var line="";
@@ -2945,6 +2986,6 @@ function wolfram(e){
 }
 
 function isWeekend(){
-    var day=new Data(Date.now()).getDay();
+    var day=new Date(Date.now()).getDay();
     return (day==6)||(day==0);
 }

@@ -1,11 +1,22 @@
 Connected as EyanSays (Skarm). Yippee!
-C:\bots\SkarmBot\bot.js:2948
-    var day=Date.now().getDay();
-                       ^
-
-TypeError: Date.now(...).getDay is not a function
-    at isWeekend (C:\bots\SkarmBot\bot.js:2948:24)
-    at Timeout._onTimeout (C:\bots\SkarmBot\bot.js:1993:57)
-    at ontimeout (timers.js:386:11)
-    at tryOnTimeout (timers.js:250:5)
-    at Timer.listOnTimeout (timers.js:214:5)
+Dragonite was mentioned, but in a channel they can't view
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 3): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 4): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 5): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 6): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 7): Error: socket hang up
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 8): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 9): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 10): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 11): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 12): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+Connected as EyanSays (Skarm). Yippee!
+Connected as EyanSays (Skarm). Yippee!
+Demon_Lord was mentioned, but in a channel they can't view
+we convinced an australian that he had a room was written to line.txt.
+Skitty yeah.
+Rainy was mentioned, but in a channel they can't view
+(node:10028) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 13): Error: Forbidden (Cannot send messages to this user)
+Master9000 was mentioned, but in a channel they can't view
