@@ -3755,3 +3755,275 @@ Deleted: oh yeah also eyan https://store.steampowered.com/app/40700/Machinarium/
 Deleted: !clear 2 by Master9000
 Deleted: !clear 3 by Master9000
 Deleted: touching youuuu <@!399373116674932736> by Brad
+Deleted: !clear 2 by Master9000
+Deleted: @everyone I officially have a Patreon for my stories! I would appreciate it if you all joined!
+https://www.patreon.com/user?alert=2 by Nona, Incinemaniac
+Deleted:  by Master9000
+Deleted: try this http://www.scp-wiki.net/scp-261 by Master9000
+Deleted: so thats a yes? by Master9000
+Deleted:  by Virus_Razor
+Deleted: OKAY LIST OF THINGS THAT NEED TO BE TAKEN CARE OF: 
+-OFFICIAL DECLARE THAT IM NOT A THOT/HOE/WHORE etc 
+-THEN I WANT TO BE THE FEMALE POPE by rucb31
+Deleted: !Play A Bella! by M2U by Heartstrife
+Deleted: !play never used to people by Commander Noobie
+Deleted: it must be settled with a penis measurement contest by Twisty
+Deleted: sorry for discrimination by Twisty
+Deleted: we can have real jews on the server by Twisty
+Deleted: lmao misha by Twisty
+Deleted: e!kenobi by Master9000
+Deleted:  by Master9000
+Deleted: Involves hospitalizations, cops, suicide attempts by Rainy
+Deleted: to be honest, i get told I sound like a guy a lot, and I can't stand it by Rainy
+Deleted: t!credits by Nona, Incinemaniac
+Deleted:  by Arkada
+Deleted:  by Twisty
+Deleted:  by Twisty
+Deleted: !roll 1d20 by Bradley
+Deleted: t!beautiful <@!325456265113501697> by Twisty
+Deleted: 🐄 💩 by Twisty
+Deleted: 🔥 <:RoyalDab:514238737203462155> 💩 by Twisty
+Deleted: beutiful by Twisty
+Deleted: https://www.youtube.com/watch?v=Nz1q4iJuBaE by Twisty
+Deleted: Wat by Cragmax
+Deleted: Me or Twisty by Cragmax
+Deleted: excelant by Twisty
+Deleted: Both at the same time by Cragmax
+Deleted: No sharing with others tho by Cragmax
+Deleted: Yo Imma share my essay with u to see Wiley by Cragmax
+Deleted: wat by Cragmax
+Deleted: e!kenobi by Master9000
+Deleted: hello there by Bradley
+Deleted: Hi by Nox
+Deleted: .echo *I laugh at the jester insulting the thane* by Bradley
+Deleted: Is anybody woke? by Arkada
+Deleted: .echo maybe... by Bradley
+Deleted: .echo brad owns my soul, not the other way around by Bradley
+Deleted: .echo B-brother skarm??? oWo by Bradley
+Deleted: .echo i will pin you by Bradley
+Deleted: .echo the high king wears a skin over his own. i see through it by Bradley
+Deleted: e!cat by Bradley
+Deleted: !cat by Bradley
+Deleted: e!kenobi by Bradley
+Deleted: e!sandwhich by Bradley
+Deleted: e!suggest by Bradley
+Deleted: e!joke by Twisty
+Deleted: e!suggest by Bradley
+Deleted: e!suggest by Bradley
+Deleted: e!cat by Twisty
+Deleted: e!dog by Twisty
+Deleted: e!cookie by Twisty
+Deleted: .echo jesus is dead by Bradley
+Deleted: .echo i killed him by Bradley
+Deleted: ```"use strict";
+// load discordie object
+//skarm
+const discordie = require("discordie");
+const twitch = require('twitch-get-stream')('jm6wh6ctwjg97ljlffp8ds062uzkd7');
+const fs=require("fs"), ini=require("ini");
+const tempwolfy=require("node-wolfram");
+const wolfy=new tempwolfy(fs.readFileSync("wolfram.txt").toString());
+const request=require("request");
+``` by Bradley
+Deleted: .echo kill me now by Bradley
+Deleted: .echo *fuck me daddy* by Bradley
+Deleted: .echo ***i enjoy bdsm*** by Bradley
+Deleted: .echo whats bdsm? by Bradley
+Deleted: .echo that ended a long time ago buddy by Bradley
+Deleted: .echo read a book. just be smart by Bradley
+Deleted: .echo fuck off you rapist by Bradley
+Deleted: .echo there's a reason i have a lock to keep me closed by Bradley
+Deleted: .echo duh come on <@!162952008712716288> by Bradley
+Deleted: It's just an orgy club by Cragmax
+Deleted: Well, I am looking for free Pokemon cards buts that's different by Cragmax
+Deleted:  by Master9000
+Deleted: .echo I cant wait myself by Bradley
+Deleted: .echo *chuckles maniachally* by Bradley
+Deleted: Don't make me burst oWo.
+⣿⣿⣿⣿⣿⣿⡷⣯⢿⣿⣷⣻⢯⣿⡽⣻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠸⣿⣿⣆⠹⣿⣿⢾⣟⣯⣿⣿⣿⣿⣿⣿⣽⣻⣿⣿⣿⣿⣿⣿⣿⣿⣷⡌
+⣿⣿⣿⣿⣿⣿⣻⣽⡿⣿⣎⠙⣿⣞⣷⡌⢻⣟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⡄⠹⣿⣿⡆⠻⣿⣟⣯⡿⣽⡿⣿⣿⣿⣿⣽⡷⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣟⣷⣿⣿⣿⡀⠹⣟⣾⣟⣆⠹⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢠⡘⣿⣿⡄⠉⢿⣿⣽⡷⣿⣻⣿⣿⣿⣿⡝⣷⣯⢿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣯⢿⣾⢿⣿⡄⢄⠘⢿⣞⡿⣧⡈⢷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣧⠘⣿⣷⠈⣦⠙⢿⣽⣷⣻⣽⣿⣿⣿⣿⣌⢿⣯⢿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣟⣯⣿⢿⣿⡆⢸⡷⡈⢻⡽⣷⡷⡄⠻⣽⣿⣿⡿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣏⢰⣯⢷⠈⣿⡆⢹⢷⡌⠻⡾⢋⣱⣯⣿⣿⣿⣿⡆⢻⡿⣿⣿⣿⣿⡟⣿
+⣿⣿⣿⣿⣿⣿⡎⣿⢾⡿⣿⡆⢸⣽⢻⣄⠹⣷⣟⣿⣄⠹⣟⣿⣿⣟⣿⣿⣿⣿⣿⣿⣽⣿⣿⣿⡇⢸⣯⣟⣧⠘⣷⠈⡯⠛⢀⡐⢾⣟⣷⣻⣿⣿⣿⡿⡌⢿⣻⣿⣿⣿⣿⡌
+⣿⣿⣿⣿⣿⣿⣧⢸⡿⣟⣿⡇⢸⣯⣟⣮⢧⡈⢿⣞⡿⣦⠘⠏⣹⣿⣽⢿⣿⣿⣿⣿⣯⣿⣿⣿⡇⢸⣿⣿⣾⡆⠹⢀⣠⣾⣟⣷⡈⢿⣞⣯⢿⣿⣿⣿⢷⠘⣯⣿⣿⣿⣿⣷
+⣿⣿⣿⣿⣿⣿⣿⡈⣿⢿⣽⡇⠘⠛⠛⠛⠓⠓⠈⠛⠛⠟⠇⢀⢿⣻⣿⣯⢿⣿⣿⣿⣷⢿⣿⣿⠁⣾⣿⣿⣿⣧⡄⠇⣹⣿⣾⣯⣿⡄⠻⣽⣯⢿⣻⣿⣿⡇⢹⣾⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⡇⢹⣿⡽⡇⢸⣿⣿⣿⣿⣿⣞⣆⠰⣶⣶⡄⢀⢻⡿⣯⣿⡽⣿⣿⣿⢯⣟⡿⢀⣿⣿⣿⣿⣿⣧⠐⣸⣿⣿⣷⣿⣿⣆⠹⣯⣿⣻⣿⣿⣿⢀⣿⢿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⠘⣯⡿⡇⢸⣿⣿⣿⣿⣿⣿⣿⣧⡈⢿⣳⠘⡄⠻⣿⢾⣽⣟⡿⣿⢯⣿⡇⢸⣿⣿⣿⣿⣿⣿⡀⢾⣿⣿⣿⣿⣿⣿⣆⠹⣾⣷⣻⣿⡿⡇⢸⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⡇⢹⣿⠇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠻⡇⢹⣆⠹⣟⣾⣽⣻⣟⣿⣽⠁⣾⣿⣿⣿⣿⣿⣿⣇⣿⣿⠿⠛⠛⠉⠙⠋⢀⠁⢘⣯⣿⣿⣧⠘⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⡈⣿⡃⢼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡙⠌⣿⣆⠘⣿⣞⡿⣞⡿⡞⢠⣿⣿⣿⣿⣿⡿⠛⠉⠁⢀⣀⣠⣤⣤⣶⣶⣶⡆⢻⣽⣞⡿⣷⠈⣿⣻⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠘⠁⠉⠉⠉⠉⠉⠉⠉⠉⠉⠙⠛⠛⢿⣄⢻⣿⣧⠘⢯⣟⡿⣽⠁⣾⣿⣿⣿⣿⣿⡃⢀⢀⠘⠛⠿⢿⣻⣟⣯⣽⣻⣵⡀⢿⣯⣟⣿⢀⣿⣽⣿⣿
+⣿⣿⣿⣟⣿⣿⣿⣿⣶⣶⡆⢀⣿⣾⣿⣾⣷⣿⣶⠿⠚⠉⢀⢀⣤⣿⣷⣿⣿⣷⡈⢿⣻⢃⣼⣿⣿⣿⣿⣻⣿⣿⣿⡶⣦⣤⣄⣀⡀⠉⠛⠛⠷⣯⣳⠈⣾⡽⣾⢀⣿⢾⣿⣿
+⣿⢿⣿⣿⣻⣿⣿⣿⣿⣿⡿⠐⣿⣿⣿⣿⠿⠋⠁⢀⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣌⣥⣾⡿⣿⣿⣷⣿⣿⢿⣷⣿⣿⣟⣾⣽⣳⢯⣟⣶⣦⣤⡾⣟⣦⠘⣿⢾⡁⢺⣿⣿⣿
+⣿⣻⣿⣿⡷⣿⣿⣿⣿⣿⡗⣦⠸⡿⠋⠁⢀⢀⣠⣴⢿⣿⣽⣻⢽⣾⣟⣷⣿⣟⣿⣿⣿⣳⠿⣵⣧⣼⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣽⣳⣯⣿⣿⣿⣽⢀⢷⣻⠄⠘⣯⣿⣿
+⣿⢷⣻⣿⣿⣷⣻⣿⣿⣿⡷⠛⣁⢀⣀⣤⣶⣿⣛⡿⣿⣮⣽⡻⣿⣮⣽⣻⢯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢀⢸⣿⢀⡆⣿⣿⣿
+⠸⣟⣯⣿⣿⣷⢿⣽⣿⣿⣷⣿⣷⣆⠹⣿⣶⣯⠿⣿⣶⣟⣻⢿⣷⣽⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⣯⣟⢀⡇⢼⣿⣿
+⣇⠹⣟⣾⣻⣿⣿⢾⡽⣿⣿⣿⣿⣿⣆⢹⣶⣿⣻⣷⣯⣟⣿⣿⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢀⡿⡇⢸⡇⢸⣿⡇
+⣿⣆⠹⣷⡻⣽⣿⣯⢿⣽⣻⣿⣿⣿⣿⣆⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⢸⣿⠇⣼⡇⢸⡿⢠
+⡙⠾⣆⠹⣿⣦⠛⣿⢯⣷⢿⡽⣿⣿⣿⣿⣆⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠎⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⢀⣿⣾⣣⡿⡇⢸⢃⣾
+⣿⣷⡌⢦⠙⣿⣿⣌⠻⣽⢯⣿⣽⣻⣿⣿⣿⣧⠩⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⢰⢣⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⢀⢀⢿⣞⣷⢿⡇⠉⣼⣿
+⣿⣽⣆⠹⣧⠘⣿⣿⡷⣌⠙⢷⣯⡷⣟⣿⣿⣿⣷⡀⡹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣈⠃⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⢀⣴⡧⢀⠸⣿⡽⣿⢀⣾⣿⣿
+⢻⣽⣿⡄⢻⣷⡈⢿⣿⣿⢧⢀⠙⢿⣻⡾⣽⣻⣿⣿⣄⠌⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⢁⣰⣾⣟⡿⢀⡄⢿⣟⣿⢀⣿⣿⣿
+⡄⢿⣿⣷⢀⠹⣟⣆⠻⣿⣿⣆⢀⣀⠉⠻⣿⡽⣯⣿⣿⣷⣈⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⢀⣠⠘⣯⣷⣿⡟⢀⢆⠸⣿⡟⢸⣿⣿⣿
+⣷⡈⢿⣿⣇⢱⡘⢿⣷⣬⣙⠿⣧⠘⣆⢀⠈⠻⣷⣟⣾⢿⣿⣆⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⡞⢡⣿⢀⣿⣿⣿⠇⡄⢸⡄⢻⡇⣼⣿⣿⣿
+⣿⣷⡈⢿⣿⡆⢣⡀⠙⢾⣟⣿⣿⣷⡈⠂⠘⣦⡈⠿⣯⣿⢾⣿⣆⠙⠻⠿⠿⠿⠿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⢋⣠⣾⡟⢠⣿⣿⢀⣿⣿⡟⢠⣿⢈⣧⠘⢠⣿⣿⣿⣿
+⣿⣿⣿⣄⠻⣿⡄⢳⡄⢆⡙⠾⣽⣿⣿⣆⡀⢹⡷⣄⠙⢿⣿⡾⣿⣆⢀⡀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣠⣴⡿⣯⠏⣠⣿⣿⡏⢸⣿⡿⢁⣿⣿⢀⣿⠆⢸⣿⣿⣿⣿
+⣿⣿⣿⣿⣦⡙⣿⣆⢻⡌⢿⣶⢤⣉⣙⣿⣷⡀⠙⠽⠷⠄⠹⣿⣟⣿⣆⢙⣋⣤⣤⣤⣄⣀⢀⢀⢀⢀⣾⣿⣟⡷⣯⡿⢃⣼⣿⣿⣿⠇⣼⡟⣡⣿⣿⣿⢀⡿⢠⠈⣿⣿⣿⡟
+⣿⣿⣿⣿⣿⣷⣮⣿⣿⣿⡌⠁⢤⣤⣤⣤⣬⣭⣴⣶⣶⣶⣆⠈⢻⣿⣿⣆⢻⣿⣿⣿⣿⣿⣿⣷⣶⣤⣌⣉⡘⠛⠻⠶⣿⣿⣿⣿⡟⣰⣫⣴⣿⣿⣿⣿⠄⣷⣿⠆⢻⣿⣿⡇ by Twisty
+Deleted: .echo goddamnit shes cute by Bradley
+Deleted: .echo i like salt on my eggs by Bradley
+Deleted: .echo indeed i am savage. as savage as the wild woofer by Bradley
+Deleted: .echo e!sandwich please by Bradley
+Deleted: .echo NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO by Bradley
+Deleted: .echo I challenge you to a joust, skarm by Bradley
+Deleted: Oh yeh. Baillee by Rainy
+Deleted: .echo such primitive thought by Bradley
+Deleted: .echo such primitive thought by Bradley
+Deleted: *sits in the front seat* LISTEN UP HERE YA HEATHENS I GOT THE FIRST FLIPPIN SEAT AND THATS WHAT HAPPENS WHEN YOU DO IT DOWN IN PURTO RICO! by Twisty
+Deleted: i was the first to come by Twisty
+Deleted: .echo I want to hear that neck snap by Bradley
+Deleted: .echo fuck i dont have ears by Bradley
+Deleted: Zad, koga naj-riuk drepa by Bradley
+Deleted: .echo I lunge again, shattering the chains in super edgy fashion by Bradley
+Deleted: .echo *I tear the rope apart* I do not let orders slide... by Bradley
+Deleted: .echo *i return to my book and lock up* by Bradley
+Deleted: .echo i do by Bradley
+Deleted: Since the killing is over, can we move someone less congested? by Cragmax
+Deleted: .echo can I eat his soul? by Bradley
+Deleted: @everyone We shall soon be having ourselves a movie viewing party for the server!  It will take place on the website known as https://www.rabb.it/ so make sure you create an account to view on.  We will have a choice of four things to watch:
+Monty Python and the Holy Grail
+Pulp Fiction
+Watchmen
+Or we could just watch some Bob Ross!
+Date and time are tbd, but please put your vote in the reactions corresponding with the first letter of each of the options!
+Huzzah! by Nona, Incinemaniac
+Deleted: -poll 1 2 3 by Master9000
+Deleted: -poll "What to watch" "monty python" "bob ross" "some other shit" by Master9000
+Deleted: -poll "What to watch" "Monty Python" "Pulp Ficiton" "Watchmen" "bob ross" "some other shit (leave a suggestion in <#504062877284696064>)" by Master9000
+Deleted: I cant ping everyone oof by Cragmax
+Deleted:  by Master9000
+Deleted: -v interference with execution punishable by death by Master9000
+Deleted: -v test by Master9000
+Deleted: --v wtf by Master9000
+Deleted: --v by Master9000
+Deleted: -v by Master9000
+Deleted: i dont remember shit by Master9000
+Deleted: t@prune 4 by Master9000
+Deleted: t@purge 3 by Master9000
+Deleted: wtf by Master9000
+Deleted: v by Master9000
+Deleted: Ryan Reynolds was the green lantern once <@!162952008712716288> by superheronerd
+Deleted: B.D. by Wolverale12
+Deleted:  by Master9000
+Deleted: She better by Cragmax
+Deleted: t!rank by jl0137
+Deleted:  by versa
+Deleted: https://cdn.discordapp.com/attachments/304083377995251713/531413578713006090/unknown.png by Master9000
+Deleted: ayo wassup my nigga by mangomaster
+Deleted: a movie wouldnt get rated r because someone said nigga by mangomaster
+Deleted: so sit down nigga by mangomaster
+Deleted: signed by mr. blackman himself by mangomaster
+Deleted: <@221812910668775425> by Cragmax
+Deleted: Is this like lwiay but for papa Ryan? by McChingus
+Deleted: Eyan by McChingus
+Deleted:  by McChingus
+Deleted:  by McChingus
+Deleted: https://discordapp.com/channels/160939181646807041/160939181646807041/532374361835831336 by Bman
+Deleted: *sean by rucb31
+Deleted: <@!325456265113501697> i would bite you but i would get herpes by Twisty
+Deleted: Atlas by Master9000
+Deleted: .s by Aloix
+Deleted: I was requested by Eyan to draw. by Arkada
+Deleted: and the world's messiest bun that I mentioned by Rainy
+Deleted: Hello there by Master9000
+Deleted: nice by Twisty
+Deleted: the almighty thanos whale... HAS ARRIVED by MajesticEclipse02
+Deleted: POSTINF SERVER INVITES IS PUNISHABLE BY LAW MY GUY. by Cragmax
+Deleted: -log by Cragmax
+Deleted: For example getting laid by Master9000
+Deleted: @everyone Check <#530863440328130571> pinned messages for any information about the crusade later today by Cragmax
+Deleted: Ladies and Gentlemen and those betwixt, I present a cure for all that ails your weary soul: https://www.youtube.com/watch?v=xa1Zn6XrDlM by Rainy
+Deleted: Ladies and Gentlemen and those betwixt, I present a cure for all that ails your weary soul: https://www.youtube.com/watch?v=xa1Zn6XrDlM by Rainy
+Deleted: Exactly by mjm83123
+Deleted: Since I’m the first excommunicated can I be satan? by TinyTerror4627
+Deleted: Not gonna lie pretty sure it's been more than a minute by Cragmax
+Deleted: Brad can u rename him? by Cragmax
+Deleted: Like 20 by mjm83123
+Deleted: oofo by Bradley
+Deleted: skarm cant text in this channel now by Bman
+Deleted: i did the role not the actual person by Bman
+Deleted: <@!319291086570913806> by Bman
+Deleted: Someone fill me in on what I missed was replacing screen protector and phone was off by Cragmax
+Deleted: is this a virus by mangomaster
+Deleted: likely story by mangomaster
+Deleted: No by Cragmax
+Deleted: treason by mangomaster
+Deleted: The Pope had too much dope by Cragmax
+Deleted: calm down by mangomaster
+Deleted: the pope is on a rampage by mangomaster
+Deleted: Shit by Cragmax
+Deleted: Skarm is now muted here hopefully by Cragmax
+Deleted: 🥒 by Cragmax
+Deleted: 🥒 by Twisty
+Deleted:  by Twisty
+Deleted: bekfast by Cragmax
+Deleted: satan do you speak pig latin by Twisty
+Deleted: pig latin by mangomaster
+Deleted: ancay ouyay eakspay igpay atinlay by Twisty
+Deleted: gip latin by mangomaster
+Deleted: nice by mangomaster
+Deleted: nice by Twisty
+Deleted: Nice by The Raccoon
+Deleted: Nice by The Raccoon
+Deleted: nice by Twisty
+Deleted: nice by Twisty
+Deleted: nice by mangomaster
+Deleted: Nice by The Raccoon
+Deleted: nice by Twisty
+Deleted: nice by Twisty
+Deleted: Nice by The Raccoon
+Deleted: nice by Twisty
+Deleted: nice by Twisty
+Deleted: Nice by The Raccoon
+Deleted: cnie by mangomaster
+Deleted: nice by Twisty
+Deleted: Nice by The Raccoon
+Deleted: nice by Twisty
+Deleted: not nice by Commander Noobie
+Deleted: nice by Twisty
+Deleted: nice by Twisty
+Deleted: nice by mangomaster
+Deleted: Nice by The Raccoon
+Deleted: nice by Twisty
+Deleted: nice by Twisty
+Deleted: nice by mangomaster
+Deleted: nice by Twisty
+Deleted: nice] by Twisty
+Deleted: nice by Twisty
+Deleted: nice by Twisty
+Deleted: nice by mangomaster
+Deleted: nice by Twisty
+Deleted: hey <@!162952008712716288> uh by mangomaster
+Deleted: what have I done by mangomaster
+Deleted: misha why do you hate me by mangomaster
+Deleted: unmute me by mangomaster
+Deleted: uh should uh by mangomaster
+Deleted: do it by mangomaster
+Deleted: Hey panda can you react with the 2bgasm so i can click it and react with it as well? by Rainy
+Deleted: thanks by Rainy
+Deleted:  by Master9000
+Deleted: https://cdn.discordapp.com/attachments/311402910820859914/533471147942084628/in2yzkqk7s921.png by Master9000
+Deleted: 129 by Demi
+Deleted: fuck by Demi
+Deleted: 120 by Demi
+Deleted:  by Master9000
+Deleted: if  you could follow my twitch that would be greatly appreciated 😄 by Demi
+Deleted: E!wolfram translate Είστε άπιστοι δεν την αξίζετε by Master9000
+Deleted: Skram! by Master9000
+Deleted: Only warframe niggas understand by Cragmax
+Deleted: -ud by Master9000
+Deleted: gonna stream sc2 so people can laugh at how badly i suck by Demi
+Deleted: Fuci by Daddyo
+Deleted: Fuck by Daddyo
+Deleted: whalecum by Demi
+Deleted: just thots being thots by Bman

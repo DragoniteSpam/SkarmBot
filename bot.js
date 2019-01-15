@@ -1624,18 +1624,23 @@ function STATS(message){
             user.todayViolence=user.todayViolence+violentVerbs[i][1];
             if (!user.todayWasWarned&&user.todayWarnings<5){
                 // can send a warning?
-                if (user.todayMessages>5&&user.todayViolence/user.todayMessages>0.06){
-                    user.todayWasWarned=true;
-                    user.todayWarnings++;
-                    // alert
-                    DRAGONITE_OBJECT.openDM().then(function(dm){
-                        dm.sendMessage(message.author.username+" is being a wee bit questionable in <#"+message.channel_id+">. Have a word with them, maybe?");
-                        dm.sendMessage("Message: ```"+string+"```");
-                    });
-                    // Alert 
-                    sms(client.Channels.get("344295609194250250"), message.author.username+" is being a wee bit questionable in <#"+message.channel_id+">. Have a word with them, maybe?\n"+
-                        "\tOffending message: ```"+string+"```");
-                }
+                if (user.todayMessages>5&&user.todayViolence/user.todayMessages>0.06){//a56
+					if(message.guild.id == "304082726019923978"){
+						user.todayWasWarned=true;
+						user.todayWarnings++;
+						// alert
+						DRAGONITE_OBJECT.openDM().then(function(dm){
+							dm.sendMessage(message.author.username+" is being a wee bit questionable in <#"+message.channel_id+">. Have a word with them, maybe?");
+							dm.sendMessage("Message: ```"+string+"```");
+						});
+						// Alert 
+						sms(client.Channels.get("344295609194250250"), message.author.username+" is being a wee bit questionable in <#"+message.channel_id+">. Have a word with them, maybe?\n"+
+							"\tOffending message: ```"+string+"```");
+					}else{
+						sien(message.author.username+" is being a wee bit questionable in <#"+message.channel_id+">. Have a word with them, maybe?\n"+
+							"\tOffending message: ```"+string+"```");
+					}
+				}
             }
         }
     }
@@ -1811,7 +1816,7 @@ function REACT(message, id){
 	 }
 	 
 	//Hello There 
-	if((message.content=="<:HelloThere:305560404715896832>" || message.content=="<:HelloThere:422567230392500234>")&& (Math.random()<.95 || message.author.username == "KingofZeal")){
+	if(message.content.toLowerCase().includes("hello") && message.content.toLowerCase().includes("there")&& (Math.random()<.95 || message.author.username == "KingofZeal")){
 		return helloThere(message);
     }
 	//Thanos did nothing wrong
