@@ -5,7 +5,7 @@ const discordie = require("discordie");
 const twitch = require('twitch-get-stream')('jm6wh6ctwjg97ljlffp8ds062uzkd7');
 const fs=require("fs"), ini=require("ini");
 const tempwolfy=require("node-wolfram");
-const wolfy=new tempwolfy(fs.readFileSync("wolfram.txt").toString());
+const wolfy=new tempwolfy(fs.readFileSync("..\\wolfram.txt").toString());
 const request=require("request");
 
 function wikipedia(){
@@ -347,7 +347,7 @@ client.connect({
 	//"MzE5MjkxMDg2NTcwOTEzODA2.DSFhww.FZ8I1T7Evls72hIHEcTXjX_rqAc"
 });
 function getToken(){
-	token=fs.readFileSync("token.txt").toString();
+	token=fs.readFileSync("..\\token.txt").toString();
 }
 
 // What happens when you first connect
