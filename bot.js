@@ -2511,11 +2511,11 @@ function utilityActCount(e){
 }
 
 function getServerLineFile(message){
-    return "logs/"+message.guild.".general.txt";
+    return "logs/"+message.guild.id+".general.txt";
 }
 
 function getServerActionFile(message){
-    return "logs/"+message.guild.".action.txt";
+    return "logs/"+message.guild.id+".action.txt";
 }
 
 // Prints out the high score table for the censor
