@@ -47,6 +47,7 @@ const events = discordie.Events;
 
 //channels
 const GENERAL="304082726019923978";
+const ZEAL_SERVER="304082726019923978"; // theyre the same
 
 const ALGETTY ="311411150611021824";
 const SUNS = "321777310057627655";
@@ -63,7 +64,7 @@ const MODLOG="344295609194250250";
 //users
 const MASTER="162952008712716288";
 const DRAGONITE="137336478291329024";
-const ZEAL_ID="304073163669766158";
+const EYAN_ID="304073163669766158";
 const PRIMA="425428688830726144";
 //Skarm channels
 const dataGen = "409856900469882880";
@@ -420,7 +421,7 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e=> {
 			}
 		}
 	} else if (e.emoji.name==="KingofApproval"){
-        if (e.user.id!=ZEAL_ID){
+        if (e.user.id!=EYAN_ID){
             //console.log("Illegitimate KingOfApproval user found! ["+e.user.username+"]" /*+" Warning sent."*/);
 /*            e.user.openDM().then(function(dm){
 				dm.sendMessage("Hey, hey, hey! The `KingOfApproval` emote is supposed to be for Eyan's use only, so try to lay off using it in reactions, aye aye?");
@@ -442,7 +443,7 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e=> {
 });
 
 client.Dispatcher.on(events.GUILD_MEMBER_ADD, e=> {
-	if(e.guild.id != "304082726019923978"){
+	if(e.guild.id != ZEAL_SERVER){
 		return "i wonder if this can return strings";
 	}
 	
@@ -451,7 +452,7 @@ client.Dispatcher.on(events.GUILD_MEMBER_ADD, e=> {
 });
 	
 client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e=> {
-	if(e.member.guild.id != "304082726019923978"){
+	if(e.member.guild.id != ZEAL_SERVER){
 		return "i wonder if this can return strings";
 	}
 	if (e.rolesAdded.length>0){
@@ -666,9 +667,6 @@ function massConditioning(e, message, msg){
 		// Utilities
 		} else if (message=="e!size"){
 			utiliyLineCount(e);
-			totalBotCommands++;
-		} else if (message=="e!sgen"){
-			utilityGenCount(e);
 			totalBotCommands++;
 		} else if (message=="e!sact"){
 			utilityActCount(e);
@@ -995,7 +993,7 @@ function regularityUpdateEarth(){
 }
 //fixes everyone's Earthbinds
 function utilityUpdateEarth(e){
-	if(e.message.guild.id == "304082726019923978"){
+	if(e.message.guild.id == ZEAL_SERVER){
 		if(e.message.channel.id != MODLOG){
 		sms(e.message.channel,"Updating Enlightened...");
 		}
@@ -1185,7 +1183,7 @@ function getMember(id){
  
 //adds Eyan's quotes to his log 
 function add(message){
-	if(message.guild.id != "304082726019923978"){
+	if(message.guild.id != ZEAL_SERVER){
 		sms(message.channel,"Please contact the Kingdom of Zeal staff to use this feature https://discord.gg/WFAMf42");
 		return false;
 	}
@@ -1204,7 +1202,8 @@ function add(message){
 //adds a message to skarm's response database if its not from Eyan
 function addGeneral(message){
     //single server development precondition
-    if(message.guild.id != "304082726019923978"){
+    //if(message.guild.id != ZEAL_SERVER){
+    if (false){
         if(message.guild.id == "394225763483779084"){
             console.log("caught " + message.content + " in Skarm the server");
             return false;
@@ -1226,7 +1225,7 @@ function addGeneral(message){
 	//appends normal lines into the general log	
 	if (!utilityIsAction(msg)){
 		sms(client.Channels.get("409856900469882880"),msg);
-		fs.appendFile("generallines.txt", msg+"\r\n", (err)=>{
+		fs.appendFile(getServerLineFile(message), msg+"\r\n", (err)=>{
 			if (err){
 				throw err;
 			}
@@ -1235,7 +1234,7 @@ function addGeneral(message){
 	//appends action lines to the action log instead 
 	else {
 		sms(client.Channels.get("409860642942615573"),msg);	//writes the line to Skarm's server mirror of the database
-		fs.appendFile("generallinesactions.txt", msg+"\r\n", (err)=>{
+		fs.appendFile(getServerActionFile(message), msg+"\r\n", (err)=>{
 			if (err){
 				throw err;
 			}
@@ -1286,7 +1285,7 @@ function sendRandomLineGeneral(message){
             throw err;
         }
     });
-	sendRandomFileLine("generallines.txt", message.channel);
+	sendRandomFileLine(getServerActionFile(message), message.channel);
 }
 
 function sendRandomLineGeneralAction(message){
@@ -1295,7 +1294,7 @@ function sendRandomLineGeneralAction(message){
             throw err;
         }
     });
-	sendRandomFileLine("generallinesactions.txt", message.channel);
+	sendRandomFileLine(getServerActionFile(message), message.channel);
 }
 // Saves a line to the line file
 function saveLine(message, filename, string){
@@ -1313,7 +1312,7 @@ function saveLine(message, filename, string){
 }
 //in response to e!kenobi, prints out a 4x4 emotes image of him, example image of output: https://cdn.discordapp.com/attachments/305548986155008000/424078792382873611/unknown.png
 function utilityKenobi(e){
-	if(e.message.channel==client.Channels.get("304082726019923978")){
+	if(e.message.channel==client.Channels.get(ZEAL_SERVER)){
 		return;}
 	//var mess =	"<:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n
 	//			<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n
@@ -1625,7 +1624,7 @@ function STATS(message){
             if (!user.todayWasWarned&&user.todayWarnings<5){
                 // can send a warning?
                 if (user.todayMessages>5&&user.todayViolence/user.todayMessages>0.06){//a56
-					if(message.guild.id == "304082726019923978"){
+					if(message.guild.id == ZEAL_SERVER){
 						user.todayWasWarned=true;
 						user.todayWarnings++;
 						// alert
@@ -2211,7 +2210,7 @@ function censorCommandSet(message){
 										"e!censor-all\n"+
 										"e!censor-all-help```");
 		} else if (command[0]==="-add"){
-			if(message.guild.id != "304082726019923978"){
+			if(message.guild.id != ZEAL_SERVER){
 				sms(message.channel,"Zeal exclusive command");
 				return false;
 			}
@@ -2259,7 +2258,7 @@ function censorCommandSet(message){
 										"	`<instruction>` is the warning message sent, i.e. \"potty mouth!\"\n"+
 										"	`<replacement>` is the text the bad word is replaced with, i.e. \"SKITTY\"");
 		} else if (command[0]==="-remove"){
-			if(message.guild.id != "304082726019923978"){
+			if(message.guild.id != ZEAL_SERVER){
 				sms(message.channel,"Zeal exclusive command");
 				return false;
 			}
@@ -2499,22 +2498,9 @@ function utiliyLineCount(e){
 	})
 }
 
-function utilityGenCount(e){
-	var lines;
-	fs.readFile("generallines.txt", function(err, data){
-		if(err){
-			sms(e.message.channel, "Something blew up. Oh noes! @Dragonite#7992");
-			throw err;
-		}
-		lines = data.toString().split('\n');
-		sms(e.message.channel, lines.length+" lines in "+myNick+"'s General quote log.");
-	})
-	
-}
-
 function utilityActCount(e){
 	var lines;
-	fs.readFile("generallinesactions.txt", function(err, data){
+	fs.readFile(getServerActionFile(e.message), function(err, data){
 		if(err){
 			sms(e.message.channel,"Something blew up. Oh noes! @Dragonite#7992");
 			throw err;
@@ -2523,6 +2509,15 @@ function utilityActCount(e){
 		sms(e.message.channel,lines.length+" lines in "+myNick+"'s General quote log.");
 	})
 }
+
+function getServerLineFile(message){
+    return "logs/"+message.guild.".general.txt";
+}
+
+function getServerActionFile(message){
+    return "logs/"+message.guild.".action.txt";
+}
+
 // Prints out the high score table for the censor
 function utilityStats(e){
 	var statsString="SOME INANE STATS THAT DRAGONITE COLLECTS";

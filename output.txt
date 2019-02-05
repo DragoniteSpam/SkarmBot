@@ -1,1 +1,70 @@
 Connected as EyanSays (Skarm). Yippee!
+FLUBS was mentioned, but in a channel they can't view
+139579058152275968 can't view the channel they were mentioned in for whatever reason
+139579058152275968 can't view the channel they were mentioned in for whatever reason
+Connected as EyanSays (Skarm). Yippee!
+139579058152275968 can't view the channel they were mentioned in for whatever reason
+FLUBS was mentioned, but in a channel they can't view
+FLUBS was mentioned, but in a channel they can't view
+KugallyBlitz was mentioned, but in a channel they can't view
+KugallyBlitz was mentioned, but in a channel they can't view
+139579058152275968 can't view the channel they were mentioned in for whatever reason
+139579058152275968 can't view the channel they were mentioned in for whatever reason
+KugallyBlitz was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+KugallyBlitz was mentioned, but in a channel they can't view
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): Error: socket hang up
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 3): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 4): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+Connected as EyanSays (Skarm). Yippee!
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 5): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 6): Error: socket hang up
+Connected as EyanSays (Skarm). Yippee!
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 7): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 8): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 9): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 10): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 11): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 12): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 13): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 14): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 15): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 16): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 17): Error: getaddrinfo ENOTFOUND discordapp.com discordapp.com:443
+Connected as EyanSays (Skarm). Yippee!
+caught its beautiful, and also im still in class so bother me later in Skarm the server
+Master9000 was mentioned, but in a channel they can't view
+141255588846895105 can't view the channel they were mentioned in for whatever reason
+Master9000 was mentioned, but in a channel they can't view
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 18): Error: getaddrinfo ENOENT discordapp.com:443
+FLUBS was mentioned, but in a channel they can't view
+Master9000 was mentioned, but in a channel they can't view
+Master9000 was mentioned, but in a channel they can't view
+(node:10220) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 19): Error: Forbidden (Missing Permissions)
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+141255588846895105 can't view the channel they were mentioned in for whatever reason
+SuperGummying was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+141255588846895105 can't view the channel they were mentioned in for whatever reason
+Dragonite was mentioned, but in a channel they can't view
+162952008712716288 can't view the channel they were mentioned in for whatever reason
+Dragonite was mentioned, but in a channel they can't view
+Dragonite was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+162952008712716288 can't view the channel they were mentioned in for whatever reason
+Demon_Lord was mentioned, but in a channel they can't view
+SuperGummying was mentioned, but in a channel they can't view
+caught gummy in Skarm the server
+Dragonite was mentioned, but in a channel they can't view
+caught Yeah that checks out in Skarm the server
+^C
