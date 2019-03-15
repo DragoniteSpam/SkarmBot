@@ -90,6 +90,13 @@ var esOddsSkyrim=25;
 var esOddsRandomLine=30;
 var esOddsRandomPun=4;
 var esOddsQuestion=20;
+var drinkCount=0;
+fs.readFile("drink.rainy", function(err, data){
+		if(err){
+			throw err;
+		}
+		drinkCount=parseInt(data);
+	});
 
 // Classes
 
@@ -690,7 +697,10 @@ function massConditioning(e, message, msg){
 		} else if (message.startsWith("e!hug")){
 			totalBotCommands++;
 			utilityHug(e);
-		} else if (message.startsWith("e!sandwich")){
+		} else if (message.startsWith("e!drink")){
+			totalBotCommands++;
+			utilityDrink(e);
+		}  else if (message.startsWith("e!sandwich")){
 			totalBotCommands++;
 			utilitySandwich(e);
 		} else if (message.startsWith("e!bot")){
@@ -832,6 +842,14 @@ function massConditioning(e, message, msg){
             sms(e.message.channel, ":thinking:");
         }*/
 	}
+}
+
+function utilityDrink(e){
+	if(e.message.author.id=="139579058152275968"){
+		drinkCount+=parseInt(e.message.content.substring("e!drink".length-1));
+		fs.writeFile("drink.rainy",drinkCount);
+	}
+	sms(e.message.channel,drinkCount);
 }
 
 function /*boolean*/ lineIsQuestion(line){
