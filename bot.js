@@ -91,11 +91,15 @@ var esOddsRandomLine=30;
 var esOddsRandomPun=4;
 var esOddsQuestion=20;
 var drinkCount=0;
-fs.readFile("drink.rainy", function(err, data){
+fs.readFile(".\\stuff\\drink.rainy", function(err, data){
 		if(err){
 			throw err;
 		}
 		drinkCount=parseInt(data);
+        if (isNaN(drinkCount)){
+            drinkCount=0;
+            console.log("!!drink count is nan");
+        }
 	});
 
 // Classes
@@ -845,11 +849,20 @@ function massConditioning(e, message, msg){
 }
 
 function utilityDrink(e){
-	if(e.message.author.id=="139579058152275968"){
-		drinkCount+=parseInt(e.message.content.substring("e!drink".length-1));
-		fs.writeFile("drink.rainy",drinkCount);
+	if(e.message.author.id=="139579058152275968" /* rainy */){
+        var contents=e.message.content.split(" ");
+        if (contents.length>1){
+            var amount=parseInt(contents[1]);
+            if (isNaN(amount)){
+                amount=0;
+            }
+        } else {
+            amount=1;
+        }
+        drinkCount=drinkCount+amount;
+		fs.writeFile(".\\stuff\\drink.rainy",drinkCount);
 	}
-	sms(e.message.channel,drinkCount);
+	sms(e.message.channel, "rainy currently owes master9000: "+drinkCount+" drinks");
 }
 
 function /*boolean*/ lineIsQuestion(line){
