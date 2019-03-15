@@ -90,17 +90,150 @@ var esOddsSkyrim=25;
 var esOddsRandomLine=30;
 var esOddsRandomPun=4;
 var esOddsQuestion=20;
+
+// beverages
+
 var drinkCount=0;
-fs.readFile(".\\stuff\\drink.rainy", function(err, data){
-		if(err){
-			throw err;
-		}
-		drinkCount=parseInt(data);
+var rootbeerCount=0;
+
+if (fs.existsSync(".\\stuff\\drink.rainy")){
+    fs.readFile(".\\stuff\\drink.rainy", function(err, data){
+        if(err){
+            throw err;
+        }
+        drinkCount=parseInt(data);
         if (isNaN(drinkCount)){
             drinkCount=0;
-            console.log("!!drink count is nan");
         }
-	});
+    });
+}
+
+if (fs.existsSync(".\\stuff\\rootbeer.rainy")){
+    fs.readFile(".\\stuff\\rootbeer.rainy", function(err, data){
+        if(err){
+            throw err;
+        }
+        rootbeerCount=parseInt(data);
+        if (isNaN(rootbeerCount)){
+            rootbeerCount=0;
+        }
+    });
+}
+
+// xkcd
+
+class XKCD {
+    constructor(){
+        this.channels=[];
+        this.latest=2123; // this is the previous comic as of my writing this
+        this.latestDate=new Date();
+        this.timeout=null;
+    }
+    
+    save(){
+        var required={
+            channels: this.channels,
+            latest: this.latest,
+            latestDate: this.latestDate
+        };
+        
+        fs.writeFile(".\\stuff\\xk.cd", JSON.stringify(required), function(err){
+            if (err){
+                console.log("something bad happened: "+err);
+            }
+        });
+    }
+    
+    load(){
+        if (fs.existsSync(".\\stuff\\xk.cd")){
+            var loaded=JSON.parse(fs.readFileSync(".\\stuff\\xk.cd").toString());
+            
+            if (loaded.channels!==undefined){
+                this.channels=loaded.channels;
+            }
+            
+            if (loaded.latest!==undefined){
+                this.latest=loaded.latest;
+            }
+            
+            try {
+                this.latestDate=new Date(loaded.latestDate);
+            } catch (err){
+                // an arbitrarily long time ago
+                this.latestDate=new Date(2000, 0, 1);
+            }
+        }
+        
+        this.schedule();
+    }
+    
+    post(){
+        utilityURLExists("https://xkcd.com/"+this.latest+"/", this.postSuccessful, { me: this, file: this.latest });
+        utilityURLExists("https://xkcd.com/5000/", this.postSuccessful, { me: this, file: 5000 });
+        
+        clearTimeout(this.timeout);
+        this.schedule();
+    }
+    
+    postSuccessful(results, params){
+        if (results.statusCode==200){
+            params.me.channels.forEach(function(element){
+                var channel=client.Channels.get(element);
+                if (channel===null){
+                    params.me.toggleChannel(element);
+                } else {
+                    sendMessageDelay("https://xkcd.com/"+params.file+"/", channel);
+                }
+            });
+            
+            params.me.latest++;
+            params.latestDate=new Date();
+            params.me.save();
+            // check to see if there's more
+            setTimeout(function(){
+                params.me.post();
+            }, 5000);
+        }
+    }
+    
+    nextScheduledUpdate(){
+        var when=new Date(this.latestDate.toString());
+        when.setHours(17);
+        when.setMinutes(0);
+        when.setSeconds(0);
+        
+        if (this.latestDate>=when){
+            when=when.setTime(when.getTime()+(24*60*60*1000/*86,400,000*/));
+        }
+        
+        return (when-this.latestDate);
+    }
+    
+    schedule(){
+        var when=this.nextScheduledUpdate();
+        console.log("next xkcd check scheduled for: "+when);
+        
+        this.timeout=setTimeout(function(){
+            // this is slightly redundant but i'm going to leave it this way
+            munroe.post();
+        }, when);
+    }
+    
+    toggleChannel(channel){
+        if (this.channels.includes(channel.id)){
+            sendMessageDelay("xkcds will no longer be sent to this channel!", channel);
+            this.channels.splice(this.channels.indexOf(channel.id), 1);
+        } else {
+            sendMessageDelay("xkcds will now be sent to this channel!", channel);
+            this.channels.push(channel.id);
+        }
+        
+        this.save();
+    }
+}
+
+var munroe=new XKCD();
+munroe.load();
 
 // Classes
 
@@ -704,6 +837,9 @@ function massConditioning(e, message, msg){
 		} else if (message.startsWith("e!drink")){
 			totalBotCommands++;
 			utilityDrink(e);
+		} else if (message.startsWith("e!beer")){
+			totalBotCommands++;
+			utilityRootBeer(e);
 		}  else if (message.startsWith("e!sandwich")){
 			totalBotCommands++;
 			utilitySandwich(e);
@@ -723,6 +859,8 @@ function massConditioning(e, message, msg){
             utilitySkarm(e);
         } else if (message.startsWith("e!suggest")){
             utilitySuggestion(e);
+        } else if (message.startsWith("e!xkcd")){
+            utilityMunroe(e);
 		// Quote
 		} else if (message.startsWith("e!says-add ")){
 			totalBotCommands++;
@@ -860,9 +998,26 @@ function utilityDrink(e){
             amount=1;
         }
         drinkCount=drinkCount+amount;
-		fs.writeFile(".\\stuff\\drink.rainy",drinkCount);
+		fs.writeFile(".\\stuff\\drink.rainy", drinkCount);
 	}
 	sms(e.message.channel, "rainy currently owes master9000: "+drinkCount+" drinks");
+}
+
+function utilityRootBeer(e){
+	if(e.message.author.id=="139579058152275968" /* rainy */||e.message.author.id==DRAGONITE){
+        var contents=e.message.content.split(" ");
+        if (contents.length>1){
+            var amount=parseInt(contents[1]);
+            if (isNaN(amount)){
+                amount=0;
+            }
+        } else {
+            amount=1;
+        }
+        rootbeerCount=rootbeerCount+amount;
+		fs.writeFile(".\\stuff\\drink.rainy", rootbeerCount);
+	}
+	sms(e.message.channel, "rainy currently owes dragonite: "+rootbeerCount+" root beers (if he is unavailable payment may be made to his robot instead)");
 }
 
 function /*boolean*/ lineIsQuestion(line){
@@ -2778,6 +2933,36 @@ function replaceAll(string, toReplace, newString){
 		t=t.replace(toReplace, newString);
 	}
 	return t;
+}
+
+function utilityMunroe(e){
+    var command=e.message.content.split(" ");
+    if (command.length==1){
+        munroe.toggleChannel(e.message.channel);
+    } else {
+        switch (command[1]){
+            case "now":
+                munroe.post();
+                break;
+            default:
+                sendMessageDelay("usage: `e!xkcd [now]`", e.message.channel);
+                break;
+        }
+    }
+}
+
+function utilityURLExists(path, callback, callbackParams){
+    var params={
+        uri: path,
+        timeout: 2000,
+        followAllRedirects: true
+    };
+    
+    request.get(params, function(error, response, body){
+        if (!error){
+            callback(response, callbackParams);
+        }
+    });
 }
 
 /*
