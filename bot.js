@@ -182,7 +182,7 @@ class XKCD {
                 if (channel===null){
                     params.me.toggleChannel(element);
                 } else {
-                    sendMessageDelay("https://xkcd.com/"+params.file+"/", channel);
+                    sendMessageDelay("xkcd \#"+params.file+":\nhttps://xkcd.com/"+params.file+"/", channel);
                 }
             });
             
@@ -998,7 +998,11 @@ function utilityDrink(e){
             amount=1;
         }
         drinkCount=drinkCount+amount;
-		fs.writeFile(".\\stuff\\drink.rainy", drinkCount);
+		fs.writeFile(".\\stuff\\drink.rainy", drinkCount, function(err){
+            if (err){
+                console.log("something bad happened: "+err);
+            }
+        });
 	}
 	sms(e.message.channel, "rainy currently owes master9000: "+drinkCount+" drinks");
 }
@@ -1015,7 +1019,11 @@ function utilityRootBeer(e){
             amount=1;
         }
         rootbeerCount=rootbeerCount+amount;
-		fs.writeFile(".\\stuff\\drink.rainy", rootbeerCount);
+		fs.writeFile(".\\stuff\\rootbeer.rainy", rootbeerCount, function(err){
+            if (err){
+                console.log("something bad happened: "+err);
+            }
+        });
 	}
 	sms(e.message.channel, "rainy currently owes dragonite: "+rootbeerCount+" root beers (if he is unavailable payment may be made to his robot instead)");
 }
