@@ -1,2 +1,6 @@
 brad test
 !notify list
+!notify all
+reboot time kiddo
+!notify all
+!notify remove dnd

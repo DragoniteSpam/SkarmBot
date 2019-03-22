@@ -1,3 +1,5 @@
+// lead spaghetti chef: https://github.com/DragoniteSpam
+// secondary spaghetti chef: https://github.com/Master9000
 "use strict";
 // load discordie object
 //skarm
@@ -3069,7 +3071,8 @@ function helpReactions(e){
 function helpCredits(e){
 	var message="Credits\n\n"+
 		"***"+myName+"***\n\n"+
-		"Creator: Dragonite#7992\n"+
+		"Lead spaghetti chef: Dragonite#7992\n"+
+        "Seondary spaghetti chef: Master9000#9716\n"+
 		"Version: I never remember to update this number but you can check the number of commits on github I guess?\n"+
 		"Library: Discordie (shut up)\n"+
         "Did stuff when I was too lazy to: <@162952008712716288>\n\n"+
@@ -3127,7 +3130,9 @@ function exactTime(UNIX_timestamp){
   *this looks different *
   ***********************
   */
+
 //send the message to the channel tostring in skarm
+// author: https://github.com/Master9000
 function sien(message){
 	sms( client.Channels.get("430545618314985504"),message);
 }
@@ -3149,7 +3154,7 @@ function rangePinned(e, msg){
 //checks if author is bot editor
 function isMod(e){
 	if(e.message.author == MASTER || e.message.author == DRAGONITE) return true;
-	return false;	
+	return false;
 }
 //
 function google(e){
