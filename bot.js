@@ -3132,11 +3132,12 @@ function exactTime(UNIX_timestamp){
   */
 
 //send the message to the channel tostring in skarm
-// author: https://github.com/Master9000
+//author: https://github.com/Master9000
 function sien(message){
 	sms( client.Channels.get("430545618314985504"),message);
 }
 //route all channel.send messages through this one for ease of fixing issues
+//author: https://github.com/Master9000
 function sms(channel, message){
 	try{
 		messagesThisCycle++;
