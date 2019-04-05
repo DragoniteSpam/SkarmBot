@@ -205,7 +205,7 @@ class XKCD {
         when.setSeconds(0);
         
         if (this.latestDate>=when){
-            when=when.setTime(when.getTime()+(24*60*60*1000/*86,400,000*/));
+            when=when.setTime(when.getTime()+(6*60*60*1000/*21,600,000*/));
         }
         
         return (when-this.latestDate);
@@ -1420,7 +1420,7 @@ function addGeneral(message){
 	}
 	//appends normal lines into the general log	
 	if (!utilityIsAction(msg)){
-		sms(client.Channels.get("409856900469882880"),msg);
+		sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name);
 		fs.appendFile(getServerLineFile(message), msg+"\r\n", (err)=>{
 			if (err){
 				throw err;

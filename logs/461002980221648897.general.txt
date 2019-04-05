@@ -4,3 +4,18 @@ brad test
 reboot time kiddo
 !notify all
 !notify remove dnd
+!notify credits
+!notify all
+argo
+argo
+argo
+argo
+!notify remove connecticut
+!notify help
+!notify add username
+!notify list
+!notify list
+argo
+!notify help
+!notify list
+!notify add buiscuit
