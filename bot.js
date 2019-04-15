@@ -1481,7 +1481,7 @@ function sendRandomLineGeneral(message){
             throw err;
         }
     });
-	sendRandomFileLine(getServerActionFile(message), message.channel);
+	sendRandomFileLine(getServerLineFile(message), message.channel);
 }
 
 function sendRandomLineGeneralAction(message){
