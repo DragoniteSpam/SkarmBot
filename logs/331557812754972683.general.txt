@@ -155,3 +155,10 @@ owo bj 5000
 owo bj 7500
 owo bj 7500
 owobj 10000
+owo help
+owo bj 600
+owoh
+owo sell c u r e m
+owo hb
+owo hb 1500
+owo bj 2500
