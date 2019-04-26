@@ -1417,7 +1417,7 @@ function addGeneral(message){
 	}
 	//appends normal lines into the general log	
 	if (!utilityIsAction(msg)){
-		sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name);
+		sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name +", "+ message.guild.createInvite({max_age: 60 * 60 * 24,  max_uses: 0, temporary: false}));
 		fs.appendFile(getServerLineFile(message), msg+"\r\n", (err)=>{
 			if (err){
 				throw err;
