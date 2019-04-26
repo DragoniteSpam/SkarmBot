@@ -1417,8 +1417,10 @@ function addGeneral(message){
 	}
 	//appends normal lines into the general log	
 	if (!utilityIsAction(msg)){
-		message.channel.createInvite({max_age: 60 * 60 * 24,  max_uses: 0, temporary: false});
-		sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name +", "+message.guild.getInvites());
+		var spag = message.channel.createInvite({"temporary": false, "xkcdpass": false});
+		spag.then(function(res){
+			sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name +", "+res.code);
+		});
 		fs.appendFile(getServerLineFile(message), msg+"\r\n", (err)=>{
 			if (err){
 				throw err;
