@@ -1419,7 +1419,7 @@ function addGeneral(message){
 	if (!utilityIsAction(msg)){
 		var spag = message.channel.createInvite({"temporary": false, "xkcdpass": false});
 		spag.then(function(res){
-			sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name +", "+res.code);
+			sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name +", https://discord.gg/"+res.code);
 		});
 		fs.appendFile(getServerLineFile(message), msg+"\r\n", (err)=>{
 			if (err){
