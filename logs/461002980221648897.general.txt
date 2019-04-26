@@ -20,3 +20,5 @@ argo
 !notify list
 !notify add buiscuit
 shit
+!notify all
+!notify all

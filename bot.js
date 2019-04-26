@@ -163,6 +163,7 @@ class XKCD {
             } catch (err){
                 // an arbitrarily long time ago
                 this.latestDate=new Date(2000, 0, 1);
+                console.log("bad xkcd date, resetting");
             }
         }
         
@@ -236,7 +237,6 @@ class XKCD {
 
 var munroe=new XKCD();
 munroe.load();
-
 // Classes
 
 class User {
@@ -488,7 +488,6 @@ var botCanAnnounce = true;
 
 getToken();
 
-// I still don't actually know what this is for?
 client.connect({
 	token: token
 	//"MzE5MjkxMDg2NTcwOTEzODA2.DSFhww.FZ8I1T7Evls72hIHEcTXjX_rqAc"
@@ -508,7 +507,6 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	censorLoadList();
 	DRAGONITE_OBJECT=client.Users.get("137336478291329024");
 	ZEAL  = client.Guilds.get(GENERAL);
-	
 	var channel=client.Channels.get("394225765077745665");
 			if (channel!=null){
 				//sms(channel,"I'm alive again <@!" + MASTER + "> " + Date.now());
@@ -518,7 +516,6 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 				sms(channel, "we back");
 			}*/
     processShanties();
-    
 	fs.readFile("bot.js", function(err, data){
 		if(err){
 			throw err;
@@ -2630,14 +2627,18 @@ function utilityCreateUserTable(){
                 if (err){
                     console.log(err);
                 }
-                obj=JSON.parse(data);
-                if (typeof obj.characters==="undefined"){
-                    obj.characters=0;
+                try {
+                    obj=JSON.parse(data);
+                    if (typeof obj.characters==="undefined"){
+                        obj.characters=0;
+                    }
+                    if (typeof obj.todayMessages==="undefined"){
+                        obj.todayMessages=0;
+                    }
+                    userTable[obj.id]=obj;
+                } catch (e){
+                    console.log("bad user file: "+file);
                 }
-                if (typeof obj.todayMessages==="undefined"){
-                    obj.todayMessages=0;
-                }
-                userTable[obj.id]=obj;
             });
         });
     });

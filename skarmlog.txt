@@ -4733,3 +4733,5 @@ skarm is now a separate entity which walks the steps of dialogue past
     ok so
 how did you manage that one
     hmmm
+skarm why did you have to make it that difficult
+    it was nice while it lasted
