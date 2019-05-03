@@ -3080,7 +3080,7 @@ function helpReactions(e){
 function getVersion(){
 	var v = "";
 	for(var i in version){
-		v+=version[i];
+		v+=version[i]+".";
 	}
 	return v+Math.floor(Math.random()*1000);
 	
