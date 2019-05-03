@@ -98,6 +98,12 @@ var esOddsQuestion=20;
 var drinkCount=0;
 var rootbeerCount=0;
 
+//version 
+var version=[];
+for(var i=0;i<3+Math.random()*4;i++){
+	version.push(Math.floor(1+Math.random()*9));
+}
+
 if (fs.existsSync(".\\stuff\\drink.rainy")){
     fs.readFile(".\\stuff\\drink.rainy", function(err, data){
         if(err){
@@ -3071,13 +3077,22 @@ function helpReactions(e){
 	sms(e.message.channel,"```"+message+"```");
 }
 
+function getVersion(){
+	var v = "";
+	for(var i in version){
+		v+=version[i];
+	}
+	return v+Math.floor(Math.random()*1000);
+	
+}
+
 // Credits, obviously
 function helpCredits(e){
 	var message="Credits\n\n"+
 		"***"+myName+"***\n\n"+
 		"Lead spaghetti chef: Dragonite#7992\n"+
         "Seondary spaghetti chef: Master9000#9716\n"+
-		"Version: I never remember to update this number but you can check the number of commits on github I guess?\n"+
+		"Version:" +getVersion() +"\n"+
 		"Library: Discordie (shut up)\n"+
         "Did stuff when I was too lazy to: <@162952008712716288>\n\n"+
 		"https://www.youtube.com/c/dragonitespam \n"+
