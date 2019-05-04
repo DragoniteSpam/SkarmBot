@@ -472,6 +472,7 @@ var timerHour=setInterval(function(){
 var myName="SuperSkarm";
 
 var myNick="Skarm";
+var meNiks=["binary","metal","spaghetti","droid","ai","papa john","birdbrain","bot"];
 var token=null;
 
 var botCanSendUserCommands=true;
@@ -2013,7 +2014,7 @@ function REACT(message, id){
 	 * Specific reactions
 	 */
 	 if(message.author.id=="214587785510780929" && Math.random()*100<2){
-		sms(message.channel, "Bella go learn to drive");	 
+		sms(message.channel, "Bella go learn to drive");	
 	 }
 	 
 	//Hello There 
@@ -2023,6 +2024,7 @@ function REACT(message, id){
 	//Thanos did nothing wrong
 	if(message.content.toLowerCase() == "perfectly balanced"){
 		sms(message.channel,"As all things should be");
+		return true;
 	}
 	//gratitude
 	if(message.content.toLowerCase() == "thanks skarm" && Math.random() < .4){
@@ -2144,6 +2146,12 @@ function REACT(message, id){
 		return true;
 	}
 	
+	//star wars cont.
+	if(message.content.toLowerCase().includes("droid") && message.content.toLowerCase().includes("attack") && message.content.toLowerCase().includes("wooki")){
+		sms("it is critical that we send an attack group there immediately", message.channel);
+		sendMessageDelay("it is a system we cannot afford to lose", message.channel);
+		return true;
+	}
 
 	/*
 	 * Generic reactions
@@ -2207,18 +2215,10 @@ function REACT(message, id){
 	 */
 	 
 	if(
-		(
-		(message.content.toLowerCase().includes(" "+myNick.toLowerCase())
-		|| message.content.toLowerCase().includes("birdbrain")
-		||	(message.content.toLowerCase().includes("filthy heap of metal binary spaghetti")
-			||message.content.toLowerCase().includes("bot") 
-			&& Math.random() <.01)
-		)
-	||	message.content.toLowerCase().startsWith(myNick.toLowerCase())
-		)&&(message.content.match(new RegExp(" ", "g"))
-	||[]).length>2
-	&&botCanSpeak
-	|| message.content.toLowerCase().includes("skram!")){
+		(message.content.toLowerCase().includes(" "+myNick.toLowerCase())|| otherMentions(message.content)* Math.random() >.9
+		||message.content.toLowerCase().startsWith(myNick.toLowerCase()))
+		&&(message.content.match(new RegExp(" ", "g"))||[]).length>2&&botCanSpeak 
+		|| message.content.toLowerCase().includes("skram!)){
 		botCanSpeak=false;
 		message.channel.sendTyping();
 		setTimeout(function(){
@@ -2252,6 +2252,16 @@ function REACT(message, id){
 		return true;
 	}
 	return false;
+}
+
+function otherMentions(message){
+	var sum=0;
+	for(var i in MeNiks){
+		if(message.toLowerCase().contains(meNiks[i])){
+			sum++;
+		}
+	}
+	return sum;
 }
 
 function getShantyBlock(song, start){
@@ -3080,7 +3090,7 @@ function helpReactions(e){
 function getVersion(){
 	var v = "";
 	for(var i in version){
-		v+=version[i]+".";
+		v+=version[i];
 	}
 	return v+Math.floor(Math.random()*1000);
 	
