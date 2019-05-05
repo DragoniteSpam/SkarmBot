@@ -2218,7 +2218,7 @@ function REACT(message, id){
 		(message.content.toLowerCase().includes(" "+myNick.toLowerCase())|| otherMentions(message.content)* Math.random() >.9
 		||message.content.toLowerCase().startsWith(myNick.toLowerCase()))
 		&&(message.content.match(new RegExp(" ", "g"))||[]).length>2&&botCanSpeak 
-		|| message.content.toLowerCase().includes("skram!)){
+		|| message.content.toLowerCase().includes("skram!")){
 		botCanSpeak=false;
 		message.channel.sendTyping();
 		setTimeout(function(){
@@ -2256,7 +2256,7 @@ function REACT(message, id){
 
 function otherMentions(message){
 	var sum=0;
-	for(var i in MeNiks){
+	for(var i in meNiks){
 		if(message.toLowerCase().contains(meNiks[i])){
 			sum++;
 		}
