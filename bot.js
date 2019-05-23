@@ -67,7 +67,7 @@ const MODLOG="344295609194250250";
 const MASTER="162952008712716288";
 const DRAGONITE="137336478291329024";
 const EYAN_ID="304073163669766158";
-const PRIMA="425428688830726144";
+const PRIMA="425428688830726144"; const TIBERIA = PRIMA;
 //Skarm channels
 const dataGen = "409856900469882880";
 const dataAct = "409860642942615573";
@@ -650,6 +650,17 @@ client.Dispatcher.on(events.PRESENCE_UPDATE, e=> {
 });
 
 client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
+    // special case trolling
+    if (e.message.channel.id == "580946892201000960") {
+        if (e.message.content.startsWith("4! ")) {
+            var content = e.message.content.replace("4! ", "");
+            // 4chan general: 580876497573904431
+            // skarm general: 394225765077745665
+            if (content.length > 0) {
+                client.Channels.get("394225765077745665").sendMessage(content);
+            }
+        }
+    }
 	// don't do anything in PMs?
 	if (e.message.isPrivate){
 		return false;
@@ -787,201 +798,211 @@ function hourlyPoints(author, message){
 }
 
 function massConditioning(e, message, msg){
-	if (message=="e!help"){
-			helpHelpHelp(e);
-			totalBotCommands++;
-		} else if (message=="e!help says"){
-			helpSays(e);
-			totalBotCommands++;
-		} else if (message=="e!help twitch"){
-			helpTwitch(e);
-			totalBotCommands++;
-		} else if (message=="e!help lol"){
-			helpLol(e);
-			totalBotCommands++;
-		} else if (message=="e!help misc"){
-			helpMisc(e);
-			totalBotCommands++;
-		/*} else if (message=="e!help pictures"){
-			helpPictures(e);
-			totalBotCommands++;*/
-		} else if (message=="e!help credits"){
-			helpCredits(e);
-			totalBotCommands++;
-		} else if (message=="e!help reactions"){
-			helpReactions(e);
-			totalBotCommands++;
-		} else if (message=="e!help mods"){
-			helpMods(e);
-			totalBotCommands++;
-		// Utilities
-		} else if (message=="e!size"){
-			utiliyLineCount(e);
-			totalBotCommands++;
-		} else if (message=="e!sact"){
-			utilityActCount(e);
-			totalBotCommands++;
-		} else if (message=="e!bigbrother"){
-			if(isMod(e)){
-				//utilityDumpServer(e);
-			}else{
-				sms(e.message.channel,"This has been turned off to preserve sanity. If you're just curious, it fetches the last x messages of the server.");
-			}
-			totalBotCommands++;
-		} else if (message=="e!stats"){
-			totalBotCommands++;
-			utilityStats(e);
-        } else if (message.startsWith("e!user")){
+    if (message == "e!guilds") {
+        try {
+            var list = "";
+            for (var guild of client.Guilds.toArray()) {
+                list = list + client.Guilds.get(guild)/*.name*/ + "\n";
+            }
+            e.message.channel.sendMessage("```" + list + "```");
+        } catch {
+            e.message.channel.sendMessage("¯\\\_(ツ)\_/¯");
+        }
+    } else if (message=="e!help"){
+        helpHelpHelp(e);
+        totalBotCommands++;
+    } else if (message=="e!help says"){
+        helpSays(e);
+        totalBotCommands++;
+    } else if (message=="e!help twitch"){
+        helpTwitch(e);
+        totalBotCommands++;
+    } else if (message=="e!help lol"){
+        helpLol(e);
+        totalBotCommands++;
+    } else if (message=="e!help misc"){
+        helpMisc(e);
+        totalBotCommands++;
+    /*} else if (message=="e!help pictures"){
+        helpPictures(e);
+        totalBotCommands++;*/
+    } else if (message=="e!help credits"){
+        helpCredits(e);
+        totalBotCommands++;
+    } else if (message=="e!help reactions"){
+        helpReactions(e);
+        totalBotCommands++;
+    } else if (message=="e!help mods"){
+        helpMods(e);
+        totalBotCommands++;
+    // Utilities
+    } else if (message=="e!size"){
+        utiliyLineCount(e);
+        totalBotCommands++;
+    } else if (message=="e!sact"){
+        utilityActCount(e);
+        totalBotCommands++;
+    } else if (message=="e!bigbrother"){
+        if(isMod(e)){
+            //utilityDumpServer(e);
+        }else{
+            sms(e.message.channel,"This has been turned off to preserve sanity. If you're just curious, it fetches the last x messages of the server.");
+        }
+        totalBotCommands++;
+    } else if (message=="e!stats"){
+        totalBotCommands++;
+        utilityStats(e);
+    } else if (message.startsWith("e!user")){
+        totalBotCommands++;
+        utilityUserStats(e);
+    } else if (message=="e!ping"){
+        totalBotCommands++;
+        utilityPing(e);
+    } else if (message.startsWith("e!hug")){
+        totalBotCommands++;
+        utilityHug(e);
+    } else if (message.startsWith("e!drink")){
+        totalBotCommands++;
+        utilityDrink(e);
+    } else if (message.startsWith("e!beer")){
+        totalBotCommands++;
+        utilityRootBeer(e);
+    }  else if (message.startsWith("e!sandwich")){
+        totalBotCommands++;
+        utilitySandwich(e);
+    } else if (message.startsWith("e!bot")){
+        totalBotCommands++;
+        utilityBotStats(e);
+    }else if (message.startsWith("e!kenobi")){
+        totalBotCommands++;
+        utilityKenobi(e);
+    }else if (utilPins(e, msg)){
+        totalBotCommands++;
+    } else if (message.startsWith("e!game ")){
+        utilityGame(e);
+    } else if (message.startsWith("e!silver ")){
+        utilitySilver(e);
+    } else if (message.startsWith("e!skarm")){
+        utilitySkarm(e);
+    } else if (message.startsWith("e!suggest")){
+        utilitySuggestion(e);
+    } else if (message.startsWith("e!xkcd")){
+        utilityMunroe(e);
+    // Quote
+    } else if (message.startsWith("e!says-add ")){
+        totalBotCommands++;
+        add(e.message);
+    } else if (message=="e!test"){
+        sms(e.message.channel,e.message.author.username+" can submit messages: "+userHasKickingBoots(e.message.author, e.message.channel));
+        totalBotCommands++;
+    // Twitch
+    } else if (message=="e!live"){
+        twitchGetIsLive(e.message.channel);
+        e.message.channel.sendMessage("This function has been commented out because it stopped working for no reason back in May 2018. Sorry.");
+        totalBotCommands++;
+    }
+    // Pictures
+    /*} else if (message=="e!waifu"){
+        waifuSend(e.message.channel);
+        totalBotCommands++;
+    } else if (message=="e!cat"){
+        catSend(e.message.channel);
+        totalBotCommands++;
+    }*/
+    
+    // Censor functions
+    else if (message.startsWith("e!censor")){
+        censorCommandSet(e.message);
+    // More misc. functions
+    } else if (message==="e!crash"){
+        utilityCrash(e);
+    } else if (message==="e!shanties"){
+        processShanties();
+    } else if (message==="e!save"){
+        utilitySaveStats();
+    }
+    // Set/remove Big Brother (and do other things with ref strings)
+    else if (message.startsWith("e!setref")){
+        if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
+            var spl=message.split(" ");
+            var user=userTable[authorString(e.message.author)];
+            if (spl.length>=2){
+                user.refString=spl[1];
+                sms(e.message.channel, "**"+user.name+",** your reference string has been set to **"+spl[1]+"**. (You might want to edit your privacy settings to allow DMs from server members.)");
+            } else {
+                user.refString="";
+                sms(e.message.channel, "**"+user.name+",** your reference string has been removed!");
+            }
+        } else {
+            sms(e.message.channel, "**"+e.message.author.username+",** you need to be Red Gaoler or higher to set your reference string!");
+        }
+    }
+    else if (message.startsWith("e!blockref")){
+        if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
+            var user=userTable[authorString(e.message.author)];
+            if (user.refString.length>0){
+                user.blockRefString=true;
+                sms(e.message.channel, "Skarm should no longer say your ref string in regurgitated lines! (Use `e!unblockref` to turn this feature off.)");
+            } else {
+                sms(e.message.channel, "You have no ref string set! You can set one with `e!setref <word>`.");
+            }
+        } else {
+            sms(e.message.channel, "You can't do this quite yet. Wait for Red Gaoler rank and then you can use that command! (If enough non-Gaolers request this feature it'll probably be enabled later).")
+        }
+        
+    } else if (message.startsWith("e!unblockref")){
+        if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
+            var user=userTable[authorString(e.message.author)];
+            if (user.refString.length>0){
+                user.blockRefString=false;
+                sms(e.message.channel, "Skarm can say your ref string in regurgitated lines again!");
+            } else {
+                sms(e.message.channel, "You have no ref string set! You can set one with `e!setref <word>`.");
+            }
+        } else {
+            sms(e.message.channel, "You can't do this quite yet. Wait for Red Gaoler rank and then you can use that command! (If enough non-Gaolers request this feature it'll probably be enabled later).")
+        }
+    }
+    // Lol
+    if (botCanSendUserCommands){
+        if (message=="e!will"){
+            annoyWill(e.message.channel);
             totalBotCommands++;
-            utilityUserStats(e);
-		} else if (message=="e!ping"){
-			totalBotCommands++;
-			utilityPing(e);
-		} else if (message.startsWith("e!hug")){
-			totalBotCommands++;
-			utilityHug(e);
-		} else if (message.startsWith("e!drink")){
-			totalBotCommands++;
-			utilityDrink(e);
-		} else if (message.startsWith("e!beer")){
-			totalBotCommands++;
-			utilityRootBeer(e);
-		}  else if (message.startsWith("e!sandwich")){
-			totalBotCommands++;
-			utilitySandwich(e);
-		} else if (message.startsWith("e!bot")){
-			totalBotCommands++;
-			utilityBotStats(e);
-		}else if (message.startsWith("e!kenobi")){
-			totalBotCommands++;
-			utilityKenobi(e);
-		}else if (utilPins(e, msg)){
-			totalBotCommands++;
-		} else if (message.startsWith("e!game ")){
-			utilityGame(e);
-		} else if (message.startsWith("e!silver ")){
-			utilitySilver(e);
-        } else if (message.startsWith("e!skarm")){
-            utilitySkarm(e);
-        } else if (message.startsWith("e!suggest")){
-            utilitySuggestion(e);
-        } else if (message.startsWith("e!xkcd")){
-            utilityMunroe(e);
-		// Quote
-		} else if (message.startsWith("e!says-add ")){
-			totalBotCommands++;
-			add(e.message);
-		} else if (message=="e!test"){
-			sms(e.message.channel,e.message.author.username+" can submit messages: "+userHasKickingBoots(e.message.author, e.message.channel));
-			totalBotCommands++;
-		// Twitch
-		} else if (message=="e!live"){
-			twitchGetIsLive(e.message.channel);
-            e.message.channel.sendMessage("This function has been commented out because it stopped working for no reason back in May 2018. Sorry.");
-			totalBotCommands++;
-		}
-		// Pictures
-		/*} else if (message=="e!waifu"){
-			waifuSend(e.message.channel);
-			totalBotCommands++;
-		} else if (message=="e!cat"){
-			catSend(e.message.channel);
-			totalBotCommands++;
-		}*/
-		
-		// Censor functions
-		else if (message.startsWith("e!censor")){
-			censorCommandSet(e.message);
-        // More misc. functions
-		} else if (message==="e!crash"){
-            utilityCrash(e);
-        } else if (message==="e!shanties"){
-            processShanties();
-        } else if (message==="e!save"){
-            utilitySaveStats();
+            botCanSendUserCommands=false;
+        } else if (message==="e!master"){
+            annoyMaster(e.message.channel);
+            totalBotCommands++;
+            botCanSendUserCommands=false;
+        }else if (message == "!pink"){
+            totalBotCommands++;
+            utilityPink(e);
+            utilityPinker(e);
+        }else if (message=="e!refresh"){
+            totalBotCommands++;
+            utilityUpdateEarth(e);
+            utilityPink(e);
+        }else if (message=="e!treason"){
+            //("ಠ_ಠ")
+            sms(e.message.channel, "God damn it, Squid.");
+            totalBotCommands++;
+            botCanSendUserCommands=false;
+        } else if (message=="e!back"){
+            sms(e.message.channel, "\"Back\" count: "+statsGeneral.everything.back);
+            totalBotCommands++;
+            botCanSendUserCommands=false;
+        } else if(message.startsWith("e!google")){
+            totalBotCommands++;
+            google(e);
+        } else if (message.startsWith("e!wolfram")){
+            totalBotCommands++;
+            wolfram(e);
+        } else if (message.startsWith("e!so ")){
+            totalBotCommands++;
+            stackOverflow(e);
+        } else if (message==="e!rainy"){
+            totalBotCommands++;
+            sms(e.message.channel, "cease!");
         }
-        // Set/remove Big Brother (and do other things with ref strings)
-        else if (message.startsWith("e!setref")){
-            if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
-                var spl=message.split(" ");
-                var user=userTable[authorString(e.message.author)];
-                if (spl.length>=2){
-                    user.refString=spl[1];
-                    sms(e.message.channel, "**"+user.name+",** your reference string has been set to **"+spl[1]+"**. (You might want to edit your privacy settings to allow DMs from server members.)");
-                } else {
-                    user.refString="";
-                    sms(e.message.channel, "**"+user.name+",** your reference string has been removed!");
-                }
-            } else {
-                sms(e.message.channel, "**"+e.message.author.username+",** you need to be Red Gaoler or higher to set your reference string!");
-            }
-        }
-        else if (message.startsWith("e!blockref")){
-            if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
-                var user=userTable[authorString(e.message.author)];
-                if (user.refString.length>0){
-                    user.blockRefString=true;
-                    sms(e.message.channel, "Skarm should no longer say your ref string in regurgitated lines! (Use `e!unblockref` to turn this feature off.)");
-                } else {
-                    sms(e.message.channel, "You have no ref string set! You can set one with `e!setref <word>`.");
-                }
-            } else {
-                sms(e.message.channel, "You can't do this quite yet. Wait for Red Gaoler rank and then you can use that command! (If enough non-Gaolers request this feature it'll probably be enabled later).")
-            }
-            
-        } else if (message.startsWith("e!unblockref")){
-            if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
-                var user=userTable[authorString(e.message.author)];
-                if (user.refString.length>0){
-                    user.blockRefString=false;
-                    sms(e.message.channel, "Skarm can say your ref string in regurgitated lines again!");
-                } else {
-                    sms(e.message.channel, "You have no ref string set! You can set one with `e!setref <word>`.");
-                }
-            } else {
-                sms(e.message.channel, "You can't do this quite yet. Wait for Red Gaoler rank and then you can use that command! (If enough non-Gaolers request this feature it'll probably be enabled later).")
-            }
-        }
-		// Lol
-		if (botCanSendUserCommands){
-			if (message=="e!will"){
-				annoyWill(e.message.channel);
-				totalBotCommands++;
-				botCanSendUserCommands=false;
-            } else if (message==="e!master"){
-                annoyMaster(e.message.channel);
-                totalBotCommands++;
-                botCanSendUserCommands=false;
-			}else if (message == "!pink"){
-				totalBotCommands++;
-				utilityPink(e);
-				utilityPinker(e);
-			}else if (message=="e!refresh"){
-				totalBotCommands++;
-				utilityUpdateEarth(e);
-				utilityPink(e);
-			}else if (message=="e!treason"){
-				//("ಠ_ಠ")
-				sms(e.message.channel, "God damn it, Squid.");
-				totalBotCommands++;
-				botCanSendUserCommands=false;
-			} else if (message=="e!back"){
-				sms(e.message.channel, "\"Back\" count: "+statsGeneral.everything.back);
-				totalBotCommands++;
-				botCanSendUserCommands=false;
-			} else if(message.startsWith("e!google")){
-				totalBotCommands++;
-				google(e);
-            } else if (message.startsWith("e!wolfram")){
-                totalBotCommands++;
-                wolfram(e);
-            } else if (message.startsWith("e!so ")){
-                totalBotCommands++;
-                stackOverflow(e);
-			} else if (message==="e!rainy"){
-				totalBotCommands++;
-				sms(e.message.channel, "cease!");
-		}
         if (lineIsQuestion(message)&&Math.random()*100<esOddsQuestion){
             sendRandomLineGeneral(e.message);
         }/*
@@ -2218,7 +2239,7 @@ function REACT(message, id){
 		(message.content.toLowerCase().includes(" "+myNick.toLowerCase())|| otherMentions(message.content)* Math.random() >.9
 		||message.content.toLowerCase().startsWith(myNick.toLowerCase()))
 		&&(message.content.match(new RegExp(" ", "g"))||[]).length>2&&botCanSpeak 
-		|| message.content.toLowerCase().includes("skram!)){
+		|| message.content.toLowerCase().includes("skram!")){
 		botCanSpeak=false;
 		message.channel.sendTyping();
 		setTimeout(function(){
@@ -2255,9 +2276,11 @@ function REACT(message, id){
 }
 
 function otherMentions(message){
+    return 0;
+    
 	var sum=0;
-	for(var i in MeNiks){
-		if(message.toLowerCase().contains(meNiks[i])){
+	for(var i in meNiks){
+		if(message.content.toLowerCase().contains(meNiks[i])){
 			sum++;
 		}
 	}

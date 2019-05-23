@@ -1,7 +1,4 @@
 next xkcd check scheduled for: 38505419
-bad user file: 182597101895680000.zeal
-bad user file: 330137292192612354.zeal
 bad user file: 533424598151069697.zeal
 bad user file: 555965845629829120.zeal
 Connected as EyanSays (Skarm). Yippee!
-^C
