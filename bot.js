@@ -1221,7 +1221,6 @@ function utilityUpdateEarth(e){
 		var member = null;
 		//assigns zelos to Kingdom of Zeal guild variable
 		var zelos = e.message.guild;
-		//this whole shithole assigns enlightened and earthbound to their respective roles, its a clusterfuck like no other
 		var enlightened = null;
 		var earthbound = null;
 		var monarch = null;
@@ -1394,7 +1393,7 @@ function getMember(id){
 			return zelos.members[i];
         }
     }
-	sien("shit");
+	sien("something broke in func getMember(id)");
 }
 /*
  ********************
@@ -1749,9 +1748,8 @@ function annoyDeci(channel){
 	sms(channel,responses[Math.floor(Math.random()*responses.length)]);
 }
 
-// Watch your fucking language.
 function annoyCandyman(channel){
-	sms(channel,"Watch your FUCKING language ಠ_ಠ");
+	sms(channel,"Watch your language ಠ_ಠ");
 }
 
 /*
@@ -2346,7 +2344,7 @@ function censorText(text, channel, author, message, redactMessage){
 		}
 		var canTextReplace=true;
 		var swearReplacementBlacklist=[ //the list of people blacklisted by ID
-			[//"162952008712716288" //this was just for fuck so no longer needed. hopefully won't screw up compiler
+			[ 
 			   "263474950181093396" //putting m9k's testing alt in here to avoid a bug just in case
 			]
 		]
