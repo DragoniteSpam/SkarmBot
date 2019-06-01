@@ -46,3 +46,6 @@ my head is itchy
 client.guilds.foreach(fn)
 i hate having a head
 thanks skarm
+merge conflicts make the world go round
+4! the truth hurts, man
+4! +455162765380681729 other channel

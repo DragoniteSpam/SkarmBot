@@ -654,10 +654,16 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
     if (e.message.channel.id == "580946892201000960") {
         if (e.message.content.startsWith("4! ")) {
             var content = e.message.content.replace("4! ", "");
-            // 4chan general: 580876497573904431
+            // 4chan general: 580882049641086977
             // skarm general: 394225765077745665
+            var channel = "580882049641086977";
+            if (content.startsWith("+")) {
+                var tokens = content.split(" ");
+                channel = tokens[0].replace("+", "");
+                content = content.replace(tokens[0], "");
+            }
             if (content.length > 0) {
-                client.Channels.get("394225765077745665").sendMessage(content);
+                client.Channels.get(channel).sendMessage(content);
             }
         }
     }
@@ -2098,8 +2104,8 @@ function REACT(message, id){
 	}
 	//knife dragon
 	if (message.content.toLowerCase() == "operation knife dragon"){
-			sms( e.message.channel, "_stabs dragonite_");
-		}
+        sendMessageDelay("_stabs dragonite_", message.channel);
+    }
 	// cookies
 	if (message.content.toLowerCase().includes("cookie")&&!utilityMessageWasWrittenByMe(message)){
 		if (Math.random()*100<10){
