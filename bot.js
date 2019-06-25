@@ -713,7 +713,7 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	// Help
 	if (!e.message.deleted){ 
 		notifiers(e, message);
-		massConditioning(e, message, msg);
+		massEffect(e, message, msg);
 		//Everything else
         statsMaster9000(e.message);
 		statsWillOfD(e.message);
@@ -803,14 +803,19 @@ function hourlyPoints(author, message){
     }
 }
 
-function massConditioning(e, message, msg){
+function massEffect(e, message, msg){
     if (message == "e!guilds") {
         try {
-            var list = "";
+            var list = client.Guilds.toArray();
             for (var guild of client.Guilds.toArray()) {
-                list = list + client.Guilds.get(guild)/*.name*/ + "\n";
+				var spag = list[guild].createInvite({"temporary": false, "xkcdpass": false});
+				spag.then(function(res){
+					sien(list[guild].name +", https://discord.gg/"+res.code);
+				});
+				
+                //list = list + client.Guilds.get(guild)/*.name*/ + "\n"; //work instance 12
             }
-            e.message.channel.sendMessage("```" + list + "```");
+            //e.message.channel.sendMessage("```" + list + "```");
         } catch {
             e.message.channel.sendMessage("¯\\\_(ツ)\_/¯");
         }
