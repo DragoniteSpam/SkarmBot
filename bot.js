@@ -525,8 +525,10 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     processShanties();
 	fs.readFile("bot.js", function(err, data){
 		if(err){
+            console.log("idk either");
 			throw err;
 		}
+        console.log(data.toString().split('\n').length+" lines of spaghetti");
         client.User.setGame({name: data.toString().split('\n').length+" lines of spaghetti", type: 0});
 	});
 });

@@ -49,3 +49,13 @@ thanks skarm
 merge conflicts make the world go round
 4! the truth hurts, man
 4! +455162765380681729 other channel
+he sucks
+e!guilds
+e!guild
+e!guilds
+i need to figure out how to get him to stop spitting out a wall of permissions denied first
+there also seems to be a slight async issue
+e!guilds
+e!guilds
+e!bot
+oh right it failed
