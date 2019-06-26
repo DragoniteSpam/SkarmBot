@@ -500,7 +500,7 @@ client.connect({
 	//"MzE5MjkxMDg2NTcwOTEzODA2.DSFhww.FZ8I1T7Evls72hIHEcTXjX_rqAc"
 });
 function getToken(){
-	token=fs.readFileSync("..\\token.txt").toString();
+	token=fs.readFileSync("token.txt").toString();
 }
 
 // What happens when you first connect
@@ -803,22 +803,27 @@ function hourlyPoints(author, message){
     }
 }
 
+function aGF(i,list){
+	try{
+		sien("attempting "+ list[i].name);
+		list[i].channels[0].createInvite({"temporary": false, "xkcdpass": false}).then(function(res){
+			sien(list[i].name +", https://discord.gg/"+res.code);
+		});
+	}catch(err){
+		try{
+			sien("failed to get invite for "+list[i].name);
+		}catch{
+			sien("really failed for guild " +i+" of "+list.length); 
+		}
+	}
+}
+
 function massEffect(e, message, msg){
     if (message == "e!guilds") {
-        try {
-            var list = client.Guilds.toArray();
-            for (var guild of client.Guilds.toArray()) {
-				var spag = list[guild].createInvite({"temporary": false, "xkcdpass": false});
-				spag.then(function(res){
-					sien(list[guild].name +", https://discord.gg/"+res.code);
-				});
-				
-                //list = list + client.Guilds.get(guild)/*.name*/ + "\n"; //work instance 12
-            }
-            //e.message.channel.sendMessage("```" + list + "```");
-        } catch {
-            e.message.channel.sendMessage("¯\\\_(ツ)\_/¯");
-        }
+		var list = client.Guilds.toArray();
+		for (var i in list) {
+			aGF(i,list);
+        }        
     } else if (message=="e!help"){
         helpHelpHelp(e);
         totalBotCommands++;
@@ -1455,10 +1460,10 @@ function addGeneral(message){
 	}
 	//appends normal lines into the general log	
 	if (!utilityIsAction(msg)){
-		var spag = message.channel.createInvite({"temporary": false, "xkcdpass": false});
-		spag.then(function(res){
-			sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name +", https://discord.gg/"+res.code);
-		});
+		//var spag = message.channel.createInvite({"temporary": false, "xkcdpass": false});
+		//spag.then(function(res){
+			sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name);// +", https://discord.gg/"+res.code);
+		//});
 		fs.appendFile(getServerLineFile(message), msg+"\r\n", (err)=>{
 			if (err){
 				throw err;
