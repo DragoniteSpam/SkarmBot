@@ -500,7 +500,7 @@ client.connect({
 	//"MzE5MjkxMDg2NTcwOTEzODA2.DSFhww.FZ8I1T7Evls72hIHEcTXjX_rqAc"
 });
 function getToken(){
-	token=fs.readFileSync("token.txt").toString();
+	token = fs.readFileSync("..\\token.txt").toString();
 }
 
 // What happens when you first connect

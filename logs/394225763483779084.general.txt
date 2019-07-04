@@ -59,3 +59,4 @@ e!guilds
 e!guilds
 e!bot
 oh right it failed
+good job
