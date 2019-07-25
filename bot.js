@@ -275,7 +275,7 @@ class User {
 		
 		this.todayWasWarned=false;
         
-        this.refString="";
+        this.refString=[];
         this.blockRefString=false;
         this.talkTimer=BIG_BROTHER_TIMEOUT;
         this.pointEligible=true;
@@ -652,6 +652,9 @@ client.Dispatcher.on(events.PRESENCE_UPDATE, e=> {
 });
 
 client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
+	
+	roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442")
+			.commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
     // special case trolling
     if (e.message.channel.id == "580946892201000960") {
         if (e.message.content.startsWith("4! ")) {
@@ -743,6 +746,8 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 });
 
 function bigBrother(e, author, message){
+	paracesis(e);
+	/* 
     var usernameString=authorString(author);
 	var user;
 	if (usernameString in userTable){
@@ -781,6 +786,30 @@ function bigBrother(e, author, message){
             }
         }
     }
+}
+*/
+
+//From Slon used for AP CS P 2019
+function paracesis(e){
+	for(var i in userTable){
+		var discordUser = users[i];
+		if(e.message.author.id == discordUser.id){
+			users[i].talkTimer=5;
+		}
+		if(discordUser.talkTimer<1&&canViewChannel(client.Users.get(discordUser.id), e.message.channel)){
+			var bothered = false;
+			for(var j in discordUser.refString){
+				var trig = discordUser.refString[j];
+				if(!bothered && e.message.content.toLowerCase().includes(trig)){
+					client.Users.get(discordUser.id).openDM().then(function(dm){
+						var quote=e.message.content+" ("+e.message.author.username+")";
+						dm.sendMessage("A reference string of yours was mentioned!\n```"+quote+"``` in <#"+e.message.channel.id+">");
+					});
+					bothered = true;
+				}
+			}
+		}
+	}
 }
 
 function canViewChannel(user, channel){
@@ -3286,4 +3315,12 @@ function wolfram(e){
 function isWeekend(){
     var day=new Date(Date.now()).getDay();
     return (day==6)||(day==0);
+}
+
+function roleGetter(list,id){
+	for(var i in list){
+		if(list[i].id==id)
+			return list[i];
+	}
+	return null;
 }
