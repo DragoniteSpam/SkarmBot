@@ -1,3 +1,7 @@
+"use strict";
+const fs = require("fs");
+const Skarm = require("./skarm.js");
+
 class XKCD {
     constructor() {
         this.channels = [];
@@ -12,7 +16,7 @@ class XKCD {
         
         fs.writeFile(".\\data\\xk.cd", JSON.stringify(required), function(err) {
             if (err) {
-                console.log("failed to write out the xkcd data for some reason");
+                Skarm.log("failed to write out the xkcd data for some reason");
             }
         });
     }
@@ -30,12 +34,12 @@ class XKCD {
     }
     
     post() {
-        // @todo
+        Skarm.todo();
     }
     
     toggleChannel(channel){
         if (this.channels.includes(channel.id)){
-            // @todo
+            Skarm.todo();
             sendMessageDelay("xkcds will no longer be sent to this channel!", channel);
             this.channels.splice(this.channels.indexOf(channel.id), 1);
         } else {

@@ -13,7 +13,9 @@ const client = new discordie({autoReconnect:true});
 const events = discordie.Events;
 
 // we made these
+const Skarm = require("./javascript/skarm.js");
 const { ShantyCollection, Shanty } = require("./javascript/shanties.js");
+const XKCD = require("./javascript/xkcd.js");
 
 // i'm in?
 const token = fs.readFileSync("..\\descrution.txt").toString();
@@ -25,8 +27,7 @@ client.connect({
 let shanties;
 
 client.Dispatcher.on(events.GATEWAY_READY, e => {
-	console.log("Connected as " + client.User.username + ". Yippee!");
-    console.log();
+	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
     shanties = new ShantyCollection();
     //shanties.load("ragnar-the-red.shanty");
 });

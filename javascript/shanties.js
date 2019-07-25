@@ -1,5 +1,6 @@
 "use strict";
 const fs = require("fs");
+const Skarm = require("./skarm.js");
 
 class ShantyCollection {
     constructor() {
