@@ -9,6 +9,8 @@
   "author": "Dragonite",
   "license": "MIT",
   "dependencies": {
-    "discordie": "^0.5.5",
+    "discordie": "^0.11.0",
+    "node-wolfram": "0.0.1",
+    "request": "^2.88.0"
   }
 }
