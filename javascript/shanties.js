@@ -4,6 +4,4 @@ class Shanties {
     }
 }
 
-module.exports = {
-    Shanties
-}
+module.exports = Shanties;
