@@ -89,6 +89,7 @@ const BIG_BROTHER_TIMEOUT=10;
 // talk odds
 
 var esOddsSkyrim=25;
+var esOddsQuote=25;
 var esOddsRandomLine=30;
 var esOddsRandomPun=4;
 var esOddsQuestion=20;
@@ -690,16 +691,6 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	}
 	var author = e.message.author;
     var message=e.message.content.toLowerCase();
-    
-    // hard-coding gummy stuff
-    if (author.id==="199725993416589313"){
-        if (message.includes(" ex")){
-            e.message.delete();
-        }
-        if (message.includes("gf")){
-            e.message.delete();
-        }
-    }
     
     // colloquially known as ref strings
     bigBrother(e, author, message);
@@ -1506,9 +1497,19 @@ function sendRandomLineSkyrim(message){
     });
     var file;
     do {
-        file="./skyrim/output"+Math.floor(Math.random()*50)+".skyrim";
+        file="./quote/output"+Math.floor(Math.random()*50)+".skyrim";
     } while (!fs.existsSync(file));
 	sendRandomFileLine(file, message.channel);
+}
+
+function sendRandomLineQuote(message){
+    fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
+        if (err){
+            throw err;
+        }
+    });
+    var files = ["douglas.adams"];
+    sendRandomFileLine("./quote/" + files[Math.floor(Math.random() * files.length - 1)], message.channel);
 }
 
 function sendRandomLinePun(message){
@@ -2276,6 +2277,8 @@ function REACT(message, id){
                 } else {
                     if (Math.random()*100<esOddsSkyrim&&isWeekend()){
                         sendRandomLineSkyrim(message);
+                    } else if (Math.random() * 100 < esOddsQuote && isPunDay()) {
+                        sendRandomLineQuote(message);
                     } else if (Math.random()*100<esOddsRandomLine){
                         sendRandomLine(message);
                     } else if (Math.random()*100<esOddsRandomPun){
@@ -3284,6 +3287,12 @@ function wolfram(e){
 }
 
 function isWeekend(){
-    var day=new Date(Date.now()).getDay();
-    return (day==6)||(day==0);
+    var day = new Date(Date.now()).getDay();
+    return (day == 6) || (day == 0);
+}
+
+function isPunDay(){
+    // ie monday or tuesday
+    var day = new Date(Date.now()).getDay();
+    return (day == 1) || (day == 2);
 }
