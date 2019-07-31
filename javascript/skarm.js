@@ -7,8 +7,12 @@ class Skarm {
         console.log(message);
     }
     
-    static todo() {
-        throw "not yet implemented";
+    static todo(message) {
+        throw "not yet implemented: " + message;
+    }
+    
+    static logError(err) {
+        // you can do whatever you want i guess
     }
 }
 
