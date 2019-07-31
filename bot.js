@@ -14,8 +14,10 @@ const events = discordie.Events;
 
 // we made these
 const Skarm = require("./javascript/skarm.js");
+const Bot = require("./javascript/skarmbot.js");
 const { ShantyCollection, Shanty } = require("./javascript/shanties.js");
 const XKCD = require("./javascript/xkcd.js");
+const Constants = require("./javascript/constants.js");
 
 // i'm in?
 const token = fs.readFileSync("..\\descrution.txt").toString();
@@ -30,4 +32,5 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
     shanties = new ShantyCollection();
     //shanties.load("ragnar-the-red.shanty");
+    client.User.setGame({name: "drago please count my lines of spaghetti", type: 0});
 });
