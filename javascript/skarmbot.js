@@ -11,6 +11,7 @@ class Bot {
         this.client = client;
         this.shanties = new ShantyCollection();
         this.channelsPinUpvotes = {};
+        this.channelsHidden = {};
     }
     
     // events
@@ -47,6 +48,30 @@ class Bot {
                 }
             }
         }
+    }
+    
+    OnMessageCreate(e) {
+        // don't respond to other bots (or yourself)
+        if (e.message.author.bot) {
+            return false;
+        }
+        // don't respond to private messages (yet)
+        if (e.message.isPrivate){
+            e.message.channel.sendMessage("private message responses not yet implemented");
+            return false;
+        }
+        // ignore messages that mention anyone or anything
+        if (e.message.mentions.length > 0 || e.message.mention_roles.length > 0 || e.message.mention_everyone){
+            return false;
+        }
+        // ignore hidden channels
+        if (this.channelsHidden[e.message.channel_id]) {
+            return false;
+        }
+        // now we're in business
+        let author = e.message.author;
+        let text = e.message.content.toLowerCase();
+        
     }
 }
 

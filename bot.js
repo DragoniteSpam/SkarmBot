@@ -36,10 +36,14 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 
 // after GATEWAY_READY (becasue it's got to initalize so many different things) try to put all
 // of the actual event code in skarmbot.js to keep this main file clean
-client.Dispatcher.on(events.MESSAGE_DELETE, e=> {
+client.Dispatcher.on(events.MESSAGE_DELETE, e => {
 	bot.OnMessageDelete(e);
 });
 
-client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e=> {
+client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
     bot.OnMessageReactionAdd(e);
+});
+
+client.Dispatcher.on(events.MESSAGE_CREATE, e => {
+    bot.OnMessageCreate(e);
 });
