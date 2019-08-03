@@ -14,8 +14,10 @@ class Bot {
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
         
-        this["e!censor"] = this.cmdCensor;
-        this["e!pin"] = this.cmdPin;
+        this.mapping = {
+            "e!censor": this.cmdCensor,
+            "e!pin": this.cmdPin,
+        };
     }
     
     // events
@@ -90,8 +92,8 @@ class Bot {
         let first = e.message.content.split(" ")[0];
         
         // this is where all of the command stuff happens
-        if (first.startsWith("e!") && this[first]) {
-            this[first](e);
+        if (this.mapping[first]) {
+            this.mapping[first](this, e);
         }
     }
     
@@ -104,16 +106,16 @@ class Bot {
     }
     
     // commands
-    cmdHide(e) {
-        this.toggleChannel(this.channelsHidden, e.message.channel_id);
+    cmdHide(bot, e) {
+        bot.toggleChannel(bot.channelsHidden, e.message.channel_id);
     }
     
-    cmdCensor(e) {
-        this.toggleChannel(this.channelsCensorHidden, e.message.channel_id);
+    cmdCensor(bot, e) {
+        bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id);
     }
     
-    cmdPin(e) {
-        this.toggleChannel(this.channelsPinUpvotes, e.message.channel_id);
+    cmdPin(bot, e) {
+        bot.toggleChannel(bot.channelsPinUpvotes, e.message.channel_id);
     }
 }
 
