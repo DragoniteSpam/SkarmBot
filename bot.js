@@ -31,7 +31,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     bot = new SkarmBot(client);
 	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
     Constants.initialize(client);
-    client.User.setGame({name: "drago please count my lines of spaghetti", type: 0});
+    client.User.setGame({name: getSpaghetti() + " lines of spaghetti", type: 0});
 });
 
 // after GATEWAY_READY (becasue it's got to initalize so many different things) try to put all
@@ -47,3 +47,18 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
 client.Dispatcher.on(events.MESSAGE_CREATE, e => {
     bot.OnMessageCreate(e);
 });
+
+// javascript devs would be happier if you did this with promises and async. i can't
+// say i care enough to deal with promises and async.
+function getSpaghetti() {
+    let lines = 0;
+    let files = fs.readdirSync("./javascript/");
+    for (let i in files) {
+        lines = lines + lineCount("./javascript/" + files[i]);
+    }
+    return lines + lineCount("./bot.js");
+}
+
+function lineCount(file) {
+    return fs.readFileSync(file).toString().split("\n").length;
+}
