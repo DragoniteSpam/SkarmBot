@@ -37,7 +37,7 @@ class Web {
                         }
                     }
                 }
-                Skarm.sendMessageDelay(e.message.channel, "```" + display + "```");
+                Skarm.sendMessageDelay(e.message.channel, "> " + display);
             }
         });
     }
