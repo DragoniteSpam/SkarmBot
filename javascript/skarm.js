@@ -36,6 +36,13 @@ class Skarm {
         let day = Date.now().getDay();
         return (day == MONDAY || day == TUESDAY);
     }
+    
+    static sendMessageDelay(channel, text) {
+        channel.sendTyping();
+        setTimeout(function() {
+            channel.sendMessage(text);
+        }, Math.random() * 2000 + 1000);
+    }
 }
 
 module.exports = Skarm;

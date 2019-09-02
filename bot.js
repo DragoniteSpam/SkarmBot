@@ -5,8 +5,6 @@
 // don't touch this stuff - unless you want to, i guess
 const discordie = require("discordie");
 const fs = require("fs");
-const tempwolfy = require("node-wolfram");
-const wolfy = new tempwolfy(fs.readFileSync("..\\wolfram.txt").toString());
 const request = require("request");
 // discord things
 const client = new discordie({autoReconnect:true});

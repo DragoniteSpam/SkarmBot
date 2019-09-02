@@ -5,6 +5,7 @@ const fs = require("fs");
 const { ShantyCollection, Shanty } = require("./shanties.js");
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
+const Web = require("./web.js");
 
 class Bot {
     constructor(client) {
@@ -13,10 +14,12 @@ class Bot {
         this.channelsPinUpvotes = {};
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
+        this.web = new Web(client);
         
         this.mapping = {
             "e!censor": this.cmdCensor,
             "e!pin": this.cmdPin,
+            "e!wolfy": this.cmdWolfy,
         };
     }
     
@@ -24,7 +27,7 @@ class Bot {
     OnMessageDelete(e) {
         var string = "";
         if (e.message != null){
-            if (/*e.message.channel != client.Channels.get("344295609194250250") &&*/ !e.message.author.bot){
+            if (!e.message.author.bot){
                 if (e.message == null){
                     string = "<message not cached>"; 
                 } else {
@@ -116,6 +119,10 @@ class Bot {
     
     cmdPin(bot, e) {
         bot.toggleChannel(bot.channelsPinUpvotes, e.message.channel_id);
+    }
+    
+    cmdWolfy(bot, e) {
+        Web.wolfy(bot, e);
     }
 }
 
