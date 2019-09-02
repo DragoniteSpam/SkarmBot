@@ -10,16 +10,20 @@ const Web = require("./web.js");
 class Bot {
     constructor(client) {
         this.client = client;
+        this.nick = "Skarm";
+        
         this.shanties = new ShantyCollection();
         this.channelsPinUpvotes = {};
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
+        
         this.web = new Web(client);
         
         this.mapping = {
             "e!censor": this.cmdCensor,
             "e!pin": this.cmdPin,
             "e!wolfy": this.cmdWolfy,
+            "e!google": this.cmdGoogle,
         };
     }
     
@@ -106,23 +110,39 @@ class Bot {
     
     toggleChannel(map, channel) {
         map[channel] = !map[channel];
+        return map[channel];
     }
     
     // commands
     cmdHide(bot, e) {
-        bot.toggleChannel(bot.channelsHidden, e.message.channel_id);
+        if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
+        }
     }
     
     cmdCensor(bot, e) {
-        bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id);
+        if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will once again run the censor on **" + e.message.channel.name + "**");
+        }
     }
     
     cmdPin(bot, e) {
-        bot.toggleChannel(bot.channelsPinUpvotes, e.message.channel_id);
+        if (bot.toggleChannel(bot.channelsPinUpvotes, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
+        }
     }
     
     cmdWolfy(bot, e) {
         Web.wolfy(bot, e);
+    }
+    
+    cmdGoogle(bot, e) {
     }
 }
 
