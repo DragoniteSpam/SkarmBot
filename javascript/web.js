@@ -46,6 +46,15 @@ class Web {
         let message = e.message.content;
         Skarm.sendMessageDelay(e.message.channel, "http://google.com/search?q=" + message.replace("e!google", "").replaceAll(" ", "+"));
     }
+    
+    static stackOverflow(bot, e){
+        if (e.message.author == Constants.MASTER){
+            Skarm.sendMessageDelay(e.message.channel, "do it yourself");
+            return false;
+        }
+        
+        Skarm.sendMessageDelay(e.message.channel, "<" + "https://stackoverflow.com/search?q=" + e.message.content.replace("e!so ", "").replaceAll(" ", "+") + ">");	
+    }
 }
 
 module.exports = Web;

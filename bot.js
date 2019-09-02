@@ -21,7 +21,7 @@ const token = fs.readFileSync("..\\descrution.txt").toString();
 
 // javascript
 String.prototype.replaceAll = function(search, replacement) {
-    return this.replace(new RegExp(search, "g"), '-');
+    return this.replace(new RegExp(search, "g"), '+');
 };
 
 client.connect({

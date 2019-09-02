@@ -24,6 +24,7 @@ class Bot {
             "e!pin": this.cmdPin,
             "e!wolfy": this.cmdWolfy,
             "e!google": this.cmdGoogle,
+            "e!so": this.cmdStack
         };
     }
     
@@ -144,6 +145,10 @@ class Bot {
     
     cmdGoogle(bot, e) {
         Web.google(bot, e);
+    }
+    
+    cmdStack(bot, e) {
+        Web.stackOverflow(bot, e);
     }
 }
 
