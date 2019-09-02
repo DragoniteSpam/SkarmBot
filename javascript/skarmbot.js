@@ -143,6 +143,7 @@ class Bot {
     }
     
     cmdGoogle(bot, e) {
+        Web.google(bot, e);
     }
 }
 

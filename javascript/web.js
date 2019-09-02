@@ -41,6 +41,11 @@ class Web {
             }
         });
     }
+    
+    static google(bot, e) {
+        let message = e.message.content;
+        Skarm.sendMessageDelay(e.message.channel, "http://google.com/search?q=" + message.replace("e!google", "").replaceAll(" ", "+"));
+    }
 }
 
 module.exports = Web;

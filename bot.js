@@ -19,6 +19,11 @@ const Constants = require("./javascript/constants.js");
 // i'm in?
 const token = fs.readFileSync("..\\descrution.txt").toString();
 
+// javascript
+String.prototype.replaceAll = function(search, replacement) {
+    return this.replace(new RegExp(search, "g"), '-');
+};
+
 client.connect({
 	token: token
 });
