@@ -89,7 +89,6 @@ const BIG_BROTHER_TIMEOUT=10;
 // talk odds
 
 var esOddsSkyrim=25;
-var esOddsQuote=25;
 var esOddsRandomLine=30;
 var esOddsRandomPun=4;
 var esOddsQuestion=20;
@@ -276,7 +275,7 @@ class User {
 		
 		this.todayWasWarned=false;
         
-        this.refString=[];
+        this.refString="";
         this.blockRefString=false;
         this.talkTimer=BIG_BROTHER_TIMEOUT;
         this.pointEligible=true;
@@ -401,6 +400,16 @@ utilityLoadBotStats();
 var streamState=true;
 var streamHasNotifiedDate=null;
 
+var senna="";
+// caching to limit log rates //49/10/15 todo
+var timer1 = setInterval(function(){
+	if(senna.length>0 && (Date.now()/1000 %5==0 || senna.length>250)){
+		sms(client.Channels.get("430545618314985504"),senna);
+		senna="";
+	}
+}, 1000);
+
+
 // There are some things that need doing on a regular basis
 var timer15 = setInterval(function(){
 	twitchGetIsLive(null);
@@ -501,7 +510,7 @@ client.connect({
 	//"MzE5MjkxMDg2NTcwOTEzODA2.DSFhww.FZ8I1T7Evls72hIHEcTXjX_rqAc"
 });
 function getToken(){
-	token = fs.readFileSync("..\\token.txt").toString();
+	token=fs.readFileSync("..\\token.txt").toString();
 }
 
 // What happens when you first connect
@@ -526,10 +535,8 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     processShanties();
 	fs.readFile("bot.js", function(err, data){
 		if(err){
-            console.log("idk either");
 			throw err;
 		}
-        console.log(data.toString().split('\n').length+" lines of spaghetti");
         client.User.setGame({name: data.toString().split('\n').length+" lines of spaghetti", type: 0});
 	});
 });
@@ -653,9 +660,6 @@ client.Dispatcher.on(events.PRESENCE_UPDATE, e=> {
 });
 
 client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
-	
-	roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442")
-			.commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
     // special case trolling
     if (e.message.channel.id == "580946892201000960") {
         if (e.message.content.startsWith("4! ")) {
@@ -695,6 +699,16 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	var author = e.message.author;
     var message=e.message.content.toLowerCase();
     
+    // hard-coding gummy stuff
+    if (author.id==="199725993416589313"){
+        if (message.includes(" ex")){
+            e.message.delete();
+        }
+        if (message.includes("gf")){
+            e.message.delete();
+        }
+    }
+    
     // colloquially known as ref strings
     bigBrother(e, author, message);
     
@@ -709,6 +723,11 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	// Help
 	if (!e.message.deleted){ 
 		notifiers(e, message);
+	if (!e.message.deleted){ 
+		roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442")
+			.commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
+	}
+		
 		massEffect(e, message, msg);
 		//Everything else
         statsMaster9000(e.message);
@@ -736,9 +755,17 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	}
 });
 
+
+function roleGetter(list,id){
+	for(var i in list){
+		if(list[i].id==id)
+			return list[i];
+	}
+	return null;
+}
+
+
 function bigBrother(e, author, message){
-	paracesis(e);
-	/* 
     var usernameString=authorString(author);
 	var user;
 	if (usernameString in userTable){
@@ -765,7 +792,7 @@ function bigBrother(e, author, message){
                                                                             throw err;
                                                                         }
                                                                         message.pin();
-                                                                    });
+                                                                    });*/
                         });
                         member.talkTimer=BIG_BROTHER_TIMEOUT;   // this is so you dont get bombarded by messages if people say your name a lot (gummy)
                     } else {
@@ -776,30 +803,7 @@ function bigBrother(e, author, message){
                 }
             }
         }
-    }*/
-}
-
-//From Slon used for AP CS P 2019
-function paracesis(e){
-	for(var i in userTable){
-		var discordUser = users[i];
-		if(e.message.author.id == discordUser.id){
-			users[i].talkTimer=5;
-		}
-		if(discordUser.talkTimer<1&&canViewChannel(client.Users.get(discordUser.id), e.message.channel)){
-			var bothered = false;
-			for(var j in discordUser.refString){
-				var trig = discordUser.refString[j];
-				if(!bothered && e.message.content.toLowerCase().includes(trig)){
-					client.Users.get(discordUser.id).openDM().then(function(dm){
-						var quote=e.message.content+" ("+e.message.author.username+")";
-						dm.sendMessage("A reference string of yours was mentioned!\n```"+quote+"``` in <#"+e.message.channel.id+">");
-					});
-					bothered = true;
-				}
-			}
-		}
-	}
+    }
 }
 
 function canViewChannel(user, channel){
@@ -1525,19 +1529,9 @@ function sendRandomLineSkyrim(message){
     });
     var file;
     do {
-        file="./quote/output"+Math.floor(Math.random()*50)+".skyrim";
+        file="./skyrim/output"+Math.floor(Math.random()*50)+".skyrim";
     } while (!fs.existsSync(file));
 	sendRandomFileLine(file, message.channel);
-}
-
-function sendRandomLineQuote(message){
-    fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
-        if (err){
-            throw err;
-        }
-    });
-    var files = ["douglas.adams"];
-    sendRandomFileLine("./quote/" + files[Math.floor(Math.random() * files.length - 1)], message.channel);
 }
 
 function sendRandomLinePun(message){
@@ -2284,7 +2278,7 @@ function REACT(message, id){
 		(message.content.toLowerCase().includes(" "+myNick.toLowerCase())|| otherMentions(message.content)* Math.random() >.9
 		||message.content.toLowerCase().startsWith(myNick.toLowerCase()))
 		&&(message.content.match(new RegExp(" ", "g"))||[]).length>2&&botCanSpeak 
-		|| message.content.toLowerCase().includes("skram!")){
+		|| (message.content.toLowerCase().includes("skram!") && message.author.id ==MASTER)){
 		botCanSpeak=false;
 		message.channel.sendTyping();
 		setTimeout(function(){
@@ -2305,8 +2299,6 @@ function REACT(message, id){
                 } else {
                     if (Math.random()*100<esOddsSkyrim&&isWeekend()){
                         sendRandomLineSkyrim(message);
-                    } else if (Math.random() * 100 < esOddsQuote && isPunDay()) {
-                        sendRandomLineQuote(message);
                     } else if (Math.random()*100<esOddsRandomLine){
                         sendRandomLine(message);
                     } else if (Math.random()*100<esOddsRandomPun){
@@ -3233,7 +3225,7 @@ function exactTime(UNIX_timestamp){
 //send the message to the channel tostring in skarm
 //author: https://github.com/Master9000
 function sien(message){
-	sms( client.Channels.get("430545618314985504"),message);
+	senna+= message +"\n";
 }
 //route all channel.send messages through this one for ease of fixing issues
 //author: https://github.com/Master9000
@@ -3315,20 +3307,6 @@ function wolfram(e){
 }
 
 function isWeekend(){
-    var day = new Date(Date.now()).getDay();
-    return (day == 6) || (day == 0);
-}
-
-function isPunDay(){
-    // ie monday or tuesday
-    var day = new Date(Date.now()).getDay();
-    return (day == 1) || (day == 2);
-}
-
-function roleGetter(list,id){
-	for(var i in list){
-		if(list[i].id==id)
-			return list[i];
-	}
-	return null;
+    var day=new Date(Date.now()).getDay();
+    return (day==6)||(day==0);
 }
