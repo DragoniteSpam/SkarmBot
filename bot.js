@@ -9,6 +9,7 @@ const fs=require("fs"), ini=require("ini");
 const tempwolfy=require("node-wolfram");
 const wolfy=new tempwolfy(fs.readFileSync("..\\wolfram.txt").toString());
 const request=require("request");
+const os=require('os');
 
 function wikipedia(){
     var query="Chicken";
@@ -176,6 +177,23 @@ class XKCD {
         this.schedule();
     }
     
+	channelFeed(){
+		var chans=client.Channels.toArray();
+		for(var i in this.channels){
+			var x=false;
+			sien("<#"+this.channels[i]+">\t"+this.channels[i]);
+			for(var c in chans){
+				if(chans[c].id == this.channels[i]){
+					x=true;
+				}
+			}
+			if(!x){
+				sien("Channel doesn't exist, please purge: "+this.channels[i]);
+			}
+		}
+		sien("Inspected "+chans.length+" channels");
+	}
+	
     post(){
         utilityURLExists("https://xkcd.com/"+this.latest+"/", this.postSuccessful, { me: this, file: this.latest });
         utilityURLExists("https://xkcd.com/5000/", this.postSuccessful, { me: this, file: 5000 });
@@ -403,9 +421,12 @@ var streamHasNotifiedDate=null;
 var senna="";
 // caching to limit log rates //49/10/15 todo
 var timer1 = setInterval(function(){
-	if(senna.length>0 && (Date.now()/1000 %5==0 || senna.length>250)){
+	if(senna.length>0 && (senna.length<2000)){
 		sms(client.Channels.get("430545618314985504"),senna);
 		senna="";
+	}else if(senna.length>1999){
+		sms(client.Channels.get("430545618314985504"),senna.substring(0,2000));
+		senna=senna.substring(2000);
 	}
 }, 1000);
 
@@ -939,7 +960,7 @@ function massEffect(e, message, msg){
     // Twitch
     } else if (message=="e!live"){
         twitchGetIsLive(e.message.channel);
-        e.message.channel.sendMessage("This function has been commented out because it stopped working for no reason back in May 2018. Sorry.");
+        sms(e.message.channel,"This function has been commented out because it stopped working for no reason back in May 2018. Sorry.");
         totalBotCommands++;
     }
     // Pictures
@@ -1184,7 +1205,9 @@ function menKing(message){
 }
 
 function sendMessageDelay(string, channel){
-	channel.sendTyping();
+	if(channel.isGuildText){
+		channel.sendTyping();
+	}
 	setTimeout(function(){
 		sms(channel,string);
 	}, Math.random()*2000+1000);
@@ -1463,16 +1486,7 @@ function add(message){
 //adds a message to skarm's response database if its not from Eyan
 function addGeneral(message){
     //single server development precondition
-    //if(message.guild.id != ZEAL_SERVER){
-    if (false){
-        if(message.guild.id == "394225763483779084"){
-            console.log("caught " + message.content + " in Skarm the server");
-            return false;
-        }
-        sms(client.Channels.get("418138620952707082"),"`dodged` \n"+ message.content + " from <#" + message.channel.id + ">");
-        return false;
-    }
-	
+    //if(message.guild.id != ZEAL_SERVER){	
 	var msg=message.content.toLowerCase();
 	//preconditions: message between 4 and 250 characters
 	if (msg.length<4||msg.length>250){
@@ -1485,18 +1499,14 @@ function addGeneral(message){
 	}
 	//appends normal lines into the general log	
 	if (!utilityIsAction(msg)){
-		//var spag = message.channel.createInvite({"temporary": false, "xkcdpass": false});
-		//spag.then(function(res){
 			sms(client.Channels.get("409856900469882880"),msg+" "+message.guild.name);// +", https://discord.gg/"+res.code);
-		//});
 		fs.appendFile(getServerLineFile(message), msg+"\r\n", (err)=>{
 			if (err){
 				throw err;
 			}
 		});																							
-	} 
-	//appends action lines to the action log instead 
-	else {
+		//appends action lines to the action log instead 
+	} else {
 		sms(client.Channels.get("409860642942615573"),msg);	//writes the line to Skarm's server mirror of the database
 		fs.appendFile(getServerActionFile(message), msg+"\r\n", (err)=>{
 			if (err){
@@ -1929,7 +1939,8 @@ function utilityBotStats(e){
 	string=string+"Uptime, probably: "+uptimeDays+" days, "+uptimeHours+" hours, "+uptimeMinutes+" minutes, "+uptimeSeconds+" seconds\n";
 	string=string+"Commands recieved since we started caring: "+totalBotCommands+"\n";
 	string=string+"Lines censored since we started caring: "+totalCensoredLines+"\n";
-	string= string+"Messages sent this cycle: " + messagesThisCycle+ "\n";
+	string=string+"Messages sent this cycle: " + messagesThisCycle+ "\n";
+	string+="hostname: "+ os.hostname() +"\n";
 	if (e.message.author.id==MASTER){
 		string=string+"Heap usage: shove it up your @$$, Magus"
 	}
@@ -2314,8 +2325,9 @@ function REACT(message, id){
 	return false;
 }
 
-function otherMentions(message){
-    return 0;
+//TODO
+//returns the amount of alternate nicknames for skarm are contained in the message
+function otherMentions(message){return 0;
     
 	var sum=0;
 	for(var i in meNiks){
@@ -3036,6 +3048,10 @@ function utilityMunroe(e){
             case "now":
                 munroe.post();
                 break;
+			case "list":
+				console.log("list called");
+				munroe.channelFeed();
+				break;
             default:
                 sendMessageDelay("usage: `e!xkcd [now]`", e.message.channel);
                 break;
@@ -3140,7 +3156,6 @@ function helpMods(e){
     var message="I don't remember what the total list of mod commands are and I'm too lazy to look them all up";
 	sms(e.message.channel, prefix+"```"+message+"```");
 }
-
 // Reactionary stuff
 function helpReactions(e){
 	var message=myNick+" can and sometimes will react to certain lines in the chat."+
@@ -3157,7 +3172,6 @@ function getVersion(){
 	return v+Math.floor(Math.random()*1000);
 	
 }
-
 // Credits, obviously
 function helpCredits(e){
 	var message="Credits\n\n"+
@@ -3310,3 +3324,5 @@ function isWeekend(){
     var day=new Date(Date.now()).getDay();
     return (day==6)||(day==0);
 }
+
+
