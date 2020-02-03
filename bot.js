@@ -309,6 +309,13 @@ class Shanty {
     }
 }
 
+class Condition{
+	constructor(tr,act){
+		this.trigger=tr;
+		this.action=act;
+	}
+}
+
 // Images
 
 var waifus=[
@@ -748,8 +755,9 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 		roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442")
 			.commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
 	}
-		
-		massEffect(e, message, msg);
+		if(e.message.content.substring(0,2)=="e!"){
+			massEffect(e, message, msg);
+		}
 		//Everything else
         statsMaster9000(e.message);
 		statsWillOfD(e.message);
@@ -864,104 +872,65 @@ function aGF(i,list){
 	}
 }
 
+var effects=[];
+
+effects.push(new Condition("guilds", function(e){var list = client.Guilds.toArray();for (var i in list) {aGF(i,list);}}));
+effects.push(new Condition("help says",helpSays));
+effects.push(new Condition("help twitch",helpTwitch));
+effects.push(new Condition("help lol",helpLol));
+effects.push(new Condition("help misc",helpMisc));
+effects.push(new Condition("help credits",helpCredits));
+effects.push(new Condition("help reactions",helpReactions));
+effects.push(new Condition("help mods",helpMods));
+effects.push(new Condition("help",helpHelpHelp));
+effects.push(new Condition("size",utiliyLineCount));
+effects.push(new Condition("sact",utilityActCount));
+effects.push(new Condition("stats",utilityStats));
+effects.push(new Condition("user",utilityUserStats));
+effects.push(new Condition("ping",utilityPing));
+effects.push(new Condition("hug",utilityHug));
+effects.push(new Condition("drink",utilityDrink));
+effects.push(new Condition("beer",utilityRootBeer));
+effects.push(new Condition("sandwich",utilitySandwich));
+effects.push(new Condition("bot",utilityBotStats));
+effects.push(new Condition("kenobi",utilityKenobi));
+effects.push(new Condition("game ",utilityGame));
+effects.push(new Condition("silver ",utilitySilver));
+effects.push(new Condition("skarm",utilitySkarm));
+effects.push(new Condition("suggest",utilitySuggestion));
+effects.push(new Condition("xkcd",utilityMunroe));
+effects.push(new Condition("test",function (e){sms(e.message.channel,e.message.author.username+" can submit messages: "+userHasKickingBoots(e.message.author, e.message.channel));}));
+effects.push(new Condition("live",function (e){twitchGetIsLive(e.message.channel);sms(e.message.channel,"This function has been commented out because it stopped working for no reason back in May 2018. Sorry.");totalBotCommands++;}));
+
+//effects.push(new Condition("",));
+
 function massEffect(e, message, msg){
-    if (message == "e!guilds") {
-		var list = client.Guilds.toArray();
-		for (var i in list) {
-			aGF(i,list);
-        }        
-    } else if (message=="e!help"){
-        helpHelpHelp(e);
+    
+	for(var i in effects){
+		if(e.message.content.substring(2).startsWith(effects[i].trigger)){
+			effects[i].action(e);
+			totalBotCommands++;
+			return i;
+		}
+	}
+	
+	
+	if (utilPins(e, msg)){
         totalBotCommands++;
-    } else if (message=="e!help says"){
-        helpSays(e);
-        totalBotCommands++;
-    } else if (message=="e!help twitch"){
-        helpTwitch(e);
-        totalBotCommands++;
-    } else if (message=="e!help lol"){
-        helpLol(e);
-        totalBotCommands++;
-    } else if (message=="e!help misc"){
-        helpMisc(e);
-        totalBotCommands++;
-    /*} else if (message=="e!help pictures"){
-        helpPictures(e);
-        totalBotCommands++;*/
-    } else if (message=="e!help credits"){
-        helpCredits(e);
-        totalBotCommands++;
-    } else if (message=="e!help reactions"){
-        helpReactions(e);
-        totalBotCommands++;
-    } else if (message=="e!help mods"){
-        helpMods(e);
-        totalBotCommands++;
-    // Utilities
-    } else if (message=="e!size"){
-        utiliyLineCount(e);
-        totalBotCommands++;
-    } else if (message=="e!sact"){
-        utilityActCount(e);
-        totalBotCommands++;
-    } else if (message=="e!bigbrother"){
-        if(isMod(e)){
-            //utilityDumpServer(e);
-        }else{
-            sms(e.message.channel,"This has been turned off to preserve sanity. If you're just curious, it fetches the last x messages of the server.");
-        }
-        totalBotCommands++;
-    } else if (message=="e!stats"){
-        totalBotCommands++;
-        utilityStats(e);
-    } else if (message.startsWith("e!user")){
-        totalBotCommands++;
-        utilityUserStats(e);
-    } else if (message=="e!ping"){
-        totalBotCommands++;
-        utilityPing(e);
-    } else if (message.startsWith("e!hug")){
-        totalBotCommands++;
-        utilityHug(e);
-    } else if (message.startsWith("e!drink")){
-        totalBotCommands++;
-        utilityDrink(e);
-    } else if (message.startsWith("e!beer")){
-        totalBotCommands++;
-        utilityRootBeer(e);
-    }  else if (message.startsWith("e!sandwich")){
-        totalBotCommands++;
-        utilitySandwich(e);
-    } else if (message.startsWith("e!bot")){
-        totalBotCommands++;
-        utilityBotStats(e);
-    }else if (message.startsWith("e!kenobi")){
-        totalBotCommands++;
-        utilityKenobi(e);
-    }else if (utilPins(e, msg)){
-        totalBotCommands++;
-    } else if (message.startsWith("e!game ")){
-        utilityGame(e);
-    } else if (message.startsWith("e!silver ")){
-        utilitySilver(e);
-    } else if (message.startsWith("e!skarm")){
-        utilitySkarm(e);
-    } else if (message.startsWith("e!suggest")){
-        utilitySuggestion(e);
-    } else if (message.startsWith("e!xkcd")){
-        utilityMunroe(e);
+    } 
+	
+	
+	
     // Quote
-    } else if (message.startsWith("e!says-add ")){
+    if (message.startsWith("e!says-add ")){
         totalBotCommands++;
         add(e.message);
-    } else if (message=="e!test"){
-        sms(e.message.channel,e.message.author.username+" can submit messages: "+userHasKickingBoots(e.message.author, e.message.channel));
-        totalBotCommands++;
+    }
+	
+	
     // Twitch
-    } else if (message=="e!live"){
-        twitchGetIsLive(e.message.channel);
-        sms(e.message.channel,"This function has been commented out because it stopped working for no reason back in May 2018. Sorry.");
-        totalBotCommands++;
+    if (message=="e!live"){
+        
     }
     // Pictures
     /*} else if (message=="e!waifu"){
@@ -1592,7 +1561,7 @@ function utilityKenobi(e){
 	//			<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n
 	//			<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n
 	//			<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>";
-	sms(e.message.channel,"<:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>");
+	sms(e.message.channel,">>> <:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>");
 	e.message.delete();
 }
 //sings us a random shanty bit
