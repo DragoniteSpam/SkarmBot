@@ -1,6 +1,6 @@
 git fetch origin producton
 git merge origin/producton
-git checkout producton -f
+git checkout producton
 
 
 node bot.js > output.txt
