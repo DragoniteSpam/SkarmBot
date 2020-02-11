@@ -89,6 +89,14 @@ class Bot {
         }
     }
     
+    OnMemberAdd(e) {
+        let welcomeChannel = this.client.Channels.get(this.guildsWithWelcomeMessage[e.guild.id]);
+        if (welcomeChannel) {
+            Skarm.sendMessageDelay(welcomeChannel, e.member.mention + ", Welcome to **" + e.guild.name + "!** Please don't be evil!");
+        } else {
+        }
+    }
+    
     OnMessageCreate(e) {
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {
@@ -217,7 +225,7 @@ class Bot {
     }
     
     cmdWelcome(bot, e) {
-        if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
+        if (bot.toggleGuild(bot.guildsWithWelcomeMessage, e.message.channel)) {
             Skarm.sendMessageDelay(e.message.channel, "Welcome messages will now be sent to **" + e.message.channel.guild.name + "** in this channel!");
         } else {
             Skarm.sendMessageDelay(e.message.channel, "Welcome messages will no longer be sent to **" + e.message.channel.guild.name + ".**");

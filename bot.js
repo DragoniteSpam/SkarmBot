@@ -52,6 +52,10 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e => {
     bot.OnMessageCreate(e);
 });
 
+client.Dispatcher.on(events.GUILD_MEMBER_ADD, e=> {
+    bot.OnMemberAdd(e);
+});
+
 // javascript devs would be happier if you did this with promises and async.
 // i can't say i care enough to deal with promises and async.
 function getSpaghetti() {
