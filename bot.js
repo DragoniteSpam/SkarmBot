@@ -37,8 +37,9 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     client.User.setGame({name: getSpaghetti() + " lines of spaghetti", type: 0});
 });
 
-// after GATEWAY_READY (becasue it's got to initalize so many different things) try to put all
-// of the actual event code in skarmbot.js to keep this main file clean
+// after GATEWAY_READY (becasue it's got to initalize so many different things)
+// try to put all of the actual event code in skarmbot.js to keep this main
+// file clean
 client.Dispatcher.on(events.MESSAGE_DELETE, e => {
 	bot.OnMessageDelete(e);
 });
@@ -51,8 +52,8 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e => {
     bot.OnMessageCreate(e);
 });
 
-// javascript devs would be happier if you did this with promises and async. i can't
-// say i care enough to deal with promises and async.
+// javascript devs would be happier if you did this with promises and async.
+// i can't say i care enough to deal with promises and async.
 function getSpaghetti() {
     let lines = 0;
     let files = fs.readdirSync("./javascript/");

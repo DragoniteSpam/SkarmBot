@@ -33,7 +33,8 @@ class Shanty {
         // (usually 2 or 4). we no longer do that. shanties should automatically
         // post two lines per message.
     }
-    function getNextBlock() {
+    
+    getNextBlock() {
         let block = "";
         
         // lazy way of safely fetching the next two lines and resetting if
@@ -51,7 +52,7 @@ class Shanty {
         return block;
     }
     
-    function resetBlock() {
+    resetBlock() {
         this.currentLine = 0;
     }
 }
