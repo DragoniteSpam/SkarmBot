@@ -34,6 +34,7 @@ class Bot {
         
         this.shanties = new ShantyCollection();
         this.channelsPinUpvotes = {};
+        this.channelsWhoLikeXKCD = {};
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
         
@@ -44,7 +45,9 @@ class Bot {
             "e!pin": this.cmdPin,
             "e!wolfy": this.cmdWolfy,
             "e!google": this.cmdGoogle,
-            "e!so": this.cmdStack
+            "e!so": this.cmdStack,
+            "e!xkcd": this.cmdMunroe,
+            "e!munroe": this.cmdMunroe,
         };
     }
     
@@ -123,22 +126,23 @@ class Bot {
         
         // this is where all of the command stuff happens
         if (this.mapping[first]) {
-            this.mapping[first](e);
+            // i'm not a fan of needing to pass "this" as a parameter to you
+            // own functions, but javascript doesn't seem to want to execute
+            // functions called in this way in the object's own scope and you
+            // don't otherwise have a way to reference it
+            this.mapping[first](this, e);
             return true;
         }
         
         if (this.mentions(e, this.validNickReferences)) {
-            e.message.channel.sendMessage("mentioned nickname keyword");
             return true;
         }
         
         if (this.mentions(e, this.validESReferences)) {
-            e.message.channel.sendMessage("mentioned skyrim keyword");
             return true;
         }
         
         if (this.mentions(e, this.validShantyReferences)) {
-            e.message.channel.sendMessage("mentioned shanty keyword");
             return true;
         }
         
@@ -155,40 +159,48 @@ class Bot {
     }
     
     // commands
-    cmdHide(e) {
-        if (this.toggleChannel(this.channelsHidden, e.message.channel_id)) {
-            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + this.nick);
+    cmdHide(bot, e) {
+        if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
         } else {
-            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + this.nick);
+            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
         }
     }
     
-    cmdCensor(e) {
-        if (this.toggleChannel(this.channelsCensorHidden, e.message.channel_id)) {
-            Skarm.sendMessageDelay(e.message.channel, this.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
+    cmdCensor(bot, e) {
+        if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
         } else {
-            Skarm.sendMessageDelay(e.message.channel, this.nick + " will once again run the censor on **" + e.message.channel.name + "**");
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will once again run the censor on **" + e.message.channel.name + "**");
         }
     }
     
-    cmdPin(e) {
-        if (this.toggleChannel(this.channelsPinUpvotes, e.message.channel_id)) {
-            Skarm.sendMessageDelay(e.message.channel, this.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
+    cmdPin(bot, e) {
+        if (bot.toggleChannel(bot.channelsPinUpvotes, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
         } else {
-            Skarm.sendMessageDelay(e.message.channel, this.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
         }
     }
     
-    cmdWolfy(e) {
-        Web.wolfy(this, e);
+    cmdWolfy(bot, e) {
+        Web.wolfy(bot, e);
     }
     
-    cmdGoogle(e) {
-        Web.google(this, e);
+    cmdGoogle(bot, e) {
+        Web.google(bot, e);
     }
     
-    cmdStack(e) {
-        Web.stackOverflow(this, e);
+    cmdStack(bot, e) {
+        Web.stackOverflow(bot, e);
+    }
+    
+    cmdMunroe(bot, e) {
+        if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, "XKCD will now be sent to **" + e.message.channel.name + "!**");
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, "XKCD will no longer be sent to **" + e.message.channel.name + "!**");
+        }
     }
     
     // helpers
