@@ -37,6 +37,7 @@ class Bot {
         this.channelsWhoLikeXKCD = {};
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
+        this.guildsWithWelcomeMessage = {};
         
         this.web = new Web(client);
         
@@ -48,6 +49,7 @@ class Bot {
             "e!so": this.cmdStack,
             "e!xkcd": this.cmdMunroe,
             "e!munroe": this.cmdMunroe,
+            "e!welcome": this.cmdWelcome,
         };
     }
     
@@ -158,6 +160,17 @@ class Bot {
         return map[channel];
     }
     
+    toggleGuild(map, channel) {
+        // guilds have a channel associated with them
+        if (!!map[channel.guild_id]) {
+            map[channel.guild_id] = undefined;
+            return false;
+        }
+        
+        map[channel.guild_id] = channel.id;
+        return true;
+    }
+    
     // commands
     cmdHide(bot, e) {
         if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
@@ -199,7 +212,15 @@ class Bot {
         if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
             Skarm.sendMessageDelay(e.message.channel, "XKCD will now be sent to **" + e.message.channel.name + "!**");
         } else {
-            Skarm.sendMessageDelay(e.message.channel, "XKCD will no longer be sent to **" + e.message.channel.name + "!**");
+            Skarm.sendMessageDelay(e.message.channel, "XKCD will no longer be sent to **" + e.message.channel.name + ".**");
+        }
+    }
+    
+    cmdWelcome(bot, e) {
+        if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, "Welcome messages will now be sent to **" + e.message.channel.guild.name + "** in this channel!");
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, "Welcome messages will no longer be sent to **" + e.message.channel.guild.name + ".**");
         }
     }
     
