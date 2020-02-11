@@ -12,12 +12,25 @@ class Bot {
         this.client = client;
         this.nick = "Skarm";
         
-        this.validReferenceNicks = [
-            ["skarm", 1],
-            ["skram!", 1],
-            ["birdbrain", 1],
-            ["spaghetti", 0.05],
-        ];
+        // referneces: you will speak if these are mentioned
+        this.validNickReferences = {
+            "skarm": 1,
+            "skram!": 1,
+            "birdbrain": 1,
+            "spaghetti": 0.05,
+        };
+        
+        this.validESReferences = {
+            "balgruuf": 0.25,
+            "ulfric": 0.25,
+        };
+        
+        this.validShantyReferences = {
+            "sing": 0.15,
+            "ship": 0.25,
+        };
+        
+        this.minimumMessageReplyLength = 3;
         
         this.shanties = new ShantyCollection();
         this.channelsPinUpvotes = {};
@@ -114,8 +127,18 @@ class Bot {
             return true;
         }
         
-        if (this.mentionsMe(e)) {
-            e.message.channel.sendMessage("was mentioned!");
+        if (this.mentions(e, this.validNickReferences)) {
+            e.message.channel.sendMessage("mentioned nickname keyword");
+            return true;
+        }
+        
+        if (this.mentions(e, this.validESReferences)) {
+            e.message.channel.sendMessage("mentioned skyrim keyword");
+            return true;
+        }
+        
+        if (this.mentions(e, this.validShantyReferences)) {
+            e.message.channel.sendMessage("mentioned shanty keyword");
             return true;
         }
         
@@ -169,10 +192,16 @@ class Bot {
     }
     
     // helpers
-    mentionsMe(e) {
-        for (let i = 0; i < this.validReferenceNicks.length; i++) {
-            if (e.message.content.toLowerCase().includes(this.validReferenceNicks[i][0])) {
-                return (Math.random() < this.validReferenceNicks[i][1]);
+    mentions(e, references) {
+        var text = e.message.content.toLowerCase();
+        
+        if (text.split(" ").length < this.minimumMessageReplyLength) {
+            return false;
+        }
+        
+        for (let keyword in references) {
+            if (text.includes(keyword)) {
+                return (Math.random() < references[keyword]);
             }
         }
         
