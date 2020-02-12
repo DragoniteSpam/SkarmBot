@@ -155,8 +155,14 @@ class XKCD {
     
     load(){
         if (fs.existsSync(".\\stuff\\xk.cd")){
-            var loaded=JSON.parse(fs.readFileSync(".\\stuff\\xk.cd").toString());
-            
+            var valid = fs.readFileSync(".\\stuff\\xk.cd").toString();//80Z"}
+			console.log("Reading xk.cd");
+			console.log(valid.substring(valid.length-10));
+			if(valid.includes("80Z\"}80Z\"}")){
+				console.log("Invalid file, attempting correction");
+				valid=valid.replace("80Z\"}80Z\"}","80Z\"}");
+			}
+            var loaded=JSON.parse(valid);
             if (loaded.channels!==undefined){
                 this.channels=loaded.channels;
             }
