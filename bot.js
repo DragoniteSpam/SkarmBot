@@ -882,6 +882,7 @@ effects.push(new Condition("says-add ",add));
 effects.push(new Condition("censor",censorCommandSet));
 effects.push(new Condition("shanties",processShanties));
 effects.push(new Condition("save",utilitySaveStats));
+effects.push(new Condition("pink",function(e){utilityPink(e);utilityPinker(e);}));
 
 
 //effects.push(new Condition("",));
@@ -949,10 +950,6 @@ function massEffect(e, message, msg){
             annoyMaster(e.message.channel);
             totalBotCommands++;
             botCanSendUserCommands=false;
-        }else if (message == "!pink"){
-            totalBotCommands++;
-            utilityPink(e);
-            utilityPinker(e);
         }else if (message=="e!refresh"){
             totalBotCommands++;
             utilityUpdateEarth(e);
