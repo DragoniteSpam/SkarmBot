@@ -155,8 +155,14 @@ class XKCD {
     
     load(){
         if (fs.existsSync(".\\stuff\\xk.cd")){
-            var loaded=JSON.parse(fs.readFileSync(".\\stuff\\xk.cd").toString());
-            
+            var valid = fs.readFileSync(".\\stuff\\xk.cd").toString();//80Z"}
+			console.log("Reading xk.cd");
+			console.log(valid.substring(valid.length-10));
+			if(valid.includes("80Z\"}80Z\"}")){
+				console.log("Invalid file, attempting correction");
+				valid=valid.replace("80Z\"}80Z\"}","80Z\"}");
+			}
+            var loaded=JSON.parse(valid);
             if (loaded.channels!==undefined){
                 this.channels=loaded.channels;
             }
@@ -535,7 +541,6 @@ getToken();
 
 client.connect({
 	token: token
-	//"MzE5MjkxMDg2NTcwOTEzODA2.DSFhww.FZ8I1T7Evls72hIHEcTXjX_rqAc"
 });
 function getToken(){
 	token=fs.readFileSync("..\\token.txt").toString();
@@ -552,14 +557,6 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	censorLoadList();
 	DRAGONITE_OBJECT=client.Users.get("137336478291329024");
 	ZEAL  = client.Guilds.get(GENERAL);
-	var channel=client.Channels.get("394225765077745665");
-			if (channel!=null){
-				//sms(channel,"I'm alive again <@!" + MASTER + "> " + Date.now());
-			}
-	/*channel=client.Channels.get("305548986155008000");
-			if (channel!=null){
-				sms(channel, "we back");
-			}*/
     processShanties();
 	fs.readFile("bot.js", function(err, data){
 		if(err){
@@ -608,26 +605,7 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e=> {
 				fetchPinnedSelf(e.message.channel);
 			}
 		}
-	} else if (e.emoji.name==="KingofApproval"){
-        if (e.user.id!=EYAN_ID){
-            //console.log("Illegitimate KingOfApproval user found! ["+e.user.username+"]" /*+" Warning sent."*/);
-/*            e.user.openDM().then(function(dm){
-				dm.sendMessage("Hey, hey, hey! The `KingOfApproval` emote is supposed to be for Eyan's use only, so try to lay off using it in reactions, aye aye?");
-				dm.sendMessage("(Between you and me the idea is stupid, but Eyan insisted on it, so there we have it.)");
-                dm.close();
-			});
-            DRAGONITE_OBJECT.openDM().then(function(dm){
-                dm.sendMessage("\*pokes\* "+e.user.username+" used the KingOfApproval emote, have a word with them, aye aye?");
-                dm.close();
-            });*/
-			//sien(e.user.username+" used KingofApproval");
-            /*if (e.message==null){
-                console.log(" => Message is null for some reason");
-            } else {
-                e.message.removeReaction(e.emoji, e.user);
-            }*/
-        }
-    }
+	} 
 });
 
 client.Dispatcher.on(events.GUILD_MEMBER_ADD, e=> {
@@ -692,8 +670,6 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
     if (e.message.channel.id == "580946892201000960") {
         if (e.message.content.startsWith("4! ")) {
             var content = e.message.content.replace("4! ", "");
-            // 4chan general: 580882049641086977
-            // skarm general: 394225765077745665
             var channel = "580882049641086977";
             if (content.startsWith("+")) {
                 var tokens = content.split(" ");
@@ -751,32 +727,34 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	// Help
 	if (!e.message.deleted){ 
 		notifiers(e, message);
-	if (!e.message.deleted){ 
-		roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442")
-			.commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
-	}
+		//changes the color of Skarm's mayhem role to absolutely any RGB value
+		if (!e.message.deleted){ 
+			roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442").commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
+		}
+	
 		if(e.message.content.substring(0,2)=="e!"){
 			massEffect(e, message, msg);
 		}
 		//Everything else
-        statsMaster9000(e.message);
+		statsMaster9000(e.message);
 		statsWillOfD(e.message);
 		STATS(e.message);
-        // Can't be one of your own lines
+    
+		// Can't be one of your own lines
 		if (!utilityMessageWasWrittenByMe(e.message)){
-            // Can't respond if you did other miscellaneous things with this line
+			// Can't respond if you did other miscellaneous things with this line
 			if (!REACT(e.message, e.message.author.id)){
-                // Can't be from bot chat or mod chat
-                if (e.message.channel!=OCEANPALACE && e.message.channel.id!=MODCHAT){
-                    // Can't mention any people, places, things or ideas
+				// Can't be from bot chat or mod chat
+				if (e.message.channel!=OCEANPALACE && e.message.channel.id!=MODCHAT){
+					// Can't mention any people, places, things or ideas
 					if (e.message.mentions.length==0&&e.message.mention_roles.length==0&&!e.message.mentions_everyone){
-                        // Don't start with an Ayana command or a Tatsu command
-                        if(!e.message.content.startsWith("=")&& !e.message.content.includes("http")&& !e.message.content.startsWith("t!")){
-                            // There's a 25% chance of recording the message
-                            if (Math.random()*100<25){
-                                addGeneral(e.message);
-                            }
-                      	}
+						// Don't start with an Ayana command or a Tatsu command
+						if(!e.message.content.startsWith("=")&& !e.message.content.includes("http")&& !e.message.content.startsWith("t!")){
+							// There's a 25% chance of recording the message
+							if (Math.random()*100<25){
+                               addGeneral(e.message);
+							}
+                     	}
                     }
 				}
 			}
@@ -815,13 +793,6 @@ function bigBrother(e, author, message){
                         discordUser.openDM().then(function(dm){
                             var quote=e.message.content+" ("+e.message.author.username+")";
                             dm.sendMessage("Your ref string was mentioned!\n```"+quote+"``` in <#"+e.message.channel_id+">");
-                            /*dm.sendMessage("_This is an automated message, courtesy of SkarmBot's Reference String feature. You can turn "+
-                                                                    "it off by typing `e!setref` without a parameter in any channel the bot is present in (preferably one reserved for such spam)._").then(function(message, err){
-                                                                        if (err){
-                                                                            throw err;
-                                                                        }
-                                                                        message.pin();
-                                                                    });*/
                         });
                         member.talkTimer=BIG_BROTHER_TIMEOUT;   // this is so you dont get bombarded by messages if people say your name a lot (gummy)
                     } else {
@@ -3293,5 +3264,4 @@ function isWeekend(){
     var day=new Date(Date.now()).getDay();
     return (day==6)||(day==0);
 }
-
 
