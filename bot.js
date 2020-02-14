@@ -11,6 +11,7 @@ const wolfy=new tempwolfy(fs.readFileSync("..\\wolfram.txt").toString());
 const request=require("request");
 const os=require('os');
 
+
 function wikipedia(){
     var query="Chicken";
     var base_url="https://en.wikipedia.org/w/api.php?";
@@ -872,6 +873,9 @@ effects.push(new Condition("suggest",utilitySuggestion));
 effects.push(new Condition("xkcd",utilityMunroe));
 effects.push(new Condition("test",function (e){sms(e.message.channel,e.message.author.username+" can submit messages: "+userHasKickingBoots(e.message.author, e.message.channel));}));
 effects.push(new Condition("live",function (e){twitchGetIsLive(e.message.channel);sms(e.message.channel,"This function has been commented out because it stopped working for no reason back in May 2018. Sorry.");totalBotCommands++;}));
+effects.push(new Condition("pinned",utilPins));
+effects.push(new Condition("e!says-add ",add));
+
 
 //effects.push(new Condition("",));
 
@@ -884,33 +888,7 @@ function massEffect(e, message, msg){
 			return i;
 		}
 	}
-	
-	
-	if (utilPins(e, msg)){
-        totalBotCommands++;
-    } 
-	
-	
-	
-    // Quote
-    if (message.startsWith("e!says-add ")){
-        totalBotCommands++;
-        add(e.message);
-    }
-	
-	
-    // Twitch
-    if (message=="e!live"){
-        
-    }
-    // Pictures
-    /*} else if (message=="e!waifu"){
-        waifuSend(e.message.channel);
-        totalBotCommands++;
-    } else if (message=="e!cat"){
-        catSend(e.message.channel);
-        totalBotCommands++;
-    }*/
+
     
     // Censor functions
     else if (message.startsWith("e!censor")){
@@ -1091,7 +1069,8 @@ function /*boolean*/ lineIsHmm(line){
     return match!=null&&line==match[0];
 }
 
-function /* boolean*/ utilPins(e, msg){
+function /* boolean*/ utilPins(e){
+	var msg=e.message.content.split(" ");
 	if(msg[0] != "e!pinned") return false;
 	if(msg.length > 1){
 		rangePinned(e,msg);
@@ -1406,7 +1385,8 @@ function getMember(id){
  */
  
 //adds Eyan's quotes to his log 
-function add(message){
+function add(e){
+	var message = e.message;
 	if(message.guild.id != ZEAL_SERVER){
 		sms(message.channel,"Please contact the Kingdom of Zeal staff to use this feature https://discord.gg/WFAMf42");
 		return false;
@@ -1526,12 +1506,10 @@ function saveLine(message, filename, string){
 }
 //in response to e!kenobi, prints out a 4x4 emotes image of him, example image of output: https://cdn.discordapp.com/attachments/305548986155008000/424078792382873611/unknown.png
 function utilityKenobi(e){
-	if(e.message.channel==client.Channels.get(ZEAL_SERVER)){
-		return;}
-	//var mess =	"<:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n
-	//			<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n
-	//			<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n
-	//			<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>";
+	if(e.message.channel==client.Channels.get(ZEAL_SERVER))
+		return;
+	
+	
 	sms(e.message.channel,">>> <:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>");
 	e.message.delete();
 }
@@ -1993,22 +1971,11 @@ function helloThere(message){
 }
 
 function randomLeft(){
-	var colors  = [
-	"<:redlightsaberyx:455820731775844367>",
-	 "<:greenlightsaberyx:422559631030878209>",
-	 "<:bluelightsaberyx:422558517287845889>",
-	"<:Purplelightsaberymx:455819615440732171>"
-	];
+	var colors = ["<:redlightsaberyx:455820731775844367>","<:greenlightsaberyx:422559631030878209>","<:bluelightsaberyx:422558517287845889>","<:Purplelightsaberymx:455819615440732171>"];
 	return colors[Math.floor(Math.random() * colors.length)];
 }
-
 function randomRight(){
-	var colors =[
-	"<:redlightsaberyx:455820732228698122>",
-	"<:greenlightsaberyx:422559630741340171>",
-	"<:bluelightsaberyx:422558517589704704>",
-	"<:Purplelightsaberyx:455819615071633422>"
-	];
+	var colors =["<:redlightsaberyx:455820732228698122>","<:greenlightsaberyx:422559630741340171>","<:bluelightsaberyx:422558517589704704>","<:Purplelightsaberyx:455819615071633422>"];
 	return colors[Math.floor(Math.random() * colors.length)];	
 }
 
@@ -3265,3 +3232,20 @@ function isWeekend(){
     return (day==6)||(day==0);
 }
 
+
+
+
+
+
+
+
+
+
+/**
+*	All things that debugger should test for
+*/
+
+module.exports={
+	effects,
+	Condition
+}
