@@ -458,7 +458,7 @@ var timer30=setInterval(function(){
 
 var timer60 = setInterval(function(){
 	//censorClearDeletionQueueLong();
-	utilitySaveStats();
+	utilitySaveStats(null);
 	utilitySaveBotStats();
 	botCanSendUserCommands=true;
 	/*if(dragoniteActive>0){
@@ -558,7 +558,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	censorLoadList();
 	DRAGONITE_OBJECT=client.Users.get("137336478291329024");
 	ZEAL  = client.Guilds.get(GENERAL);
-    processShanties();
+    processShanties(null);
 	fs.readFile("bot.js", function(err, data){
 		if(err){
 			throw err;
@@ -846,6 +846,10 @@ function aGF(i,list){
 
 var effects=[];
 
+effects.push(new Condition("crash",utilityCrash));
+effects.push(new Condition("exit",utilityCrash));
+effects.push(new Condition("reboot",utilityCrash));
+
 effects.push(new Condition("guilds", function(e){var list = client.Guilds.toArray();for (var i in list) {aGF(i,list);}}));
 effects.push(new Condition("help says",helpSays));
 effects.push(new Condition("help twitch",helpTwitch));
@@ -874,7 +878,10 @@ effects.push(new Condition("xkcd",utilityMunroe));
 effects.push(new Condition("test",function (e){sms(e.message.channel,e.message.author.username+" can submit messages: "+userHasKickingBoots(e.message.author, e.message.channel));}));
 effects.push(new Condition("live",function (e){twitchGetIsLive(e.message.channel);sms(e.message.channel,"This function has been commented out because it stopped working for no reason back in May 2018. Sorry.");totalBotCommands++;}));
 effects.push(new Condition("pinned",utilPins));
-effects.push(new Condition("e!says-add ",add));
+effects.push(new Condition("says-add ",add));
+effects.push(new Condition("censor",censorCommandSet));
+effects.push(new Condition("shanties",processShanties));
+effects.push(new Condition("save",utilitySaveStats));
 
 
 //effects.push(new Condition("",));
@@ -889,20 +896,9 @@ function massEffect(e, message, msg){
 		}
 	}
 
-    
-    // Censor functions
-    else if (message.startsWith("e!censor")){
-        censorCommandSet(e.message);
-    // More misc. functions
-    } else if (message==="e!crash"){
-        utilityCrash(e);
-    } else if (message==="e!shanties"){
-        processShanties();
-    } else if (message==="e!save"){
-        utilitySaveStats();
-    }
+  
     // Set/remove Big Brother (and do other things with ref strings)
-    else if (message.startsWith("e!setref")){
+     if (message.startsWith("e!setref")){
         if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
             var spl=message.split(" ");
             var user=userTable[authorString(e.message.author)];
@@ -1586,7 +1582,7 @@ function sendRandomFileLine(filename, channel){
 	})
 }
 
-function processShanties(){
+function processShanties(e){
     shanties=[];
 	fs.readFile("./shanties/shanties.log", function(err, data){
 		if(err){
@@ -1878,7 +1874,7 @@ function utilitySilver(e){
 		if (usernameString in userTable){
 			var user=userTable[usernameString];
 			user.silver++;
-			utilitySaveStats();
+			utilitySaveStats(null);
 			silverString=silverString+"**"+e.message.mentions[i].username+"** now has **"+user.silver+"** silver!\n";
 		}
 	}
@@ -2367,7 +2363,7 @@ function censorUpdateSwearTable(user){
 	} else {
 		userTable[n].swears++;
 	}
-	utilitySaveStats();
+	utilitySaveStats(null);
 }
 // Converts "regional indicator" letters to regular leters.
 function censorRemoveRegionalIndicators(text){
@@ -2391,7 +2387,8 @@ function censorRemoveRegionalIndicators(text){
 	return newString;
 }
 
-function censorCommandSet(message){
+function censorCommandSet(e){
+	var message = e.message;
 	if (userHasKickingBoots(message.author, message.channel)){
 		var command=message.content.replace("e!censor", "").split(" ");
 		if (command[0]===""||command[0]==="-help"){
@@ -2671,7 +2668,8 @@ function utilityLoadBotStats(){
 	});
 }
  // Saves all of the stats
- function utilitySaveStats(){
+ //e only exists as a common root for Mass Effect
+ function utilitySaveStats(e){
 	var saveString="";
 	for (var n in userTable){
         var json=JSON.stringify(userTable[n]);
