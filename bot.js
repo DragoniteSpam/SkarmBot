@@ -65,11 +65,17 @@ const DREAM = "328372620989038594";
 const WOE="311398412610174976";
 const MODCHAT="376619800329453570";
 const MODLOG="344295609194250250";
+
 //users
 const MASTER="162952008712716288";
+const ARGO="263474950181093396";
 const DRAGONITE="137336478291329024";
 const EYAN_ID="304073163669766158";
 const PRIMA="425428688830726144"; const TIBERIA = PRIMA;
+const SKARMORY="319291086570913806";
+const sudoers=[DRAGONITE,MASTER,PRIMA,ARGO,SKARMORY];
+
+
 //Skarm channels
 const dataGen = "409856900469882880";
 const dataAct = "409860642942615573";
@@ -323,32 +329,6 @@ class Condition{
 	}
 }
 
-// Images
-
-var waifus=[
-	"bunny.jpg",
-	"cat.jpg",
-	"cat2.jpg",
-	"cat3.jpg",
-	"chicken.jpg",
-	"chipmunk.jpg",
-	"dogs.png",
-	"mouse.jpg",
-	"squirrel.png"
-];
-
-var cats=[
-	"cat1.jpg",
-	"cat2.jpg",
-	"cat3.jpg",
-	"cat4.jpg",
-	"cat5.jpg",
-	"cat6.jpg",
-	"cat7.jpg",
-	"cat8.jpg",
-	"cat9.jpg",
-]
-
 // Banned words, and stuff like that
 var banned=[
 ]
@@ -432,6 +412,7 @@ utilityLoadBotStats();
 var streamState=true;
 var streamHasNotifiedDate=null;
 
+
 var senna="";
 // caching to limit log rates //49/10/15 todo
 var timer1 = setInterval(function(){
@@ -476,7 +457,6 @@ var timer60 = setInterval(function(){
             userTable[user].talkTimer--;
         }
     }
-	//sien("minute tick");
 }, 60000);
 
 var timer5min = setInterval(function(){
@@ -550,20 +530,18 @@ function getToken(){
 // What happens when you first connect
 client.Dispatcher.on(events.GATEWAY_READY, e => {
 	console.log("Connected as " + client.User.username+" ("+myNick+"). Yippee!");
-	//sets the default game to e!help
-	/*var game={name: "never trust a bunny", type: 0};
-    client.User.setGame(game);*/
+	
 	twitchGetIsLive(null);
 	twitchGetLastStreamDate();
 	censorLoadList();
-	DRAGONITE_OBJECT=client.Users.get("137336478291329024");
+	DRAGONITE_OBJECT=client.Users.get(DRAGONITE);
 	ZEAL  = client.Guilds.get(GENERAL);
     processShanties(null);
 	fs.readFile("bot.js", function(err, data){
 		if(err){
 			throw err;
 		}
-        client.User.setGame({name: data.toString().split('\n').length+" lines of spaghetti", type: 0});
+        client.User.setGame({name: "e!help to use "+data.toString().split('\n').length+" lines of spaghetti", type: 0});
 	});
 });
 //what the bot does whenever a message is deleted
@@ -641,7 +619,6 @@ client.Dispatcher.on(events.MESSAGE_UPDATE, e=> {
 });
 
 // Name changes
-
 client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e=> {
 	if (e.member!=null){
 		var LOG="428324182728638464";
@@ -682,6 +659,9 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
             }
         }
     }
+	
+	if(!adminMode(e)){
+	
 	// don't do anything in PMs?
 	if (e.message.isPrivate){
 		return false;
@@ -701,6 +681,8 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	if (e.message.author.bot){	
 		return false;
 	}
+	}
+	
 	var author = e.message.author;
     var message=e.message.content.toLowerCase();
     
@@ -733,7 +715,7 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 			roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442").commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
 		}
 	
-		if(e.message.content.substring(0,2)=="e!"){
+		if(e.message.content.toLowerCase().substring(0,2)=="e!" || adminMode(e)){
 			massEffect(e, message, msg);
 		}
 		//Everything else
@@ -772,6 +754,12 @@ function roleGetter(list,id){
 	return null;
 }
 
+function adminMode(e){
+	return (e.message.content.startsWith("e@")&&sudo(e));
+}
+function sudo(e){
+	return sudoers.includes(e.message.author.id);
+}
 
 function bigBrother(e, author, message){
     var usernameString=authorString(author);
@@ -846,9 +834,6 @@ function aGF(i,list){
 
 var effects=[];
 
-effects.push(new Condition("crash",utilityCrash));
-effects.push(new Condition("exit",utilityCrash));
-effects.push(new Condition("reboot",utilityCrash));
 
 effects.push(new Condition("guilds", function(e){var list = client.Guilds.toArray();for (var i in list) {aGF(i,list);}}));
 effects.push(new Condition("help says",helpSays));
@@ -861,12 +846,10 @@ effects.push(new Condition("help mods",helpMods));
 effects.push(new Condition("help",helpHelpHelp));
 effects.push(new Condition("size",utiliyLineCount));
 effects.push(new Condition("sact",utilityActCount));
-effects.push(new Condition("stats",utilityStats));
+//effects.push(new Condition("stats",utilityStats));
 effects.push(new Condition("user",utilityUserStats));
 effects.push(new Condition("ping",utilityPing));
 effects.push(new Condition("hug",utilityHug));
-effects.push(new Condition("drink",utilityDrink));
-effects.push(new Condition("beer",utilityRootBeer));
 effects.push(new Condition("sandwich",utilitySandwich));
 effects.push(new Condition("bot",utilityBotStats));
 effects.push(new Condition("kenobi",utilityKenobi));
@@ -887,6 +870,10 @@ effects.push(new Condition("pink",function(e){utilityPink(e);utilityPinker(e);})
 
 //effects.push(new Condition("",));
 
+effects.push(new Condition("crash",utilityCrash));
+effects.push(new Condition("exit",utilityCrash));
+effects.push(new Condition("reboot",utilityCrash));
+
 function massEffect(e, message, msg){
     
 	for(var i in effects){
@@ -894,6 +881,10 @@ function massEffect(e, message, msg){
 			effects[i].action(e);
 			totalBotCommands++;
 			return i;
+		}
+		if(adminMode(e)&&e.message.content==="e@test" && i<effects.length-3){
+			sien("testing e!"+effects[i].trigger);
+			effects[i].action(e);
 		}
 	}
 
@@ -986,48 +977,6 @@ function massEffect(e, message, msg){
 	}
 }
 
-function utilityDrink(e){
-	if(e.message.author.id=="139579058152275968" /* rainy */){
-        var contents=e.message.content.split(" ");
-        if (contents.length>1){
-            var amount=parseInt(contents[1]);
-            if (isNaN(amount)){
-                amount=0;
-            }
-        } else {
-            amount=1;
-        }
-        drinkCount=drinkCount+amount;
-		fs.writeFile(".\\stuff\\drink.rainy", drinkCount, function(err){
-            if (err){
-                console.log("something bad happened: "+err);
-            }
-        });
-	}
-	sms(e.message.channel, "rainy currently owes master9000: "+drinkCount+" drinks");
-}
-
-function utilityRootBeer(e){
-	if(e.message.author.id=="139579058152275968" /* rainy */||e.message.author.id==DRAGONITE){
-        var contents=e.message.content.split(" ");
-        if (contents.length>1){
-            var amount=parseInt(contents[1]);
-            if (isNaN(amount)){
-                amount=0;
-            }
-        } else {
-            amount=1;
-        }
-        rootbeerCount=rootbeerCount+amount;
-		fs.writeFile(".\\stuff\\rootbeer.rainy", rootbeerCount, function(err){
-            if (err){
-                console.log("something bad happened: "+err);
-            }
-        });
-	}
-	sms(e.message.channel, "rainy currently owes dragonite: "+rootbeerCount+" root beers (if he is unavailable payment may be made to his robot instead)");
-}
-
 function /*boolean*/ lineIsQuestion(line){
     var questionwords=[
         "who",
@@ -1038,7 +987,7 @@ function /*boolean*/ lineIsQuestion(line){
         "how",
     ];
     /*
-    most questions in the zelian dialect of english don't end in question marks
+    //most questions in the zelian dialect of english don't end in question marks
     if (!line.endsWith("?")){
         return false;
     }
@@ -1074,26 +1023,8 @@ function /* boolean*/ utilPins(e){
 }
 
 function notifiers(e, message){
-	/*if (message.includes("drago") || message.includes("dova")){
-		if(dragoniteActive < 1){
-			sms(client.Channels.get("417833536519798795"),message  +  " from "    +  e.message.author.username +" in <#" +e.message.channel_id +  ">, <@!137336478291329024>");  
-		}
-	}
-	if (messageAuthorEquals(e.message, "137336478291329024")){
-		dragoniteActive = 5;
-		if(message==": )" || message == ":)" && Math.random() < .1){
-			sms(e.message.channel,"<:Senate:395030198636249089>");
-		}
-	}
-	if (message.includes("master") || message.includes("misha") || message.includes("m9k") || message.includes("magus")){
-		if(masterActive < 1){
-			sms(client.Channels.get("417843952595632148"), message  +  " from "    +  e.message.author.username +" in <#" +e.message.channel_id +  ">, <@!162952008712716288>");  
-		}
-	}
-	if (messageAuthorEquals(e.message, "162952008712716288")){
-		masterActive = 3;
-	}*/
-	if (messageAuthorEquals(e.message, "304073163669766158")){
+	
+	if (messageAuthorEquals(e.message, EYAN_ID)){
 		kingActive = 3;
 	}
 	if (/*menKing(message) ||*/ message.includes("eyan")/*|| message.includes("zeal")*/){
@@ -1371,6 +1302,8 @@ function getMember(id){
     }
 	sien("something broke in func getMember(id)");
 }
+
+
 /*
  ********************
  *      Quotes      *
@@ -1433,7 +1366,6 @@ function addGeneral(message){
 function userHasKickingBoots(author, channel){
 	return author.can(discordie.Permissions.General.KICK_MEMBERS, channel);
 }
-
 // Send a random line
 function sendRandomLine(message){
     fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
@@ -1597,6 +1529,7 @@ function processShanties(e){
 	})
 }
 
+
 /*
  ********************
  *   Twitch Stuff   *
@@ -1713,6 +1646,8 @@ function annoyDeci(channel){
 function annoyCandyman(channel){
 	sms(channel,"Watch your language ಠ_ಠ");
 }
+
+
 
 /*
  ********************
@@ -1893,20 +1828,22 @@ function utilitySkarm(e){
 }
 
 function utilityCrash(e){
-    if (e.message.author.id===DRAGONITE||e.message.author.id===MASTER){
+    if (sudo(e)){
         fs.appendFile("crashes.txt", e.message.author.username+" crashed the bot on "+new Date()+"\r\n", function(err) {
             if(err) {
                 throw err;
             }
-            throw "javascript sucks";
+			process.exit(0);
             //console.log("The file was saved!");
         }); 
         return true;
     } else {
-        sms(e.message.channel,"Nice try!");
+        sms(e.message.channel,"User is not in the sudoers file. This incident will be reported.");
+		sien("User tried to restart bot: <@"+e.message.author.id+">");
         return false;
     }
 }
+
 
 /*
  ********************
@@ -1971,7 +1908,6 @@ function randomRight(){
 	var colors =["<:redlightsaberyx:455820732228698122>","<:greenlightsaberyx:422559630741340171>","<:bluelightsaberyx:422558517589704704>","<:Purplelightsaberyx:455819615071633422>"];
 	return colors[Math.floor(Math.random() * colors.length)];	
 }
-
 function REACT(message, id){
 	//banned from reactions rip
 	var botReactionBlacklist=[
@@ -2224,14 +2160,13 @@ function REACT(message, id){
 	}
 	return false;
 }
-
 //TODO
 //returns the amount of alternate nicknames for skarm are contained in the message
-function otherMentions(message){return 0;
+function otherMentions(message){//return 0;
     
 	var sum=0;
 	for(var i in meNiks){
-		if(message.content.toLowerCase().contains(meNiks[i])){
+		if(message.toLowerCase().includes(meNiks[i])){
 			sum++;
 		}
 	}
@@ -2260,6 +2195,7 @@ function getShantyBlock(song, start){
     }
     return block;
 }
+
 
 /*
  ********************
@@ -2301,7 +2237,7 @@ function censorText(text, channel, author, message, redactMessage){
 			   "263474950181093396" //putting m9k's testing alt in here to avoid a bug just in case
 			]
 		]
-		if (authorEquals(author, "304073163669766158")){   //304073163669766158 = eyan
+		if (authorEquals(author, EYAN_ID)){
 			sms(client.Channels.get("418138620952707082"),"May have said " + newMessage);
 			return false;
 		}
@@ -2518,19 +2454,7 @@ function censorLoadList(){
 	});
 }
 
-/*
- ********************
- *   Picture stuff  *
- ********************
- */
 
-function waifuSend(channel){
-	channel.uploadFile("waifus\\"+waifus[Math.floor(Math.random()*waifus.length)]);
-}
-
-function catSend(channel){
-	channel.uploadFile(".\\cats\\"+cats[Math.floor(Math.random()*cats.length)]);
-}
 
 /*
  ********************
@@ -2579,7 +2503,7 @@ function utilitySuggestion(e){
 
 // Sets the currently playing game
 function utilityGame(e){
-	if (userHasKickingBoots(e.message.author, e.message.channel)){
+	if (sudo(e)){
         var game={name: e.message.content.replace("e!game ", ""), type: 0};
 		client.User.setGame(game);
         
@@ -2944,8 +2868,11 @@ function replaceAll(string, toReplace, newString){
 function utilityMunroe(e){
     var command=e.message.content.split(" ");
     if (command.length==1){
-        munroe.toggleChannel(e.message.channel);
-    } else {
+        return munroe.toggleChannel(e.message.channel);
+    }
+	if(command[1]>0){
+		return sms(e.message.channel,"https://xkcd.com/"+command[1]);
+	}else{
         switch (command[1]){
             case "now":
                 munroe.post();
@@ -3010,7 +2937,7 @@ function helpSays(e){
 		"If you're not sure if you have kicking boots or not, you can check with \"e!test\" (but you "+
 		"probably don't).";*/
 	var message="Something something conversation bot. Say `"+myNick+"` to get started.";
-	sms(e.message.channel, "```"+message+"```");
+	sms(e.message.channel, ">>>"+message);
 }
 //Introduction to Twitch
 function helpTwitch(e){
@@ -3069,7 +2996,7 @@ function helpReactions(e){
 function getVersion(){
 	var v = "";
 	for(var i in version){
-		v+=version[i];
+		v+=version[i]+".";
 	}
 	return v+Math.floor(Math.random()*1000);
 	
@@ -3079,10 +3006,9 @@ function helpCredits(e){
 	var message="Credits\n\n"+
 		"***"+myName+"***\n\n"+
 		"Lead spaghetti chef: Dragonite#7992\n"+
-        "Seondary spaghetti chef: Master9000#9716\n"+
+        "Seondary spaghetti chef: <@162952008712716288>\n"+
 		"Version:" +getVersion() +"\n"+
 		"Library: Discordie (shut up)\n"+
-        "Did stuff when I was too lazy to: <@162952008712716288>\n\n"+
 		"https://www.youtube.com/c/dragonitespam \n"+
         "https://github.com/DragoniteSpam/SkarmBot \n"+
 		"Extra ideas came from SuperDragonite2172, willofd, Cadance and probably other people.\n\n"+
@@ -3132,19 +3058,10 @@ function exactTime(UNIX_timestamp){
 	return time;
 }
 
-/**
-  *********************** 
-  *this looks different *
-  ***********************
-  */
 
-//send the message to the channel tostring in skarm
-//author: https://github.com/Master9000
-function sien(message){
-	senna+= message +"\n";
-}
+//send the message to the channel tostring in Skarm's server
+function sien(message){senna+= message +"\n";}
 //route all channel.send messages through this one for ease of fixing issues
-//author: https://github.com/Master9000
 function sms(channel, message){
 	try{
 		messagesThisCycle++;
@@ -3152,6 +3069,7 @@ function sms(channel, message){
 	}
 	catch(err){
 		//no idea what goes here but its here
+		console.log("Failed to send message\t"+message+" to " +channel.id);
 		return null;
 	}
 }
@@ -3159,11 +3077,7 @@ function sms(channel, message){
 function rangePinned(e, msg){				
 	utilityPinned(client.Channels.get(msg[1].substring(2,msg[1].length-1)),e.message.channel);
 }
-//checks if author is bot editor
-function isMod(e){
-	if(e.message.author == MASTER || e.message.author == DRAGONITE) return true;
-	return false;
-}
+
 //
 function google(e){
 	var f = e.message.content.substring(8).split(" ");
