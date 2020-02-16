@@ -1,11 +1,15 @@
-git checkout producton
+git checkout dev
 
-git fetch origin producton
-git merge origin/producton
+git fetch origin dev
+git merge origin/dev
 
 
 
 node bot.js > output.txt
+IF %ERRORLEVEL% == 9(
+exit
+)
 git add *
 git commit * -m "end of task git push"
-git push -u origin producton
+git push -u origin dev
+launcher.bat
