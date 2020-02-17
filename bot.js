@@ -677,7 +677,10 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
                 content = content.replace(tokens[0], "");
             }
             if (content.length > 0) {
-                client.Channels.get(channel).sendMessage(content);
+				if(client.Channels.get(channel)==null){
+					return sms(e.message.channel, "Channel is null");
+				}
+                sms(client.Channels.get(channel),sendMessage(content));
             }
         }
     }
