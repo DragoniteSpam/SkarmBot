@@ -680,7 +680,7 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 				if(client.Channels.get(channel)==null){
 					return sms(e.message.channel, "Channel is null");
 				}
-                sms(client.Channels.get(channel),sendMessage(content));
+                sms(client.Channels.get(channel),(content));
             }
         }
     }
