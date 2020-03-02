@@ -77,6 +77,7 @@ const sudoers=[DRAGONITE,MASTER,PRIMA,ARGO,SKARMORY];
 
 
 //Skarm channels
+const PAPASKARM="394225763483779084";
 const dataGen = "409856900469882880";
 const dataAct = "409860642942615573";
 const frmKing = "409868415176802324";
@@ -88,6 +89,10 @@ const REDGAOLER="305450620754591756";
 const MASAMUNE="305450671992340480";
 const PINK = "305450786001911808";
 const PINKER = "407725604910399489";
+
+
+//Files
+const EYANQUOTESFILE = "line.txt";
 
 // misc constants
 
@@ -112,29 +117,7 @@ for(var i=0;i<3+Math.random()*4;i++){
 	version.push(Math.floor(1+Math.random()*9));
 }
 
-if (fs.existsSync(".\\stuff\\drink.rainy")){
-    fs.readFile(".\\stuff\\drink.rainy", function(err, data){
-        if(err){
-            throw err;
-        }
-        drinkCount=parseInt(data);
-        if (isNaN(drinkCount)){
-            drinkCount=0;
-        }
-    });
-}
 
-if (fs.existsSync(".\\stuff\\rootbeer.rainy")){
-    fs.readFile(".\\stuff\\rootbeer.rainy", function(err, data){
-        if(err){
-            throw err;
-        }
-        rootbeerCount=parseInt(data);
-        if (isNaN(rootbeerCount)){
-            rootbeerCount=0;
-        }
-    });
-}
 
 // xkcd
 
@@ -408,7 +391,7 @@ utilityCreateUserTable();
 utilityLoadBotStats();
 
 // assume the stream is online until proven otherwise, that way it doesn't keep
-// notifying everyone if it crashes or restarts due to changes
+// notifying everyone if it restarts
 var streamState=true;
 var streamHasNotifiedDate=null;
 
@@ -631,14 +614,23 @@ client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e=> {
 });
 
 client.Dispatcher.on(events.PRESENCE_UPDATE, e=> {
-	if (e.member!=null){
-		var LOG="428324182728638464";
+	//console.log("Presence update");
+	if (e.guild.id==PAPASKARM){
+		var LOG="678456248735367168";
         var logChannel=client.Channels.get(LOG);
         //if ((e.member.status===e.member.previousStatus)&&(e.member.gameName===e.member.previousGameName)){
-        if ((e.user.status===e.user.previousStatus)&&(e.user.gameName===e.user.previousGameName)){
+        //if ((e.user.status===e.user.previousStatus)&&(e.user.gameName===e.user.previousGameName)){
             // Either an avatar change or a server nick change
-            //sms(logChannel, e.member.username+"@"+e.member.discriminator+": ??? -> "+e.member.nick);
-        }
+        
+		sms(logChannel, e.user.username+"#"+e.user.discriminator+
+		//":\n Nick: "+e.member.nick+
+		
+		"\n Status: "+e.user.status+
+		"\n Prev stat: "+e.user.previousStatus+
+		
+		"\n Game: "+e.user.gameName+
+		"\n Previous Game: "+e.user.previousGameName);
+        
         
 	}
 });
@@ -706,7 +698,7 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	if(!e.message.channel.id==MODCHAT){
 		censor(e.message);
 	}
-	//utilitySaveLine(message);
+	
 	// Help
 	if (!e.message.deleted){ 
 		notifiers(e, message);
@@ -847,14 +839,14 @@ effects.push(new Condition("help",helpHelpHelp));
 effects.push(new Condition("size",utiliyLineCount));
 effects.push(new Condition("sact",utilityActCount));
 //effects.push(new Condition("stats",utilityStats));
-effects.push(new Condition("user",utilityUserStats));
+//effects.push(new Condition("user",utilityUserStats));
 effects.push(new Condition("ping",utilityPing));
 effects.push(new Condition("hug",utilityHug));
 effects.push(new Condition("sandwich",utilitySandwich));
 effects.push(new Condition("bot",utilityBotStats));
 effects.push(new Condition("kenobi",utilityKenobi));
 effects.push(new Condition("game ",utilityGame));
-effects.push(new Condition("silver ",utilitySilver));
+//effects.push(new Condition("silver ",utilitySilver));
 effects.push(new Condition("skarm",utilitySkarm));
 effects.push(new Condition("suggest",utilitySuggestion));
 effects.push(new Condition("xkcd",utilityMunroe));
@@ -1326,7 +1318,7 @@ function add(e){
 	}
 	//master also go here
 	sms(client.Channels.get("409868415176802324"),message.content.substring(10));  //writes the line to Skarm's server mirror of the database
-	saveLine(message, "line.txt", msg);
+	saveLine(message, EYANQUOTESFILE, msg);
 }
 
 //adds a message to skarm's response database if its not from Eyan
@@ -1368,16 +1360,16 @@ function userHasKickingBoots(author, channel){
 }
 // Send a random line
 function sendRandomLine(message){
-    fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
+    fs.appendFile("./output/skarmlog.txt", message.content+"\r\n", (err) => {
         if (err){
             throw err;
         }
     });
-	sendRandomFileLine("line.txt", message.channel);
+	sendRandomFileLine(EYANQUOTESFILE, message.channel);
 }
 
 function sendRandomLineSkyrim(message){
-    fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
+    fs.appendFile("./output/skarmlog.txt", message.content+"\r\n", (err) => {
         if (err){
             throw err;
         }
@@ -1390,7 +1382,7 @@ function sendRandomLineSkyrim(message){
 }
 
 function sendRandomLinePun(message){
-    fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
+    fs.appendFile("./output/skarmlog.txt", message.content+"\r\n", (err) => {
         if (err){
             throw err;
         }
@@ -1399,7 +1391,7 @@ function sendRandomLinePun(message){
 }
 
 function sendRandomLineGeneral(message){
-    fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
+    fs.appendFile("./output/skarmlog.txt", message.content+"\r\n", (err) => {
         if (err){
             throw err;
         }
@@ -1408,7 +1400,7 @@ function sendRandomLineGeneral(message){
 }
 
 function sendRandomLineGeneralAction(message){
-    fs.appendFile("skarmlog.txt", message.content+"\r\n", (err) => {
+    fs.appendFile("./output/skarmlog.txt", message.content+"\r\n", (err) => {
         if (err){
             throw err;
         }
@@ -1438,23 +1430,7 @@ function utilityKenobi(e){
 	sms(e.message.channel,">>> <:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>");
 	e.message.delete();
 }
-//sings us a random shanty bit
-/*function getShanty(){ 
-	var lines;
-	sien("got this far");
-	fs.readFile("shanty.txt", function(err, data){
-		if(err){
-			sms(channel,"It sunk");
-			return "";
-		} else {
-			lines = data.toString().split("---");
-		}
-	});
-	//var lines= fs.readFileSync("shanty.txt").toString().split("---");
-	that = lines[Math.floor(Math.random() * lines.length)];
-	sien(that);
-	return that;
-}*/
+
 // Pulls a random line from the text file
 function sendRandomFileLine(filename, channel){
 	var lines;
@@ -1482,7 +1458,7 @@ function sendRandomFileLine(filename, channel){
                     }
                 }
 			} while (line.length<2);
-            fs.appendFile("skarmlog.txt", "    "+line+"\r\n", (err) => {
+            fs.appendFile("./output/skarmlog.txt", "    "+line+"\r\n", (err) => {
                 if (err){
                     throw err;
                 }
@@ -1829,10 +1805,14 @@ function utilitySkarm(e){
 
 function utilityCrash(e){
     if (sudo(e)){
-        fs.appendFile("crashes.txt", e.message.author.username+" crashed the bot on "+new Date()+"\r\n", function(err) {
+        fs.appendFile("./output/crashes.txt", e.message.author.username+" crashed the bot on "+new Date()+"\r\n", function(err) {
             if(err) {
                 throw err;
             }
+			if(e.message.content.split(" ")[1]=="-f"){
+				sms(e.message.channel,"Force exiting");
+				process.exit(9);
+			}
 			process.exit(0);
             //console.log("The file was saved!");
         }); 
@@ -2466,7 +2446,7 @@ function utilitySuggestion(e){
     if (e.message.content.startsWith("e!suggest-blacklist ")){
         if (e.message.author.id===DRAGONITE){
             for (var i=0; i<e.message.mentions.length; i++){
-                fs.appendFile("suggestion-blacklist.txt", e.message.mentions[i].id+"\r\n", (err)=>{
+                fs.appendFile("./stuff/suggestion-blacklist.txt", e.message.mentions[i].id+"\r\n", (err)=>{
                     if (err){
                         throw err;
                     }
@@ -2479,7 +2459,7 @@ function utilitySuggestion(e){
         return false;
     }
 	var blacklisted;
-	fs.readFile("suggestion-blacklist.txt", function(err, data){
+	fs.readFile("./stuff/suggestion-blacklist.txt", function(err, data){
 		if(err){
 			throw err;
 		}
@@ -2513,13 +2493,6 @@ function utilityGame(e){
 	}
 }
 
-function utilitySaveLine(line){
-	fs.appendFile("log.txt", line+"\r\n", (err) => {
-		if (err){
-			throw err;
-		}
-	});
-}
 
 function utilityHug(e){
 	var target=e.message.content.replace("e!hug ", "");
@@ -2604,7 +2577,7 @@ function utilityLoadBotStats(){
 // Utility that prints out the number of lines in the bot's learned database.
 function utiliyLineCount(e){
 	var lines;
-	fs.readFile("line.txt", function(err, data){
+	fs.readFile(EYANQUOTESFILE, function(err, data){
 		if(err){
 			sms(e.message.channel,"Something blew up. Oh noes! @Dragonite#7992");
 			throw err;
@@ -2937,7 +2910,7 @@ function helpSays(e){
 		"If you're not sure if you have kicking boots or not, you can check with \"e!test\" (but you "+
 		"probably don't).";*/
 	var message="Something something conversation bot. Say `"+myNick+"` to get started.";
-	sms(e.message.channel, ">>>"+message);
+	sms(e.message.channel, ">>> "+message);
 }
 //Introduction to Twitch
 function helpTwitch(e){
@@ -2946,7 +2919,7 @@ function helpTwitch(e){
 		"when he goes live. If you want to find out if he's live or not, type \"e!live\" and "+myNick+" "+
 		"will inform you."*/
         "At one point in time Skarm was able to inform everyone when Zeal went live on Twitch. Unfortunately that stopped working magically for no reason and we don't know why so we commented it out.";
-	sms(e.message.channel,"```"+message+"```");
+	sms(e.message.channel,">>> "+message+"");
 }
 // Introduction to Lol
 function helpLol(e){
@@ -2957,7 +2930,7 @@ function helpLol(e){
 		"\n"+
 		"Exactly how to get your own command is a secret.";*/
 	var message="I don't remember what the total list of joke commands is and I'm too lazy to look them all up";
-	sms(e.message.channel,"```"+message+"```");
+	sms(e.message.channel,">>> "+message+"");
 }
 // Introduction to Misc
 function helpMisc(e){
@@ -2973,7 +2946,7 @@ function helpMisc(e){
 		"e!treason\n"+
 		"e!back";*/
     var message="I don't remember what the total list of misc commands is and I'm too lazy to look them all up";
-	sms(e.message.channel,"```"+message+"```");
+	sms(e.message.channel,">>> "+message+"");
 }
 // Moderation panels
 function helpMods(e){
@@ -2983,14 +2956,14 @@ function helpMods(e){
 		"e!censor\n"+
 		"e!refresh\n";*/
     var message="I don't remember what the total list of mod commands are and I'm too lazy to look them all up";
-	sms(e.message.channel, prefix+"```"+message+"```");
+	sms(e.message.channel, prefix+">>> "+message+"");
 }
 // Reactionary stuff
 function helpReactions(e){
 	var message=myNick+" can and sometimes will react to certain lines in the chat."+
 		"I'm not telling you what these reactions are or how to trigger them, because "+
 		"it'll be funnier when people discover them on their own.";
-	sms(e.message.channel,"```"+message+"```");
+	sms(e.message.channel,">>> "+message+"");
 }
 
 function getVersion(){
@@ -3014,7 +2987,7 @@ function helpCredits(e){
 		"Extra ideas came from SuperDragonite2172, willofd, Cadance and probably other people.\n\n"+
 		"Thanks to basically everyone on the Kingdom of Zeal server for testing this thing.\n\n"+
         "Wolfram-Alpha is awesome: https://www.npmjs.com/package/node-wolfram";
-	sms(e.message.channel,"```"+message+"```");
+	sms(e.message.channel,">>> "+message+"");
 }
 
 function woeMessage(user){
