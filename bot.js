@@ -859,24 +859,33 @@ effects.push(new Condition("help mods",helpMods));
 effects.push(new Condition("help",helpHelpHelp));
 effects.push(new Condition("size",utiliyLineCount));
 effects.push(new Condition("sact",utilityActCount));
-effects.push(new Condition("stats",utilityStats));
-effects.push(new Condition("user",utilityUserStats));
+//effects.push(new Condition("stats",utilityStats));
+//effects.push(new Condition("user",utilityUserStats));
 effects.push(new Condition("ping",utilityPing));
 effects.push(new Condition("hug",utilityHug));
-effects.push(new Condition("drink",utilityDrink));
-effects.push(new Condition("beer",utilityRootBeer));
 effects.push(new Condition("sandwich",utilitySandwich));
 effects.push(new Condition("bot",utilityBotStats));
 effects.push(new Condition("kenobi",utilityKenobi));
 effects.push(new Condition("game ",utilityGame));
-effects.push(new Condition("silver ",utilitySilver));
+//effects.push(new Condition("silver ",utilitySilver));
 effects.push(new Condition("skarm",utilitySkarm));
 effects.push(new Condition("suggest",utilitySuggestion));
 effects.push(new Condition("xkcd",utilityMunroe));
 effects.push(new Condition("test",function (e){sms(e.message.channel,e.message.author.username+" can submit messages: "+userHasKickingBoots(e.message.author, e.message.channel));}));
 effects.push(new Condition("live",function (e){twitchGetIsLive(e.message.channel);sms(e.message.channel,"This function has been commented out because it stopped working for no reason back in May 2018. Sorry.");totalBotCommands++;}));
+effects.push(new Condition("pinned",utilPins));
+effects.push(new Condition("says-add ",add));
+effects.push(new Condition("censor",censorCommandSet));
+effects.push(new Condition("shanties",processShanties));
+effects.push(new Condition("save",utilitySaveStats));
+effects.push(new Condition("pink",function(e){utilityPink(e);utilityPinker(e);}));
+
 
 //effects.push(new Condition("",));
+
+effects.push(new Condition("crash",utilityCrash));
+effects.push(new Condition("exit",utilityCrash));
+effects.push(new Condition("reboot",utilityCrash));
 
 function massEffect(e, message, msg){
     
@@ -886,48 +895,15 @@ function massEffect(e, message, msg){
 			totalBotCommands++;
 			return i;
 		}
+		if(adminMode(e)&&e.message.content==="e@test" && i<effects.length-3){
+			sien("testing e!"+effects[i].trigger);
+			effects[i].action(e);
+		}
 	}
-	
-	
-	if (utilPins(e, msg)){
-        totalBotCommands++;
-    } 
-	
-	
-	
-    // Quote
-    if (message.startsWith("e!says-add ")){
-        totalBotCommands++;
-        add(e.message);
-    }
-	
-	
-    // Twitch
-    if (message=="e!live"){
-        
-    }
-    // Pictures
-    /*} else if (message=="e!waifu"){
-        waifuSend(e.message.channel);
-        totalBotCommands++;
-    } else if (message=="e!cat"){
-        catSend(e.message.channel);
-        totalBotCommands++;
-    }*/
-    
-    // Censor functions
-    else if (message.startsWith("e!censor")){
-        censorCommandSet(e.message);
-    // More misc. functions
-    } else if (message==="e!crash"){
-        utilityCrash(e);
-    } else if (message==="e!shanties"){
-        processShanties();
-    } else if (message==="e!save"){
-        utilitySaveStats();
-    }
+
+  
     // Set/remove Big Brother (and do other things with ref strings)
-    else if (message.startsWith("e!setref")){
+     if (message.startsWith("e!setref")){
         if (hasBigBrotherRank(client.Users.get(e.message.author.id))||e.message.author.id===PRIMA){
             var spl=message.split(" ");
             var user=userTable[authorString(e.message.author)];
@@ -978,10 +954,6 @@ function massEffect(e, message, msg){
             annoyMaster(e.message.channel);
             totalBotCommands++;
             botCanSendUserCommands=false;
-        }else if (message == "!pink"){
-            totalBotCommands++;
-            utilityPink(e);
-            utilityPinker(e);
         }else if (message=="e!refresh"){
             totalBotCommands++;
             utilityUpdateEarth(e);
@@ -1017,6 +989,7 @@ function massEffect(e, message, msg){
         }*/
 	}
 }
+
 
 function utilityDrink(e){
 	if(e.message.author.id=="139579058152275968" /* rainy */){
