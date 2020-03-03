@@ -1908,19 +1908,23 @@ function utilitySkarm(e){
         "* these odds are actually wrong");
 	return false;
 }
-
 function utilityCrash(e){
-    if (e.message.author.id===DRAGONITE||e.message.author.id===MASTER){
-        fs.appendFile("crashes.txt", e.message.author.username+" crashed the bot on "+new Date()+"\r\n", function(err) {
-            if(err) {
-                throw err;
-            }
-            throw "javascript sucks";
+    if (sudo(e)){
+        //fs.appendFile("./output/crashes.txt", e.message.author.username+" crashed the bot on "+new Date()+"\r\n", function(err) {
+         //   if(err) {
+        //        throw err;
+           // }
+	if(e.message.content.split(" ")[1]=="-f"){
+		sms(e.message.channel,"Force exiting");
+		process.exit(9);
+	}
+	process.exit(0);
             //console.log("The file was saved!");
-        }); 
+        //}); 
         return true;
     } else {
-        sms(e.message.channel,"Nice try!");
+        sms(e.message.channel,"User is not in the sudoers file. This incident will be reported.");
+		sien("User tried to restart bot: <@"+e.message.author.id+">");
         return false;
     }
 }
