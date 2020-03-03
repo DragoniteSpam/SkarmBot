@@ -3,8 +3,7 @@ git fetch origin master
 git merge origin/master
 git pull
 node bot.js > output.txt
-IF %ERRORLEVEL% == 9(
-exit)
+IF %ERRORLEVEL% == 9 ( exit )
 git add users/*.zeal
 git commit users/*.zeal -m "User Updates"
 git add logs/*.*
