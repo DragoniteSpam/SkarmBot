@@ -1807,7 +1807,7 @@ function utilityCrash(e){
     if (sudo(e)){
         fs.appendFile("./output/crashes.txt", e.message.author.username+" crashed the bot on "+new Date()+"\r\n", function(err) {
             if(err) {
-                throw err;
+                //throw err;
             }
 			if(e.message.content.split(" ")[1]=="-f"){
 				sms(e.message.channel,"Force exiting");
