@@ -2,8 +2,8 @@ Reading xk.cd
 :14.580Z"}
 next xkcd check scheduled for: 24105420
 bad user file: 101524345221844992.zeal
-bad user file: 104415327940521984.zeal
 bad user file: 103647653878841344.zeal
+bad user file: 104415327940521984.zeal
 bad user file: 113084295958044672.zeal
 bad user file: 115619201355481089.zeal
 bad user file: 119821977300107264.zeal
@@ -20,17 +20,17 @@ bad user file: 139579058152275968.zeal
 bad user file: 141072585835282432.zeal
 bad user file: 149679012749246464.zeal
 bad user file: 150785938128109568.zeal
-bad user file: 154342633580396544.zeal
 bad user file: 155792731866660864.zeal
 bad user file: 159161768801730571.zeal
 bad user file: 160940660764049418.zeal
+bad user file: 154342633580396544.zeal
 bad user file: 161113931127980032.zeal
 bad user file: 161610812715171841.zeal
 bad user file: 165983964635463691.zeal
 bad user file: 167124512448577537.zeal
 bad user file: 167978555135885312.zeal
-bad user file: 171040980173062144.zeal
 bad user file: 172079458902081536.zeal
+bad user file: 171040980173062144.zeal
 bad user file: 175085797328814080.zeal
 bad user file: 175817451760517121.zeal
 bad user file: 176692286803935233.zeal
@@ -39,8 +39,8 @@ bad user file: 178621632930119680.zeal
 bad user file: 178924691715653633.zeal
 bad user file: 180084190950326272.zeal
 bad user file: 182597101895680000.zeal
-bad user file: 186482648225415168.zeal
 bad user file: 186894356018364418.zeal
+bad user file: 186482648225415168.zeal
 bad user file: 186956800422182912.zeal
 bad user file: 191299047896776704.zeal
 bad user file: 192233330652086272.zeal
@@ -147,13 +147,13 @@ bad user file: 500498993629888533.zeal
 bad user file: 506143350748086292.zeal
 bad user file: 506186547859816453.zeal
 bad user file: 512732652147703862.zeal
-bad user file: 519946697309159424.zeal
 bad user file: 520751608699813898.zeal
+bad user file: 519946697309159424.zeal
 bad user file: 523906016258162688.zeal
 bad user file: 528463611388100634.zeal
 bad user file: 533146044490317866.zeal
-bad user file: 533424598151069697.zeal
 bad user file: 537670913462632449.zeal
+bad user file: 533424598151069697.zeal
 bad user file: 541094692180328448.zeal
 bad user file: 549368281006473226.zeal
 bad user file: 555965845629829120.zeal
