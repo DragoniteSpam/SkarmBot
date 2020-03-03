@@ -1,13 +1,11 @@
 Reading xk.cd
-80Z"}80Z"}
-Invalid file, attempting correction
+:14.580Z"}
 next xkcd check scheduled for: 24105420
-bad user file: 103647653878841344.zeal
 bad user file: 101524345221844992.zeal
 bad user file: 104415327940521984.zeal
+bad user file: 103647653878841344.zeal
 bad user file: 113084295958044672.zeal
 bad user file: 115619201355481089.zeal
-bad user file: 116347313080762372.zeal
 bad user file: 119821977300107264.zeal
 bad user file: 121351881728589827.zeal
 bad user file: 123445010476564480.zeal
@@ -15,7 +13,6 @@ bad user file: 123961468898115585.zeal
 bad user file: 124930047906676739.zeal
 bad user file: 125794659216785408.zeal
 bad user file: 127474202520453120.zeal
-bad user file: 128388878947057664.zeal
 bad user file: 137230155096522753.zeal
 bad user file: 138078572102287361.zeal
 bad user file: 139165893467832321.zeal
@@ -26,7 +23,6 @@ bad user file: 150785938128109568.zeal
 bad user file: 154342633580396544.zeal
 bad user file: 155792731866660864.zeal
 bad user file: 159161768801730571.zeal
-bad user file: 160938020676173824.zeal
 bad user file: 160940660764049418.zeal
 bad user file: 161113931127980032.zeal
 bad user file: 161610812715171841.zeal
@@ -35,10 +31,8 @@ bad user file: 167124512448577537.zeal
 bad user file: 167978555135885312.zeal
 bad user file: 171040980173062144.zeal
 bad user file: 172079458902081536.zeal
-bad user file: 173931796986200065.zeal
-bad user file: 174301934985936896.zeal
-bad user file: 175085797328814080.zeal
 bad user file: 175817451760517121.zeal
+bad user file: 175085797328814080.zeal
 bad user file: 176692286803935233.zeal
 bad user file: 177943141540691968.zeal
 bad user file: 178621632930119680.zeal
@@ -76,7 +70,6 @@ bad user file: 250127163049639937.zeal
 bad user file: 252999845399363586.zeal
 bad user file: 258373782887071744.zeal
 bad user file: 263474950181093396.zeal
-bad user file: 267503479461904385.zeal
 bad user file: 282308106208149506.zeal
 bad user file: 282955298598158336.zeal
 bad user file: 285957577018441728.zeal
@@ -88,12 +81,10 @@ bad user file: 294944648625913864.zeal
 bad user file: 296093832322351115.zeal
 bad user file: 301130492512698378.zeal
 bad user file: 301891184060661763.zeal
-bad user file: 304073163669766158.zeal
 bad user file: 304445424503226368.zeal
 bad user file: 305129067584421894.zeal
 bad user file: 305267880935555072.zeal
 bad user file: 305499399864451072.zeal
-bad user file: 305840982832971776.zeal
 bad user file: 306405044775813122.zeal
 bad user file: 307060315747778561.zeal
 bad user file: 314919292896411650.zeal
@@ -104,15 +95,15 @@ bad user file: 322172060908519426.zeal
 bad user file: 325456265113501697.zeal
 bad user file: 329156110281867265.zeal
 bad user file: 330137292192612354.zeal
-bad user file: 331653516248612864.zeal
 bad user file: 330170462501994497.zeal
+bad user file: 331653516248612864.zeal
 bad user file: 335482191150710785.zeal
 bad user file: 337732405186002948.zeal
 bad user file: 340637715588710410.zeal
 bad user file: 342199890086068224.zeal
 bad user file: 345225771951849473.zeal
-bad user file: 346091424837533708.zeal
 bad user file: 347576568232542209.zeal
+bad user file: 346091424837533708.zeal
 bad user file: 349277439274254336.zeal
 bad user file: 349712846290026526.zeal
 bad user file: 352612088209866752.zeal
@@ -122,20 +113,18 @@ bad user file: 362829522703351810.zeal
 bad user file: 365145667641016321.zeal
 bad user file: 369870333072900097.zeal
 bad user file: 371158641904058369.zeal
-bad user file: 365854194449645569.zeal
 bad user file: 381520995967827978.zeal
 bad user file: 382321833980067840.zeal
 bad user file: 382570718660919296.zeal
-bad user file: 386724507437629440.zeal
 bad user file: 386295960524947456.zeal
+bad user file: 386724507437629440.zeal
 bad user file: 395580402003083276.zeal
 bad user file: 399357431148183555.zeal
 bad user file: 399373116674932736.zeal
 bad user file: 404122067299205141.zeal
 bad user file: 405925146231177226.zeal
-bad user file: 413705431089676290.zeal
-bad user file: 421512088620630027.zeal
 bad user file: 423672026100793358.zeal
+bad user file: 421512088620630027.zeal
 bad user file: 427148507808268288.zeal
 bad user file: 432316355161620490.zeal
 bad user file: 447419586040692746.zeal
@@ -149,14 +138,12 @@ bad user file: 466709934747156480.zeal
 bad user file: 467055104256901120.zeal
 bad user file: 471563291416723460.zeal
 bad user file: 477213935913795584.zeal
-bad user file: 477696879186935820.zeal
 bad user file: 480194450245681192.zeal
+bad user file: 477696879186935820.zeal
 bad user file: 481692621442646017.zeal
 bad user file: 481978445409288194.zeal
 bad user file: 488669859123822616.zeal
-bad user file: 500433834643423232.zeal
 bad user file: 500498993629888533.zeal
-bad user file: 504616838773080076.zeal
 bad user file: 506143350748086292.zeal
 bad user file: 506186547859816453.zeal
 bad user file: 512732652147703862.zeal
@@ -164,13 +151,11 @@ bad user file: 519946697309159424.zeal
 bad user file: 520751608699813898.zeal
 bad user file: 523906016258162688.zeal
 bad user file: 528463611388100634.zeal
-bad user file: 532377909340536833.zeal
 bad user file: 533146044490317866.zeal
 bad user file: 533424598151069697.zeal
 bad user file: 537670913462632449.zeal
-bad user file: 540969720346574851.zeal
-bad user file: 541094692180328448.zeal
 bad user file: 549368281006473226.zeal
+bad user file: 541094692180328448.zeal
 bad user file: 555965845629829120.zeal
 bad user file: 568712122843004997.zeal
 bad user file: 574779161457983488.zeal
@@ -182,9 +167,9 @@ bad user file: 580500903287717910.zeal
 bad user file: 581086000386670594.zeal
 bad user file: 588840857365512212.zeal
 bad user file: 79259622338199552.zeal
-bad user file: 80477986486222848.zeal
 bad user file: 88840068415901696.zeal
 bad user file: 95708393578172416.zeal
+bad user file: 80477986486222848.zeal
 bad user file: 95925987396583424.zeal
 bad user file: 96161711035273216.zeal
 bad user file: 96507078230679552.zeal
