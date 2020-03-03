@@ -135,8 +135,8 @@ bad user file: 455840918055157767.zeal
 bad user file: 462245735241351178.zeal
 bad user file: 462306866442272778.zeal
 bad user file: 466709934747156480.zeal
-bad user file: 471563291416723460.zeal
 bad user file: 467055104256901120.zeal
+bad user file: 471563291416723460.zeal
 bad user file: 477213935913795584.zeal
 bad user file: 477696879186935820.zeal
 bad user file: 480194450245681192.zeal
