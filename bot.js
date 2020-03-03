@@ -64,11 +64,17 @@ const DREAM = "328372620989038594";
 const WOE="311398412610174976";
 const MODCHAT="376619800329453570";
 const MODLOG="344295609194250250";
+
 //users
 const MASTER="162952008712716288";
+const ARGO="263474950181093396";
 const DRAGONITE="137336478291329024";
 const EYAN_ID="304073163669766158";
 const PRIMA="425428688830726144"; const TIBERIA = PRIMA;
+const SKARMORY="319291086570913806";
+const sudoers=[DRAGONITE,MASTER,PRIMA,ARGO,SKARMORY];
+
+
 //Skarm channels
 const dataGen = "409856900469882880";
 const dataAct = "409860642942615573";
@@ -774,6 +780,12 @@ function roleGetter(list,id){
 	return null;
 }
 
+function adminMode(e){
+	return (e.message.content.startsWith("e@")&&sudo(e));
+}
+function sudo(e){
+	return sudoers.includes(e.message.author.id);
+}
 
 function bigBrother(e, author, message){
     var usernameString=authorString(author);
