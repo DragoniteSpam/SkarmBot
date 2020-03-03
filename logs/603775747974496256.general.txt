@@ -117,3 +117,967 @@ but at this point it’s not worth it
 transhumanism baby
 trying to study for chinese
 i feel that
+lekker dingen
+i mean that's the first half of a trick right
+my skateboard laned under some dudes car
+wait this new set is just $10 per box? i got that other box for fucking $30 goddamn
+oh shit
+yessss
+theres still snow in someparts of the campus and some parts of campus are just compleatly unreadable.
+have you guys ever  seen vileplume's original red/green design
+ok then
+so x^2 can look like 9
+yeah lol
+alright
+i know your leading coefficient is a
+so if you have both positive you wanna use tangent
+yeah the book comes with a code for the class's webassign for the semester
+wait
+i gave up anyways
+wait what
+maybe we coded it in a way that works but he didnt expect
+yeah
+i think i did in the moment
+no i didnt brute force
+i really shouldve saved the code somewhere
+oh right i didnt put in the test cases
+ill do it anothher time i dont feel like doing anything rn
+also i just dont kmnow what else to test but whetevs
+tfw na actually has a chance to win an esports int championship
+neat, what game
+i shouldve known lol
+ty ty
+how the hell do they really just not give us a kitchen
+only hot water source is the damn showers and bathroom sinks
+woah this is a great int champ
+wow great game!
+damn, feel better!
+oh yeah btw i saw parasite
+it's the best live action movie i've seen
+ugh ive missed 3 191s now
+i wanted to try to go today but i slept too long
+this may have been the reason i failed half my tests
+i cannot fucking stand how buggy ub infinite is
+i can't finish module one bc of this one stupid error...
+syntax in python is very strict, it may be spacing
+it is
+i did'
+ok well if you tried everything you probably would get it right
+you’re probably missing something
+it might also be that you’re returning a different value than auto grader is looking for
+write a function named "tweets" that takes a string as a parameter and returns the number of messages required to send the input to the world. note: the maximum length for a single message is 280 characters
+if you’re going to show code, you can show it to me but i cannot tell you the answer
+what is the output supposed to be?
+mine was so shit though
+unless its assigned to a variable
+now back to my dorm because holy fuck walking from su to baldy was hell
+you good?
+rlly
+come over to give
+*govs
+i also bought spoons for some reason instead of forks
+feel better mine
+thanks
+honest to god that lab was awful
+i already made it but thanks
+the interview was so stressful too
+my interview was shit he had to guide me through like all of it because the terminology is nonsense
+what if i dont remember what i did
+they just kinda ask you about how you did the lecture questions
+no i know
+for general peoples
+it creates a pointer in mem
+and creates a personal stack kind of thing?
+so in stack, theres a pointer to heap where lets say a certain val is that you can change
+lets say you have multiple objects, do you also have multiple heaps?
+good catch
+ahhhh i see lmao
+i just realized
+but ye the movie was god-tier
+just onset panic attack due to caffeine i'm ok it wears of eventually.
+also death
+honestly
+yo i'll eat dinner soon
+or if tomorrow works better we could do that too
+sorry got a text b4 i could even finish that sentence and pressed enter
+i'm gunna pick up some tim bitz and ride my skateboard over there and head back to govs
+tfw you forgot you can edit discord msg (smh)
+the internet has interesting ideas of what people want
+also jake let’s go eat
+so we should really do the movie night tomorrow?
+ight omw
+so maybe tonight would be better for me
+ive got my math rec in an hour and a half i dont wanna miss the quiz grade
+squeezing into the inbetween space of a couch and emerging in the couch dimension
+youre just jealous that you know not of the couch dimension
+hope you feel better soon
+the couch dimension
+otherwise we lose patrique
+intrigue
+faith
+power
+milk tastes good once more
+what???
+i am but a litol crichur,
+alas a contributor to nightmare fuel :)
+my inheritance batteries worked perfectly despite not changing my tests which didn't work for the normal batteries
+i shouldnt complain considering its an -000 but i dunno i just like it more when scp articles are just about an object
+like this is good but i feel like itd be better as a tale
+i'm no author though
+bro what was that ending
+dinner*
+i want to use up my meal swipes, and i'm not really going to be hungry for a while
+that answer both fell into the yes and no category emil.
+i just really want wendy's lol
+both of your propositions were true though
+i used a negation operator
+t ∧ ¬ f == f
+‘twas foolish of you to second-guess my flawless logic
+y’all still down for shawshank tonight?
+~~i was wondering if maybe we wanted to stop at wendy's if theres one along the way~~
+(sorry pat)
+sure!
+and i can pick y’all up wherever
+so popcorn???
+yes popcorn
+god damnit my friend is indecisive af. i gotta help it after class it should take no more than 30 min
+him*
+i feel bad making you walk
+i’m chilling
+alright
+i guess thats *kinda* good?
+i wanna take being healthy for granted again
+thats what i told myself i woukd do after winter break
+the 7 chaos komuchas
+kom🅱️ucha
+im always irrationally afraid the busses will collide when they pass by eachother
+oh alright we’re here
+ight i'll be over in 5
+what's poppin? i'm eatin at the cellar rn.
+i like my slippers medium-rare
+god ive missed 6 polscis in a row now
+and i didn't even ask for less ice
+doom and animal crossing are the best fucking duo
+also my program still gives errors for some reason :/
+god that kid is the embodiment of kringe with a k
+he’s outta here
+i'll be there around 6 because i do have to go to the gym
+sounds like it's time for a war
+i was working on the physics engine
+downstairs
+not a fan of any of the options at the dining hall, so i got a tiny bit of everything
+dining hall was very meh tonight
+so i got a bit of everything
+i'm immediately gravitated to the potatoes
+i should have just got potatoes
+i take it back this corned beef rice dish is pretty sweemb
+i'm sad he's at the forefront of gaming as a competitive sport (or game whatever you wana call it).
+and expects everyone to act as stupid and childish as ninja.
+guys i might need some help bext year
+help with what?
+winning sa presidency for our junior year
+prepare for disappointment
+he name dropped kali oml
+you gotta read the whole convo when you get a chance
+he said “there’s gotta be some kali linux thing”
+who tf is rahul
+that was craaazy
+nothing has ever brought me more anxiety than submitting my physics engine
+setting up the bowling pins
+fun, good, amazing
+he’s in our class
+i don’t remember
+is jesse actually wrong?
+i used kali to break passwords
+does he have any friends?
+exactly
+yeah
+i imagine so
+i cant wait to never have calc 2 again
+just wait till hw after calculator ;)
+hey adam
+can u help me out with something...
+i need to go to the mall
+actually or saturday
+yeah i’m sorta busy tonight but maybe saturday?
+bc i cannot for the life of me get them out.
+the heater was on like two days ago yet it keeps getting shut off for some fucking reason
+we should get together and watch the mario bros movie
+its just collision on a 2d plane
+(ours are squares though not circles but i imagine that shouldnt change anything)
+and then we use theta for
+something
+yea then you can make them vectors
+in a 2d space
+im hoping once i properly get these formulas in just by the laws of physics they wont be inside of eachother because that is a problem rn
+they are compleatly seperate
+that is how things work
+this is just coding rather than physics now
+well make sure when they collide they aren't traveling in the same direction
+i mean they have to be since one weighs more
+and not
+our only test subjects here are the players
+which have a set movement speed
+and their x velocity goes back to 0 if you let go of the input
+gonna die when i see autolab wants to say my tests are wrong
+well its at least finding the tests and some work
+found another
+its ok
+some good alt rock for yall
+test cases break my soul part 83
+time to go on another adventure to find a classroom
+i mean for todays lq
+why is my code broken
+you know what
+youre just constantly stuck just barely failing and end up stuck with a 0
+iee's robot kinda sucks tbh
+sends dad video of pete fabricating black support again, he tells me to work for pete
+is this how buttigieg supporters operate?  mentioning pete's name = endorsing mayor pete
+my eyes
+patrick fun fact
+lmao
+my brain is immense
+i've made a severe and continuous lapse in my judgement
+epic
+blah delivery room opens late today
+cyndaquil is the best!
+yugioh attained
+ah ok
+its just some shitty side elective i just need to pass
+"damndaniel" the geodude
+"cringe rat" the sentret
+"rat 2?" the rattata
+no more fruit by the foot for me to eat
+what did you guys do?
+yooo how was it
+found out
+my friend from long island drove up here to see the same concert
+wacky
+i was in tears when he showed up (we haven't seen eachother for like 2 years bc of shit that happened)
+too cold to move
+still feel dizzy
+i was at an 11 last night :v
+i wasn't wasted
+emptie stomach + as much as you drank. yea... you were feelin nothin
+so i went to an 11
+after that last shot with mike the last thing i remember was throwing up on the lawn
+if you get stuck feel free to ask me vague questions
+alrighty
+which one?
+is yours still named tojson?
+thanks
+how do you import the json stuff
+does anyone have the dependency i need?
+you have to convert to json before making the map?
+head hurt.
+should just be !
+so can i do (6-x)!
+does it just go towards 0
+its for hw.
+reminds me i have 3 calc assignments to do by monday afternoon
+wtf das wrong apparently ;.;
+just to be safe
+how do you find the derivative of a function under a sqrt
+ightg
+which still isn't correct
+its chain rule so you multiply by the derivative of the inside
+in general if your brain is weirding out trying to derive/integrate something
+shoot me now
+bruh
+yea they really want ppl to fuck the colonel
+what why does it specifically say west virginia
+idk man
+its like gen 2 but you can go anywhere anytime and everything scales to how many badges you have so its like "open world"
+didn’t wanna put my art anywhere else
+i don't even know what a reverb or a master bus is
+oh hey theres only two assignments on webassign
+and even the functions you use to determine that error margin have an error margin of their own
+oh its for when youre using midpoint
+i think im gonna not look at mine
+ohhh its on autograder
+yo people who have a desktop in govs
+mine just says do the lecture questions
+then it’s big and in the way
+oh you mean the actual computer not the monitor
+probably underneath your desk would be the best, right?
+lecture questions
+lets see
+3 of them
+with voting i just get all errors from autolab
+7:00 in clinton sound good?
+sounds good to me. my ass still is broken.
+yeah feel free
+i can just rent it for $4
+i remember why i didnt try doing this previously
+actually if it’s in a 1st floor lounge i don’t really care where
+makes sense
+just a test that isn't working
+typical
+well still not working great
+just think of the graph of tanx
+and still have no clue how to stop getting errors in this damn battery program
+me too
+on piazza
+tbh neither do i
+thats what the battery thing is about
+yeah i know but what does check your references mean
+im so sick of stack and heap and stuff
+im just going to go to the ta tomorrow
+and doing that changed nothing still failing 3 tests
+and somehow my old code solved recharge
+thinkin i’ll just bite that bullet
+it's not
+testing more makes things worse!
+ill be there in 15
+also do yall know what happened at bailey ave?
+tas take time i want things solved now
+lol ok
+uhhhh
+there was a shooting
+i saw the news
+just now
+on interwebs
+where we droppin
+clinton
+sure
+hahah oops !!
+you’re good it’s just me and tom rn
+def robobaby(robot1, robot2):
+      if robot1 and robot2 = yes:
+              return (robotbaby)
+      else:
+              return(nobotbaby)
+parasite can barely reach top 5 movies of the year
+dammit a bus made it to govs but i couldnt reach it in time
+oh yeah
+guess who barely made it for chicken fries
+which is why they made the records think she died
+why would she even hint at it
+her entire purpose at that point was to prevent the spread of any info
+he knew it was a girl from the orphanage
+they were her memories
+from the orphanage
+no she is a private contractor who doesnt have a full job with an company
+eat the rich yall
+i concede the plot makes sense
+well i think the point was to convince us that he was “the one” so to speak, because at that point he believed it too
+knives out never tries to trick youit just makes you think with what information you have and it drip feeds that info
+knives out literally tells you who did it in one quick scene you just have to pay attention
+they were programed with memory to have human feelings and emotion though
+and they didnt even try to play it in an interesting way
+it feels like they just forgot to have him feel things
+your not interupting, that was my complete thought
+yessir
+i am
+i mean i got like 3 tests out in one submission
+and i absolutely love the artistic direction of the movie coupled with the soundtrack
+i think over time we will begin to understand everybody's tastes
+yeah
+i think the way we feel about the style in a movie is the most subjective part.  it's almost like taste in music.
+check every object lol
+mine is under my desk
+up to submission thirty two baby
+why does it fail the correct solution it doesnt make sense
+ok gamers what do we have to know for this 191 quiz
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+it doesnt tell us what to name the trader constructors in the tradeagreement class
+ugh why the hell am i getting errors
+got lost
+i'm there now tho
+where the hell is my lab person
+appparently our ta did the interviews wrong??
+please
+so thank you but its ik
+ok now im in 316
+i'm laughin so hard at this hypothetical
+without teapots
+if it converges
+so many questions
+a(t) is 1/(t^p) btw
+what is an interval of integration what does that mean im so dead
+yes that is what those words mean but i have no clue what that means in terms of calculus
+i could go to tutoring but thats just paying again to be told the same stuff again
+may 19th baby
+hm that timing is awkward
+finals end the 16th
+if anyone wants to eat anywhere lmk
+got me 3 hashbrowns
+aa salt in my eyes
+i'd prob put your computer there
+man theres fuckin noone in my 116 room
+states are ez
+~~totally didnt wait to see if i got the 1.0 before sending that~~
+im just so genuinely confused as to what is wrong
+me 2
+what?
+what is there?
+how do you push to an array of strings
+list doesnt have .split() though
+time to press control z a lot
+states are fucking awful with readability you have to go between 50 different files
+i submitted it too many times and idk what to do im about to cry
+theyre useful and good but readability is by no means a plus for them
+oh i just had a brain moment
+well
+decimals are
+i think i have a calc exam
+not now
+without picking anyone up
+its in service
+fear
+er rather "dont try to replace numbers"
+trying to replace the numbers is what had me stuck
+well through a very weird circle/figure 8 this bus got to the student union
+fucking front bottoms
+bruh
+music is old man
+snowpiercer yes, castle of cagliestro is cool, goldfinger is fine, why is the room on there
+and every single miyazaki movie
+i've heard the garzey's wing dub is extremely funny
+time to pull out the mega classics
+yeah but cat people has cats in it
+so we can culture these people on alternetives to watching cats
+i refuse to stop
+i wanna see the big sleep and cassablanca in a quieter environment tbh
+north by northwest
+then i go
+duck soup
+the circus
+i only picked movies i havent seen
+now we're switching genres
+the godfather is a no cuz most people have seen it and its long af
+nop im liosting movies you cant stop me
+the red balloon ooh what a beautiful movie
+we are gonna end up watching the emoji movie at this rate
+if there are 100 options and the emoji movie is one, people are gonna wanna see that most
+then we go and say ooh what about the shining
+the shining is good, there are better movies tho
+and then i hit you with another one of the greatest movies of all time
+battleship potempkin
+that is a movie that exists
+then dont even talk to me
+you havent even seen the red balloon
+and then i come out here with another classique francaise
+le havre
+die hard
+but newer ones by the coen brothers
+big lebowski
+cowboy bebop is the best western
+no country for old men
+as in get out of this discord channel
+why?
+waking life is p great
+cool
+what a masterpiece
+dodgeball, the wedding singer, and love on a leash
+did you watch kung fury with us?
+oh shit i forgot about that one jackass movie with the grandpa
+that one was great
+bad grandpa
+i gave it a 7 cuz it made me laugh alot
+it's prolly my fav. official 2d main series mario game
+my favorite 2d mario game is super mario 63
+hot takes
+my favorite mario game is paper mario ttyd
+huh?
+harvey weinstein is a ub alumn what
+what
+theres a butterscotch in the condom box
+check the names of everything
+then it’s a problem with your code
+which one is it?
+i have physics and it makes me wana die
+i was actually gonna go to pistachio’s at like 6
+can't do like 5:30?
+aight
+because i am laze
+i mean dying but that works too
+that’s like a 87
+thanks bro
+87.5 exactly
+which is i think better than i did on the second unit test
+is that a b+?
+i think so?
+maybe a-
+it’s an a-in mine 😄
+i think i got like an 84-85
+90 is an a guaranteed
+yeah
+i’m really quite excited about thursdays meeting
+> and if all else fails, bend over and kiss your ass goodbye. i'm not kidding. that could actually help.
+>
+ugh you reminded me i have my calc 2 exam tomorrow
+im so dead
+key mapping?
+literally an actual ace attorney case
+12 chuggas before a choo-choo
+no that’s 8 you fiend
+it’s expert analysis though
+it goes nanananananananan nananananananana
+now my brain is saying 24 na's
+just watch the batman theme, it repeats in sets of 8 nanas
+its wack
+fixed
+in before it takes me a year to complete
+so hopefully i could do
+list(5, ".", 2, "+", 6, "*", 3, "=")
+plug that into my function, and then the display should be 33.6
+so i dont see the problem with another
+shit
+my roommate says 10 and he's probably right
+thing.isinstanceof[class]
+doesnt work
+unless you ask me
+ill probably help if you ask me
+ok yeah this was absurdly easy to fix
+i dont even know how to approach calculator atm
+im just chilling and thinking about stuff
+that’s a bruh moment
+lol nope
+ugh i just remembered i still need to figure out lq2
+one test made me have to rework how the numbers in my calculator work but it wasnt actually so hard
+not even so tedious
+problem is i dunno what to do now lol
+bernie has a rape fantasy fetish?
+that's a little yikes ngl
+okay so he wrote an early feminist work?
+yeah
+hell even if it were a bad thing (it very explicitly isnt though) why is it relevant it was written over 50 years ago
+theyre trying to own bernie with something that by no means of the imagination could ever rationally be an own
+i saw a good tweet earlier explaining the bernie essay but i cant find
+oh wait its the one i sent already
+so basically, bernie > trump
+he compared sanders to hitler
+basically the idea of the essay is that society forces women to submit to the point where they internalize it and fantasize of having any autonomy being taken away (i think)
+he prolly paid alot of money for that line too
+they keep trying that and its just
+so strange
+a million is a lot less than a billion i dont know why its so hard for them to grasp
+good things!!
+it seems like a stock centrist democrat policy list
+because i finally got the number functionality to work
+hey i meant it in a glass half full kind of way
+idk if i even wanna look
+where are they posted?
+and yiiiikes
+yeah i know
+that’s good
+he certainly follows the centrist motto of "things are totally fine we promise"
+that sucks
+oh shit
+aight
+i'll head out now
+big rhip
+its not like he avoids the question
+no i’m not
+he is not
+it was 7pm until 2nd grade (i think) then it was 8pm until middle school
+and by bedtime it meant bedtime like tv off and everything
+oh...
+jeez guys okokok.
+very straange that all of you
+its mar 6th
+is it the same for you guys?
+there is a workshop in nsc tomorrow on how to apply
+aparently you can create a group
+good photo discord :v
+shall i?
+imma do et anyways
+camouflage is a good song
+i joined
+i should have named it crack side
+he actually made this video
+nevermind he isn't actually saying it might be the best movie
+this is just how he decided to name his review series
+eyyyyyyyyy
+so they oppose all socialist programs?
+because of bonus slide
+welp i already got the 1 so
+oh the lecture question
+it got removed
+what is a state?
+i'm confused
+i feel like i've programmed with states for a lecture question, but i'm really good at forgetting stuff
+i dunno how youd use booleans without control flow/alternative control flow
+you can use them as parameters in states
+so your code breaks
+i need to make sure im doing it right
+i dont need/wanna see the actual code obviously
+i think im doing it right but the wording is super vague
+how about you private message someone your constructor and we'll tell you if its right?
+mind if i show you
+i think i know why but i cant say
+just gotta think about it
+every time ive tried it just sucks and nothing happens
+they turned batman into smart detective into dumb brute
+it was in the list of best movies of the decade
+i've never seen, or i just dont remember, man of steel
+i'm guessing you sent that article as a meme then
+i've been wanting to write reviews for awhile
+probably not correctly!
+but i answered them
+hmm.... still living in trash smell is no good
+i dont put anything that would smell in my trash can.  i just walk over to the nearest communal trash can.
+small price to pay for a room that doesn't constantly smell like garbage
+i dont wanna end up like jerry and elaine in "the smelly car"
+btw i have a cold and it is causing me to cough
+now i dont
+i just went to elicott but i can come back over to govs or wherever
+what do y’all wanna do?
+i mean i dunno if theres much to do at elicott
+i could bring my switch or something but idk what we'd play
+true true
+come over and help me do my 中文功课
+hmmm
+[no in chinese]
+yeah uhhhh i could not helped
+i mean fair
+govs is probably best
+alright
+imma take a shower then join ya guys
+im not gonna lie i kinda wanna eat first
+food at cellar is so inconsistant
+imma wat too then
+ill bring my controllers then just in case
+idk where patrick is
+i passed you cause you said you were at sizzles
+my b
+hm true
+true true
+heading to clinton rn
+bus taking forever to get here
+typical
+accurate
+holy fuck i forgot in the manaphy movie ash actually fucking drowns to death
+how dare you
+thing
+right
+i wish i took that advice
+and not my friends
+emotionally i suddenly feel like shit :v
+no i think i'll be ok, its cause idk i haven't been keeping myself busy so...
+i like snow
+thats wack
+if i were in that scenario id probably just ignore them/exclude them from my life to the best of my ability
+mask fucking off
+i’m going to get dinner in an hour, would anyone care to tag along?
+i just eat them at room temperature
+that’s what sane people do
+toaster is excusable but bad
+microwaving and freezer are the only methods listed on the box and that deeply upsets me
+actually you pick
+isabelle animal crossing is getting married
+oy vey
+life points are the least relevant resource in the game
+you could revive a whole field for just a bit over half your starting lifepoints
+if it were like 3k per monster maybe i wouldnt be so bewildered by it (itd still be banned though)
+mori-mori-mori-mori-mori-o-cho radiooo (morio cho radioo)
+i mean
+it ain't bad
+it aint bad
+but if given the option to toast it
+you toast it
+and toast it in the toasting machine.
+im livid
+and right before i got to it
+anyone wanna do anything
+holy shit that’s not good
+i just
+its death without the cost
+yea im not even gunna push my luck today
+a shit in a box
+i was there for the whole emily eviction talk yesterday so i feel like i know a decent bit
+yeah thats gross of her
+ebic
+full 180
+lmao
+and i sure as hell havent seen it
+cause everyone hates her
+and it seems like theyre entirely right to
+i mean huff is the right word if you're with the right substance.
+1.0 for tv was a lot easier than i thought
+i implimented one of the things wrong and it failed three tests lol
+for me, it didnt work, then i put in some print statements and it ran in intellij
+very much a bruh moment (john certified)
+basically if you start from scratch you may notice something incredibly small you may not have before
+thing is theres not much to look through so ive combed it over quite a few times
+but then for some reason the test said it was returning a char?!
+and it took me 8 submissions to figure out that all i needed to do was keep the parentheses even though intellij says its an error
+yeah i always hear the wind outside my window
+its annoying and loud
+i dont wanna go to a ta for this i hate going to tas and it would just be a waste of time
+theres 0 reason for this to be an errors what the hell
+it only fives me an error when i call the function you define in tradeagreement
+i have parentheses at the end
+this makes no sense whatsoever
+its probably something you'd never think of thats really small
+are you not allowed to use == in your testtrading or something?
+i literally cannot fathom why this doesnt work
+im just doing assert(item == otheritem)
+so for some reason it doesnt like what im asserting
+theres no way to test for this without doing something ive tried
+come to the cellar, i have fries
+~~it just freaks me out and i cant~~
+its not a problem of me worrying about others its just
+i mean you wanted to sleep right
+oops...
+ok note to self don't do that again.
+am not smart
+i reaaaaaally hope this geography quiz has a word bank
+ok so the quiz was absurdly easy to cheat on
+i only cheated for 1 answer though
+but since its on computer i just
+since ublearns cant detect cheating afaik
+oh shit
+best thing to do is wash your hands thoroughly all the time, especially before you eat
+maybe its my brain wanting to feel secure but really i dont think its so serious to need to worry about masks (in our area, obviously there are places where masks are a good idea)
+oh the masks don’t really help much either
+im just gonna not let people sneeze on me
+but you can get it through your eyes
+i didnt get ebola and im not getting this
+shhhhhhh
+lmao
+when i was on south one time i was running to the bus and the wind legit held me in place
+i reiterate
+this morning
+its never with you
+wind is fake
+but like reverse windmills
+thats where our tuition goes
+just had to dig my phone out of a garbage cab
+me in 220 atm:
+so i got one of my kerbals to space.
+now i need to get him down...
+fuk...
+take my first ee class
+next semester
+i don't know what chipotle monday is
+why that one tho?
+ohhh
+yeah im in
+loads of mock trial people
+i'm down if i can get a lift
+impossible shifts 😡
+oh wait i don't have meal credits
+can you get in with dinning?
+or go to the commons
+byt still gunna go for food
+eh sure why not
+i never realized how far back the commons goes
+i may not go, just because dorming group wanted to eat to talk about dorming possibilities
+it ok
+no dying on my watch 👀
+rip i missed all this i was at my honors thing
+i left 5 extras incase i have to prune
+👀 👀 👀 👀
+all of my roommate's stuff is gone (literally everything) and i dont know where he is
+like literally everything?
+entirely moved out
+that’s insane
+do i just live alone now??
+the beans?????
+i mean the beans werent his we tossed them day one lol
+once i clean it up anyways
+that’s badass
+bruh put the beds together
+plus i dont have queen sheets or anything
+that’s kind of awesome though
+i never really interacted with him but youd think he'd say if he was leaving
+or at least leave a note
+i sorta like having my little gremlin corner tbh
+i guess if he meant to tell me today he was leaving he wouldn't have had the chance since i wasn't at the dorm any time he could tell me since he wakes up late but still you'd think he'd leave a note or smth
+that's bad
+yeah
++ works
+but thats it
+like functionality or do they not do anything at all
+they dont do anything
+for the onclick method
+only for +
+no like for addpressed()
+subtractpressed(), dividepressed() and multiplypressed() all dont work
+i wanna help but i dont wanna technically violate ai even though i trust you lol
+its mostly a technical issue though
+you probably know it all already but never hurts to be sure
+thats all the basic stuff i think
+i figured it out
+niiice
+thats exclusively the bad part of spelunking
+exactly
+anyway we should go sometime
+yeah
+also im almost done with calculator i made some significant improvements to my code
+only 12 classes now
+“hmm
+yeah i should explore here”
+so i did
+mission failed: we'll get 'em next time
+i guess so long as im not alone
+it’s like a different world down there
+i have a bday party but it might end early
+he’s gonna be 19
+boomer
+happy 19 years surviving the establishment 🥳
+and with only 17 classes!
+i see how it is smhsmh 😤
+that little plus sign there
+yeah
+hell yeag
+yeah
+how can we be cool furries now
+whats even the fucking point
+im gonna get it
+<:him:683332731694088282>
+something about it just feels so wrong
+it still looks good and is still hand drawn but something about the style is so charming
+shoutouts to illegal streaming sites
+the physics exam went well
+think i did ok
+i'm an upsetting person patrick am sorry
+imma go get breaky
+??????
+still
+this picture has an energy and i cannot and refuse to describe it
+more than usual though
+dun think so
+my god damn pokemon movie keeps buffering
+apple burger
+he's stuck in orbit
+also was wondering if anyone wanted to do anything today?
+im down to do something yeah
+deoxys himself is cg what the hell i dont remember that
+maybe they tried it here then realized "oh yeah this sucks"
+he fucking evaporated deoxys i forgot that part
+hes dead
+unless of course those are additive in which case fuck
+thats unlucky
+yeah just gimme a few min
+yeah its just one error that i didnt get
+otherwise its pretty straightforward
+if you ask for "chips without chip?"
+ive got no clue how to do this without a bit of control flow
+cause theres no limit to the speed so even if i wanted i cant just use an absurd amount of classes
+yeah it doesnt
+it fixed car but
+dylan reccomended (wonderfully so imo) monty python
+i havent watched life of brian but i've heard amazing things about it
+~~the pokemon first movie remake is on netflix~~
+ok so i got the 1.0 but my tests for objective 2 and 3 made errors
+rhs_decimal
+lecture question is messin me upp
+ugh ai sucks because i wanna help but i cant
+i have literally the same problem
+honestly if you do the homework you show you understand states
+too bad
+ugh i got the last test to work but now theres an error elsewhere
+for which lq?
+bruh i'm losing my minddddd
+my tests are like 100 lines
+is it still showing 1.0 for you emil?
+why do i not have 1.0
+but it isnt
+no but it is
+functionality incomplete means your code didn’t pass jesse’s tests
+why the hell
+my calculator has 1000 lines of tests
+if you do like
+[0, ., 0, 0, 0] for your inputs
+does it show 0.000 or 0.0
+yeah
+if this doesn't work i'm dropping 116
+everything works how it should
+nice
+||ooga booga look at dms||
+yeah but theres a billion possible things that my problem could be and i dont know how to find it
+ive checked every possible thing i can think of
+with repeated commands?
+😂😂😂
+ignore my other tabs
+while you solve car question i sleep from gravity amd and newton's 2nd law
+i did
+[6, -, 9, *, 3] and it gave 18 instead of -3
+now it does
+good
+damn im sorrrryyyyyyy
+oh yay i also have rhs decimal working now
+my last submission before i noticed my flaw got all the tests running
+ive got 11
+11 bananas?
+i dunno if i should say but ive got
+its when i do like
+[5, ., 5, +, 3, *, /, 5]
+but i suppose i must
+fuck everyone
+i remove the trucks of my skateboard
+and use the board
+and go down the side of the natural arts center
+ok i got all the 🙂 too
+i had no reason to doubt you
+yeah
+just in case
+so i just did it all in one swoop
+sure
+i had 1000 lines of testing lol
+not general purpose
+i have no reason to lie to you guys
+that's a wonderful observation patrick
+i look so dumb carrying a board with no trucks
+it made no sense
+shit i forgot my wallet
+the snow is too loght4
+i'mma still do to su
+i'll be there in 15 min
+sorry
+ok den....
+sounds good to me
+or i can just message dylan
+i'll let you know
+consumerism is a hell of a drug
+tonight, clinton, preferably sometime between 8 and 9, it will last about 2 hours, and the movie will be monty python's life of brian
+even though nothing makes sense eith where its placed my room feels way more homey after moving the bed
+push emil
+i gotta do lq and honors colloq shit and hw2 dor 191 and hw2 for 116
+the two beds
+that works
+damn
+we go to canada
+with drinks
+why are you like a person who's off the grid
+i have left the country once
+i wonder
+ugh moving everything would be such a pain though
+my room is finally not an absolute disgrace
+i really need a vaccuum though
+godfather next week btw
+life of brian was very very good 👌
+i agree
+the religion stuff was good
+ohh, i understand
+obviously a fair bit of it is a result of the times but still it was just
+i sorta freak out whenever i can see my breath my brain goes like "did i smoke??"
+is it windy?
+not so bad considering other days
+the wind these days has been a force to be reckoned with
+it wasnt bad really
+speak for yourself
+#nofacialhairsquad
+oh yeah i have cable
+i have more memes, but i'll spare you
+deadlifts, 2xpull ups, bench fly's, bench, incline bench, dumbbell rows, stright arm pull overs, cable crossovers, 2x dips, leg tucks, then core
+it works i imagine
+i got sick last weak so i gotta do shoulders, abs, and legs
+i dont think so but look at the example sheet for quantifiers on piazza resources it shows the equivalent
+we don’t wanna watch it in govs
+yeah
+i need shower
+but i need clothes
+shower
+its alright youve got time probably
+i'm just gonna take the l with leg day
+on autograder
+and i did it at 12am-3am today
+wanna check out the weird basements now while we got time?
+for prepardness
+ill come get ya
+accidentally slammed my door
+fuck?
