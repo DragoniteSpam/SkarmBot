@@ -7577,3 +7577,5 @@ For example I can have skarm send a message and the command which will send the 
     no i’m not
 I love how the first boss of mystery dungeon is a skarmory cause it made me think of the skarm bot and that eyan guy
     er, exactly how does this "cast interrupted" thing work
+it must be the lord of beans to give this power to skarm
+    or a nuke

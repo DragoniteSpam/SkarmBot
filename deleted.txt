@@ -6311,3 +6311,4 @@ Deleted: id love to, but I have no idea why my LQ is breaking by ProminentOperat
 Deleted: watch devilman by ProminentOperator
 Deleted: <@!220496183603363841> <@!317792131366518784> can you explain to me what .map(_ + i) does I do not understand this by ProminentOperator
 Deleted: or whoever the boss guy is by DefaultFormat
+Deleted: then you solve it in 5 minutes by ProminentOperator
