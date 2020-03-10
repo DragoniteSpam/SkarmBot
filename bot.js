@@ -3033,6 +3033,14 @@ function helpSays(e){
 		"store all of the weird things that the King of Zeal says during "+
 		"his Twitch streams, but it's kind of ballooned from there. Anyway, "+
 		"people with kicking boots can add quotes with \"e!says-add <message>\"."+
+		
+		/*the host will unwittingly, invariably, and fatally bind itself to the closest viable entity to see them as an inspiration to go plus ultra ad infintem
+should the proximity of its dependent entity shift, the host will likewise inevitably proceed to enter an uncertain stage of searching until a further viable entity is once again inevitably found. Until such time it will hold on to its remnants of the previous entity invariable of the held contents corroding effects upon the host
+*/
+		
+		/*
+		
+		
 		"To grab a random quote out of the archive, type "+myNick+". "+
 		"Use \"e!size\" to see how many of Eyan's lines have been recorded, \"e!sgen\" for general lines (theres a ton), and \"e!sact\" for action lines.\n\n"+
 		"If the King of Zeal says something you think is worthy of being added to the archive, ask "+
@@ -3256,4 +3264,3 @@ function isWeekend(){
     var day=new Date(Date.now()).getDay();
     return (day==6)||(day==0);
 }
-
