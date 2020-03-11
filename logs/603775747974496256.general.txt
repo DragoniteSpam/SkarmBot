@@ -2101,3 +2101,4 @@ $chan x
 $chan x
 $chan b
 we get creepy images
+$chan x
