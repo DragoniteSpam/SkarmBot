@@ -155,3 +155,44 @@ wolfram is cool
 
 #### so
 stackoverflow
+
+### Reactions
+blacklists abusers
+
+might tell bella to go learn to drive (2%)
+
+"hello" & "there" -> likely respond with GENERAL KENOBI variants. COOLDOWN.
+
+perfectly balanced -> as all things should be
+
+"thanks skarm" (40%)-> anytime
+
+"date" & "today" (75%)-> the date and time right now
+
+hot,last, and get a date
+
+hugs -> more hugs
+
+operation knife dragon -> _stabs dragonite_
+
+cookie (10%) -> steal the cookie
+
+sandwich (10%) -> steal the sandwich
+
+sandvich (20%) -> steal the sandvich
+
+back from work (5%) -> get back to work
+
+debugs -> debugs mean more rebooting
+
+droid && attack && wooki -> it is critical that we send an attack group there immediately. It is a system we cannot afford to lose.
+
+violenceVerbs +anySkarmNick -> Ow . . .
+
+uncomfortableVerbs +anySkarmNick -> _beats author over the head with a spatula_
+
+gratitudeVerbs +anySkarmNick -> _hugs author_
+
+ohNoVerbs +anySkarmNick -> ヽ( ｡ ヮﾟ)ノ
+
+EyanSays and its glorious decision structure
