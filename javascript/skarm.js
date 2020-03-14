@@ -48,11 +48,11 @@ class Skarm {
         let cmdString = "";
         let paramString = "";
         // the parameter string is shown after each command alias
-        for (var param of cmd.params) {
+        for (let param of cmd.params) {
             paramString += param + " ";
         }
         // each alias is shown
-        for (var cmdData of cmd.commands) {
+        for (let cmdData of cmd.commands) {
             cmdString += "e" + cmd.usageChar + " " + paramString + "\n";
         }
         // lastly, the actual help text
@@ -61,6 +61,19 @@ class Skarm {
         sendMessageDelay(e.message.channel, cmdString);
     }
     
+    static addCommands(commands) {
+        // this function takes an array of Command objects and adds them to a
+        // hash table; each alias of each command is added
+        let mapping = {};
+        
+        for (let cmd of commands) {
+            for (let alias of cmd.aliases) {
+                mapping["e" + cmd.usageChar + alias] = cmd;
+            }
+        }
+        
+        return mapping;
+    }
 }
 
 module.exports = Skarm;
