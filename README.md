@@ -156,6 +156,9 @@ wolfram is cool
 #### so
 stackoverflow
 
+#### crash/exit/reboot
+reboot the bot with an error code of 1-7 based on the weekday or 9 if the command was used with the flag -f to force the bot to shut down. Sudoers. 
+
 ### Reactions
 blacklists abusers
 
