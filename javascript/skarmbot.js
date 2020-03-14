@@ -45,7 +45,7 @@ class Bot {
             // general stuff
             cmdGoogle, cmdWolfy, cmdStack,
             // special
-            cmdHelp, cmdCredits,
+            cmdHelp, cmdCredits, cmdPing,
             // administrative stuff
             cmdPin, cmdMunroe, cmdCensor, cmdWelcome, cmdHide,
         ]);
@@ -248,6 +248,26 @@ let cmdStack = {
 };
 
 // commands - special
+let cmdPing = {
+    aliases: ["ping"],
+    params: [""],
+    usageChar: "!",
+    helpText: "Sends a test message to the channel, and then attempts to edit it. Useful for testing the bot's response time.",
+    ignoreHidden: true,
+    
+    execute(bot, e) {
+        var timeStart = Date.now();
+        // don't use sendMessageDelay - you want this to be instantaneous
+        e.message.channel.sendMessage("Testing response time...").then(e => {
+            var timeElapsed = Date.now() - timeStart;
+            e.edit("Response time: `" + timeElapsed + " ms`");
+        });
+    },
+    
+    help(bot, e) {
+        Skarm.help(this, e);
+    },
+};
 let cmdHelp = {
     aliases: ["help"],
     params: ["[term]"],
