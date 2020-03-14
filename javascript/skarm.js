@@ -76,6 +76,20 @@ class Skarm {
         return { cmd: mapping, help: helpMapping };
     }
     
+    static addKeywords(commands) {
+        // keywords are similar to commands, but minus the prefix and the
+        // documentation
+        let mapping = {};
+        
+        for (let cmd of commands) {
+            for (let alias of cmd.aliases) {
+                mapping[alias] = cmd;
+            }
+        }
+        
+        return mapping;
+    }
+    
     static commandParamString(message) {
         let tokens = message.trim().split(" ");
         tokens.shift();

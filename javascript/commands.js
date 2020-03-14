@@ -1,5 +1,5 @@
 "use strict";
-const fs = require("fs");
+const Skarm = require("./skarm.js");
 const Constants = require("./Constants.js");
 
 module.exports = {

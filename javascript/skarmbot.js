@@ -6,6 +6,7 @@ const { ShantyCollection, Shanty } = require("./shanties.js");
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 const Commands = require("./commands.js");
+const Keywords = require("./keywords.js");
 const Web = require("./web.js");
 
 class Bot {
@@ -50,6 +51,10 @@ class Bot {
             // administrative stuff
             Commands.Pin, Commands.Munroe, Commands.Censor, Commands.Welcome,
             Commands.Hide,
+        ]);
+        
+        this.keywords = Skarm.addKeywords([
+            Keywords.Hug, Keywords.Sandwich
         ]);
     }
     
