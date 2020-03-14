@@ -44,6 +44,8 @@ class Bot {
         this.mapping = Skarm.addCommands([
             // general stuff
             cmdGoogle, cmdWolfy, cmdStack,
+            // special
+            cmdHelp,
             // administrative stuff
             cmdPin, cmdMunroe, cmdCensor, cmdWelcome, cmdHide,
         ]);
@@ -245,6 +247,27 @@ let cmdStack = {
     },
 };
 
+// commands - special
+let cmdHelp = {
+    aliases: ["help"],
+    params: ["[term]"],
+    usageChar: "!",
+    helpText: "Provides an encyclopedia entry for the specified command. Or alternatively, the bot as a whole.",
+    ignoreHidden: true,
+    
+    execute(bot, e) {
+        let params = e.message.content.split(" ");
+        params.shift();
+        if (!params[0]) {
+            Skarm.sendMessageDelay(e.message.channel, "Skarm is a Discord bot made by Dragonite#7992 and Master9000#9716. Use the help command with a command name to see the documentation for it! (At some point in the future I'll compile a full list of the available commands, probably in the form of a wiki page on the Github because who wants to page through documentation in a Discord channel, but that day is not today.)");
+        } else {
+        }
+    },
+    
+    help(bot, e) {
+        Skarm.help(this, e);
+    },
+};
 // commands - administrative
 let cmdPin = {
     aliases: ["pin"],
