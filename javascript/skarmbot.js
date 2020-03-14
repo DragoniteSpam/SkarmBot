@@ -164,13 +164,21 @@ class Bot {
         }
         
         for (let word in this.keywords) {
-            if (text.includes(word)) {
-                let keyword = this.keywords[word];
-                if (Math.random() < keyword.odds) {
-                    Skarm.sendMessageDelay(e.message.channel, "Detected keyword, and it passed the odds check: " + word);
-                    return true;
-                }
+            if (!text.includes(word)) {
+                continue;
             }
+            
+            let keyword = this.keywords[word];
+            if (keyword.standalone && (!text.startsWith(word + " ") && !text.endsWith(" " + word) && !text.includes(" " + word + " "))) {
+                continue;
+            }
+            
+            if (Math.random() > keyword.odds) {
+                continue;
+            }
+            
+            keyword.execute(this, e);
+            return true;
         }
         return false;
     }
