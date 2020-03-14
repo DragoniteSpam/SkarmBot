@@ -93,3 +93,4 @@ e!help credits
 e!help
 e!help
 e!help
+e!help google
