@@ -99,3 +99,4 @@ e!help google
 e!credits
 e!credits
 e!credits
+e!credits
