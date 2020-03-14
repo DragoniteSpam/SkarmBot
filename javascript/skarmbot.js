@@ -196,52 +196,63 @@ class Bot {
         return false;
     }
     
+    // permissions
     permCheckBase(bot, e) {
         return true;
     }
 }
 
-// commands
+// commands - general
 let cmdGoogle = {
+    aliases = ["google"],
+    params = ["query..."],
+    usageChar = "!";
+    helpText = "Returns the results of a Google search of the specified query.";
+    
     execute(bot, e) {
         Web.google(bot, e);
     }
     
-    help(e) {
-        Skarm.sendMessageDelay(e.message.channel, "Skarm.google\n" +
-            "```" +
-            "Returns a Google search for the given query." +
-            "```"
-        );
+    help(bot, e) {
+        Skarm.help(this, e);
     }
 };
 let cmdWolfy = {
+    commands = ["wolfram", "wolfy"],
+    params = ["query..."],
+    usageChar = "!";
+    helpText = "Returns a Wolfram|Alpha API request for the given query.";
+    
     execute(bot, e) {
         Web.wolfy(bot, e);
     }
     
-    help(e) {
-        Skarm.sendMessageDelay(e.message.channel, "Skarm.wolfram / Skarm.wolfy\n" +
-            "```" +
-            "Returns a Wolfram|Alpha API request for the given query." +
-            "```"
-        );
+    help(bot, e) {
+        Skarm.help(this, e);
     }
 };
 let cmdStack = {
+    commands = ["stack", "so", "stackoverflow"],
+    params = ["query..."],
+    usageChar = "!";
+    helpText = "Returns a Stackoverflow search for the given query";
+    
     execute(bot, e) {
         Web.stackOverflow(bot, e);
     }
     
-    help(e) {
-        Skarm.sendMessageDelay(e.message.channel, "Skarm.stackoverflow / Skarm.so / Skarm.stack\n" +
-            "```" +
-            "Returns a Stackoverflow search for the given query." +
-            "```"
-        );
+    help(bot, e) {
+        Skarm.help(this, e);
     }
 };
+
+// commands - administrative
 let cmdPin = {
+    commands = ["pin"],
+    params = ["query..."],
+    usageChar = "@";
+    helpText = "Toggles the pinning of messages with the required number of upvote reactions in the channel. This command is only usable by users with kicking boots.";
+    
     execute(bot, e) {
         if (!permCheckBase(bot, e)) {
             return;
@@ -254,15 +265,16 @@ let cmdPin = {
         }
     }
     
-    help(e) {
-        Skarm.sendMessageDelay(e.message.channel, "Skarm.pin\n" +
-            "```" +
-            "Toggles the pinning of messages with the required number of upvote reactions in the channel. This command is only usable by users with kicking boots." +
-            "```"
-        );
+    help(bot, e) {
+        Skarm.help(this, e);
     }
 };
 let cmdMunroe = {
+    commands = ["munroe"],
+    params = [],
+    usageChar = "@";
+    helpText = "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this.";
+    
     execute(bot, e) {
         if (!permCheckBase(bot, e)) {
             return;
@@ -275,15 +287,16 @@ let cmdMunroe = {
         }
     }
     
-    help(e) {
-        Skarm.sendMessageDelay(e.message.channel, "Skarm.munroe\n" +
-            "```" +
-            "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this." +
-            "```"
-        );
+    help(bot, e) {
+        Skarm.help(this, e);
     }
 };
 let cmdCensor = {
+    commands = ["censor"],
+    params = [],
+    usageChar = "@";
+    helpText = "Toggles the censor in the guild. This command is only usable by users with kicking boots. Hint: if you wish to cause mass pandemonium, be generous with your kicking boots.";
+    
     execute(bot, e) {
         if (!permCheckBase(bot, e)) {
             return;
@@ -296,15 +309,16 @@ let cmdCensor = {
         }
     }
     
-    help(e) {
-        Skarm.sendMessageDelay(e.message.channel, "Skarm.censor\n" +
-            "```" +
-            "Toggles the censor in the guild. This command is only usable by users with kicking boots. Hint: if you wish to cause mass pandemonium, be generous with your kicking boots." +
-            "```"
-        );
+    help(bot, e) {
+        Skarm.help(this, e);
     }
 };
 let cmdWelcome = {
+    commands = ["welcome"],
+    params = [],
+    usageChar = "@";
+    helpText = "Toggles the welcome message in the guild. If enabled, the welcome message will be sent to the channel this command was used in. This command is only usable by users with kicking boots.";
+    
     execute(bot, e) {
         if (!permCheckBase(bot, e)) {
             return;
@@ -317,15 +331,16 @@ let cmdWelcome = {
         }
     }
     
-    help(e) {
-        Skarm.sendMessageDelay(e.message.channel, "Skarm.welcome\n" +
-            "```" +
-            "Toggles the welcome message in the guild. If enabled, the welcome message will be sent to the channel this command was used in. This command is only usable by users with kicking boots." +
-            "```"
-        );
+    help(bot, e) {
+        Skarm.help(this, e);
     }
 };
 let cmdHide = {
+    commands = ["hide"],
+    params = [],
+    usageChar = "@";
+    helpText = "Toggles visibility of the bot in the channel this is used in. This command is only usable by users with kicking boots.";
+    
     execute(bot, e) {
         if (!permCheckBase(bot, e)) {
             return;
@@ -338,12 +353,8 @@ let cmdHide = {
         }
     }
     
-    help(e) {
-        Skarm.sendMessageDelay(e.message.channel, "Skarm.hide\n" +
-            "```" +
-            "Toggles visibility of the bot in the channel this is used in. This command is only usable by users with kicking boots." +
-            "```"
-        );
+    help(bot, e) {
+        Skarm.help(this, e);
     }
 };
 
