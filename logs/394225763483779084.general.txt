@@ -92,3 +92,4 @@ implementing help should be fun
 e!help credits
 e!help
 e!help
+e!help
