@@ -63,65 +63,64 @@ synthesizes communication with humanoid users based on their speech patterns
 
 
 
-guilds \<TODO\>           (by default lists the guilds skarm is in and can be modified to produce additional output such as channels within the guilds in a similar style to ipconfig)... TODO
+guilds \<TODO\>           ---(by default lists the guilds skarm is in and can be modified to produce additional output such as channels within the guilds in a similar style to ipconfig)... TODO
 
-help              (awaiting a complete overhaul with the execute/help structure)
+help              ---(awaiting a complete overhaul with the execute/help structure)
 
-size              retrieves the amount of stuff quoted from eyan
+size              ---retrieves the amount of stuff quoted from eyan
 
-sgen \<serverID\>              retrieves the amount of general quotes recorded for the guild
+sgen \<serverID\>              ---retrieves the amount of general quotes recorded for the guild
 
-sact \<serverID\>              retrieves the amount of action quotes recorded for the guild
+sact \<serverID\>              ---retrieves the amount of action quotes recorded for the guild
 
-ping                          pong
+ping                          ---pong
 
-hug                           hugs
+hug                           ---hugs
 
-sandwhich                     skarm can actually make a mean sammich
+sandwhich                     ---skarm can actually make a mean sammich
 
-bot                           skarm tells you how he's doing right now
+bot                           ---skarm tells you how he's doing right now
 
-kenobi                        4x4 grid of "Hello There" by Kenobi
+kenobi                        ---4x4 grid of "Hello There" by Kenobi
 
-game [gameString]             sudoers can set a game state for the bot
+game [gameString]             ---sudoers can set a game state for the bot
 
-skarm                         provides the percentages for what skarm is expected to say when he decides to break and enter into a conversation
+skarm                         ---provides the percentages for what skarm is expected to say when he decides to break and enter into a conversation
 
-suggest [suggestion]          suggest what skarm can do
+suggest [suggestion]          ---suggest what skarm can do
 
-xkcd                          mods can manage xkcd delivery to channels, sudoers can also overview channels to which xkcds are 
-distributed
+xkcd                          ---mods can manage xkcd delivery to channels, sudoers can also overview channels to which xkcds are distributed
 
-test                          tells a requestor if they are considered a mod by skarm
+test                          ---tells a requestor if they are considered a mod by skarm
 
-live                          checks if twitch.tv/kingofzeal is live, but needs to be fixed
+live                          ---checks if twitch.tv/kingofzeal is live, but needs to be fixed
 
-pinned \<channel\>            checks how many messages are pinned in a channel
+pinned \<channel\>            ---checks how many messages are pinned in a channel
 
-says-add                      adds king quotes
+says-add                      ---adds king quotes
 
-censor                        management interface for the censor probably needs to be renovated
+censor                        ---management interface for the censor probably needs to be renovated
 
-shanties                      refreshes skarm's knowledge of the sailor's songs
+shanties                      ---refreshes skarm's knowledge of the sailor's songs
 
-save                          updates skarm's table of user stats
+save                          ---updates skarm's table of user stats
 
-pink                          toggles pink/pinker Nu for those who have earned it
+pink                          ---toggles pink/pinker Nu for those who have earned it
 
-setref/blockref               toggle what big brother skarm will alert you about
+setref/blockref               ---toggle what big brother skarm will alert you about
 
-will                          stats
+will                          ---stats
 
-master                        stats
+master                        ---stats
 
-refresh                       verifies earthbound and pink roles are properly set up
+refresh                       ---verifies earthbound and pink roles are properly set up
 
-treason                       yell at squid                     Can probably be removed
+treason                       ---yell at squid                     Can probably be removed
 
-back                          counts how many times we've come back
+back                          ---counts how many times we've come back
 
-google                        LMGTFY
+google                        ---LMGTFY
 
-wolfram                       wolfram is cool
+wolfram                       ---wolfram is cool
 
-so                            stackoverflow
+so                            ---stackoverflow
