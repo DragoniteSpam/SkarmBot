@@ -15,30 +15,6 @@ function wikipedia(){
     var query="Chicken";
     var base_url="https://en.wikipedia.org/w/api.php?";
     var api="action=query&format=json&prop=extracts&explaintext=1&exintro=1&callback=?&titles="+query;
-    
-    //var api="action=opensearch&format=json&search="+query;
-    /*request(base_url+api, function(err, response, body){
-        if (err){
-            console.log("something went wrong");
-        } else {
-            if (body.includes("\"extract\":")){
-                var extract="";
-            }
-        }
-    });*/
-    /*jQuery.getJSON(base_url+api, function(data){
-        for (var i in data.query.pages) {
-            if (data.query.pages.hasOwnProperty(i)){
-                var page=data.query.pages[i];
-                if (page.extract===undefined){
-                    entryWikiExtract[replaceAll(page.title, " ", "").toLowerCase()]="[Wikipedia does not have an article on \""+page.title+".\" How unfortunate.]";
-                } else {
-                    entryWikiExtract[replaceAll(page.title, " ", "").toLowerCase()]=page.extract.replace(/\n/g, "\n\n");
-                }
-            }
-        }
-        fadeOutLoading();
-    });*/
 }
 
 //wikipedia();
@@ -585,7 +561,7 @@ client.Dispatcher.on(events.MESSAGE_DELETE, e=> {
 				if (err){
 					throw err;
 				}
-				sms(client.Channels.get("414291195028570112"), string+ " <#"+ e.message.channel_id +"> was written to deleted.txt."); //skarm server delete log
+				sms(client.Channels.get("414291195028570112"), string+ " <#"+ e.message.channel_id +"> was written to deleted.txt."); 
 			});
 		}
 	}
@@ -672,11 +648,16 @@ client.Dispatcher.on(events.PRESENCE_UPDATE, e=> {
 });
 
 client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
-    // special case trolling
+    
+	// don't do anything in PMs?
+	if (e.message.isPrivate){
+		return false;
+	}
+	// special case trolling
     if (e.message.channel.id == "580946892201000960") {
         if (e.message.content.startsWith("4! ")) {
             var content = e.message.content.replace("4! ", "");
-            var channel = "580882049641086977";
+            var channel = "";
             if (content.startsWith("+")) {
                 var tokens = content.split(" ");
                 channel = tokens[0].replace("+", "");
@@ -690,10 +671,6 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
             }
         }
     }
-	// don't do anything in PMs?
-	if (e.message.isPrivate){
-		return false;
-	}
     // ignore messages that mention anyone or anything
     if (e.message.content.toLowerCase().includes("@")){
             return false;
@@ -737,9 +714,8 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 	if (!e.message.deleted){ 
 		notifiers(e, message);
 		//changes the color of Skarm's mayhem role to absolutely any RGB value
-		if (!e.message.deleted){ 
-			roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442").commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
-		}
+		roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442").commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
+		
 	
 		if(e.message.content.substring(0,2)=="e!"){
 			massEffect(e, message, msg);
@@ -994,11 +970,7 @@ function massEffect(e, message, msg){
         }
         if (lineIsQuestion(message)&&Math.random()*100<esOddsQuestion){
             sendRandomLineGeneral(e.message);
-        }/*
-        this doesnt work
-        else if (lineIsHmm(message)){
-            sms(e.message.channel, ":thinking:");
-        }*/
+        }
 	}
 }
 
@@ -1516,10 +1488,6 @@ function saveLine(message, filename, string){
 function utilityKenobi(e){
 	if(e.message.channel==client.Channels.get(ZEAL_SERVER)){
 		return;}
-	//var mess =	"<:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n
-	//			<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n
-	//			<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n
-	//			<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>";
 	sms(e.message.channel,">>> <:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>");
 	e.message.delete();
 }
@@ -2021,7 +1989,7 @@ function REACT(message, id){
 	 }
 	 
 	//Hello There 
-	if(message.content.toLowerCase().includes("hello") && message.content.toLowerCase().includes("there")&& (Math.random()<.95 || message.author.username == "KingofZeal")){
+	if(message.content.toLowerCase().includes("hello") && message.content.toLowerCase().includes("there")&& (Math.random()<.95 || message.author.username == "King of Zeal")){
 		return helloThere(message);
     }
 	//Thanos did nothing wrong
@@ -2134,7 +2102,7 @@ function REACT(message, id){
 			}
 		}
 		else{
-		sendMessageDelay("_noms "+message.author.username+"_", message.channel);
+			sendMessageDelay("_noms "+message.author.username+"_", message.channel);
 		}
 		return true;
 	}
@@ -2151,7 +2119,7 @@ function REACT(message, id){
 	
 	//star wars cont.
 	if(message.content.toLowerCase().includes("droid") && message.content.toLowerCase().includes("attack") && message.content.toLowerCase().includes("wooki")){
-		sms("it is critical that we send an attack group there immediately", message.channel);
+		sms(message.channel,"it is critical that we send an attack group there immediately");
 		sendMessageDelay("it is a system we cannot afford to lose", message.channel);
 		return true;
 	}
