@@ -54,7 +54,9 @@ class Bot {
         ]);
         
         this.keywords = Skarm.addKeywords([
-            Keywords.Hug, Keywords.Sandwich
+            Keywords.Hug, Keywords.Sandwich, Keywords.Sandvich,
+            Keywords.Balance, Keywords.Thanks, Keywords.KnifeDragon,
+            Keywords.Debug, Keywords.Cookie, Keywords.Wooki,
         ]);
     }
     
@@ -173,7 +175,7 @@ class Bot {
                 continue;
             }
             
-            if (Math.random() > keyword.odds) {
+            if (Math.random() > keyword.odds && false) {
                 continue;
             }
             
