@@ -91,3 +91,4 @@ i don't know which is which, but they both worked
 implementing help should be fun
 e!help credits
 e!help
+e!help
