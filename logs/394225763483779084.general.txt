@@ -97,3 +97,4 @@ e!help google
 e!help so
 e!help google
 e!credits
+e!credits
