@@ -45,7 +45,7 @@ class Bot {
             // general stuff
             cmdGoogle, cmdWolfy, cmdStack,
             // special
-            cmdHelp,
+            cmdHelp, cmdCredits,
             // administrative stuff
             cmdPin, cmdMunroe, cmdCensor, cmdWelcome, cmdHide,
         ]);
@@ -269,6 +269,41 @@ let cmdHelp = {
             }
             bot.mapping.help[cmd].help(bot, e);
         }
+    },
+    
+    help(bot, e) {
+        Skarm.help(this, e);
+    },
+};
+let cmdCredits = {
+    aliases: ["credits"],
+    params: [""],
+    usageChar: "!",
+    helpText: "It's literally just the credits. Why do you need help with this?",
+    ignoreHidden: true,
+    
+    execute(bot, e) {
+        let version = Math.floor(Math.random() * 0xffffffff);
+        Skarm.sendMessageDelay(e.message.channel,
+`**Skarm Bot 2**\n
+Lead spaghetti chef: Dragonite#7992
+Seondary spaghetti chef: ArgoTheNaut#8957
+Version: ${version}
+Library: Discordie (JavaScript): <https://qeled.github.io/discordie/#/?_k=m9kij6>
+
+Dragonite:
+<https://www.youtube.com/c/dragonitespam>
+<https://github.com/DragoniteSpam/SkarmBot>
+
+Argo:
+<please send me a few links of yours that I can shill>
+
+Extra ideas came from SuperDragonite2172, willofd2011, Cadance and probably other people.
+
+Thanks to basically everyone on the Kingdom of Zeal server for testing this thing, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
+
+Wolfram-Alpha is awesome: <https://www.npmjs.com/package/node-wolfram>`
+        );
     },
     
     help(bot, e) {
