@@ -195,4 +195,4 @@ gratitudeVerbs +anySkarmNick -> _hugs author_
 
 ohNoVerbs +anySkarmNick -> ヽ( ｡ ヮﾟ)ノ
 
-EyanSays and its glorious decision structure
+###### EyanSays and its glorious decision structure
