@@ -283,11 +283,16 @@ let cmdHelp = {
             Skarm.sendMessageDelay(e.message.channel, "Skarm is a Discord bot made by Dragonite#7992 and Master9000#9716. Use the help command with a command name to see the documentation for it! (At some point in the future I'll compile a full list of the available commands, probably in the form of a wiki page on the Github because who wants to page through documentation in a Discord channel, but that day is not today.)");
             return;
         } else {
-            if (!bot.mapping.help[cmd]) {
-                Skarm.sendMessageDelay(e.message.channel, "Command not found: " + cmd + ". Use the help command followed by the name of the command you wish to look up.");
+            if (bot.mapping.help[cmd]) {
+                bot.mapping.help[cmd].help(bot, e);
                 return;
             }
-            bot.mapping.help[cmd].help(bot, e);
+            if (bot.mapping.cmd[cmd]) {
+                bot.mapping.cmd[cmd].help(bot, e);
+                return;
+            }
+            Skarm.sendMessageDelay(e.message.channel, "Command not found: " + cmd + ". Use the help command followed by the name of the command you wish to look up.");
+            
         }
     },
     
