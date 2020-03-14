@@ -126,7 +126,7 @@ class Bot {
         // now we can start doing stuff
         let author = e.message.author;
         let text = e.message.content.toLowerCase();
-        let first = e.message.content.split(" ")[0];
+        let first = text.split(" ")[0];
         
         // this is where all of the command stuff happens
         if (this.mapping.cmd[first]) {
