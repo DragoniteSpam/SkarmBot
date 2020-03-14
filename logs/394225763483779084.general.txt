@@ -95,3 +95,4 @@ e!help
 e!help
 e!help google
 e!help so
+e!help google
