@@ -1,5 +1,6 @@
 "use strict";
 const fs = require("fs");
+const Constants = require("./Constants.js");
 
 const SUNDAY = 0;
 const MONDAY = 1;
@@ -35,6 +36,10 @@ class Skarm {
     static isPunDay() {
         let day = Date.now().getDay();
         return (day == MONDAY || day == TUESDAY);
+    }
+    
+    static isGod(user) {
+        return (user == Constants.DRAGO || user == Constants.TIBERIA || user == Constants.ARGO || user == Constants.MASTER);
     }
     
     static sendMessageDelay(channel, text) {

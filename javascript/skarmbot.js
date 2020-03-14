@@ -289,7 +289,9 @@ let cmdCredits = {
 Lead spaghetti chef: Dragonite#7992
 Seondary spaghetti chef: ArgoTheNaut#8957
 Version: ${version}
-Library: Discordie (JavaScript): <https://qeled.github.io/discordie/#/?_k=m9kij6>
+
+Library: Discordie (JavaScript):
+<https://qeled.github.io/discordie/#/?_k=m9kij6>
 
 Dragonite:
 <https://www.youtube.com/c/dragonitespam>
@@ -302,7 +304,8 @@ Extra ideas came from SuperDragonite2172, willofd2011, Cadance and probably othe
 
 Thanks to basically everyone on the Kingdom of Zeal server for testing this thing, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
 
-Wolfram-Alpha is awesome: <https://www.npmjs.com/package/node-wolfram>`
+Wolfram-Alpha is awesome:
+<https://www.npmjs.com/package/node-wolfram>`
         );
     },
     
