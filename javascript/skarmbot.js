@@ -179,59 +179,6 @@ class Bot {
         return true;
     }
     
-    // commands
-    cmdHide(bot, e) {
-        if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
-            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
-        } else {
-            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
-        }
-    }
-    
-    cmdCensor(bot, e) {
-        if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
-            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
-        } else {
-            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will once again run the censor on **" + e.message.channel.name + "**");
-        }
-    }
-    
-    cmdPin(bot, e) {
-        if (bot.toggleChannel(bot.channelsPinUpvotes, e.message.channel_id)) {
-            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
-        } else {
-            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
-        }
-    }
-    
-    cmdWolfy(bot, e) {
-        Web.wolfy(bot, e);
-    }
-    
-    cmdGoogle(bot, e) {
-        Web.google(bot, e);
-    }
-    
-    cmdStack(bot, e) {
-        Web.stackOverflow(bot, e);
-    }
-    
-    cmdMunroe(bot, e) {
-        if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
-            Skarm.sendMessageDelay(e.message.channel, "XKCD will now be sent to **" + e.message.channel.name + "!**");
-        } else {
-            Skarm.sendMessageDelay(e.message.channel, "XKCD will no longer be sent to **" + e.message.channel.name + ".**");
-        }
-    }
-    
-    cmdWelcome(bot, e) {
-        if (bot.toggleGuild(bot.guildsWithWelcomeMessage, e.message.channel)) {
-            Skarm.sendMessageDelay(e.message.channel, "Welcome messages will now be sent to **" + e.message.channel.guild.name + "** in this channel!");
-        } else {
-            Skarm.sendMessageDelay(e.message.channel, "Welcome messages will no longer be sent to **" + e.message.channel.guild.name + ".**");
-        }
-    }
-    
     // helpers
     mentions(e, references) {
         var text = e.message.content.toLowerCase();
@@ -248,6 +195,156 @@ class Bot {
         
         return false;
     }
+    
+    permCheckBase(bot, e) {
+        return true;
+    }
 }
+
+// commands
+let cmdGoogle = {
+    execute(bot, e) {
+        Web.google(bot, e);
+    }
+    
+    help(e) {
+        Skarm.sendMessageDelay(e.message.channel, "Skarm.google\n" +
+            "```" +
+            "Returns a Google search for the given query." +
+            "```"
+        );
+    }
+};
+let cmdWolfy = {
+    execute(bot, e) {
+        Web.wolfy(bot, e);
+    }
+    
+    help(e) {
+        Skarm.sendMessageDelay(e.message.channel, "Skarm.wolfram / Skarm.wolfy\n" +
+            "```" +
+            "Returns a Wolfram|Alpha API request for the given query." +
+            "```"
+        );
+    }
+};
+let cmdStack = {
+    execute(bot, e) {
+        Web.stackOverflow(bot, e);
+    }
+    
+    help(e) {
+        Skarm.sendMessageDelay(e.message.channel, "Skarm.stackoverflow / Skarm.so / Skarm.stack\n" +
+            "```" +
+            "Returns a Stackoverflow search for the given query." +
+            "```"
+        );
+    }
+};
+let cmdPin = {
+    execute(bot, e) {
+        if (!permCheckBase(bot, e)) {
+            return;
+        }
+        
+        if (bot.toggleChannel(bot.channelsPinUpvotes, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
+        }
+    }
+    
+    help(e) {
+        Skarm.sendMessageDelay(e.message.channel, "Skarm.pin\n" +
+            "```" +
+            "Toggles the pinning of messages with the required number of upvote reactions in the channel. This command is only usable by users with kicking boots." +
+            "```"
+        );
+    }
+};
+let cmdMunroe = {
+    execute(bot, e) {
+        if (!permCheckBase(bot, e)) {
+            return;
+        }
+        
+        if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
+        }
+    }
+    
+    help(e) {
+        Skarm.sendMessageDelay(e.message.channel, "Skarm.munroe\n" +
+            "```" +
+            "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this." +
+            "```"
+        );
+    }
+};
+let cmdCensor = {
+    execute(bot, e) {
+        if (!permCheckBase(bot, e)) {
+            return;
+        }
+        
+        if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, bot.nick + " will once again run the censor on **" + e.message.channel.name + "**");
+        }
+    }
+    
+    help(e) {
+        Skarm.sendMessageDelay(e.message.channel, "Skarm.censor\n" +
+            "```" +
+            "Toggles the censor in the guild. This command is only usable by users with kicking boots. Hint: if you wish to cause mass pandemonium, be generous with your kicking boots." +
+            "```"
+        );
+    }
+};
+let cmdWelcome = {
+    execute(bot, e) {
+        if (!permCheckBase(bot, e)) {
+            return;
+        }
+        
+        if (bot.toggleGuild(bot.guildsWithWelcomeMessage, e.message.channel)) {
+            Skarm.sendMessageDelay(e.message.channel, "Welcome messages will now be sent to **" + e.message.channel.guild.name + "** in this channel!");
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, "Welcome messages will no longer be sent to **" + e.message.channel.guild.name + ".**");
+        }
+    }
+    
+    help(e) {
+        Skarm.sendMessageDelay(e.message.channel, "Skarm.welcome\n" +
+            "```" +
+            "Toggles the welcome message in the guild. If enabled, the welcome message will be sent to the channel this command was used in. This command is only usable by users with kicking boots." +
+            "```"
+        );
+    }
+};
+let cmdHide = {
+    execute(bot, e) {
+        if (!permCheckBase(bot, e)) {
+            return;
+        }
+        
+        if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
+            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
+        } else {
+            Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
+        }
+    }
+    
+    help(e) {
+        Skarm.sendMessageDelay(e.message.channel, "Skarm.hide\n" +
+            "```" +
+            "Toggles visibility of the bot in the channel this is used in. This command is only usable by users with kicking boots." +
+            "```"
+        );
+    }
+};
 
 module.exports = Bot;
