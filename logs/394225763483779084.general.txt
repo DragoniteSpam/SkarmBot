@@ -100,3 +100,4 @@ e!credits
 e!credits
 e!credits
 e!credits
+e!ping
