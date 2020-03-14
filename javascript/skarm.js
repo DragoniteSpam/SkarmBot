@@ -2,14 +2,6 @@
 const fs = require("fs");
 const Constants = require("./Constants.js");
 
-const SUNDAY = 0;
-const MONDAY = 1;
-const TUESDAY = 2;
-const WEDNESDAY = 3;
-const THURSDAY = 4;
-const FRIDAY = 5;
-const SATURDAY = 6;
-
 // Static methods. Static methods everywhere.
 class Skarm {
     static log(message) {
@@ -26,7 +18,7 @@ class Skarm {
     
     static isWeekend() {
         let day = Date.now().getDay();
-        return (day == SUNDAY || day == SATURDAY);
+        return (day == Constants.SUNDAY || day == Constants.SATURDAY);
     }
     
     static isSkyrimDay() {
@@ -35,7 +27,7 @@ class Skarm {
     
     static isPunDay() {
         let day = Date.now().getDay();
-        return (day == MONDAY || day == TUESDAY);
+        return (day == Constants.MONDAY || day == Constants.TUESDAY);
     }
     
     static isGod(user) {
