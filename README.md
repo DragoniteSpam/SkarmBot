@@ -85,54 +85,73 @@ retrieves the amount of action quotes recorded for the guild
 
 #### ping                          
 
-pong
+#### pong
 
-hug                           ---hugs
+#### hug                           
+hugs
 
-sandwhich                     ---skarm can actually make a mean sammich
+#### sandwhich                     
+skarm can actually make a mean sammich
 
-bot                           ---skarm tells you how he's doing right now
+#### bot
+skarm tells you how he's doing right now
 
-kenobi                        ---4x4 grid of "Hello There" by Kenobi
+#### kenobi
+4x4 grid of "Hello There" by Kenobi
 
-game [gameString]             ---sudoers can set a game state for the bot
+#### game [gameString]
+sudoers can set a game state for the bot
 
-skarm                         ---provides the percentages for what skarm is expected to say when he decides to break and enter into a conversation
+#### skarm
+provides the percentages for what skarm is expected to say when he decides to break and enter into a conversation
 
-suggest [suggestion]          ---suggest what skarm can do
+#### suggest [suggestion]
+suggest what skarm can do
 
-xkcd                          ---mods can manage xkcd delivery to channels, sudoers can also overview channels to which xkcds are distributed
+#### xkcd
+mods can manage xkcd delivery to channels, sudoers can also overview channels to which xkcds are distributed
 
-test                          ---tells a requestor if they are considered a mod by skarm
+#### test
+tells a requestor if they are considered a mod by skarm
 
-live                          ---checks if twitch.tv/kingofzeal is live, but needs to be fixed
+#### live
+checks if twitch.tv/kingofzeal is live, but needs to be fixed
 
-pinned \<channel\>            ---checks how many messages are pinned in a channel
+#### pinned \<channel\>
+checks how many messages are pinned in a channel
 
-says-add                      ---adds king quotes
+#### says-add
+adds king quotes
 
-censor                        ---management interface for the censor probably needs to be renovated
+#### censor
+management interface for the censor probably needs to be renovated
 
-shanties                      ---refreshes skarm's knowledge of the sailor's songs
+#### shanties
+refreshes skarm's knowledge of the sailor's songs
 
-save                          ---updates skarm's table of user stats
+#### save
+updates skarm's table of user stats
 
-pink                          ---toggles pink/pinker Nu for those who have earned it
+#### pink
+toggles pink/pinker Nu for those who have earned it
 
-setref/blockref               ---toggle what big brother skarm will alert you about
+#### setref/blockref
+toggle what big brother skarm will alert you about
 
-will                          ---stats
+#### refresh
+verifies earthbound and pink roles are properly set up
 
-master                        ---stats
+#### treason
+yell at squid                     Can probably be removed
 
-refresh                       ---verifies earthbound and pink roles are properly set up
+#### back
+counts how many times we've come back
 
-treason                       ---yell at squid                     Can probably be removed
+#### google
+LMGTFY
 
-back                          ---counts how many times we've come back
+#### wolfram
+wolfram is cool
 
-google                        ---LMGTFY
-
-wolfram                       ---wolfram is cool
-
-so                            ---stackoverflow
+#### so
+stackoverflow
