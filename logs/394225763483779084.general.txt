@@ -89,3 +89,4 @@ e!xkcd
 i do not
 i don't know which is which, but they both worked
 implementing help should be fun
+e!help credits
