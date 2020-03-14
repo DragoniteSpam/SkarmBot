@@ -7637,3 +7637,5 @@ hey skarm 2, how ya feeling
     people don't matter, legalize gambling
 no screw you skarm
     What should do you do with a dead Chemist? Barium.
+dragonite and I are looking through skarm's code to trim it down and rewrite the useful parts to be better. See if you can spot the odd bit out in this command
+    What can i say, nobody likes you. Not even your cat.
