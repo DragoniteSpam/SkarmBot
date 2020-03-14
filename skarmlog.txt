@@ -7591,3 +7591,45 @@ how could you forget him skarm?
     i have no school brain
 Skarm is often dissapointing
     oh yeah yeah
+everyone say hello to skarm
+also argo i have an idea for skarm's rainbow role
+    other fave sis*
+skarm sound the fucking alarms
+    boobs make the world go round, man
+Skarm what are your thoughts on corona?
+    look at me and my big bouncy tits. i don't know what i'm talking about
+Skram!
+    do you want to hear a story that will make you angry?
+skarm do you want to play with badger?
+    I saw Bella say "but it's smaller than usual" and suddenly felt really bad for Dragonite for some reason.
+yo skarm you alive
+    he's gonna go to mit
+also now that the world is end, its the perfect time to work on skarm
+    iirc i have fire, ice and one that i don't really know what is for
+does this mean youre gonna turn skarm 2 into a game entity?
+    was she calling me handsome? i'm not used to that
+skarm isn't really heavily OOP
+    this is good level design thought becaus- ooh i suck
+and I do want to make skarm a bit more leaning on objects with each e!command consisting of 
+```json
+this.command="command";
+this.action=function(e) //where e is the event of a message created. This one executes the command
+this.assistance=function(e) //where e is the event of a message created. This one explains how not to use the command
+```
+    like explosions first questions later type of thing?
+more of a "documentation the end user can access via skarm
+    aww how sweet of you
+okay time to some moderately ethical experiments on skarm
+    see? new,
+in skarm 1 I just checked for kicking boots, should I just leave it at that this time?
+    and that had button issues
+i recently added function sudoers to skarm1 because the kicking boots method sucked since hes in many servers now
+    for god's sake
+ok so then have kicking boots be for server mods and keep sudoers for things like e!add where thats only approved accounts and rebooting skarm
+    me because my tolerance for others is far lower than yours
+another place for sudoers over server mods: e!game <new game skarm is playing>
+    my own charlie howling cause mommy gone
+skarm himself wasn't actually an object in 1, he was just an amalgam of spaghetti
+    flubs created the world
+great now we can have lesser nicknames for skarm
+    i see. kek.
