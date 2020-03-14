@@ -7641,3 +7641,5 @@ dragonite and I are looking through skarm's code to trim it down and rewrite the
     What can i say, nobody likes you. Not even your cat.
 oh nice that major bug didnt crash skarm
     it's open, boiled, and in your hair
+DE is actually run by skarm
+    to obad im already 2200 messages behind for that
