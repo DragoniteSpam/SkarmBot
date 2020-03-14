@@ -122,13 +122,13 @@ class Bot {
         let first = e.message.content.split(" ")[0];
         
         // this is where all of the command stuff happens
-        if (this.mapping[first]) {
-            if (!this.channelsHidden[e.message.channel_id] || !this.mapping[first].ignoreHidden) {
+        if (this.mapping.cmd[first]) {
+            if (!this.channelsHidden[e.message.channel_id] || !this.mapping.cmd[first].ignoreHidden) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and you
                 // don't otherwise have a way to reference it
-                this.mapping[first].execute(this, e);
+                this.mapping.cmd[first].execute(this, e);
                 return true;
             }
         }
@@ -258,9 +258,16 @@ let cmdHelp = {
     execute(bot, e) {
         let params = e.message.content.split(" ");
         params.shift();
-        if (!params[0]) {
+        let cmd = params[0];
+        if (!cmd) {
             Skarm.sendMessageDelay(e.message.channel, "Skarm is a Discord bot made by Dragonite#7992 and Master9000#9716. Use the help command with a command name to see the documentation for it! (At some point in the future I'll compile a full list of the available commands, probably in the form of a wiki page on the Github because who wants to page through documentation in a Discord channel, but that day is not today.)");
+            return;
         } else {
+            if (!bot.mapping.help[cmd]) {
+                Skarm.sendMessageDelay(e.message.channel, "Command not found: " + cmd + ". Use the help command followed by the name of the command you wish to look up.");
+                return;
+            }
+            bot.mapping.help[cmd].help(bot, e);
         }
     },
     

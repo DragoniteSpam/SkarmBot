@@ -45,34 +45,38 @@ class Skarm {
     }
     
     static help(cmd, e) {
-        let cmdString = "";
+        let helpString = "Documentation:\n```";
         let paramString = "";
         // the parameter string is shown after each command alias
         for (let param of cmd.params) {
             paramString += param + " ";
         }
         // each alias is shown
-        for (let cmdData of cmd.commands) {
-            cmdString += "e" + cmd.usageChar + " " + paramString + "\n";
+        for (let alias of cmd.aliases) {
+            helpString += "e" + cmd.usageChar + alias + " " + paramString + "\n";
         }
         // lastly, the actual help text
-        cmdString += "\n```" + cmd.helpText + "```";
+        helpString = helpString.trim() + "```\n" + cmd.helpText;
         
-        sendMessageDelay(e.message.channel, cmdString);
+        Skarm.sendMessageDelay(e.message.channel, helpString);
     }
     
     static addCommands(commands) {
         // this function takes an array of Command objects and adds them to a
-        // hash table; each alias of each command is added
+        // hash table (JS object); each alias of each command is added. It
+        // returns one object for the general commands, and another for the
+        // Help commands (without the bot prefix).
         let mapping = {};
+        let helpMapping = {};
         
         for (let cmd of commands) {
             for (let alias of cmd.aliases) {
                 mapping["e" + cmd.usageChar + alias] = cmd;
+                helpMapping[alias] = cmd;
             }
         }
         
-        return mapping;
+        return { cmd: mapping, help: helpMapping };
     }
     
     static commandParamString(message) {
