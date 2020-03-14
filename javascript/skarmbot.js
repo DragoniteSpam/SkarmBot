@@ -145,6 +145,8 @@ class Bot {
             return false;
         }
         
+        // each of these will kick out of the function if it finds something,
+        // so the most important ones should be at the top
         if(!this.channelsCensorHidden[e.message.channel_id]){
             this.censor(e);
         }
@@ -161,6 +163,15 @@ class Bot {
             return true;
         }
         
+        for (let word in this.keywords) {
+            if (text.includes(word)) {
+                let keyword = this.keywords[word];
+                if (Math.random() < keyword.odds) {
+                    Skarm.sendMessageDelay(e.message.channel, "Detected keyword, and it passed the odds check: " + word);
+                    return true;
+                }
+            }
+        }
         return false;
     }
     
