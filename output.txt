@@ -171,3 +171,4 @@ bad user file: 96161711035273216.zeal
 bad user file: 96507078230679552.zeal
 Connected as EyanSays (Skarm). Yippee!
 Pinged the bot, blah, blah.
+Pinged the bot, blah, blah.
