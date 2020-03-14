@@ -209,7 +209,7 @@ let cmdGoogle = {
     ignoreHidden: true,
     
     execute(bot, e) {
-        Web.google(bot, e);
+        Web.google(bot, e, Skarm.commandParamString(e.message.content));
     },
     
     help(bot, e) {
@@ -224,7 +224,7 @@ let cmdWolfy = {
     ignoreHidden: true,
     
     execute(bot, e) {
-        Web.wolfy(bot, e);
+        Web.wolfy(bot, e, Skarm.commandParamString(e.message.content));
     },
     
     help(bot, e) {
@@ -239,7 +239,7 @@ let cmdStack = {
     ignoreHidden: true,
     
     execute(bot, e) {
-        Web.stackOverflow(bot, e);
+        Web.stackOverflow(bot, e, Skarm.commandParamString(e.message.content));
     },
     
     help(bot, e) {

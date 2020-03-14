@@ -12,13 +12,11 @@ class Web {
         this.client = client;
     }
     
-    static wolfy(bot, e) {
-        let query = e.message.content.replace("e!wolfy ", "");
-        
+    static wolfy(bot, e, query) {
         wolfy.query(query, function(err, result) {
             if (err) {
                 Skarm.log(err);
-                sms(e.message.channel, "(Something broke)");
+                sms(e.message.channel, "(Wolfy was not quite sure what to do with that input.)");
             } else {
                 let display = "";
                 if (result === undefined){
@@ -42,18 +40,17 @@ class Web {
         });
     }
     
-    static google(bot, e) {
-        let message = e.message.content;
-        Skarm.sendMessageDelay(e.message.channel, "http://google.com/search?q=" + message.replace("e!google", "").replaceAll(" ", "+"));
+    static google(bot, e, query) {
+        Skarm.sendMessageDelay(e.message.channel, "http://google.com/search?q=" + query.replaceAll(" ", "+"));
     }
     
-    static stackOverflow(bot, e){
+    static stackOverflow(bot, e, query) {
         if (e.message.author == Constants.MASTER){
             Skarm.sendMessageDelay(e.message.channel, "do it yourself");
-            return false;
+            return;
         }
         
-        Skarm.sendMessageDelay(e.message.channel, "<" + "https://stackoverflow.com/search?q=" + e.message.content.replace("e!so ", "").replaceAll(" ", "+") + ">");	
+        Skarm.sendMessageDelay(e.message.channel, "<" + "https://stackoverflow.com/search?q=" + query.replaceAll(" ", "+") + ">");	
     }
 }
 
