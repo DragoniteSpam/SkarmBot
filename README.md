@@ -63,17 +63,29 @@ synthesizes communication with humanoid users based on their speech patterns
 
 
 
-guilds \<TODO\>           ---(by default lists the guilds skarm is in and can be modified to produce additional output such as channels within the guilds in a similar style to ipconfig)... TODO
+####guilds \<TODO\>           
 
-help              ---(awaiting a complete overhaul with the execute/help structure)
+(by default lists the guilds skarm is in and can be modified to produce additional output such as channels within the guilds in a similar style to ipconfig)... TODO
 
-size              ---retrieves the amount of stuff quoted from eyan
+####help              
 
-sgen \<serverID\>              ---retrieves the amount of general quotes recorded for the guild
+(awaiting a complete overhaul with the execute/help structure)
 
-sact \<serverID\>              ---retrieves the amount of action quotes recorded for the guild
+####size              
 
-ping                          ---pong
+retrieves the amount of stuff quoted from eyan
+
+####sgen \<serverID\>
+
+retrieves the amount of general quotes recorded for the guild
+
+####sact \<serverID\>              
+
+retrieves the amount of action quotes recorded for the guild
+
+####ping                          
+
+pong
 
 hug                           ---hugs
 
