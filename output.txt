@@ -3,7 +3,6 @@ Reading xk.cd
 next xkcd check scheduled for: 24105420
 bad user file: 103647653878841344.zeal
 bad user file: 104415327940521984.zeal
-bad user file: 101524345221844992.zeal
 bad user file: 115619201355481089.zeal
 bad user file: 119821977300107264.zeal
 bad user file: 121351881728589827.zeal
@@ -17,10 +16,10 @@ bad user file: 138078572102287361.zeal
 bad user file: 139165893467832321.zeal
 bad user file: 139579058152275968.zeal
 bad user file: 141072585835282432.zeal
-bad user file: 149679012749246464.zeal
 bad user file: 150785938128109568.zeal
 bad user file: 154342633580396544.zeal
 bad user file: 155792731866660864.zeal
+bad user file: 149679012749246464.zeal
 bad user file: 159161768801730571.zeal
 bad user file: 160940660764049418.zeal
 bad user file: 161113931127980032.zeal
@@ -53,8 +52,8 @@ bad user file: 203153199077654529.zeal
 bad user file: 203292275789266944.zeal
 bad user file: 206232330321395713.zeal
 bad user file: 208043048293105677.zeal
-bad user file: 211071117136363520.zeal
 bad user file: 211084475466121216.zeal
+bad user file: 211071117136363520.zeal
 bad user file: 216419057287561217.zeal
 bad user file: 218951910156271617.zeal
 bad user file: 219291087913746432.zeal
@@ -135,8 +134,8 @@ bad user file: 467055104256901120.zeal
 bad user file: 471563291416723460.zeal
 bad user file: 477213935913795584.zeal
 bad user file: 477696879186935820.zeal
-bad user file: 481692621442646017.zeal
 bad user file: 480194450245681192.zeal
+bad user file: 481692621442646017.zeal
 bad user file: 481978445409288194.zeal
 bad user file: 488669859123822616.zeal
 bad user file: 500498993629888533.zeal
@@ -169,8 +168,11 @@ bad user file: 95708393578172416.zeal
 bad user file: 95925987396583424.zeal
 bad user file: 96161711035273216.zeal
 bad user file: 96507078230679552.zeal
+bad user file: 101524345221844992.zeal
 Connected as EyanSays (Skarm). Yippee!
-Skitty yeah.
+Pinged the bot, blah, blah.
 next xkcd check scheduled for: 24105420
+next xkcd check scheduled for: 24105420
+Skitty yeah.
 next xkcd check scheduled for: 24105420
 next xkcd check scheduled for: 24105420
