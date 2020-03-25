@@ -80,6 +80,7 @@ var esOddsQuestion=20;
 
 var drinkCount=0;
 var rootbeerCount=0;
+var badusers=0;
 
 //version 
 var version=[];
@@ -87,29 +88,7 @@ for(var i=0;i<3+Math.random()*4;i++){
 	version.push(Math.floor(1+Math.random()*9));
 }
 
-if (fs.existsSync(".\\stuff\\drink.rainy")){
-    fs.readFile(".\\stuff\\drink.rainy", function(err, data){
-        if(err){
-            throw err;
-        }
-        drinkCount=parseInt(data);
-        if (isNaN(drinkCount)){
-            drinkCount=0;
-        }
-    });
-}
 
-if (fs.existsSync(".\\stuff\\rootbeer.rainy")){
-    fs.readFile(".\\stuff\\rootbeer.rainy", function(err, data){
-        if(err){
-            throw err;
-        }
-        rootbeerCount=parseInt(data);
-        if (isNaN(rootbeerCount)){
-            rootbeerCount=0;
-        }
-    });
-}
 
 // xkcd
 
@@ -527,6 +506,8 @@ client.connect({
 function getToken(){
 	token=fs.readFileSync("..\\token.txt").toString();
 }
+
+
 
 // What happens when you first connect
 client.Dispatcher.on(events.GATEWAY_READY, e => {
@@ -1882,14 +1863,17 @@ function utilityCrash(e){
          //   if(err) {
         //        throw err;
            // }
-	if(e.message.content.split(" ")[1]=="-f"){
-		sms(e.message.channel,"Force exiting");
-		process.exit(9);
-	}
-	process.exit(0);
-            //console.log("The file was saved!");
-        //}); 
-        return true;
+		if(e.message.content.split(" ")[1]=="-f"){
+			sms(e.message.channel,"Force exiting");
+			process.exit(9);
+		}
+		if(e.message.content.split(" ")[1]=="fuck"){
+			sms(e.message.channel,"restarting...");
+			process.exit(420);
+		}
+	
+		process.exit(0);
+		return true;
     } else {
         sms(e.message.channel,"User is not in the sudoers file. This incident will be reported.");
 		sien("User tried to restart bot: <@"+e.message.author.id+">");
@@ -2630,7 +2614,8 @@ function utilityCreateUserTable(){
                     }
                     userTable[obj.id]=obj;
                 } catch (e){
-                    console.log("bad user file: "+file);
+                    //console.log("bad user file: "+file);
+					badusers++;
                 }
             });
         });
@@ -3232,3 +3217,8 @@ function isWeekend(){
     var day=new Date(Date.now()).getDay();
     return (day==6)||(day==0);
 }
+
+
+while(process.uptime()<12)
+	;
+console.log("Bad users: "+badusers);
