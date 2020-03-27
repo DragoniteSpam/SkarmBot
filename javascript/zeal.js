@@ -6,6 +6,8 @@ class Zeal {
     // assume we are connected
     static initialize(client) {
         Zeal.WOE = client.Channels.get("311398412610174976");
+        
+        console.log("Initialized Zeal...");
     }
     
     static woeMessage(user) {

@@ -33,9 +33,9 @@ let bot;
 
 client.Dispatcher.on(events.GATEWAY_READY, e => {
     bot = new SkarmBot(client);
-	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
     Constants.initialize(client);
     Zeal.initialize(client);
+	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
     client.User.setGame({name: getSpaghetti() + " lines of spaghetti", type: 0});
 });
 

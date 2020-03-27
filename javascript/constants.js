@@ -27,6 +27,8 @@ class Constants {
             LOG: client.Channels.get("430545618314985504"),
             DELETED: client.Channels.get("414291195028570112"),
         };
+        
+        console.log("Initialized constants...");
     }
 }
 

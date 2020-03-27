@@ -1,11 +1,12 @@
 "use strict";
 const fs = require("fs");
-const Constants = require("./Constants.js");
+const Constants = require("./constants.js");
 
 // Static methods. Static methods everywhere.
 class Skarm {
     static log(message) {
         console.log(message);
+        Constants.Channels.LOG.sendMessage(message);
     }
     
     static todo(message) {
