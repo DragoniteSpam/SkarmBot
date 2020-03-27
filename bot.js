@@ -36,7 +36,10 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     Constants.initialize(client);
     Zeal.initialize(client);
 	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
-    client.User.setGame({name: getSpaghetti() + " lines of spaghetti", type: 0});
+    client.User.setGame({
+            name: getSpaghetti() + " lines of spaghetti",
+            type: 0,
+    });
 });
 
 // after GATEWAY_READY (becasue it's got to initalize so many different things)

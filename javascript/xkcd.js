@@ -23,7 +23,8 @@ class XKCD {
     
     load() {
         if (fs.existsSync(".\\data\\xk.cd")){
-            var loaded = JSON.parse(fs.readFileSync(".\\data\\xk.cd").toString());
+            var loaded = JSON.parse(fs.readFileSync(".\\data\\xk.cd")
+                .toString());
             
             if (loaded.channels !== undefined){
                 this.channels = loaded.channels;

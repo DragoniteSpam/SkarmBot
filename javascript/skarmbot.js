@@ -1,5 +1,6 @@
 "use strict";
-// actual bot code goes here, because i want to try to keep bot.js to delegating work on events
+// actual bot code goes here, because i want to try to only have bot.js
+// for delegating work on events
 const fs = require("fs");
 
 const { ShantyCollection, Shanty } = require("./shanties.js");
@@ -55,14 +56,16 @@ class Bot {
                 if (e.message == null){
                     string = "<message not cached>"; 
                 } else {
-                    string = e.message.content + " by " + e.message.author.username;
+                    string = e.message.content + " by " +
+                        e.message.author.username;
                 }
                 fs.appendFile("./deleted.txt", string + "\r\n", (err) => {
                     if (err){
                         Skarm.logError(err);
                     }
                 });
-                Constants.Channels.DELETED.sendMessage(string + " <#" +  e.message.channel_id + ">");
+                Constants.Channels.DELETED.sendMessage(string + " <#" +
+                    e.message.channel_id + ">");
             }
         }
     }
@@ -103,12 +106,17 @@ class Bot {
         }
         // don't respond to private messages (yet)
         if (e.message.isPrivate){
-            e.message.channel.sendMessage("private message responses not yet implemented");
+            e.message.channel.sendMessage("private message responses not yet " +
+                "implemented"
+            );
             return false;
         }
         
         // ignore messages that mention anyone or anything
-        if (e.message.mentions.length > 0 || e.message.mention_roles.length > 0 || e.message.mention_everyone){
+        if (e.message.mentions.length > 0 ||
+                e.message.mention_roles.length > 0 ||
+                e.message.mention_everyone
+            ){
             return false;
         }
         
@@ -119,11 +127,13 @@ class Bot {
         
         // this is where all of the command stuff happens
         if (this.mapping.cmd[first]) {
-            if (!this.channelsHidden[e.message.channel_id] || !this.mapping.cmd[first].ignoreHidden) {
+            if (!this.channelsHidden[e.message.channel_id] ||
+                    !this.mapping.cmd[first].ignoreHidden
+                ) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
-                // functions called in this way in the object's own scope and you
-                // don't otherwise have a way to reference it
+                // functions called in this way in the object's own scope and
+                // you don't otherwise have a way to reference it
                 this.mapping.cmd[first].execute(this, e);
                 return true;
             }
@@ -158,7 +168,10 @@ class Bot {
             }
             
             let keyword = this.keywords[word];
-            if (keyword.standalone && (!text.startsWith(word + " ") && !text.endsWith(" " + word) && !text.includes(" " + word + " "))) {
+            if (keyword.standalone && (!text.startsWith(word + " ") &&
+                    !text.endsWith(" " + word) &&
+                    !text.includes(" " + word + " "))
+                ) {
                 continue;
             }
             

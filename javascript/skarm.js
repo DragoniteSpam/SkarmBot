@@ -19,7 +19,10 @@ class Skarm {
     
     static isWeekend() {
         let day = Date.now().getDay();
-        return (day == Constants.Days.SUNDAY || day == Constants.Days.SATURDAY);
+        return (
+            day == Constants.Days.SUNDAY ||
+            day == Constants.Days.SATURDAY
+        );
     }
     
     static isSkyrimDay() {
@@ -28,11 +31,19 @@ class Skarm {
     
     static isPunDay() {
         let day = Date.now().getDay();
-        return (day === Constants.Days.MONDAY || day === Constants.Days.TUESDAY);
+        return (
+            day === Constants.Days.MONDAY ||
+            day === Constants.Days.TUESDAY
+        );
     }
     
     static isGod(user) {
-        return (user === Constants.Users.DRAGO || user === Constants.Users.TIBERIA || user === Constants.Users.ARGO || user === Constants.Users.MASTER);
+        return (
+            user === Constants.Users.DRAGO ||
+            user === Constants.Users.TIBERIA ||
+            user === Constants.Users.ARGO ||
+            user === Constants.Users.MASTER
+        );
     }
     
     static sendMessageDelay(channel, text) {

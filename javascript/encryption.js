@@ -11,7 +11,10 @@ class Encrypt {
     static read(filename, callback) {
         fs.readFile(filename, function(err, data) {
             if (err) return Skarm.logError(err);
-            callback(crypto.AES.decrypt(data, Encrypt.dataToken).toString(), filename);
+            callback(
+                crypto.AES.decrypt(data, Encrypt.dataToken).toString(),
+                filename
+            );
         });
     }
     

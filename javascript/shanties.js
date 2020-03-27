@@ -27,7 +27,8 @@ class ShantyCollection {
 class Shanty {
     constructor(filename) {
         this.filename = filename;
-        this.lines = fs.readFileSync("data/shanties/" + filename).toString().split('\n');
+        this.lines = fs.readFileSync("data/shanties/" + filename)
+            .toString().split('\n');
         this.currentLine = 0;
         // the old system had you specify the number of lines per message
         // (usually 2 or 4). we no longer do that. shanties should automatically
