@@ -60,31 +60,31 @@ class Skarm {
     }
     
     static addCommands(commands) {
-        // this function takes an array of Command objects and adds them to a
+        // this function takes an object of Command objects and adds them to a
         // hash table (JS object); each alias of each command is added. It
         // returns one object for the general commands, and another for the
         // Help commands (without the bot prefix).
         let mapping = {};
         let helpMapping = {};
         
-        for (let cmd of commands) {
-            for (let alias of cmd.aliases) {
-                mapping["e" + cmd.usageChar + alias] = cmd;
-                helpMapping[alias] = cmd;
+        for (let cmd in commands) {
+            for (let alias of commands[cmd].aliases) {
+                mapping["e" + commands[cmd].usageChar + alias] = commands[cmd];
+                helpMapping[alias] = commands[cmd];
             }
         }
         
         return { cmd: mapping, help: helpMapping };
     }
     
-    static addKeywords(commands) {
+    static addKeywords(keywords) {
         // keywords are similar to commands, but minus the prefix and the
         // documentation
         let mapping = {};
         
-        for (let cmd of commands) {
-            for (let alias of cmd.aliases) {
-                mapping[alias] = cmd;
+        for (let kwd in keywords) {
+            for (let alias of keywords[kwd].aliases) {
+                mapping[alias] = keywords[kwd];
             }
         }
         

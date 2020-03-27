@@ -43,21 +43,8 @@ class Bot {
         
         this.web = new Web(client);
         
-        this.mapping = Skarm.addCommands([
-            // general stuff
-            Commands.Google, Commands.Wolfy, Commands.Stack,
-            // special
-            Commands.Help, Commands.Credits, Commands.Ping,
-            // administrative stuff
-            Commands.Pin, Commands.Munroe, Commands.Censor, Commands.Welcome,
-            Commands.Hide,
-        ]);
-        
-        this.keywords = Skarm.addKeywords([
-            Keywords.Hug, Keywords.Sandwich, Keywords.Sandvich,
-            Keywords.Balance, Keywords.Thanks, Keywords.KnifeDragon,
-            Keywords.Debug, Keywords.Cookie, Keywords.Wooki,
-        ]);
+        this.mapping = Skarm.addCommands(Commands);
+        this.keywords = Skarm.addKeywords(Keywords);
     }
     
     // events
