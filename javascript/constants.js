@@ -6,19 +6,27 @@
 class Constants {
     // assume we are connected
     static initialize(client) {
-        Constants.DRAGO = client.Users.get("137336478291329024");
-        Constants.TIBERIA = client.Users.get("425428688830726144");
-        Constants.MASTER = client.Users.get("162952008712716288");
-        Constants.ARGO = client.Users.get("263474950181093396");
-        Constants.CHAN_DELETED = client.Channels.get("414291195028570112");
+        Constants.Users = {
+            DRAGO: client.Users.get("137336478291329024"),
+            TIBERIA: client.Users.get("425428688830726144"),
+            MASTER: client.Users.get("162952008712716288"),
+            ARGO: client.Users.get("263474950181093396"),
+        }
         
-        Constants.SUNDAY = 0;
-        Constants.MONDAY = 1;
-        Constants.TUESDAY = 2;
-        Constants.WEDNESDAY = 3;
-        Constants.THURSDAY = 4;
-        Constants.FRIDAY = 5;
-        Constants.SATURDAY = 6;
+        Constants.Days = {
+            SUNDAY: 0,
+            MONDAY: 1,
+            TUESDAY: 2,
+            WEDNESDAY: 3,
+            THURSDAY: 4,
+            FRIDAY: 5,
+            SATURDAY: 6,
+        };
+        
+        Constants.Channels = {
+            LOG: client.Channels.get("430545618314985504"),
+            DELETED: client.Channels.get("414291195028570112"),
+        };
     }
 }
 

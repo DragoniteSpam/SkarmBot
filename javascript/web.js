@@ -45,7 +45,7 @@ class Web {
     }
     
     static stackOverflow(bot, e, query) {
-        if (e.message.author == Constants.MASTER){
+        if (e.message.author === Constants.Users.MASTER || e.message.author === Constants.Users.ARGO){
             Skarm.sendMessageDelay(e.message.channel, "do it yourself");
             return;
         }

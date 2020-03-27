@@ -75,7 +75,7 @@ class Bot {
                         Skarm.logError(err);
                     }
                 });
-                Constants.CHAN_DELETED.sendMessage(string + " <#" +  e.message.channel_id + ">");
+                Constants.Channels.DELETED.sendMessage(string + " <#" +  e.message.channel_id + ">");
             }
         }
     }
