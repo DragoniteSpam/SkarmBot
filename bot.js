@@ -849,7 +849,7 @@ effects.push(new Condition("censor",censorCommandSet));
 effects.push(new Condition("shanties",processShanties));
 effects.push(new Condition("save",utilitySaveStats));
 effects.push(new Condition("pink",function(e){utilityPink(e);utilityPinker(e);}));
-effects.push(new Condition("sien",function(e){sien(e.message.content.toString();cycleSien();});
+effects.push(new Condition("sien",function(e){sien(e.message.content.toString());cycleSien();});
 
 //effects.push(new Condition("",));
 
