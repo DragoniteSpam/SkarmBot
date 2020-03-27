@@ -394,7 +394,9 @@ var streamHasNotifiedDate=null;
 
 var senna="";
 // caching to limit log rates //49/10/15 todo
-var timer1 = setInterval(function(){
+var timer1 = setInterval(cycleSien, 1000);
+
+function cycleSien(){
 	if(senna.length>0 && (senna.length<2000)){
 		sms(client.Channels.get("430545618314985504"),senna);
 		senna="";
@@ -402,8 +404,7 @@ var timer1 = setInterval(function(){
 		sms(client.Channels.get("430545618314985504"),senna.substring(0,2000));
 		senna=senna.substring(2000);
 	}
-}, 1000);
-
+}
 
 // There are some things that need doing on a regular basis
 var timer15 = setInterval(function(){
@@ -848,7 +849,7 @@ effects.push(new Condition("censor",censorCommandSet));
 effects.push(new Condition("shanties",processShanties));
 effects.push(new Condition("save",utilitySaveStats));
 effects.push(new Condition("pink",function(e){utilityPink(e);utilityPinker(e);}));
-
+effects.push(new Condition("sien",function(e){sien(e.message.content.toString();cycleSien();});
 
 //effects.push(new Condition("",));
 
