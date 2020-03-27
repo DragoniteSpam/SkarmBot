@@ -3,11 +3,15 @@ const fs = require("fs");
 const Encrypt = require("./encryption.js");
 
 class User {
+    static users = {};
+    
     constructor(id, userData) {
         this.id = id;
         this.userData = userData;
         
         this.summons = {};
+        
+        User.add(this);
     }
     
     addSummon(term) {
@@ -24,6 +28,28 @@ class User {
         }
         delete this.summons[term];
         return true;
+    }
+    
+    static add(user) {
+        if (user in User.users) {
+            return false;
+        }
+        User.users[user.id] = user;
+        return true;
+    }
+    
+    static remove(user) {
+        if (!(user in User.users) {
+            return false;
+        }
+        delete User.users[user.id];
+        return true;
+    }
+    
+    static load() {
+    }
+    
+    static save() {
     }
 }
 
