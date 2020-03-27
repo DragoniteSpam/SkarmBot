@@ -2582,3 +2582,177 @@ that's 191 for ya
 for reference on how to complete it
 that or im fucking stupid
 the later is likely
+where's the calculator expansion when i need it
+yeah now you have time
+is this a 116 think my small 115 brain is not allowed to know ;.;
+!brain
+you’re the key to space travel
+wreeeeeeeeeeeeeeeeeeeeeeeehhhhhhhhhhhhhwrrrrr
+~~the sequels are the only star wars movies ive actively watched (also rogue one)~~
+like they were a dot compared to that ship they destroyed there
+ok what do you want to assume the mass of the starship is
+several trillion tons
+i'm going to assume 70,000,000 kg
+i'd estimate about 20 grams
+3,145,800,000,000,000,000,000,000
+of energy
+bc space
+these are the dimensions of the ship that went light speed (but we dont know the density)
+this is the ship it rammed into
+shit in star wars is so damn big
+robert busch
+shit i really need to do my hw3
+they're due on friday
+feelin better about 191 now
+sets make sense to me
+can we use the lectures for it?
+oh thank god
+anyone wanna get on call in a bit to work on hw3
+same i've been stuck on this for an hour already
+good question emil
+emil im lazy
+gotcha
+<:bruh:688130959635513356>
+i mean i have no doubts that you two can get it done, but damn
+best of luck
+that's everything
+it’s
+if we do then i understand
+it's not like we wont have the resources we need to figure out how to do it
+right now it seems impossible because we're stupid idiot babies
+still don’t want to
+or rather, to pass
+i also would like you to pass patrick
+that was very heartwarming from the both of you
+we all got shit patterns and i have the closest thing to a good price out of us all lol
+i still cant figure out that one stupid fucking lecture question
+nope
+u1lq5?
+that's even worse
+i'm gonna hop in vc to work on hw3
+wdym its easier
+yeah just gimme a sec
+ill be on in a sec
+page 130
+this is where to ta linked in piazza for p10
+for problem 10 do you use the datasets from 9 or just make up your own
+it’s like a general one
+also adam you were right about 9d on the 191 hw
+idk how to prove it without creating an example dataset
+emil which one are you talking about
+the one where you take the length of not a
+he is most likely talking about 10
+oh yeah length of not a is 16
+so the length of |u| - |a| is 12
+so the cardinality of not a is 16
+ohhhh
+i think its just formatted weirdly with the bar also being over the ||
+wait now im confused again
+yeah
+but {red blue purple green} or {red blue purple green} is just itself
+yeah
+wait so you got 16
+that’s what i had originally
+all i have left is 8d and 10b
+then i’m done
+nice
+yeah
+b4 quarentine i was walking 10 miles a day, now i'm walking a little over a mile a day.
+if anyone is interested in frostpunk its $33 on steam right now for the version that also has all the dlc
+yea i don't think i will cause we literally have videos on it already
+i gotta do the video today
+oh jeez really don't like monday's lq
+anyone get yesterday's lq?
+i have a hint: there’s one small edge case you’re missing
+i remember hearing about it but don't remember it exactly
+its so fucking pretty holy fucking christ
+also apparently they announced a new smash character
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bravely default 2 demo available now holy fuckkkkkkkkkkkkkk
+bruh
+not fair though look what europe gets
+just watch the first 10 seconds or so
+okay i got it i schedule it b4 friday then next week we talk about hw verification and learning objective over zoom
+i much prefer tailend recursion to regular recursion
+true true
+yeah
+if you guys cant handle that how the hell am i supposed to do it
+my guy really rushed me
+check your emails and schedule?
+we all need to do it im p sure
+the project isnt due yet
+i still need to figure out how to make up the first objective
+its verification for the objective so uhhhhh???
+im p sure it is for the project
+just because i think they do that in the 15 minute zoom meeting too
+wdym
+how do you not know lol
+not the 2 hour thing
+what
+no those are the labs
+what else would be verified
+smh emil forgetting im cripplingly inept
+heck we can get in a call rn
+yeah i did the lab
+it’s not too hard
+i put too much effort into these
+i explain what the idea is, then define a function that uses the idea and walk the reader through it
+not main method
+bravely default 2 is just avatar the rpg
+all of the demos for all three games so far have been garbage despite the games being amazing
+i just want portal
+laidlaw's story is out the window now
+what happens now... is up to valve.
+idk anything about half life
+ok want a quick run through bc i'll happily explain the story so far.
+sorry
+oh also i'd like to play the half life series at some point, so lmk if there's a steam sale for that
+they’re almost always on sale
+also emil there’s a mod that makes them co-op
+modding on a mac
+also portal 2 has a co op mode
+it was fun for a while
+the vault lvl?
+on what, alyx?
+*emil
+holy crap discord ligit said no to my msg
+it’s called synergy
+i wasn't supposed to read that lol
+hl1 doesn’t have a lot of plot
+its a lot of txt
+its great
+you can buy as many cats as youd like
+you ever buy things with love?
+only problem is that there's no way to turn off ads (not even a purchase option :()
+||aperature really likes teleportation technology huh||
+thanks for the warning
+8 fucking games
+that sure is the number 8
+and like 5
+oh wow
+i cont dlc as spererate games tho
+i can't afford a vive
+i used a vr once in middle school since a teacher brought it in
+i loved black mesa tho
+even tho it was a lil buggy they made hl1 so mutch fun with black mesa
+boy if it’s kitten crossing or whatever
+bc that does have a good story
+undertale is a mastapeece
+skyrim
+those are the biggies i think
+i have 174 games on steam im epic
+my choixe for halo
+that’s pretty epic patrick
+i've already played halo
+cause the vehicles
+thats good!
+on occasion
+i hate class online. i just get distracted with home projects and games
+i wanna be back so bad i miss you guys :(
+yeah, i wish i were back in ub too
+someone help me with the tophat
+its a test run of quiz 3
+just to check that all the software works
+we love to see it
+???? then why this code make smaller number then suppose to be :c
+hmmm
+val pi: double = math.pi
