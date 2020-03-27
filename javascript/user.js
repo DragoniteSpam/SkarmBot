@@ -2,6 +2,8 @@
 const fs = require("fs");
 const Encrypt = require("./encryption.js");
 
+const userdb = "..\\data\\users.penguin";
+
 class User {
     static users = {};
     
@@ -47,9 +49,13 @@ class User {
     }
     
     static load() {
+        Encrypt.read(userdb, function(data, filename) {
+            User.users = JSON.parse(data);
+        });
     }
     
     static save() {
+        Encrypt.write(userdb, JSON.stringify(User.users));
     }
 }
 
