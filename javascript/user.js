@@ -30,8 +30,9 @@ class User {
         return true;
     }
     
-    static initialize() {
+    static initialize(client) {
         User.users = {};
+        User.client = client;
     }
     
     static add(user) {

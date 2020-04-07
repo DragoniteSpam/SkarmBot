@@ -105,6 +105,7 @@ class Bot {
         
         let userData = Users.get(e.message.author.id);
         let guildData = Guilds.get(e.message.channel.guild_id);
+        guildData.executeMayhem();
         
         // i don't know how you would delete a message the instant it's created,
         // but apparently it can happen...

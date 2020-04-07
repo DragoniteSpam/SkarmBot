@@ -15,11 +15,27 @@ class Guild {
         };
         
         this.mayhem = {
-            roles: [],
-            hue: 0,
+            roles: [
+                "696896531990577192",
+                "696896610726182952",
+                "696896579629744178",
+            ],
+            basePosition: 2,
         };
         
         Guild.add(this);
+    }
+    
+    executeMayhem() {
+        let guildData = Guild.client.Guilds.get(this.id);
+        let mayhem = this.mayhem.roles.shift();
+        this.mayhem.roles.push(mayhem);
+        for (let i = 0; i < guildData.roles.length; i++) {
+            let roleData = guildData.roles[i];
+            if (roleData.id === mayhem) {
+                roleData.setPosition(this.mayhem.basePosition);
+            }
+        }
     }
     
     sendWoeMessage(user) {
@@ -29,8 +45,9 @@ class Guild {
         Skarm.sendMessageDelay(this.woe.channel, this.woe.message);
     }
     
-    static initialize() {
+    static initialize(client) {
         Guild.guilds = {};
+        Guild.client = client;
     }
     
     static add(guild) {
