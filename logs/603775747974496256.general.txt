@@ -2756,3 +2756,388 @@ we love to see it
 ???? then why this code make smaller number then suppose to be :c
 hmmm
 val pi: double = math.pi
+that’s cool
+i don’t like them
+im doing my best ok
+is this to try to punish us for not watching lectures?
+if so holy fuck that's lame and such a waste of the time of whoever has to go in and delete the content
+which slides?
+it seems straightforward
+f: {1, 2, 3, 4} --> n
+f(n) = n+1
+is the domain {1, 2, 3, 4} or {2, 3, 4, 5}
+yeah
+binary trees look cool
+hmm thats a good point
+i'm not sure
+this is my math class atm
+its a calc 142 quiz
+wtfffff
+id prefer not to look at it
+im back inside
+cool
+you can def program that no problem
+like thered be individual factors you customize in addition to the general simulation "type" (communities, isolation, central location, etc.) (isolation could probably be applied to any of the models though)
+wouldn't isolation be just breaking up the simulation into separate simulations
+itd be intensive on a computer
+and probably slow
+and whenever we want to infect an adjacent square it has a random opportunity to do so
+but how would you program a radius, and what data structure would you use to represent the population
+make a "person" class that has constructors for the location, give states (removed, susceptible, infected), etc.
+like physics engine but if they moved by themselves
+ohh ok i see
+you dont need collision though, because people dont walk into each other lol
+regardless youd still need direction for when they bounce off the inside of the box
+you could set a random starting direction and program boundaries for collision?
+well direction is still necesarry even if its random
+the vectors for movement just need to update to a new position, but smoothly
+this isnt hard by any means but theres still easier and less tedious possibilities
+if i dont have any other ideas by the time it comes then sure
+not student union
+4 episodes tonight
+i didnt do a recitation
+just saw the slides on piazza
+any1 know who it is?
+sacrilege
+also incorrect conjugation? lol
+all is forgiven
+what was it?
+spoiler
+for what
+alyx
+yeah
+the cost is the direct distance to the point
+not really im just tryin to spread the hype about hl3 bb
+friday
+i have an idea but that requires a lot of if statements
+i was way overcomplicating it
+it doesn't make me feel comfortable asking questions
+nice
+i really dont wanna do genetic algorithm
+huh, it wasn't a problem with functionality
+it found an error
+genalgo isnt that difficult tbh, you should be able to get it
+anyways
+or i guess maybe you can idk
+number of generations depends on your code, i recommend writing it with a small number and going up based on the level of accuracy you need
+thats oop
+i meant not allowing state as in we cant use variables
+yeah
+well immutability builds consistency within variables
+its on the document
+which link
+no, the video about genalgo
+where it says video
+found it
+half the class is going to fail out
+thats pretty low
+fucking momentum bullshit
+:+ adds an item within the list youre referencing right
+you can't append to immutable lists
+check the methods he gave in the second to last lecture in fp
+they're all really helpful
+basically concatenates the element to a list, but creates a new list value in the process
+but youd have to define it to a variable right
+nil is like a list that isn't actually there right
+i have absolutely no idea
+what was that function where you put 2 values in and it returns the lower one
+min(x, y)
+yeah im gonna need a lot of generations
+i have an idea for a shortcut though
+there it is now i can freely super easily change the number of generations and the size of the population yay
+ugh i cannot get close enough though
+in my range function i swapped a + for a -
+ugh i really dont wanna do my calc work
+its actually fine
+i got a 0
+and i still cant figure out that one fucking lecture question so even if i did notice this before id still be completely fucked
+the homework and classwork are seperate entities
+just follow the instructions in the feedback
+i gave you the reason
+you gave an idea of the reason
+but yeah the false alarm email said i hadnt scheduled an interview despite me having scheduled one for monday and getting an email from calendly saying its all good
+complete and utter dread twice in a row is not the best feeling
+mine is weed day
+you should be able to see your date if you go to hub
+who dat????
+well i got my schedule. now i have to call ub fa tomorrow and hope i can get my tax forms in time
+andrew hughes is good
+god next semester is going to be a lot of math...
+i like this schedule not too bad
+my genetic algorithm works, but it doesn't pass the primary
+usually you take 4 courses a semester, and you’re taking 5
+i tested the single value, polynomial, and towers
+i dunno
+mine just did it
+does it have to be super duper accurate?
+yea mine isn't
+it shoots real well tho
+still needs to be within 0.05
+mine runs 500 generations and is always within 0.0001
+you could probably go up to 50k generations if you wanted
+0.14921133554371804 was not less than 0.05
+that is with 2000 generations
+is it weird that my gui doesn’t operate well with a high population number (that’s needed for accurate results)
+like 2 minutes
+i’m just thinking about how they’ll do the homework verification
+normal
+wow its decently accurate even within just 5 gens
+oh genes
+that's why i've been using 1
+weird that it can't seem to get 1 value right
+it’s 3 genes, because the output is a list of 3
+and consistantly less than .2 error.  if more than 1 gene were required this shouldn't be possible
+very clearly optimizing for (-7, 0, 0)
+idk what was up with my testing
+thanks!
+yeah
+100,000 took 1 minute
+try 1 trillion
+at least the way that i did it it should be linear
+lemme look
+hey we played it
+i can't rn i'm playing rust with some other friends but maybe tomorrow
+really got my $10 worth
+that’s not fun
+anyone wanna play csgo?
+fun fact i just learned while reading my text for honors college: ubuntu is actually the xhosa (a south african tribe) word for humanity
+that's pretty cool
+it's based on some dude from /fit/ who only worked out his traps and ended up looking like a frog
+fuck i really dont wanna have to do my interview today
+oh we all are
+but at least you understand what its about... idk any of the projects and such...
+just suddenly got removed from a long time friend group for some reason ?? thats nice
+bah whatever
+i also am not comfortable doing a quiz in my own home
+i should cheat just to keep my grade up
+so we can ask general questions about the concepts of the subject.
+(oh cool i can now be reported to academic integrity.)
+office hours i at least feel a lil welcomed, and able to be attended to more quickly then these stupid zoom oh. because so many people use them now...
+i still havent figured out an assignment from week 2 of the semester
+man i wish i did a better job on physics...
+the learning objective interview?
+yeah
+shit i also have a calc 2 exam
+freedom of though is a very good thing, however question opposed by others could shake its foundation. this is how educated people refer to things as sound logic.  which makes sense. you don't want to be on a boat that
+'s made with holes.
+why do they care so much about what you or i think about life
+yeah but you dont need some jackass telling you you think wrong and then owning you with facts and logics to be able to change the way you think if your current way isn't right for you
+someone thinking the world exists because x reason isn't gonna change whether or not people die of easily preventable illness or lack of basic resources
+this is true, however a philosophy doesn't need to be a x reason as to why we exist. it can be a plan to establish something.)
+establishing its claim to others.
+alright
+its funny
+i like it when things are and want things to be simple yet i cant help myself from constant overthinking
+also i apologize if i gloss over things that are important to you guys, i don't intend to do that
+still dont really get how it works
+did we discuss how snapping is just a smaller sharper claping.
+snaping?
+oh wait 343 m/s
+i'm stupid
+the way i did my lq's was gonna be different anyway
+me neither
+couldn't answer any of them
+yeah
+they give off that impression
+i just feel dumb when they talk to me
+or post about it in discord
+but ik that ik my shit cuz i completed the lq's and project successfully
+can my internet stop blipping on and off please
+that sucks bro
+god how do i phrase this email without being an entire ass
+i really wanna roast these fools
+but patrick was the only one i got a link to calendly from
+there's a third patrick?
+i feel like it is, but they could execute it a little friendlier
+understand it really well
+i understand fp and now they think i don't
+the one verification form from last week seems to serve the purpose of everything that isnt the project i dont get why they bother with interviews and shit
+i hope they let me screen share for my hw verification
+just make sure your towers works
+mine doesnt work at all
+is there anything at all i need to change in any of the code?
+lower the number of generations
+also in your case, probably decrease the population
+sometimes it does it at me but 80% of the time its random
+you mean tower server?
+i think it went alright
+he was just like "sorry about yesterday i had thought all the interviews were last week"
+nice
+oh jeez i almost forgot to do this lq
+this would be terrible if i didnt find a sneaky way to use another function
+thanks
+just have my verification interview in 3 hours and i can finally stop worrying (for this week)
+i haven't looked no, do you wanna get in call and work on it friday or smth?
+also next quiz we can def just get in a call and not join the meeting
+but overall, much better than before
+cuz the default zoom page says enable mic, share screen, invite people
+nah trust me monday's lq is super easy
+we still have them, but at an annoying time
+because 90% of the time mine just does nothing
+hm i have one idea i havent done before
+oh wait i did try that
+this tower aims slightly behind where i'm moving
+it aims right but the algorithm takes a moment to calculate the aim
+i didn’t uh
+yeah i noticed that lol
+also i'm really confused, the lq is literally already written for us in the code lol
+wait uhhhh
+uhhhhhhh
+okay
+cool
+im so fucked
+which was the same with me
+but if thats the case, it seems like you did well
+good job 👍
+my ta is generally very relaxed which makes it less stressful
+anyone wanna do the lab at 6pm today
+must be nice, i have a calc2 test tomorrow 😦
+oh shit i probably missed another recitation quiz
+oh and a 9am quiz friday
+aint that nice
+ughh
+but my guy emailed me 2 minutes in and reminded me
+so i made it
+yeah he saved my ass
+i mean it’s not very long though is it?
+he understood that the gui was bad
+eyyyy we can
+yeah it just looks funny
+you know what you're not wrong
+i feel like mine was generically coded
+we should have a code discussion party
+im so down
+yeah but discord screenshare is ass
+pft, caring about online security, what a dweeb
+they're getting sued rn over selling private data to facebook
+lmao
+so apparently that will be one of the projects
+well done
+time to go to the coronavirus sim
+using graphs
+oh shoot
+probably graded by last name, so maybe they'll verify your grade tomorrow?
+i wouldn't call k "early"
+first half
+that
+my last name first initial must therefore be categorized as "in the middle"
+not early
+but not first third 🤔
+why is 1/3 any more practical
+why am i doing this when i could be studying for my calc test
+which lq is that
+but i don’t know how to do it
+when you guys are done with it i have to show you it is too fucking good
+friday was evaluate an expression tree
+yeah that one is hard to give hints for
+this is in the slides so i can send it
+and it took me like 10 minutes
+its just stupid
+because yikes
+i just dont like hard things
+wait do you mean 191 hw or 116 hw
+yeah the 116
+they just posted it today and it's due in like 10 days
+yesss got the lq babeyyyy
+alright now i have to show you my code for it
+do it
+correct
+<:hacliffe:683885354171891743>
+i exist as your antithesis adam
+but i can't if all i'm imputing to the function is the writer
+aren't you storing things in a dictionary
+its the writer obj
+what is static and dynamic typing
+that sorta functionality would help me so much in the past
+in basically every language
+no not like that
+because then you'd want each value to exist outside it's own stack frame
+but what if you need them for later use outside of the for loop
+yeah ik but when you dont have mutability you cant do that
+you can use for loops in immutable structures though
+ex: val datastructure: list[int] = (for (i <- range(0, 5)) yield { i +2 }).tolist
+why would you want to use that
+it has write header in it :c
+what does?
+that was dumb
+python is the language that makes things really easy to run right out of the box, but then you have to memorize all the built-in functions
+saves a lot of time though
+wait the 116 homework is posted?
+i'm quite surprised, i never thought that would happen
+yeah
+is that the one you guys are looking at
+yeah
+i feel like wednesday's lecture question can tie into that
+you could represent each grid space in the maze on a map
+mine is gonna be absurdly slow already i can tell
+probably
+yeah honestly
+real desperate yet not enough to stop being homophobic
+fuck that just make it so everyone needs to be tested atleast a year prior to donating or test people prior to donating
+is anyone else having problems with the gui for shortest paths?
+okay
+now it’s throwing errors when i run it
+ill be a bit late i gotta eat dinner in a bit
+do you have to pass the calc 2 final
+the common final?
+depends on your class's syllabus
+gotcha
+so i couldnt cheat
+you will at least get not that
+idk what i have in polsci rn
+cagliostro isnt even considered the best part
+i didn't realize how bad my 191 grade is
+wait i think my 191 ec wasn't graded because i didn't put my name and ubit
+did anyone get their first ec in autolab yet?
+did you not?
+noooooooo
+that sounds good
+how is it?
+is your guys' hw3 graded?
+not yet
+lets finish it up tomorrow i dont wanna do more work today
+lol sounds like a plan
+does anyone here know how to do problem 5 on hw4? i could use some help without revealing the answer
+oh shit me too
+the recent lecture questions have been easier imo
+in the mazepath thing is the list[gridlocation] supposed to include the starting location
+i think i figured out how
+nice
+veeeery slow as expected
+yeah wow  this is really inneficient
+like so wrong i cannot begin to comprehend why
+make it work
+also i had the same name for 2 item things with nested for loops lol
+it works
+at least for the small maze
+its speed exponentially lengthens because of how i did it
+hm gives an error every time the server actually works
+not doing what its supposed to though
+im so close i just need the movement to be right now
+ooooo come on now
+now it works but the "player" vibrates
+is anyone available to work on the remainder of 191 at 3:00?
+well it is finally 3:30
+what does it mean?
+okay
+thanks
+damn
+quarentine in a nutshell
+i'm vibin
+they are very fluffy
+i'm still waiting for jesse to unmute himself
+he's not muted
+lmao
+b0red
+i also just hate reading the fucking book in philosophy, and it not having any lectures
+not a big deal, i just saw that an instructor responded to my post
+logic does not apply in physics curriculum
+so im gunna stop for my health
+the syntax is a bit jumbled weird for me though
+i mean its an hour for 4 questions there should be no difficulty cheating
+kinda nostalgic too
+so i got bored and started looking up case fan wiring because i actually have 6 casefans
+nor wiring kid
+that's a thing?
+i think exams are 20% of my grade? but i forgot
+why is 115 still in my ublearns
