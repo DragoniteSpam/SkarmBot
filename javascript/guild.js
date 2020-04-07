@@ -2,11 +2,14 @@
 const Skarm = require("./skarm.js");
 
 class Guild {
-    // assume we are connected
+    static guilds = {};
+    
     constructor() {
         this.woe = {
             message: "",
             channel: null,
+            
+            Guild.add(this);
         };
         
         this.mayhem = {
@@ -21,6 +24,23 @@ class Guild {
         // restricted from using the server."
         Skarm.sendMessageDelay(this.woe.channel, this.woe.message);
     }
+    
+    static add(guild) {
+        if (guild in Guild.guilds) {
+            return false;
+        }
+        Guild.guilds[guild.id] = guild;
+        return true;
+    }
+    
+    static remove(guild) {
+        if (!(guild in Guild.guilds) {
+            return false;
+        }
+        delete Guild.guilds[guild.id];
+        return true;
+    }
+    
 }
 
 module.exports = Guild;
