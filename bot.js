@@ -15,7 +15,6 @@ const Skarm = require("./javascript/skarm.js");
 const SkarmBot = require("./javascript/skarmbot.js");
 const XKCD = require("./javascript/xkcd.js");
 const Constants = require("./javascript/constants.js");
-const Zeal = require("./javascript/zeal.js");
 
 // i'm in?
 const token = fs.readFileSync("..\\descrution.txt").toString();
@@ -34,7 +33,6 @@ let bot;
 client.Dispatcher.on(events.GATEWAY_READY, e => {
     bot = new SkarmBot(client);
     Constants.initialize(client);
-    Zeal.initialize(client);
 	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
     client.User.setGame({
             name: getSpaghetti() + " lines of spaghetti",
