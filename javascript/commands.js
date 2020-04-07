@@ -1,6 +1,6 @@
 "use strict";
 const Skarm = require("./skarm.js");
-const Constants = require("./Constants.js");
+const Constants = require("./constants.js");
 
 module.exports = {
     // general
@@ -49,7 +49,21 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-
+    XKCD: {
+        aliases: ["xkcd"],
+        params: ["id"],
+        usageChar: "!",
+        helpText: "Returns the XKCD with the specified ID",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            bot.xkcd.post(e.message.channel, Skarm.commandParamString(e.message.content).split(" ")[0]);
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     // special
     Ping: {
         aliases: ["ping"],

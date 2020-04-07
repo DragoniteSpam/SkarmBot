@@ -34,8 +34,13 @@ class XKCD {
         this.schedule();
     }
     
-    post() {
-        Skarm.todo();
+    post(channel, id) {
+        if (id === undefined) {
+            Skarm.todo();
+            return;
+        }
+        
+        Skarm.sendMessageDelay(channel, "https://xkcd.com/" + id + "/");
     }
     
     toggleChannel(channel){

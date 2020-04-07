@@ -56,7 +56,7 @@ class User {
     }
     
     static getData(id) {
-        return User.client.Users.get(this.id);
+        return User.client.Users.get(id);
     }
     
     static load() {

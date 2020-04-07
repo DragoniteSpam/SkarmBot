@@ -9,6 +9,7 @@ const Constants = require("./constants.js");
 const Commands = require("./commands.js");
 const Keywords = require("./keywords.js");
 const Web = require("./web.js");
+const XKCD = require("./xkcd.js");
 
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
@@ -46,6 +47,7 @@ class Bot {
         this.guildsWithWelcomeMessage = {};
         
         this.web = new Web(client);
+        this.xkcd = new XKCD();
         
         this.mapping = Skarm.addCommands(Commands);
         this.keywords = Skarm.addKeywords(Keywords);
