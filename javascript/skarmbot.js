@@ -10,6 +10,9 @@ const Commands = require("./commands.js");
 const Keywords = require("./keywords.js");
 const Web = require("./web.js");
 
+const Users = require("./user.js");
+const Guilds = require("./guild.js");
+
 class Bot {
     constructor(client) {
         this.client = client;
@@ -99,8 +102,12 @@ class Bot {
         if (e.message.author.bot) {
             return false;
         }
+        
+        let userData = Users.get(e.message.author.id);
+        let guildData = Guilds.get(e.message.channel.guild_id);
+        
         // i don't know how you would delete a message the instant it's created,
-        // but . . .
+        // but apparently it can happen...
         if (e.message.deleted) {
             return false;
         }

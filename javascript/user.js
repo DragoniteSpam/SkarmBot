@@ -1,6 +1,7 @@
 "use strict";
 const fs = require("fs");
 const Encrypt = require("./encryption.js");
+const Skarm = require("./skarm.js");
 
 const userdb = "..\\data\\users.penguin";
 
@@ -27,6 +28,10 @@ class User {
         }
         delete this.summons[term];
         return true;
+    }
+    
+    static initialize() {
+        User.users = {};
     }
     
     static add(user) {
@@ -59,7 +64,5 @@ class User {
         Encrypt.write(userdb, JSON.stringify(User.users));
     }
 }
-
-User.prototype.users = {};
 
 module.exports = User;
