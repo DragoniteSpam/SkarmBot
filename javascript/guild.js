@@ -4,7 +4,9 @@ const Skarm = require("./skarm.js");
 class Guild {
     static guilds = {};
     
-    constructor() {
+    constructor(id) {
+        this.id = id;
+        
         this.woe = {
             message: "",
             channel: null,
@@ -41,6 +43,19 @@ class Guild {
         return true;
     }
     
+    static get(id) {
+        return Guild.guilds[id] ? Guild.guilds[id] : new Guild(id);
+    }
+    
+    static load() {
+        Encrypt.read(userdb, function(data, filename) {
+            Guild.guilds = JSON.parse(data);
+        });
+    }
+    
+    static save() {
+        Encrypt.write(userdb, JSON.stringify(Guild.guilds));
+    }
 }
 
 module.exports = Guild;

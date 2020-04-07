@@ -7,9 +7,8 @@ const userdb = "..\\data\\users.penguin";
 class User {
     static users = {};
     
-    constructor(id, userData) {
+    constructor(id) {
         this.id = id;
-        this.userData = userData;
         
         this.summons = {};
         
@@ -46,6 +45,10 @@ class User {
         }
         delete User.users[user.id];
         return true;
+    }
+    
+    static get(id) {
+        return User.users[id] ? User.users[id] : new User(id);
     }
     
     static load() {
