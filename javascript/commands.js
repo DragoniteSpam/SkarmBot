@@ -106,6 +106,37 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+    // we're still trying to persuade ourselves that these are funny
+    Drago: {
+        aliases: ["drago", "dragonite"],
+        params: [],
+        usageChar: "!",
+        helpText: "reminds the bot author to get some sunshine once in a while",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "go play outside dragonite");
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Gummy: {
+        aliases: ["gummy"],
+        params: [],
+        usageChar: "!",
+        helpText: "skarm has an important announcement for the one called Gummy",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "gummy you are a baka");
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     // special
     Ping: {
         aliases: ["ping"],
