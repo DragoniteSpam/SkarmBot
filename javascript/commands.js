@@ -2,6 +2,9 @@
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 
+const Users = require("./user.js");
+const Guilds = require("./guild.js");
+
 module.exports = {
     // general
     Google: {
@@ -58,6 +61,45 @@ module.exports = {
         
         execute(bot, e) {
             bot.xkcd.post(e.message.channel, Skarm.commandParamString(e.message.content).split(" ")[0]);
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Summon: {
+        aliases: ["summon", "summons"],
+        params: ["add|remove|list", "term"],
+        usageChar: "!",
+        helpText: "Skarm can be asked to send you notifications for messages with certain keywords (often your username, or other topics you like to know about - for example, \"Wooloo\" or \"programming\"). You can add, remove, or list your summons.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            let params = Skarm.commandParamString(e.message.content.toLowerCase()).split(" ");
+            let userData = Users.get(e.message.author.id);
+            let action = params[0];
+            let term = params[1];
+            if (action === "add") {
+                if (userData.addSummon(term)) {
+                    Skarm.sendMessageDelay(e.message.channel, "**" + term + "** is now a summon for " + e.message.author.username + "!");
+                } else {
+                    Skarm.sendMessageDelay(e.message.channel, "Could not add the term " + term + " as a summon. (Has it already been added?)");
+                }
+                return;
+            }
+            if (action === "remove") {
+                if (userData.removeSummon(term)) {
+                    Skarm.sendMessageDelay(e.message.channel, "**" + term + "** is no longer a summon for " + e.message.author.username + "!");
+                } else {
+                    Skarm.sendMessageDelay(e.message.channel, "Could not remove the term " + term + " as a summon. (Does it exist in the summon list?)");
+                }
+                return;
+            }
+            if (action === "list") {
+                Skarm.sendMessageDelay(e.message.channel, "**" + e.message.author.username + "**, your current summons are:\n```" + userData.listSummons() + "```");
+                return;
+            }
+            Skarm.sendMessageDelay(e.message.channel, "Not the correct usage for this command! Consult the help documentation for information on how to use it.");
         },
         
         help(bot, e) {

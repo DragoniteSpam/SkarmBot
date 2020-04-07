@@ -11,7 +11,7 @@ class User {
     constructor(id) {
         this.id = id;
         
-        this.summons = {"wooloo" : true};
+        this.summons = {};
         this.summonsLastTime = null;
         
         User.add(this);
@@ -33,6 +33,15 @@ class User {
         return true;
     }
     
+    listSummons() {
+        let terms = [];
+        for (let term in this.summons) {
+            terms.push(term);
+        }
+        
+        return terms.sort().join(", ");
+    }
+    
     attemptSummon(e, term) {
         let userData = User.getData(this.id);
         // you must be in the same channel
@@ -41,7 +50,7 @@ class User {
         }
         // you can't summon yourself
         if (e.message.author.id == this.id) {
-            //return;
+            return;
         }
         // can't see summons in channels they can't view
         if (!userData.can(Discordie.Permissions.Text.READ_MESSAGES, e.message.channel)) {
