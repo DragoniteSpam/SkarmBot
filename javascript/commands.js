@@ -227,7 +227,45 @@ Wolfram-Alpha is awesome:
             Skarm.help(this, e);
         },
     },
-    
+    Stats: {
+        aliases: ["bot"],
+        params: [""],
+        usageChar: "!",
+        helpText: "Displays some stats about the bot.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            let uptime = process.uptime();
+            let uptimeDays = Math.floor(uptime / 86400);
+            let uptimeHours = Math.floor((uptime / 3600) % 24);
+            let uptimeMinutes = Math.floor((uptime / 60) % 60);
+            let uptimeSeconds = Math.floor(uptime % 60);
+            let uptimeString = "";
+            
+            if (uptimeDays > 0) {
+                uptimeString = uptimeDays + ((uptimeDays > 1) ? " days, " : " day, ");
+            }
+            if (uptimeHours > 0) {
+                uptimeString += uptimeHours + ((uptimeHouse > 1) ? " hours, " : " hour, ");
+            }
+            if (uptimeMinutes > 0) {
+                uptimeString += uptimeMinutes + ((uptimeMinutes > 1) ? " minutes, " : " minute, ");
+            }
+            uptimeString += uptimeSeconds + ((uptimeSeconds > 1) ? " seconds" : " second");
+            
+            Skarm.sendMessageDelay(e.message.channel,
+                "***Bot stats, and stuff:***\n```" +
+                "Users (probably): " + Object.keys(Users.users).length + "\n" +
+                "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
+                "Uptime (probably): " + uptimeString + "\n" +
+                "Heap usage (probably): shove it up your @$$```"
+            );
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     // administrative
     Pin: {
         aliases: ["pin"],
