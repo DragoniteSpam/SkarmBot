@@ -160,6 +160,8 @@ class Bot {
             this.censor(e);
         }
         
+        this.summons(e);
+        
         if (this.mentions(e, this.validNickReferences)) {
             return true;
         }
@@ -213,6 +215,20 @@ class Bot {
         
         map[channel.guild_id] = channel.id;
         return true;
+    }
+    
+    // summons
+    summons(e) {
+        let content = e.message.content;
+        for (let user in Users.users) {
+            let userData = Users.get(user);
+            for (let term in userData.summons) {
+                if (e.message.content.includes(term)) {
+                    userData.attemptSummon(e, term);
+                    break;
+                }
+            }
+        }
     }
     
     // helpers
