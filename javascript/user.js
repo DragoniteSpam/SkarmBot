@@ -55,6 +55,10 @@ class User {
         return User.users[id] ? User.users[id] : new User(id);
     }
     
+    static getData(id) {
+        return User.client.Users.get(this.id);
+    }
+    
     static load() {
         Encrypt.read(userdb, function(data, filename) {
             User.users = JSON.parse(data);

@@ -27,7 +27,7 @@ class Guild {
     }
     
     executeMayhem() {
-        let guildData = Guild.client.Guilds.get(this.id);
+        let guildData = getData(this.id);
         let mayhem = this.mayhem.roles.shift();
         this.mayhem.roles.push(mayhem);
         for (let i = 0; i < guildData.roles.length; i++) {
@@ -68,6 +68,10 @@ class Guild {
     
     static get(id) {
         return Guild.guilds[id] ? Guild.guilds[id] : new Guild(id);
+    }
+    
+    static getData(id) {
+        return Guild.client.Guilds.get(this.id);
     }
     
     static load() {
