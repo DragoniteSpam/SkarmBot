@@ -9,6 +9,7 @@
   "author": "Dragonite",
   "license": "MIT",
   "dependencies": {
+    "crypto-js": "^4.0.0",
     "discordie": "^0.11.0",
     "node-wolfram": "0.0.1",
     "request": "^2.88.0"
