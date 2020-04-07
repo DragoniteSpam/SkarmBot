@@ -5,8 +5,6 @@ const Encrypt = require("./encryption.js");
 const userdb = "..\\data\\users.penguin";
 
 class User {
-    static users = {};
-    
     constructor(id) {
         this.id = id;
         
@@ -40,7 +38,7 @@ class User {
     }
     
     static remove(user) {
-        if (!(user in User.users) {
+        if (!(user in User.users)) {
             return false;
         }
         delete User.users[user.id];
@@ -61,5 +59,7 @@ class User {
         Encrypt.write(userdb, JSON.stringify(User.users));
     }
 }
+
+User.prototype.users = {};
 
 module.exports = User;

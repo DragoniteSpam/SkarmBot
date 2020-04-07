@@ -1,8 +1,9 @@
 "use strict";
 const Skarm = require("./skarm.js");
 
+const guilddb = "..\\data\\guilds.penguin";
+
 class Guild {
-    static guilds = {};
     
     constructor(id) {
         this.id = id;
@@ -36,7 +37,7 @@ class Guild {
     }
     
     static remove(guild) {
-        if (!(guild in Guild.guilds) {
+        if (!(guild in Guild.guilds)) {
             return false;
         }
         delete Guild.guilds[guild.id];
@@ -48,14 +49,16 @@ class Guild {
     }
     
     static load() {
-        Encrypt.read(userdb, function(data, filename) {
+        Encrypt.read(guilddb, function(data, filename) {
             Guild.guilds = JSON.parse(data);
         });
     }
     
     static save() {
-        Encrypt.write(userdb, JSON.stringify(Guild.guilds));
+        Encrypt.write(guilddb, JSON.stringify(Guild.guilds));
     }
 }
+
+Guild.prototype.guilds = {};
 
 module.exports = Guild;
