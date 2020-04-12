@@ -126,7 +126,7 @@ class Bot {
         if (e.message.mentions.length > 0 ||
                 e.message.mention_roles.length > 0 ||
                 e.message.mention_everyone
-            ){
+            ) {
             return false;
         }
         
@@ -218,9 +218,35 @@ class Bot {
     
     // learning and reciting lines
     parrot(e) {
-        if (!this.mentions(e, this.validNickReferences)) {
+        if (this.mentions(e, this.validNickReferences)) {
+            Skarm.sendMessageDelay(e.message.channel, this.getRandomLine(e));
             return;
         }
+        
+        this.attemptLearnLine(e);
+    }
+    
+    getRandomLine(e) {
+        return "todo";
+    }
+    
+    attemptLearnLine(e) {
+        let hash = this.messageHash(e);
+    }
+    
+    messageHash(e) {
+        // https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
+        if (e.message.content.length == 0) {
+            return 0;
+        }
+        
+        let hash = 0;
+        let str = e.message.content.toLowerCase();
+        for (let i = 0; i < str.length; i++) {
+          hash = (hash + str.charCodeAt(i)) | 0;
+        }
+        
+        return hash;
     }
     
     // summons
