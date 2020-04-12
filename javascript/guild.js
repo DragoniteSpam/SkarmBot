@@ -49,7 +49,7 @@ class Guild {
     }
     
     learnLine(e) {
-        this.lines[e.message.content.toLowerCase()] = e.message.content.toLowreCase();
+        this.lines[e.message.content.toLowerCase()] = e.message.content.toLowerCase();
         this.pruneLines();
     }
     

@@ -77,3 +77,7 @@ function getSpaghetti() {
 function lineCount(file) {
     return fs.readFileSync(file).toString().split("\n").length;
 }
+
+let timer5min = setInterval(function() {
+	Guilds.save();
+}, 300000);
