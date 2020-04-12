@@ -28,6 +28,11 @@ class Constants {
             DELETED: client.Channels.get("414291195028570112"),
         };
         
+        Constants.Vars = {
+            LEARN_MESSAGE_ODDS: 0.3,
+            LOG_CAPACITY: 6000,
+        };
+        
         console.log("Initialized constants...");
     }
 }
