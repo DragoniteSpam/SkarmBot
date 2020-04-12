@@ -245,7 +245,7 @@ class Bot {
         let hash = 0;
         let str = e.message.content.toLowerCase();
         for (let i = 0; i < str.length; i++) {
-          hash = (hash + str.charCodeAt(i)) | 0;
+          hash = (((hash << 5) - hash) + str.charCodeAt(i)) | 0;
         }
         
         return hash;
