@@ -2,6 +2,7 @@
 const fs = require("fs");
 const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
+const Constants = require("./constants.js");
 
 const guilddb = "..\\data\\guilds.penguin";
 
@@ -23,6 +24,8 @@ class Guild {
             basePosition: 2,
         };
         
+        this.lines = {};
+        
         Guild.add(this);
     }
     
@@ -43,6 +46,22 @@ class Guild {
         // "Yo, {user.username}! If you can see this, it means you've been
         // restricted from using the server."
         Skarm.sendMessageDelay(this.woe.channel, this.woe.message);
+    }
+    
+    learnLine(e) {
+        this.lines[e.message.content.toLowerCase()] = e.message.content;
+        this.pruneLines();
+    }
+    
+    pruneLines(e) {
+        let keys = Object.keys(this.lines);
+        if (keys.length <= Constants.Vars.LOG_CAPACITY) {
+            return;
+        }
+        
+        for (let i = 0; i < keys.length; i++) {
+            delete this.lines[keys[i]];
+        }
     }
     
     static initialize(client) {

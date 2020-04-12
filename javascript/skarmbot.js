@@ -51,10 +51,6 @@ class Bot {
         
         this.mapping = Skarm.addCommands(Commands);
         this.keywords = Skarm.addKeywords(Keywords);
-        
-        this.vars = {
-            learnMessageOdds: 0,
-        };
     }
     
     // events
@@ -236,12 +232,12 @@ class Bot {
     
     attemptLearnLine(e) {
         let hash = (this.messageHash(e) / 10) % 1;
-        if (hash < this.vars.learnMessageOdds) {
+        if (hash < Constants.Vars.LEARN_MESSAGE_ODDS) {
+            Guilds.get(e.message.guild.id).learnLine(e);
         }
     }
     
     messageHash(e) {
-        // https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
         if (e.message.content.length == 0) {
             return 0;
         }
