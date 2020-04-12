@@ -49,9 +49,8 @@ class Guild {
     }
     
     learnLine(e) {
-        this.lines[e.message.content.toLowerCase()] = e.message.content.toLowerCase();
+        this.lines[e.message.content.toLowerCase()] = true;
         this.pruneLines();
-        Guild.save();
     }
     
     pruneLines(e) {
@@ -86,7 +85,7 @@ class Guild {
         
         // try a given number of messages
         for (let i = 0; i < Constants.Vars.SIMILAR_MESSAGE_ATTEMPTS; i++) {
-            let message = this.lines[keys[Math.floor(Math.random() * keys.length)]];
+            let message = keys[Math.floor(Math.random() * keys.length)];
             let messageScore = 0;
             // messages are scored based on how many of the longest words
             // in the original they share
