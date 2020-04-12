@@ -162,10 +162,6 @@ class Bot {
         
         this.summons(e);
         
-        if (this.mentions(e, this.validNickReferences)) {
-            return true;
-        }
-        
         if (this.mentions(e, this.validESReferences)) {
             return true;
         }
@@ -194,6 +190,9 @@ class Bot {
             keyword.execute(this, e);
             return true;
         }
+        
+        this.parrot(e);
+        
         return false;
     }
     
@@ -215,6 +214,13 @@ class Bot {
         
         map[channel.guild_id] = channel.id;
         return true;
+    }
+    
+    // learning and reciting lines
+    parrot(e) {
+        if (!this.mentions(e, this.validNickReferences)) {
+            return;
+        }
     }
     
     // summons
