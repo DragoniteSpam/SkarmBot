@@ -51,6 +51,10 @@ class Bot {
         
         this.mapping = Skarm.addCommands(Commands);
         this.keywords = Skarm.addKeywords(Keywords);
+        
+        this.vars = {
+            learnMessageOdds: 0,
+        };
     }
     
     // events
@@ -231,7 +235,9 @@ class Bot {
     }
     
     attemptLearnLine(e) {
-        let hash = this.messageHash(e);
+        let hash = (this.messageHash(e) / 10) % 1;
+        if (hash < this.vars.learnMessageOdds) {
+        }
     }
     
     messageHash(e) {
