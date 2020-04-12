@@ -5,7 +5,7 @@ const Skarm = require("./skarm.js");
 
 class Encrypt {
     static initialize() {
-        Encrypt.dataToken = fs.readFileSync("..\\..\\data.txt").toString();
+        Encrypt.dataToken = fs.readFileSync("..\\aes.txt").toString();
     }
     
     static read(filename, callback) {

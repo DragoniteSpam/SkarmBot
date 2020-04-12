@@ -4,7 +4,7 @@ const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 
-const guilddb = "..\\data\\guilds.penguin";
+const guilddb = "data\\guilds.penguin";
 
 class Guild {
     constructor(id) {
@@ -51,6 +51,7 @@ class Guild {
     learnLine(e) {
         this.lines[e.message.content.toLowerCase()] = e.message.content.toLowerCase();
         this.pruneLines();
+        Guild.save();
     }
     
     pruneLines(e) {

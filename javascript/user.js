@@ -4,7 +4,7 @@ const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
 const Discordie = require("discordie");
 
-const userdb = "..\\data\\users.penguin";
+const userdb = "data\\users.penguin";
 const SUMMON_COOLDOWN = 60000;
 
 class User {

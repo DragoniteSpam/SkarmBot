@@ -14,6 +14,7 @@ const events = discordie.Events;
 const Skarm = require("./javascript/skarm.js");
 const SkarmBot = require("./javascript/skarmbot.js");
 const XKCD = require("./javascript/xkcd.js");
+const Encrypt = require("./javascript/encryption.js");
 const Constants = require("./javascript/constants.js");
 const Users = require("./javascript/user.js");
 const Guilds = require("./javascript/guild.js");
@@ -35,6 +36,7 @@ let bot;
 client.Dispatcher.on(events.GATEWAY_READY, e => {
     bot = new SkarmBot(client);
     Constants.initialize(client);
+    Encrypt.initialize();
     Users.initialize(client);
     Guilds.initialize(client);
 	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
@@ -80,4 +82,5 @@ function lineCount(file) {
 
 let timer5min = setInterval(function() {
 	Guilds.save();
+    Users.save();
 }, 300000);
