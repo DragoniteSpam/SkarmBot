@@ -219,7 +219,10 @@ class Bot {
     // learning and reciting lines
     parrot(e) {
         if (this.mentions(e, this.validNickReferences)) {
-            Skarm.sendMessageDelay(e.message.channel, this.getRandomLine(e));
+            let line = this.getRandomLine(e);
+            if (line !== undefined) {
+                Skarm.sendMessageDelay(e.message.channel, line);
+            }
             return;
         }
         
@@ -227,7 +230,7 @@ class Bot {
     }
     
     getRandomLine(e) {
-        return "todo";
+        return Guilds.get(e.message.guild.id).getRandomLine(e);
     }
     
     attemptLearnLine(e) {

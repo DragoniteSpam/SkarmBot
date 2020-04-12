@@ -30,6 +30,8 @@ class Constants {
         
         Constants.Vars = {
             LEARN_MESSAGE_ODDS: 0.3,
+            SIMILAR_MESSAGE_ATTEMPTS: 5,
+            SIMILAR_MESSAGE_KEYWORDS: 3,
             LOG_CAPACITY: 6000,
         };
         

@@ -49,7 +49,7 @@ class Guild {
     }
     
     learnLine(e) {
-        this.lines[e.message.content.toLowerCase()] = e.message.content;
+        this.lines[e.message.content.toLowerCase()] = e.message.content.toLowreCase();
         this.pruneLines();
     }
     
@@ -62,6 +62,46 @@ class Guild {
         for (let i = 0; i < keys.length; i++) {
             delete this.lines[keys[i]];
         }
+    }
+    
+    getRandomLine(e) {
+        let keywords = e.message.content.toLowerCase().split(" ");
+        let keys = Object.keys(this.lines);
+        // if there are no stored messages, you can't return anything
+        if (keys.length == 0) {
+            return undefined;
+        }
+        let sort = function(array) {
+            array.sort(function(a, b) {
+                return b.length - a.length;
+            });
+        }
+        
+        sort(keywords);
+        let currentMessage = "";
+        let currentMessageScore = -1;
+        let testWords = Math.min(Constants.Vars.SIMILAR_MESSAGE_KEYWORDS,
+            keywords.length);
+        
+        // try a given number of messages
+        for (let i = 0; i < Constants.Vars.SIMILAR_MESSAGE_ATTEMPTS; i++) {
+            let message = this.lines[keys[Math.floor(Math.random() * keys.length)]];
+            let messageScore = 0;
+            // messages are scored based on how many of the longest words
+            // in the original they share
+            for (let j = 0; j < testWords; j++) {
+                if (message.includes(keywords[i])) {
+                    messageScore++
+                }
+            }
+            if (messageScore > currentMessageScore) {
+                currentMessageScore = messageScore;
+                currentMessage = message;
+            }
+        }
+        
+        return currentMessage;
+        
     }
     
     static initialize(client) {
