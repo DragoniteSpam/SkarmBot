@@ -6545,3 +6545,70 @@ Deleted: http://i.4cdn.org/gif/1585088785881.webm by Twisty
 Deleted: https://cdn.discordapp.com/attachments/550903578596868107/550912633893683203/video_1.mov by Twisty
 Deleted:  by Master9000
 Deleted:  by Master9000
+Deleted: ok carry on I won't defend anything there by Master9000
+Deleted: Actually she was considering what I'm reading by MR
+Deleted: From what I've seen they only show the political process by MR
+Deleted: For real though imagine anybody just sitting while watching cspan and saying dang that guy is adorable looking I want to *bleep* by MR
+Deleted: Omfg by MR
+Deleted: Parliament all the way by MR
+Deleted: So if we had a parliament liberals would be leading by MR
+Deleted: \ by Gummy
+Deleted: Took him long enough by MR
+Deleted: The DNC is prob thinking of some backup plan because Biden isn't in good health by MR
+Deleted: argo is mafia confirmed by TiberiaPrima
+Deleted: there's an appropriate time for every action by Master9000
+Deleted:  by ProminentOperator
+Deleted: https://www.amazon.ca/Gigabyte-Graphics-256-Bit-Gv-R57XTGAMING-OC-8GD by Gummy
+Deleted: |First of all, if you start a let's play channel because you want views/money/fame... well you probably couldn't have picked a worse genre. 
+well shit by Gummy
+Deleted:  by Master9000
+Deleted: ah well by ProminentOperator
+Deleted: 1 by Master9000
+Deleted: 1 by Master9000
+Deleted: I like that they bring up the question about media covering live deaths by MR
+Deleted: https://youtu.be/zK47s7G1oo4 by MR
+Deleted: Nice what is it by ProminentOperator
+Deleted: 3 by Master9000
+Deleted:  by Lightning
+Deleted: is that just because it's returning null? by ProminentOperator
+Deleted: [ERROR] [04/11/2020 15:41:05.031] [default-akka.actor.default-dispatcher-2] [akka://default/user/$a] null
+java.lang.NullPointerException by ProminentOperator
+Deleted: oops by DefaultFormat
+Deleted: So then I tried to get index -1 from that list of positions and it threw an error by ProminentOperator
+Deleted: I tried to do indexOf( ) to get the tile position, but because it was a different object, it returned -1 by ProminentOperator
+Deleted: yeah it was by ProminentOperator
+Deleted: It's actually probably, because then it would call the wrong values by ProminentOperator
+Deleted: It's possible that it was my getVelocity method because I'm almost certain I programmed it incorrectly so I just commented it out and replaced it with a (0, 0) velocity by ProminentOperator
+Deleted: in the GridLocation class, the order is (x, y) right? by ProminentOperator
+Deleted: (Putting up with me means my arrogance, narcissistic personality, evil plans??, general shitposting, and other stupid stuff) by Gummy
+Deleted: How are you guys, excellent at putting up with my shit? Gummyland at times can’t even put up with everything I say/do but you guys are great at it.. by Gummy
+Deleted: Okay seriously questions guys because lately I been too negative about myself by Gummy
+Deleted: And yes I am fine, just lately errr there has been quite a few ptsd stuff over stormy thats putting me down again by Gummy
+Deleted: I guess it’s a survey question as well? by Gummy
+Deleted: just study what you mised on that exam by ProminentOperator
+Deleted: Remember<@!220496183603363841> , you always have the final exam by ProminentOperator
+Deleted: hell she had many years before that by Demon_Lord
+Deleted: work in progress and drawing sylvain as we speak lol by willofjokerXIX
+Deleted: yeah by ProminentOperator
+Deleted: <@!484436750635237386>  what material will this quiz be covering? by ProminentOperator
+Deleted: ? by ProminentOperator
+Deleted: It is in fact raining by ProminentOperator
+Deleted: that guy is actually an admin in the beta 64 server I just joined by Demon_Lord
+Deleted: We have an angry trump right now during the corona meeting by MR
+Deleted: https://youtu.be/nORRgU8sGdE by MR
+Deleted: oh hi game of life by Master9000
+Deleted: Two letter postal code? by MR
+Deleted: !cry test by TJ
+Deleted: E!google how much is an r7 nowadays by Master9000
+Deleted: In case anyone missed it in algetty, by Master9000
+Deleted: But we've got to recuperate by ProminentOperator
+Deleted: Search Results
+Featured snippet from the web
+In recognition of challenges related to the COVID-19 pandemic, the deadline for completing incomplete grades that were assigned during the spring 2019 and summer 2019 semesters has been extended to December 31, 2020. by Byte
+Deleted: object whatever {
+  def main(args: Array[String]): Unit = {
+    new LectureServer()
+  }
+} by ProminentOperator
+Deleted: it should be like this: by ProminentOperator
+Deleted: <:nutted:623140060438724631> by Ribbunz
