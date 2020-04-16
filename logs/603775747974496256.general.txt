@@ -3141,3 +3141,621 @@ nor wiring kid
 that's a thing?
 i think exams are 20% of my grade? but i forgot
 why is 115 still in my ublearns
+i wanna make bad decisions
+idk which ones but my brain is telling me to make bad decisions
+
+i should sleep
+its for hammer
+yooo
+how's hammer goin?
+i slept, still wanna make bad decisions
+anything specific?
+it's easy
+what does it mean for a class to track something
+context: metagame is an upcoming netflix original that is a sequel to the smash brothers
+that clip is an unused scene from metagame
+sometimes it works...
+sometimes its just like...
+i dont like actors this is weird
+i thought so
+its private
+ahhh
+im bored someone come to my ac town
+flicks at my town rn
+does anyone want to start working on the 191 homework today, so we can do like 2 problems a day and get it done early?
+i feel like after watching the video i was unsure about actors, but now that i completed the lecture question its a lot clearer
+i sorta get the possible application but just
+idk it doesnt vibe with me
+i am struggling a bit with decisiontree
+tfw you think you have to use the parallell axel formula to get inertia for everything bc physics only gives you com point inertia formulas. but on the wiki there are so much more!
+why would you want that to spin!?!?
+this is kinda what i'm looking for...
+oh wait
+whats an axis
+2(m(d/2)^2)+2(md^2)?
+oh so a line
+center of the rotation
+yea...
+also how the f do you get distance for the 2 opposite points???
+sooo formula should be... 2(m(d/2)^2)+2(m(d+d/2)^2)^2
+lemme draw it first
+just a hypot for this
+like that
+2sqrt((d^2+(d/2)^2))
+the distance of each line is sqrt(d^2+(d/2)^2)
+oh..
+yeah
+hey patrick
+i still haven't received a lecture from my teacher
+i haven't even thought about hw5 yet
+jk i am stuck on 4 cuz we never learned it
+2. add sin/cos
+it holds the value
+its like a type
+its just different
+still missing 2 lq's in ds
+yeahhhhhh
+and now the lecture question errored out and i don't know why
+what don't you understand?
+also
+how do you open the animals.csv in the decision tree file
+i did that
+yeah
+ok i think i might like decision tree a lot
+yeah
+and it is decision **tree**
+i could do maze with how it wants us to but the gui doesn't run
+i'll probably just do that
+water is the best
+i asked if the hw was gonna get extended
+got a fat maybe
+my ta
+i pseudocoded some ideas in my head
+idk why mine doesnt and i never got an answer on piazza
+parasite just got added to hulu
+from the image or other reasons
+i shan't forgive you
+i got the wrong output by mistake
+nice
+i have an idea of how to do it, but it would require using 34 classes
+and i think that's just a tad much
+without creating any new classes
+i'll write tests tomorrow morning lol
+crap, i have a chinese quiz i didn't study for
+how is everyone
+i don't like get how it stores data
+you can
+i enjoy data structures, but these homework's are difficult to pull off in a week
+this is unfair as hell
+thats what i did when we were assigned the project
+i'm so close with decisiontree
+i think
+the adding to a tree is the hardest part 😦
+fair
+because it's so much easier to visualize
+yeah same
+for lo
+(also side note 191 grades are updates)
+homework 3
+we'll probably do better on homework 4
+but also
+we should work on homework 5
+my priority rn is decision treee
+fair enough
+i'd like to create a contact tracing program within a graph of people to calculate the probability of certain people being infected
+and lethality rate
+yes indeed
+do you have any project ideas?
+i'm manually charting out a potential tree and i'm just gonna brute force it
+this is great
+kind of caught me off guard
+i also easy drew my tree
+its easy its just obnoxious
+i’m going to use a tree
+biden/kamala
+i remember saying there was no way biden would win the primary
+idk tho especially with how splut the democratic party is
+exactly
+wait it says he gets elected in 2045
+also this means ben shapiro + steve crowder will be running in 2036.  good luck.
+i think i have to use a tree
+will i?
+i use it automatically now
+cool
+something didn’t click
+i guesses
+i submitted
+nope
+i just dislike labs in general
+too “on the spot”
+i have a function that i wrote that tells me the most efficient sides
+lmao ok
+i am kinda stressed
+wait which learning objective
+figured out why my lq was erroring
+he didnt
+please do that for me
+im so gonna fuck up this interview
+as long as my ta doesn't do that fill in the blank format, i'm good
+linkedlist, trees, and graphs
+how they work and what you would use them for
+i just made functions for them
+i love how theres no way to figure out why you arent getting the 1.0 on assignments
+and yet
+i just did what i was told to do
+i was starting to like actors sorta then they hit us with this shit
+im getting an absurd amount of errors for my test after it flickers a pass response
+since you mentioned getting errors
+someone on piazza has my same problem but what do you know they never got an answer
+he doesnt say what to name the traders in the tradeagreement constructor
+when you're making calls to classes, only use that call to compare
+the one he gave you
+basically if its a parameter, cool
+or is it like
+constructor contains the initial item
+state variable is current item?
+you're testing things that wouldn't exist in his code though i am 99% sure
+same name
+i have an idea gimme a sec
+my idea worked
+you got it!
+ill dm you it
+i couldve sworn i had tried that before but whatever
+you can't call trader.olditem because olditem isnt a thing
+i never did that
+yeah i know but that was just a one time thing i tried i had tried without stuff like that in the past
+well you did it on my own without my help then
+good question | 2
+i had to ask my question about the findpath method again simply because no one answered it
+what
+the question i just sent the screencap of
+that one i need an answer to
+101 views | 0 responses yiikes
+that just means there's something in there taking too much time to compute
+also we need to have our open ended objective decided upon what we do by next sunday which is delightful
+the lab should help me for the interview
+whats a bfs algorithm
+what the fuck
+it is confirmed the impossible 😄
+how the fuck are you supposed to explain this in the time alloted
+i got 122.0
+i typed it out
+and ran it
+it’s just that my very last step was wrong, because i thought because compute returned 0.0 (for mine) that the whole thing would return 0
+it’s something close to what you have
+all the labs are done now its not possible for anyone to steal your answer so can you just say it now lol
+i guess i can check?
+got an answer but its just "make faster code" when that uh
+isnt possible
+fuck me it isnt working at all
+theres too much to fucking process theres no way to reasonably make this uber efficient
+the way i had to do this is so fucking absurd and backasswards but ill take it
+itd have been so easy if i couldve made my own class
+computer science is constant agony until momentary catharsis (which half of the time is false)
+you'd be the best if you can figure that out.
+if you download pycharm professional you can just make js files (with the code feedback and all)
+otherwise you can check your code in another ide and just paste it into a file in the project you need
+oh also i made my schedule
+nice what is it
+that’s so many psc classes 😰
+ooga booga sleep study party life time
+you can make it now
+what cse courses do i need to take
+220 and 250?
+huh.
+i only put undergraduate for the checkboxes is that why
+oh now theyre there ??
+when is the advisement for this semester?
+because he thinks it that difficult 😰😰😰
+my bad lol
+converting a string to a list of tiles is still very clever though
+i loved the idea behind maze i just wish one thing was different (one val being changed to a var) it wouldve been so much easier to optimize
+my entire decision tree is in there
+trump bucks
+which is also at 5
+logan
+patrick iwazsko
+hes very laidback which helps me not be so nervous
+that was just because i misheard though
+and then another part i entirely bullshitted and was right lol
+wdym loop in binary trees
+oh as in if you could go backwards?
+it makes sense you would think graphs because graphs you do that
+bc rn
+i have 20 credits
+ee202, cse191 cse116,phy108+lab+mth 142
+yea its only offered in the fall
+id probably push 191 back
+push 191
+although if you get 191 (which is math based) out of the way this semester, then wait on 116, 116 will be easy, you won't have to deal with 116 and 191 at the same time, and you'll properly prepare yourself for taking 220 right after
+wait
+really
+although is 191 a prereq for 220?
+i keep mixing them up lol
+if you push one or the other i think i may actually recommend you get 191 over with?
+idk what does everyone else think?
+and take 191 next semester
+i'm prob gunna see if i can talk to an adviser about this
+what the fuck is this lq
+but it doesnt seem too hard
+with a graph you can, but there also aren't left and right nodes which makes it harder to program
+lol i get what you mean
+in your own testing?
+autolab who knows
+i have the perfect recursive algorithm to build the tree
+but i can’t use a function that looks at all the true and false values that have been before it
+but i can’t imagine how
+which i haven’t tried yet
+i could backtrack, but i also can’t do mode.left and node.right
+im real worried about getting the 1 on this one
+like it's just 115 type programming
+unorganized
+god forbid we even get a vidoeo
+i'm prolly gonna complain about this in my course eval
+yeah
+same
+pshh nope
+i don't
+that's what mine does
+yeah exactly
+idk how to
+oh that's awkward
+now you know
+i sure do not want to watch the video
+its due tomorrow night, we have some time
+this lq is taking up too much of my spare time
+i'm so fucked on decision tree
+which video
+decision tree
+at least somewhat
+really?
+who are there peopl
+so now i feel better about it and i'm waiting for oh
+maybe
+but there's always a makeup if i really fuck this up
+patrick how long did it take you
+there is a makeup right
+like 15/20 minutes
+clearly
+you think i could get it done that quickly
+i'm down
+no harm in trying
+is that just because it's returning null?
+i asked the ta about if there would be a makeup
+and she said she didn't know
+jesse said there would be in his lecture i think
+ahhhhhhhhhh
+okay
+check to make sure though
+yeah lol
+and theyre not coordinates theyre vectors
+oh ok
+think an arrow pointing off of an objects current location
+it like adds both magnitudes together to determine the direction and distance
+oh its a triangle
+hypotenuse
+my explanation was shitty sorry about that
+which is weird
+point is dont worry about z
+top left is (0, 0)
+so (2, 1) would be
+so like list(
+    list(maptile, maptile, maptile),
+    list(maptile, maptile, maptile),
+    **list**(maptile, maptile, **maptile**)
+)
+from what i've seen, if i create a graph of the map, i can just use the bfs algorithm i already made to run it
+i imagine it shouldnt be too had to make a graph of
+for whatever whatever item is stored in map and mapsto a list of all tiles 1 x or y away from it
+i can't wait to see it
+i always just go with the projects that my brain says are more mathematical/logic based
+facts and logic moment
+why is (0, 0) in the middle of the grid
+that's its current velocity
+its current velocity is (0, 0) so it doesnt move from that location
+i was worried that i messed it up but i didn't, phew
+when is the next office hour
+oh rn in discord tom
+and maybe physics lab :)
+congrats
+which doesn't seem to hard
+lmao
+so subtract the new location from current location that's the x and y for the physics vector
+idk the docoument just said to do it
+i'll figure it out sometime tomorrow though
+where is the index thats out of bounds
+it's possible that it was my getvelocity method because i'm almost certain i programmed it incorrectly so i just commented it out and replaced it with a (0, 0) velocity
+yeah it was
+i tried to do indexof( ) to get the tile position, but because it was a different object, it returned -1
+i didn't know it was due tonight wtf
+yeah
+blue velvet is really good.
+ebert gave it 1 star.
+anyway, i really liked the movie
+just study what you mised on that exam
+nope i lied it just doesn't work
+but you got the 1.0 lol
+yeah he somehow didnt notice that when looking at my submission and the fact that the question was already resolved
+error every time because it returns an **empty list**
+i meant findpath()
+i have not been scolded i reign supreme
+*heh
+my functions seem to work
+you got all day
+just define a short path and use thay for the parameter and print every result
+actually i have no clue why it works the way it does in terms of only needing one click
+probably
+here ill make a test and see what it returns and that way you can use it (temporarily, obviously youd have to replace it later to avoid ai) to see if its working right
+and this should be whats printed
+ok i didn't get those values
+but not the ones right above
+so it seems to be right?
+why are you getting such round numbers after putting it through normal2d()
+wait a second
+i made a coding error
+i'm confused
+wait
+but then how do you figure out what the next value is
+ok that's what i've been doing
+that's strange
+if i do the earlier i get your latter results
+but if i do the latter i get your earlier results 🤔
+well regardless, it works
+targetlocation.x+0.5-currentlocation.x.floor
+in that case its the same just without floor
+oh really?
+i'm going to try submitting mazesolver
+yess i got a 1 for fp
+why: so you can free up as much ram as possible at once
+half hardware half software
+my grandma set me up an easter basket full of candy which is nice but she gets me crazy amounts of candy either way lol
+try having the findpath return nil instead of an empty list
+i have it do list(start) but nil should also work
+i had it return list(new coordinate(0, 0), new coordinate(0, 1)) and it still broke
+list(start) is nice because if you click on a wall while in the middle of a path your character will move to the cetner of the current tile instead of just freezing (if you code getvelocity properly)
+that way if the path is nothing it just returns a new physicsvector(0, 0)
+yeah i made that conditional, the problem is its always empty so it just stays in one place
+oh mine did that i forget how i fixed it
+also have a check in getvelocity to see if the current location is the same as the last item in the path
+well i didn't
+you think?
+oh i just noticed i didnt use distance 2d lol
+it shouldn't be actually
+i had mine check if the difference in both x's and y's was between -0.1 and 0.1 lol
+you know what's cool about my code
+i doubt that could be done in scala
+just as calculations
+ill be on the call in a bit
+same
+i'm aaaaaalmost done
+now i just need to figure out how to get rid of the jittering
+i'm so close, it stops on edges now (right before the tile) instead on the actual squares
+as in any x, y pairing +0.5 to both
+idk why they have the currentlocation parameter as a physics vector
+but yeah pretend its a grid location
+thanks for asking that anthony i had completely forgotten lol
+so the 9 should have a line on top of it
+and 0.9repeating is not equal to 1
+it is
+these are aproximations
+3.3 repeating isn't an approximation, its a notation
+as for numbers like sqrt(2)
+2.9 repeating isn't irrational though
+2.(99)repeating isnt an actual decimal if you get what i mean
+exactly
+so 0.9999999999999999999999 as a decimal can never equal 0
+that's why it doesnt
+.999999999999 repeating doesnt have a decimal to use in math problem
+thats its own problem im not some sorta number rights activist
+you can represent it
+actually wait that's just how you represent 1/9
+to figure out what that aproximates to
+i know
+me saying fuck the concept of 0.9 repeating = 1
+what emil
+it represents itself
+im sure if you tried hard enough you could find a series to represent numbers like sqrt(2) too
+0.9 repeating can be represented by 1/1
+its infinitely small but it is still there
+i need to do my homework so i will leave you with this: you are wrong because i say so
+i can't argue with your logic
+oh i watched the video already]
+i caved
+check the slides
+i tried
+i still don't get it
+i delayed a lot
+for calc?
+that's really excessive, even for calculus
+for calc?!
+congratulations 🥳
+i have a question
+thus, are functions allowed to have members in their domain that don't map to anything
+i think that answer is no, i would just like to be sure
+perfect, thanks
+np, i can't wait for this quiz to be over my head is fucking killing me
+i felt that
+nope
+imma sleep right after this
+i also feel that
+or within the domain rather
+my grandma forgot to wake me up it appears but thankfully i just am awake
+i feel like shit
+how dare you
+that quiz qwas actually pretty nice
+feel better anthony
+where is quiz
+did i miss it?
+it starts at 11:00
+where is it?
+oh you may have time to finish it then
+probably?
+yhis is easy quiz
+we did it boys
+niiice
+it says late
+we'll see?
+at least you submitted something
+but i had to get the vespa cuz the scooter is one of the best parts of that game
+see i'm a gamer
+what
+json string..
+thank you emil for having a higher iq than me
+aaaaah
+it is in fact raining
+rain
+bruhhh
+i just do pythagorean
+yeah
+wait
+i agree
+it feels like a 3-line answer
+this is big facts
+ive got the advisement meeting which is gonna be painful
+i understand what you mean
+new 3x3 cuz it's been awhile since the last one
+imo i think i prefer some of the humor in curb your enthusiasm
+my adviser said that i should push 202 back
+bc she said its important to take cse 116 with cse 191
+not bad if i do say so myself
+i dont have to
+i just dunno how that works because last time around yknow it said we have like 3 semesters to do before we're admitted
+thinking of taking something from my junior fall semester so it doesnt suck ass
+anyone have dms 220 in their pathway? i might take that next semester
+sorry for the interruption in topics, but for anyone who did u5lq4 for 116, how did you install the libraries?
+i forgot let me check
+i just don't understand how to actually install the import things
+unless you want a break between the 4 classes
+reminder
+has adam set up a schedule? im looking at everyone else's to see where free times allign lol
+i don't quite want to speak on anyone else's behalf
+final terraria update comes out may 16th
+its nice cause i could get food but
+so im just gonna complete both whatever you call its this semester
+im getting errors in autolab so thats great
+ah well
+i’m going to ask a ta tomorrow
+i think my code works correctly but
+autolab doesnt like my tests
+actually i think i did it wrong
+i had it so that when an intersection gets a detour message it gives any incoming cars in the future the detour
+thats where the car arrives at the intersection
+so like road starts at top of intersection1 and ends at left of intersection 2
+id consider it as my personal project if i knew how to make guis
+regardless of iffyness with stuff like that in who its still unarguably very crucial in this time and its very likely the motivation behind trump's decision was to minimize aid in countries like iran
+maybe my test is in the wrong place?
+yeah, just copy the entire thing
+lol me neither
+i can even run the gui
+oh i did it in my lecturequestions
+because they are connected by the server
+what
+(that is actually what a ta told me, but i’ll have to ask again)
+no i just mean general not the gui lol
+uhhhhhh
+at least the ta is really helpful and nice this time around
+it's actually def functionname(): unit = {
+}
+that's why i didn't get the 1.0
+it be like that
+i mean better than not doing them
+exactly
+i definitely feel that
+believe me **i know**
+i haven't been able to ask as many questions and feel *there* for learning
+testing in a test enviornment for me is already bad enought what makes you think me being home is going to be any better
+that's unrealistic
+i'm just depressed
+look it up and there's a form to fill out
+is it that bad
+yeah
+that’s what i heard
+testing actors 🙃
+ugh i miss real classes
+wait
+good morning
+touche
+i like vague advice more than no advice
+bc that was in jesse's code
+i used a bunch
+run the gui in another document first to see that it works
+under websocket client
+cool
+i like seinfeld more than curb cuz it focuses on a wider cast of characters and the characters are younger.
+do i just define a value of a new lecture server in the main method of the object and nothing more?
+i dont find the office funny, but everyone loves it
+anime humour is great
+why.
+also it has good humour.
+for me at least
+check all the function commands and string ig?
+i found a way around ai for this i think
+this is all from the slides so dont worry
+did i fuck up anything
+what are you guys learning rn
+yea optimization
+take the derivative, find 0, plug into initial function
+l'hopital is weird but easy enough
+it currently just says 2k for every one over 16 making less than 130k, 500 per child
+trump delayed the relief checks to sign them all which id be upset at if not for the fact that our lives are no distance from satire at this point
+it would use vemno, direct deposit etc
+go out in public without a mask and get whacked
+how do you know its an increment message them
+it says to have it check if its of type increment which????
+the type isn't the class
+wait that string at the start matters?
+its a message of type "whatever string it's expecting" that **contains** a certain data type
+yeah but what about the message listener part
+i cant use the class given because that assumes it contains a string
+do i make a class of my own to deal with it?
+gotcha
+no don't do that
+you did it in your code lol
+in the server you run a main that literally just returns a new lectureserver
+then you run the gui in the other project?
+if it's like that then check your dependancies
+probably because your server isn't working
+make sure your spelling for everything including strings is correct
+there now it starts (still doesnt let it run at the same time as the gui though)
+you said the other way around
+did you know in the pixar cars universe there was canonically a world war 2
+i did the code, but not the tests
+so you have to make a system, make intersections, make a route that uses the intersections, then make a car that uses that route, then its all time based its weird
+but i think i might be close?
+when you create a direction the number is the time it takes to go through that direction (arrive at the intersection)
+try running a test where only one intersection exists then expect no message for however long itll tell you when it switches from red togreen and vice versa
+i think its green east/west when created yeah
+i think i understand functionality
+evidently i do not
+i got it
+he said
+```side note: my incorrect solution is completely wrong on this one so it will be common to get 3 smileys for testing with very poor testing.
+```
+that's from jesse
+my test randomly fails which is troubling
+i see
+i looked up honkler missing the joke and thought you were talking about the pepe clown meme (which apparently is named honkler)
+god no
+jeez on piazza 3 ta's had to cancel office hours today
+im confident my code works its just i need it to correctly function 3 times i na row
+ill just make the time gaps huge so the difference is minimal
+what the fuck
+yeah okay
+although who knows maybe not
+whatever ill just do calculator expansion
+they said cookie clicker was
+ok what's up with you lowkey liking webdev stuff adam lol
+im growing to actors ironically from the car lq but still its just
+ah well
+for what
+like when a car recieves a detour when arriving at an intersection
+does it remove that intersection from its directions
+its already removed when it gets there
+is it a bad idea to mess with a constructor
+we should plan a discord movie night!
+how about the shining?
+i have no clue what im doing wrong
+i'm down
+and i need to
+how many decimals should you give
+maybe do like 3

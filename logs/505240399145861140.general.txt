@@ -7059,3 +7059,784 @@ e!bot
 ....am i that predictable?
 maybe it violated the second law of thermodynamics and made ida smarter but gummy dumber
 i dont feel like opening my main
+i do want to have it cycle through hue values next time i open up his code though
+well
+rainbows
+can i ditch the light saber thing
+sure it has
+oh wow he has a lot more sabers than grievious does
+so im reading bosses like micheal scott from the office
+i mean it's already shown in gummyland that i avoid punishing regulars/mods and let them get away with some stuff because i don't wanna hurt the friendship
+i wonder if the discord api can speifically ask stuff to skip the log
+i dont think that appears on audit log
+same
+except you probably should use some discipline on the regulars and mods
+get them into good habits
+it's hard though because the last time i did that
+hence why i am just like "pls don't do that again?
+stuff like the zeal server woe message could be generic-ized
+thats no good
+is he actually being rate limited?
+6 actions per second yes
+i thought the main concern was the audit log being messed up
+so the one on top is the one that affects color?
+neither did i
+probably
+no idea
+now this one is sooo me
+i wonder if this still works
+cryptography math is beautiful
+darn
+i've been manually making reimann sums when that function's been around this whole time
+i don't think i've run into a functoin to do that
+argo and i are locked in eternal combat for who can be the biggest loser
+biggest loser
+thank
+because i am a goose
+weird
+that just looks inefficient though
+classy
+skarm role needs to be physically higher on the list than the mayhem roles
+i thought it just needed the manage role permissions
+did discord just send any of my messages
+they were red and i clicked resend
+ok whats left to do on the readme to do list
+did you add e !xkcd ####
+you may as well just type out the url lol
+its more fun with the bot
+stuff like summons and mayhem role is all hard-coded and you can't actually access it without being one of us
+is that fully operational with e!bb commands?
+nice
+so is it time to work on e!summon add now?
+for comparison
+there was also function paracesis somewhere in between those two
+that doesn't include the additional margin of additional features we want to add
+you were waiting to figure out encryption before doing that?
+eyansays probably next time
+holy shit you guys were still at it
+do you actually want that back lmao
+i could do it, it would take like two seconds
+e!dragonite
+going outside ain't a good idea currently
+i can still go out into the backyard lmao
+e!gummy
+what was e!gummy for
+come on guys, even i can remember that
+i have more important things to not remember
+argo is twitch stuff going to come back or nah
+i'll give it the "leave it out unless someone asks" status
+it's basically a trello-esque bulletin board
+people
+although this.toilet=3 was a pretty funny line to have in every user object
+```    /*
+    most questions in the zelian dialect of english don't end in question marks
+    if (!line.endswith("?")){
+        return false;
+    }
+    */``` lol
+don't you have fingers
+```function /*boolean*/ lineishmm(line){
+    line=line.tolowercase();
+    var hmm=/[h][m]+/g;
+    var match=line.match(hmm);
+    return match!=null&&line==match[0];
+}``` lol *2
+and yes that is regex
+thats way more characters to afford a little clarity
+`function utilitybotstats(e)` oh right this is another easy utility one
+its easier to do  (97 /\*'a'\*/) at that point
+wrath the leafeetoday at 9:53 pm
+doing fine
+just drawing a swastika
+gonna be a fun night in gumland
+have netflix?
+im bored of that joke
+any other pointless node vm stats that would be fun to include
+what other things does process provide?
+they are as bad as far right
+i just saw a few tweets from these radical feminists
+and that because they are a man they are awful when this person is gender fluid
+i'm at least 35% convinced that a bulk of the radical feminists are just the alt-right trying to make the left look bad, because there's no way people can actually be that stupid and survive until adulthood
+obviously faking being raped or abused is dumb because it taints crimes that could be legitimate
+when it was she that beaten him
+ok carry on i won't defend anything there
+this impacts women who actually do get abused and raped because of the stigma and women are afraid to speak out
+i didn’t mean normal feminists
+i mean when you're a gop member who believes the ancient babylonians are too far to the left, than yeah, pretty much everyone's a radical
+faaaaaaaaaaaaar off in it
+take any conservative female who has ever ran for office and switch them to the left you would get the same thing
+they will prob call mitch a man
+for real though imagine anybody just sitting while watching cspan and saying dang that guy is adorable looking i want to *bleep*
+meow meows!
+im slandering mitch
+yes i was asleep most of that time
+damn man you got me
+flubs
+yeah
+wait
+stay up for an hour or two and then go back to bed
+i put food out im not an idiot
+oh i prob wouldn't have done that
+i get snarky when i feel this way
+for the meth or for the breaking quarantine
+yes gummy im aware of no meth thats why i feel like shit
+by slap i mean slapping you with every dollar bill that equals the amount for the fine
+you also get points on your license
+tbh he kind of sounds like joe biden in terms of his voice
+my governor
+that's why they have the same sounding voice lol
+i dont appreciate that
+i cant be bothered to touch my mouse
+you know the one
+pretty much
+holy shit
+stay up all night
+stay up
+mitch watch it with me
+my personality is weird
+so, archers, lancers, and conjurers
+for me it was in the desert and i think it was some old senile guy giving me the speech
+who look very alike
+maybe my brain made the one i got an old fart because it was funnier
+super life pro tip: if you have a name that's related to bathroom humor, don't run for president
+oh yea lol
+but we did have a second president johnson who _wasn't_ impeached, giving a 20% success rate on bathroom humor presidents
+lbj was a potty mouth
+so he could have been removed although if you have the most seats in the senate i think a removal vote has to have a few votes from the other party
+dang then we would have had a president dick except it would have been the first name lol
+final fantasy online is like nintendo online
+that could apply to anything with a subscription
+sooo
+whos the closest online friend to you..
+i was like errr mitch, star, sis, and bringina
+and tenda
+though i said mitch was a guy
+because i had to say stormy was a guy when he poked me more about her
+in fact what would be the issue with him just saying stormy was a girl
+it's not like you say she's a girl and then he asks if they are trans right
+point is i only briefly said who is who,
+present company included
+tbh i've done the same thing a few times
+omfg
+the fact you get my state confused makes no sense
+theres only one real state
+would not mind living in illinois since it's blue but whatevs
+also he thought iceland was next to norway
+geography
+i rarely gets asked who my friends are lol
+he wasn't interested though
+i mentioned my quebec friend
+also i almost showed you guys what i got for bringy’s bday
+so abort
+that's a terrible idea
+i’ll pm you why
+i err mean
+also i talked about tenda and drago to my dad
+> illonous
+that's the only way i know of that would give bernie even less of a chance than he already has
+in fact we need more parties
+that's why we need more political parties which we kind of do but aren't major parties and we need government revamped so we can replace the house and senate with parliament
+which has yet to happen in the part of my life where i've been old enough to vote
+they started to insult the other party and stuff
+the major parties from what i've seen of third parties would be
+it should though maybe people would actually be interested in politics i guarantee if we did that method trump wouldn't be the republican leader
+excuse you, i'm a proud member of the idiot brain-dead liberal party (so says reddit)
+democratic would fit mitch the most surprisingly
+and green would surprisingly fit sis the most
+idk they rpobably believe in having rules or somethign weird like that
+doesn't help that in the republican primaries the winner of a particular state takes all the delegates from it
+what a stupid party
+birb party
+i support the goddamn second amendment
+obviously i support background checks and common sense gun laws
+that's enough math for today
+i hate this theme now
+reason why is that anyone making speedruns in mario maker 2 uses that theme
+why was i watch strawberry shortcake yesterday?
+article is spot on
+little sister says she will touch me with gloves later on after handing money
+okay since you know youtube better than me these days
+what about this?
+so i guess not all lets plays are dying
+only certain styles
+aside from the nuzlocke though i don't know how any of the others work
+sup dad
+i mean
+wonder if subway knock off has same issue
+also since drago and master were playing with the bot last night
+i think i banned a bunch of funny ones as a joke
+at one poitn i banned "toilet" for me because everyone got sick of me saying it
+we gotta do that again for a day for the memories
+it's like one of the cosmological constants
+there it is
+the dnc is prob thinking if some backup plan because biden isn't in good health
+alright imma head out
+argo is mafia confirmed
+there's an appropriate time for every action
+i haven't played mount and blade warband napoleonic wars
+im a happy boi \o/ and i hope everyone else is too
+this is the perfect time to be making your sleep schedule go off the deep end
+my city population is like 300k so i dunno if thats too big or whatnot, it's a bit smaller of where my friends live
+oh dang haha
+im kind of thankful for my health right now too
+oh damn
+i dont go out on walks anymore
+yes definitely, this is gonna take a long time to recover from
+i have a habit for saying thanks for shopping at cabelas
+lmfao i love that
+ah dang, do you like guns or are you of the same opinion
+can i come?
+im not pro gun or anti gun
+don't hate me for it please
+which is why i normally dont talk about it, i fear being judged or rejected
+but everyone here is very mature
+and i'm grateful for that
+when everyone agrees with everyone on everything, you get situations like this fun one that i had to deal with this morning
+i know we're all mature for sure but i have seen some things that just make me scared
+those people are making me mad
+we really do live in a world where more and more people believe what they want to believe
+and facts are thrown out the window
+but it reminds me of the quote, "in an age of information, ignorance is a choice."
+off topic but this linear algebra homework is fun because one word tht i didnt know existed but now im having to say more and more is "diagonalizable"
+things seem better today though
+what you think?
+also my return to youtube joke never happened....yet
+there are 358 days until april first 2021
+i hate kingdom hearts
+and i don't like zelda's lullaby
+i sadly can't stream or have any of my equipment to work on things outside streams
+like my platinum overlay
+one of them, probably
+and then it got put off until 2019
+and holy shit i do not know how he managed to do 3 walkthroughs at the same time
+riot games has released their shooter game in closed beta??
+back then that trend wasn't a big thing
+i made fun of it
+i watched sneaky play it yesterday
+gummy you should watch my new wooloo appreciation let's play series
+the wooloo war
+drago pin fewer folders jesus
+jesus gets pinned w- oh
+im taking flubs to taco bell
+what does that mean
+im not even offended im just confused
+and im mad
+what even is a met
+red sox it is
+they were probably afraid of getting sued for trademark infringement by some sock company or something
+or whoever invented socks
+he's a man who likes animals
+and underscores
+i mean content id things
+mitch who do you think will win the trophy
+if you say c9
+you won't get money
+.....
+minecrafttt
+inb4 gummy asks me to predict another esports match
+very violent
+speaking of which idk if bringy and me have even said a word to each other today
+`> text`
+and that will never changed for youtube if i do let's play
+otherwise he wouldn't make thumbnails for me
+that's right, $6 of my hard earned money went to that channel
+hell yeah!
+(though your stream donations prob go better than your yt donations)
+that is currently not working fine
+i just have audio issues
+weird
+apparently the old hd60 hasn't come down in price any, even though it's a couple versions out of date now
+not surprised
+yeah you should call your viewers crazy people intead
+hey it's worked out for me so far
+streaming was very interesting
+i 100% copied eyan
+that was like 2013-2015
+that and i believe sneaky's stream influence me to always talk and shit
+so instead of just grabbing random footage from the game or whatever, i went outside and just pointed a camera at my rabbit
+my bunny has achieved internet fame
+congrats
+i mean was
+my animal crossing wild world walkthrough part 1
+it was film with a camcorder and ds taped to the wall
+we made a bet
+and he told me he would get my 3d land part 1 to 1k and in return i have to stream zelda
+that's why you don't make bets where it's in the other person's interest for you to do well
+well he forced me to go to fullscreen my network at the time to help me
+you two had a weird growing-up
+though these days, we are cool
+anthony was one of the biggest ones
+they disappeared though
+are you sure?
+that's what i thought
+oh maybe
+unless they were the same person?
+so that stuck with me
+became a mod, then all a sudden was gone
+knifeperson resurfaced a couple years back but nothing since then
+she was part of skype camelot
+but fucking anthony i think ruin that
+i remember zekrom
+and thepikachuguy
+when did yall show up
+master i don't remember when you surface
+i was there for the first stream on xy launch but i don't really remember much until the next spring or so
+i started watching stream right after the transition to king of zeal
+well i got into league around jan 20 2015 and i'm pretty sure zeal was responsible for that so a few months before that with the oras streams is when i first showed up
+weird i thought argo was around for longer than that
+however i didn't make an account till the beginning of 2015
+i'm still 18
+supersnivyx
+part of the band who sang stacy's mom
+remember um
+whats his name..
+fred the whooper
+diemetrycare
+let me look through my chat whispers
+which errr
+skullkidfan was a highlight
+oh yes breezaps
+now it might be evil of me, but i don't really give a shit what skullkid did because it didn't affect me
+i mean the first thing she did was defend you while everyone was poking you, so obviously
+oh i forgot
+i mean hello, gummy is the best
+just like people who use rp commands and name themselves after video game characters
+hey my name isn't name after a video game character!
+mine is fucking fabulous
+gummy belle is creative
+dad ostensibly being tiber septim
+my first username was awesomesuperpokemon, then supergamespokemon, then superskillsful, then supergummying, then gummy
+i see gummy all the time i'm in a store
+hmmmmmmmmm
+well most places i can't use gummy
+so it's like gummystreams, gummyac, gummy belle, gummyyyy
+so we should probably focus on making that a thing that we can do first
+did you get encryption figured out?
+the only places im named gummy is discord and youtube
+and thats twitter buttttt
+gummy air conditioning
+[insert canada joke here]
+maybe i could turn this name into chemical symbols and be titanium praseodymium
+<:skarmthink:692790214531350608>
+i mean uh
+except for sites that don't let you pick your username but those don't count because they suck
+those sites tend to give you either something auto-generated like "timmyfelldownthewell1568954" or just cut to the chase and give you a numerical id
+meanwhile spotify doesn't let you make a username and just gives you one and says "fuck off and you can't change it"
+how does you even make the songs you click on be the ones that actually play
+i'm pretty sure it's a gui bug that the devs demanded extra to fix
+apple doesn't make me happy but at least itunes is a good media player
+that's pretty stupid overhead
+finding out would depend on me finding the charger though, which i can'be bothered
+i have a hard time waking up in the morning. playing the song of the nation that my dad hates most for the whole house to hear should get me out of bed.
+good times
+i was going to say "why is my other account typing"
+and then i realized i hit my phone and put letters in the text box
+this is currently my most popular one
+this was back in 2013
+mitch explain
+gummy admitting he is bisexual 2013 colorized
+flubs marry me?
+gummy the player
+fuck that
+anything you do could work with it
+how dare you gender assume piplup
+blitz has been converted to piplup propaganda
+i'm making the piplup political party
+looks better with a clean face
+now we just need giant meteor 2020
+if your sauce could even be referred to as gravy, you've done something terribly wrong
+either she makes shitty gravy or shes just putting water on tomato paste
+i feel like shit today
+not trying to get sticky fingers by golly
+hmm needs more ketchup
+for y tho
+this isn't about taste gummy
+hi overused dad joke i'm animal underscore man underscore
+he's all around us flubs
+i think its fucking hailing
+you miss a guy who said you had no legs?
+and effectively right, the darn things exist just to carry around
+10/10 best owner ever
+i've got 4 just to sort stuff easily
+i deleted it in 2017?
+imma send it death threats
+damn
+so i could access the create new channel
+or is it .com??
+of course everyone should know my main email address
+since i told you guys several times
+close
+is this true sis?
+i wanted to talk about the russian empire
+what am i again?
+and i cant fuckin get there because someone shut the planet down
+i'll get sis to lecture you!
+tbh in flubs' case i can't do a lecture on this
+fair enough
+i will not hurt my dog
+my little sister ironically just said, "i want someone to choke you to death"
+of me?
+of you getting choked yeah
+no use flubs, you'll have to use the force
+flubs why do you feel this way? what happen?
+subway came to your house?
+not particularly thanks
+am i sweet at least?
+wooo
+and like chop a live squid and ate it
+it was about an hour long
+man is this how you get famous on yt these days?
+eating live sea creatures?
+but pls not on yt
+yes you can actually watch a live suicide
+i like that they bring up the question about media covering live deaths
+so you banned two people
+but the first one is worse
+keeps spamming me in dms when they are back
+in total i believe gummyland has 480 bans
+i dunno why camelot never ban anthony at the start
+speaking of bans
+oh that one
+when was this
+lead by pogi
+because you asked to be banned
+but it should have been more dramatic if drago banned me
+let the truth slowly dawn on you
+that truth being that i am actually you
+you literally were there
+i think things changed for me the second bella started to hate me again
+you gotta say mean things
+err fight it
+lol it's so nerve wracking joining a new discord server where everyone welcomes you
+he joined sneaky server
+no lol
+cloud9 server?
+this is the thing after six fucking months of not drinking where i just ***really*** want a fucking drink every second of every day
+so good i have no channel
+thinnk this is one of the 3 vids you can hear me
+i told flubs to make fun of you for that
+my hair is beautiful
+i like making fun of people
+2017 people made fun of me
+2020 im makin fun of people
+i had extra stuff written down but the rest of it pissed me off so i deleted it
+thats the whole thing
+and then i move on to the other stuff
+and i disappoint everyone in my life more than i did before i quit
+don't relapses
+everyones an asshole and nobodys useful, get used to it
+take a guess people
+so get good sleep y'all, it's good for you
+oh that's the one game that shares a birthday with me or something
+kugal that transcends perfectness
+actually i lied
+whats with discord trolls lately
+good thing i got a new bot that deletes discord links right away
+“trypophobia is an aversion to the sight of irregular patterns or clusters of small holes or bumps.”
+its called people are bored with an internet connection and no motive to read books
+i rather stare at my screen and wait for a troll to join for another ban
+mario bros 3 is not forgiving
+im planning to beat the original nes super mario bros 3 with the switch version on stream
+gummy you should do smb1 with a death counter
+do you want me to embarrass myself?
+you do that already
+gummy mario ragetage when
+that vid reminds me of this
+ever played cat mario lol
+cat mario was the kaizo mario before kaizo mario except even worse
+because why not
+if they ever remake bugs life it would be nightmare fuel
+<:dab_flutters:674908213342240768>
+....
+this time i died to big fishy
+but gummy what have decided?
+imma revive my chicken wings channel
+i copied a lot of things that eyan did in terms of vids and username
+no no no
+i decided to make a new username on league
+i called myself king of slamming
+nope
+you're not wrong
+lmao
+though everyone told me it was better than supergummying
+what?
+~~wait we have rules~~
+no nsfw
+no raiding
+wait that ain't one
+i think
+we are making rules
+youre a game designer now?
+you work for me?
+in tech terms
+wtf are you on about?
+but sweetie bot and carl bot should protect us
+i worry someone will get hit in crossfire though
+it sounds hard
+no u
+that doesn't sound too difficult
+keep a list of the timestamps of the last four joins
+if the elapsed time is less than 10 seconds, dole out bans
+and said n word
+one drawback of being a brony server is that we are raided hard
+tbh i barely see nahvec around
+then i gotta work on 4 year anniversary
+then it would be 5 years
+i have the best idea for siblings day ever!!!!
+and she won't know
+i can use this idea for her bday
+guys
+cause i have a lot of anger issues
+canadians cuss a fair bit, we're not that innocent lol
+sis's mate word rub off to me so now i say that sometimes lol
+i been having vc withdrawal
+i say the same thing\
+i wonder if flubs is okay
+i shall return to youtube...with my chicken wings channel
+then have a voiceless vc with me
+it's not a germ though
+he doesn't even know what an "infection" is lmao
+walked in and wanted to rob us??
+i know it was a few of you guys but exactly sure which ones
+> eu, i think venice
+so it was a portal gun?
+everyone was like whatever
+source: am one
+hey guys
+this is neat
+when im like in an area walking around i tend to hum the russian empire anthem, idk why but it helps
+i'm everywhere
+this honestly might make it below new leaf for me
+yeah the the whole crafting tools is kind of annoying you are honestly better off just buying them from nooks cranny
+but not enough
+what?\
+this ain't much a community
+im just here
+sis is real server owner
+also im not good at helping others
+im dead
+no kidding, me too
+so guys
+and he is excited that a sheep is his neighbour
+i'd also be excited if a sheep was my neighbor, but not for that reason
+um what did you do
+kitty!
+camo cat
+honestly that would make mood badd
+over the decades the house cat has evolved to perfectly blend in with its surroundings of blankets
+the answer to that is yes
+what constitues "too hot" in iceland
+dunno, i've got a lower tolerance for high temperatures than most people
+if you can afford to move to iceland just for that, you probably don't need any extra time off
+yeah except for the part where they have snow on the ground until may
+only complaints are lack of mcdonald’s
+and food would probably be too different for me
+the other day i heard another crack noise
+but this time
+wtf is this from 2016?
+alright
+me wanting a date and rambling about it in skype, camelot, and prob zeal was pretty cringe as well
+though im less of a dick...
+oooo  mitch
+though finding a stable friend group back was hard
+i had to find people who don't mind me being insane
+lies and slander
+also guys
+bad news
+then can we also have a good leader?
+im sorry but biden won't be much better
+better than trump
+biden would be... okay
+im more worry that his scandals will be an issue during office for him
+gummy i take it you're new to the republican party
+i mean hillary would have been totally stonewalled by the republican congress until we managed to vote them out, but you could say that about pretty much every democratic president since the 90s
+i'm confident enough that biden will allow his running mate to take over the ticket in 2024
+but many bernie sanders supporters refuse to vote now
+the stupidest ones were, "im a democrat but fuck biden, im going to vote trump"
+the  worry about it after
+as long as biden doesn't start war with russia
+biden has to win first and now i don't see that as a likely thing
+now i see why most people don't care about politics or get invested in it
+it's always red pill or blue pill whatever choice kills you
+people are just gonna drink in november like always
+if you can only find one you'll have to share
+joke's on you, it'll be in iceland
+all the days end in r
+i'm honestly still angry over the wisconsin primary
+it just shows what we have to go through in terms of voting
+oh it must be fake because it isn't verified
+and he made the confederate flag a pattern
+so i'm not very big on putting that online
+i had more faith in eyan playing tbh since i assume you don't like games like that
+and two what is wrong with him?
+and i thought i was the strange brother
+well im happy you tried it
+granted i can argue bits about the confederates but i would never make a flag like that
+that would have beennnn wayyy worse
+i don't think  they're above that tbh
+i believe it was new leaf
+i won't be shocked if fox fires chris for this
+the guy who hates gay people?
+he will say they suck when they don't agree yet he will continue to watch them xd
+"america is messed up"
+democracy is hard, yall
+if the party themselves actually did the voting behind the scenes they would most likely pick yang as the party leader
+sept 1 2008
+demon lord
+oh no
+go on
+they now have 2 more siblings
+well then
+i'm more shocked max and ruby has a reddit
+thats so me
+wait they're redoing the teletubbies???
+oh gummy i think that pokemon egg ash got in gen 8 ended up being a riolu and not a starter
+i heard
+im telling you demon lord
+don't hold your breath
+its ash
+well alola didn't have an established pokémon league so we'll see how he does in galar
+i also heard that if a deceased [male] family member has permission from the family, they can ||insert a rod into the anus of the deceased, shock the prostrate and have the deceased ejaculate for a sperm sample.||
+my sister said the same thing
+you at least express some emotions
+we are stealing this emote
+what in the name of jesus holy fuck
+you don’t want to see that
+what’s homestuck day?
+never ever mentioned you use to root for a rival team in your favourite esports team discord server
+that can apply to anything
+you rang
+you look like you need a history lesson
+anyways here you go
+almost msgs sis when i meant to msg here
+now to give sis a cat one
+kugal your professor is awesome
+data structures, diff eq, circuit analysis, physics 2
+good yes
+much better
+server doesn't even belong to them from the looks of it so yeah
+and have me troll them
+im happy
+just a typical day in trump world
+that moment when i'm more in favor of states' rights than the republicans
+canadians prob take joy in watch trump be dumb along with every nation that isn't the usa
+fun fact: when angela met with trump he refused to shake her hand which made the situation awkward for everyone
+western canada want a trump like leader
+western canada threaten to leave canada for states several timesp
+people were protesting when liberals won
+conservatives no climate change
+not sure where america has most oil pits
+texas
+the 2023 election will be interesting
+i can imagine if trudeau loses he has to resign as party leader
+if trudeau does what he did during the 2016 elections
+well it's because trudeau only has a minority government now
+anyways some literally packed up their shit
+and walk through the border
+this is different from normal immigrants btw
+these people literally left the stuff they had
+depends on the person some do have to leave everything
+never was, never will
+i go with the party i agree with the most
+i agree with either ndp or green the most in canada
+or new york
+isn’t new jersey democrat??
+mitch lives in the state with the two-letter postal code
+two letter postal code?
+michigan?
+nj, ny, ct, ma, ms, me, md, de, va, nc, sc, etc
+indiana
+no just for the rest of yors
+bringina is already planning to take out my kneecaps
+drago you said this about sis that one time and that never happened
+you also said that about flubs
+so what you're saying is, there's a 0.000000013157895% chance that it's gummy
+is it pizza?
+ooooooooooooooooooooooooooooooooooooooooooooooooookay
+"i live in fucking austria" is like the oldest joke in profane linguistics
+whats worse is this moose apparently acts like a dumbass
+awww that's so cute the devs put you in as a character
+i wish i could get him lol
+they had to cut costs by not spelling it right lol
+there is a mineral called cummingtonite
+omegalul
+i was looking at twitter when all a sudden this was recommended for me to follow...what is this?
+people reminiscing about the dumb stuff they did on the internet when they were 11
+err guys
+back in the day i drank a lot of coffee as you can remember, now i haven't touch a cup in months
+lol i remember
+now it's milkshakes
+no one can stop me
+i just had a very interesting convo with my little sis
+but somehow youtube allows it
+anyways i asked her if she thought it was animal cruelty
+like how i wanted to be a youtuber, streaming, pro gamer, and film director instead of a normal job
+i always thought she was more of a sociopath
+look at this
+i should rename this place to 4chan 2.0
+sounds like a great boyfriend to me
+demonlord i agree
+and gum
+i'd try to calculate the samllest by doing 10! and removing the numbers that are factors of other numbers, like 2 and 3
+> i'd try to calculate the samllest by doing 10! and removing the numbers that are factors of other numbers, like 2 and 3
+okay that's not quite it, you'd need to remove _all_ instances of common factors
+yes i agree drago
+neato
+what have i done?...
+inhale a pea drago!
+didn't kirby inhale a pea in the anime
+that's so crazy that i stopped reading halfway through. let me try again
+just import google api to do it
+but i figure it wasn't worth it if i play on 1080p
+as long as it passed the unit tests and didn't change the interface with the model (iirc it just wanted to get back a string) nobody should have cared if you internally stored it as a string, right?
+what were you getting before
+clearly they're not using python's technique for strings where you can do "1"+"0"*10000
+what on earth are you doing if you can't get 1080p on a 2070
+windows calculator cares (probably)
+though
+2070 is better for 1440p
+the performance of computing equipment is kinda logarithmically related to the price
+e!google how much is an r7 nowadays
+then you all made fun of my "super case"
+i meant ryzen 7 but yeah that's a good example
+gummy is that asking for a thousand dollars for _just_ the case
+lol yes
+again
+13 (6 included) internal 3.5" drive bays
+and he casually threw one away
+i think i still have my old gpu with me
+the one i fried
+a 10 core, 20 thread 9900x would be... interesting
+not super ideal but i'm good at using it so ¯\_(ツ)_/¯
+so what do you usually do after typing make
+also i'm currently struggling to figure out how to make gravity work because i haven't had to deal with it in about 3-4 years
+i need an english person
+vortex is alive!!
+anyways for skullkid context, i was looking at that twitter i found this morning and i remember scatman vid because they mention it
+first of all
+it's on tip of my tongue
+i have no fucking clue who inferior  is
+lmfao you got it
+don't think he remembers me tbh
+get used to it1
+why are you up
+good ol days
+will has fallen into the person 5 royal hole, and we may never hear from her again as a result
+that’s horrible
+league is better
+also speaking of old days and stuff since animal man is here
+good
+though i remember liking gumbo a lot
+alright i have a serious question
+guys in my artificial intelligence class i finally get to play with data and i'm so happy
+that makes sense
+coding it didn't take me until midnight, it took me less than an hour
+you guys are no fun
+throwing colossal amounts of data at is is fun because there might end up being patterns in that data that we didn't even notice
+it also means people need to come up with new jokes about ai that aren'r "if if if if if if if if if if if if if if"
+lol who am i kidding, why let a little linear regression get in the way of an outdated joke
+though granted this time around
+this virus has affected everyone in some way, i wouldn't worry too much about it
+and i hurt my hand
+so what gross thing was that apparently corphish peed in a cup during a video
+and it's been confirmed by him on stream that did happen
