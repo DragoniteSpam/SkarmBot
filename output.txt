@@ -1,6 +1,5 @@
 Reading xk.cd
-80Z"}80Z"}
-Invalid file, attempting correction
+:14.580Z"}
 next xkcd check scheduled for: 24105420
 Bad users: 0
 Connected as EyanSays (Skarm). Yippee!
