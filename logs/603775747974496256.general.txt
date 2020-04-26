@@ -3825,3 +3825,122 @@ i'm still stuck on 3
 nice
 it only took me 6 hours
 bruh
+with sockets
+yeah
+the socket parameter in a listener class essentially is the sender
+bc it doesn't read sendeveent
+sendevent
+you have these imports?
+yeah i got the point
+probably tomorrow
+or actually tonight after this blasted hw is due
+191 is making me contemplate life again
+i feel the exact same way
+bruh
+i love the smb2 mushroom and bullet bill mask
+just wait until i release super mario bros. 2 2
+super mario bros 2 is super mario bros 2 2
+super mario land 3 is wario land
+super mario land 4 is wario land 2
+traffic lq was dumby dumb dumb
+i couldn't do it so its bad
+intersections constantly message themselves to check the time then when their light changes they tell the cars that they can go if theyre in the right horizontal/vertical
+idk im just curious bc like hey get as much knowledge in every language as you can.
+also i am doing well, how about you?
+wish you luck
+can't relate, i don't have games to play
+i concur
+ok so i did my traffic lq and it works locally
+jesse still didn't finish the lo verification quizzes lol
+but i forgot
+6-8, right?
+i should watch it
+bruh the post credits
+i hate json stuff
+me too actually
+also, the testclick doesn't work for me
+it's *really* well documented
+definitely
+do you need to fully complete the serverside for testclick to work?
+yeah
+i hope to get this done today so i can work on my personal project and the project contribution
+smart
+its actually not that bad
+i do have a clarifying question though
+yeah?
+you made a listener, right?
+look at the parameters for ondata
+because i made a data structure of clients to username strings
+no worries, i'll figure it out
+i'm actually starting to not dislike 191 (in this new unit)
+i should probably start clicker
+ugh i really dont wanna seal with more interviews
+only like one more
+shouldnt there be 2
+sure
+how do you open the clicker gui
+why isnt sending messages to actors working
+ugh why is this one specific map refusing to be defined
+it doesnt seem to like when the key in a map is an actorref
+this lab is kinda bs ngl
+i'm always vague as shit
+literally how the fuck do i trace throug the execution??
+its more like its creating a socket and then listening to those messages, but fundamentally, yet
+.emit means the socket is sending a message toe verything else essentially right
+uhhhhhhhhhhhhhhh
+i would do it in case if you can
+i did it and it didn't take too long
+just in case
+you're good then
+but you probably won't need it
+done
+i finished all the code but for some reason the test isn't working
+how do you figure out the elapsed time between updates
+is configuration the json string that has all the stuff the gameactor has
+its not a server so idk how that works
+that's a good question and the answer to that is i don't *think* so
+so how does it receive the message
+cause it needs the data in it
+i don't really understand what you're asking
+ohhh
+you mean in the data
+ok so actually i don't know lol
+i appreciate how descriptive this is but it could still afford to be a bit more clear
+what are you doing
+and they’re lying to me
+id prefer you dont die
+huh.
+was it **your doctor**?
+nah it was just the guy at the door
+interesting
+so what was your response?
+i did it just in case i missed something in data structures
+because the data structures lab went really poorly for me
+doin great now thanks jake
+ugh im not sleepy yet but if i dont sleep now i prboably wont wake up in time for my lab interview
+we have 191 quiz monday right
+dammit
+wait yeah when does the semester end?
+hw6 looks more approachable than hw5 did, at least towards the end
+i was ssupposed to get a job but thats likely not happening
+hope that helps!
+4:00 pm would work great for me
+i just realized that counting in 191 is basically probability
+oh yeah i need to do the tophat
+i aree
+i put myself on the queue for oh because my gui doesn't work
+nope
+does she expect us to write the answer to 1000! (divided by some inconsequentially small factorial)
+tas are real helpful for this hw
+that’s probably it
+i'm ready to work on th
+/maybe do some conceptual review for tomorrow's quiz
+oh shoot
+he can get the rank back at 423
+dabu dee dabu die
+nope
+there is one basic one included
+so as long as i have the 1.0 im good?
+in that case i just need to do tophat and calc
+i just dont like how it looks
+woah you can factor out a denominator and just divide the outside
