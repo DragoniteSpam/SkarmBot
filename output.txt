@@ -4,17 +4,4 @@ Invalid file, attempting correction
 next xkcd check scheduled for: 24105420
 Bad users: 0
 Connected as EyanSays (Skarm). Yippee!
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-Skitty yeah.
-next xkcd check scheduled for: 24105420
-
-
-[object Object]
-
-
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
+Pinged the bot, blah, blah.
