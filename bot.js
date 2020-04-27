@@ -23,6 +23,7 @@ function wikipedia(){
 const client = new discordie({autoReconnect:true});
 const events = discordie.Events;
 // Constants
+const PREFIX="e!";
 
 //channels
 const GENERAL="304082726019923978";
@@ -699,7 +700,7 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e=> {
 		roleGetter(client.Guilds.get("505240399145861140").roles,"603768145622204442").commit("Skarm's color mayhem role",Math.floor(Math.random()*16777215),false,true);
 		
 	
-		if(e.message.content.substring(0,2)=="e!"){
+		if(e.message.content.substring(0,PREFIX.length)==PREFIX){
 			massEffect(e, message, msg);
 		}
 		//Everything else
@@ -866,7 +867,7 @@ function massEffect(e, message, msg){
 			return i;
 		}
 		if(adminMode(e)&&e.message.content==="e@test" && i<effects.length-3){
-			sien("testing e!"+effects[i].trigger);
+			sien("testing "+PREFIX+effects[i].trigger);
 			effects[i].action(e);
 		}
 	}
@@ -1901,8 +1902,8 @@ function helloThere(message){
 	var blank = "<:background:448285187550347275>";
 	if(message.author.username == "Master9000"){
 		sendMessageDelay("MASTER JEDI" + "\nYou are a bold one.\n" + 
-		randomLeft() + randomLeft() + head + randomRight() + randomRight() +"\n" +
-		randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n" + 
+		randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n" +
+		randomLeft() + randomLeft() + head + randomRight() + randomRight() +"\n" + 
 		randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n", message.channel);
 		generallyAnnoying = true;
 		return true;
