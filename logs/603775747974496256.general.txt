@@ -3944,3 +3944,15 @@ so as long as i have the 1.0 im good?
 in that case i just need to do tophat and calc
 i just dont like how it looks
 woah you can factor out a denominator and just divide the outside
+sequences are actually pretty cool
+whats the probability of you selecting one of the shirts
+think about the probability
+probability doesnt matter im looking for amount
+i didn't like it
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[9,0], [9, 3], [9,6], [8, 2], [8, 5], [7, 1], [7, 4], [6, 0], [6, 3], [5, 2], [4, 1], [3, 0]
+so thats 12 holes but a lot of them overlap so???
+im jsut gonna say true
+thats the only thing i have left
+these tophat questions all really suck and are vague
+ughhhh all these calc assignments are long
