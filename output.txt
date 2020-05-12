@@ -3,41 +3,4 @@ Reading xk.cd
 Invalid file, attempting correction
 next xkcd check scheduled for: 24105420
 Bad users: 0
-Connected as EyanSays (Skarm). Yippee!
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-Connected as EyanSays (Skarm). Yippee!
-next xkcd check scheduled for: 24105420
-Connected as EyanSays (Skarm). Yippee!
-next xkcd check scheduled for: 24105420
-Connected as EyanSays (Skarm). Yippee!
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-Connected as EyanSays (Skarm). Yippee!
-Connected as EyanSays (Skarm). Yippee!
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
-next xkcd check scheduled for: 24105420
+Connected as Skarm (Skarm). Yippee!
