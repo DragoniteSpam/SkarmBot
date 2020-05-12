@@ -3956,3 +3956,544 @@ im jsut gonna say true
 thats the only thing i have left
 these tophat questions all really suck and are vague
 ughhhh all these calc assignments are long
+im almost free
+exactly
+i think the latter
+these slides are absolute nonsense
+easy for you to do when this class isnt crucial to your major anymore
+ugh im so scared
+can't wait to use lockdown for the 142 test yeet
+good evening
+i am in a real similar boat
+integral tests aren't bad, and neither are series or sequences tbh
+ahh ok
+hopefully this stuff about making guis is like chatapps where they show you it but you really dont actually learn it until next semester
+because lord im not paying attention to any of this
+he seems like a cool dude
+does anyone know any details about how to apply for a ta position?
+i'm also gonna
+i'm going to work on that rn
+i will do it
+rip my guy
+i'm a bit nervous, but an excited nervous
+especially about the potential interview
+(also my open-ended project works! so i'm super happy)
+that's true, but i really want to
+eyyyyyyyy congrats!!!
+thank you thank you
+it's basically bfs
+only the once
+pup made a new song called anaphylaxis, its how one of the members is allergic to bees
+but so how do i (dont answer if that counts as ai i'm just kinda thinkin out loud) get the passability of a grid location from the map tile?
+i just thought about it
+bruh i started a party on jesse's server
+i was mashing keys in the upper left corner
+alright
+just think about it real hard
+i didnt notice it was a list of lists
+no problem, good luck
+top left corner of the mmo toward the end
+watching lectures?
+which exam?
+welp
+i got more coming tho
+yeahhhh
+oh i made a joke about bad syndrome from truewiki
+so quarentine aint too bad but people are stressed about so called "social distancing"
+non-gamers
+its getting a bit cramped
+that makes one of us
+us politics is now poop
+poorly
+that's to send messages client-side
+i am sending client side message
+to the server
+i think it has to be stringify
+yeah
+i finished my project
+wait you did 2 expansions and a personal?
+when's the next office hour?
+i think taisia and joe are on zoom rn
+yeah
+and wait forever
+is anyone besides adam planning on applying for ta next semester?
+big brain
+at least the explainy part
+yeahhhhhhh
+there's definitely a right way to approach them
+my dad has to work and we're 3 hours away he doesnt know rn when he's gonna be available
+where is the ta?
+waiting for shamroy btw but i dont got all day
+also this is like
+the starting level shit people do to have anything on their resume to begin with
+is clicker client the gameactor or just the actual game
+do i just keep waiting?
+id make a piazza post probably
+thanks elon, i won't listen to your recent comments then
+he just wants to reopen so he can continue his mission to mars.  elon cares way more about this than anything else (based on rogan podcast)
+patrick thanks for reminding me to do the clicker verification lab, i completed it just in time today
+it will never not amuse me that nintendo essentially owned sony's game department but then said no, canceled the deal, and went to work with phillips (as in the phillips cd-i)
+damn i never knew about that
+oh nvm
+oh nintendo world has the gameboy that was blown up by a mine yet still works
+for some reason my mind mixed those two up
+does 6pm work for starting hw6
+he sure doe
+i dont
+sleep
+take nightquil
+what are you up to?
+playing pokemon heart gold
+why couldnt it just be like actual picross thatd be fun
+i love it
+and it's a game within pokemon heart gold?
+no its voltorb flip
+i installed bottle to my interpreter. but ofc idk how to see the website lol
+0.0.0.0 is default host for replit
+"localhost' should work
+i already installed the package
+oh nvm
+also tell me if you have never heard it as so far everyone has heard it and that would limit it down alot
+i'll have to go to a ta to ask about some questions tonight
+i'll listen
+thank you thank you
+hmmm
+she's giving away answers to hw6
+but i'm close with maze
+you do you
+regreet
+nice
+its bc of my code
+yeah
+wait
+idk bro
+every piece of data is from the csv files
+yeah so process the csv in python and send it over with json
+no post
+idk man
+get request from js
+why process it in the front end
+no idea
+well looks like i might just take a zero on this :/
+i'm hard stuck on how to do this for the 115 project
+i can tryyyyy and help?
+anything universal
+i live
+holy fuck
+i kept staring at the code and reading the report and then all of a sudden it made sence idk if this is gunna work but if this does i"m retiring
+fuccccccccckkkkkkkkkkkk
+i def remember that feeling
+i agree
+until #8
+then the rest is ok
+🇾 🇪 🇸
+make new stuff
+he is dead
+what does "how is your clicker game setup" mean
+all i gotta do is data structures
+okay
+thanks patrick
+adam wanna work on hw2 tomorrow around 6? i have a ton of stuff to do before then but i should be good then
+so this is what it feels like
+no u
+sounds like great fun
+thankfully the quiz was 100% cheatable
+eww #ibelievebiden is trending
+damn george carlin is really missing out when he said he wanted to live to 90
+i think he died happier than he would if he made it plus 90
+same thing happened to me
+yeah i'm using for loops
+i used for loops but then i changed it since they use huge wide open mazes in the autolab tests
+changed it to what? while? gross
+i am going to go to a ta probably
+other than my calc final
+which a whole fucking ublearns class was created for
+can't believe i didn't notice jason and the argonauts before today
+i like this tweet a lot
+gamestop has lost it
+i'm not gonna have clicker ready by interview
+nah, i'm making up maze rn
+mines at 5:30 but i wanna take a nap but i dont wanna miss it
+yeah
+just gotta wait
+thx for hw6 reminder
+do i say what i finished?
+so yeah if i get all the 1.0's i'll pass
+because i misstype a y instead of a t
+my body is failing
+it kept throwing an error
+thats good, what was it on?
+yeah, i just checking in case
+adam did you send the ta app yet?
+nope
+alright
+the cliffe is next level empathetic.  definitely voting for him in 2036.
+obviously
+dude i love mee some tom scott
+and i get the concept so i don't mind writing it
+yeah but dfs is really ineffecient
+but a _bfs_
+^ really good video outlining the two
+in case you need it
+welcome back
+you know it's bad when patrick wakes up and in response you say "good evening"
+justgotta do math homework and im essentially set in terms of homework for the semester
+i never looked at the provided bfs
+and it was built for graphs
+i stg if this one times out
+did neither of your maze solvers use graphs lol?
+ahh i do use a for in previous locations
+yeah this mf timed out
+thats why for loops for checking previous locations time out
+i rewrote it so it doesn't use a for loop to check
+that was very fast
+i had a separate function
+originally i tried to just store a copy the map and change the maptile's passable value to false after they were visited but in maptile passable is a val
+ahhh
+if you want you can dm me it and i can try to see why it doesnt work
+sure
+in a bit
+i have to vacuum
+that's a spooky dream
+i got a 0
+nice
+eyyy
+i think my getvelocity isn't right
+is it supposed to take corners that fast?
+fnaf movie when
+its like a funny b tier movie imo
+i found a computer scientist who is reporting on impractical ideas, and he's talking about making a power point into a programing application, to make stuff.
+it works but like... why
+check getvelocity
+make sure you come to a complete and immediate halt when it reaches a point
+instead of having to individually check each value
+it seems like it stops immediately
+and make sure it stops at the center of the tile
+is it stopping at the edge of a tile?
+i have 0 clue how i fixed it
+idk how to describe it
+<:bruh:688130959635513356>
+oh yeah i got it
+assuming there is no test 3 my grade is 54.86755
+that’s only assuming you get a 0
+we have 10 days before the common final though, so there's time to review everything
+i will not be able to retain any  of that
+i mean it's going to help when you have to take courses like linear algebra lol
+honestly
+i could not answer a single question on any of these homeworks without in some way being given the answer
+i think you can do it
+idk if it helps, it probably doesn't but if you'd like i can try to explain some of the material the way i understand it if you want
+it cant
+7 questions
+no work?
+first test had 4 questions so thats
+oh you actually need a c to pass the class
+hm i cant find my previous calculations about 191
+so i need a 65% to get a c+ to get a c
+ive gotta figure out some way to cheat
+what is it
+for c?
+doesn’t say
+very troubling
+basically if you get 70% you’re guaranteed a c is the idea
+you do that
+i remember someone saying that
+i think
+you don't have to learn it right this second
+i need to learn most of this stuff anyways lmao
+alright im prob gunna re-watch the video
+ok so 5 sounds good just to make sure?
+mood
+sure
+why are dandelions weeds and not flowers
+yeah
+because i got most of the questions wrong
+ouch
+yeahhhh
+yeah
+in the clicker
+so just understanding what types of messages the front-end sends to the server, the server sends to the actor and so on
+im living
+but i'm dumb and still havent watched the videos
+oh yea it is
+im alive
+that's good to hear
+0 on cookie clicker homework
+that's strange
+yeah np
+your ta i mean
+or you could message jesse on piazza
+ill just email and if he doesnt respond by tuesday ill make a post
+whats the least rude way of saying "fix this now" so that it counterbalances the rest of the email being so robotic
+i just said id appreciate it if the error could be fixed
+so far i have reached full functionality without probability though
+thanks 🙂
+having seen more shows has somehow made me more conflicted about my tastes and my top picks become very jumbled
+i didn't realize they'd be so strict with the wording of your reasoning
+guess i'm going to have to study up for the final 😅
+huh they redubbed xenoblade
+i get error while running for the first websocket lq
+bruh my code was fine then the ta had me slowly change it until it was exactly the same as the answer key and autograder still wouldn't pass it
+welp then it didn't
+you went to the ta?
+make sure you're not importing anything that you're not supposed to
+in your actual file
+it was character for character the answer key by the end
+if it doesn't work try pulling the repo again if you need that
+ah, interesting
+try running the gui
+in his repo
+it does nothing
+okay
+works fine
+not scala or intellij
+just autograder
+autograder must've hated it
+its possible
+and autograder is looking **specifically** for a method
+np, did you get the point?
+cuz i already have 1.0
+the only lq i cant get to work at all is the dumb traffic one
+sure
+dude
+best expansion ever
+why did i even try physics
+doesn't count now you have to redo it
+noooooooooooooooooooooo
+i was kidding
+all i meant is that if you didn't do it my way, *the correct way*, then you're wrong
+bruh why is mine 800
+bruh mine was 500
+it is
+but sad
+i promise jake we'll be able to help you so much more with 116 than 115
+oh did they like email you
+whay
+...ah
+looks like we all have problems
+exactly
+weird
+i think it's because the wording wasn't the same
+it doesn't matter though since that exam will be dropped
+ah rip
+i think so
+the nurse who just fell asleep blows me the fuck away
+it doesnt to me tbh
+24 hours of hands on work
+its confusing, so i'm going to make a private post
+which comment? there are a lot
+this is supreme bs
+because this was my feedback
+also i got the distance lq already
+nice
+but then i saw the distance part of the bfs he gave us
+and then it was incredibly easy
+yeah
+i submitted mine in may
+yikes
+i'm going to go over some methods of integration and polar coordinates/parametric equations
+holy shit
+last night
+i’m going to ask a ta if i can do that
+i would totally watch jojo episodes out of order if they were on cable
+not as much as i would like to though tbh
+you submit it through a pull request to the repo
+it has instructions on the qebsite
+they're straight up not testing volume by disks, washers, or shells on the 142 common final lol
+or surface area of revolution wtf
+and i did study stuff that will be on the exam, like all the methods of integration
+at least the topics
+that is pretty sick
+that's a cool study sheet
+java has arraylist
+and vector
+which i like
+dude
+nice
+it is indeed
+bro kant's ethics are good on paper but fucking suck in practice.
+exactly
+a system like that only works if everyone does it
+and it'd be so easy to take advantage of it
+good on paper. terrible in practice
+idk how id show them my room
+taking opportunity lmao
+you're supposed to pick up your computer i think, although idk what the process is
+rip anyone with a desktop lol
+the answer is only worth 1 point
+i havent had to show work in anything for my class
+it's a pen and paper quiz
+do all the practice problems they posted
+then you'll be good
+patrick you gotta believe in yourself
+because im not capable of that
+i never have been
+does anything in calc 2 make sense to you
+how so
+hmmm
+should i do todo or office hours
+im getting errors at all of the class creation locations
+how do you install docker
+this just doesnt work
+why is there an email about exam 3 that already happened
+im so fucked
+you missed an exam?
+im so fucked what do i fucking do
+well you know whats going to be on the next things, you can study in advance if you need to
+if you do well on the final you should be fine
+and as a cs major you do need to get credit in 142
+only if you just don't wake up so late for next time
+anyways emil my ta said hed get it fixed 4 days ago
+private ofc
+how about saturday at 5pm?
+this todo list project refuses to start
+ill have to see how my progress on this project goes
+yeah, that's the source of your errors then
+mark the one two layers in as src root
+hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+maybe just clone the repo again and don't change anything
+maybe you cloned a pull request instead of the main one?
+right?
+todo works now but its a little hard to focus
+btw make up quiz can only be started up until 10 pm tonight so if youre doing one make sure you do it now
+for cs?
+it got waived for me, remember?
+i forgot you me and adam are the only people worrying about this class rn lol
+honestly all my classes are coming together really well
+this quiz probably didnt make up for my hw3 since i forgot everything also it said i needed to do another interview but hey who knows
+you probably can
+if my calc teacher emails back like "well you shouldve checked the lectures" you bet your ass im gonna """"politely"""" remind him that he said in the syllabus that lectures were not mandatory to attend
+i mean he does want you to put a bit of effort into the project
+let the user set an expected time frame
+maybe i should also add dates
+coding is so fun
+maybe i should do drop down boxes
+oh actually making them look good was super easy
+def canisee() {
+honestly once you finish the functionality for that you should be fine
+nice
+how do you just add a character in a line do you need a label
+i guess i should probably add dates but man thats gonna be a pain
+since id have to make it consider if the date exists
+hell yeah
+hm maybe i shouldnt have 00 since i made it non military
+but not the physical websockets
+ok i properly commited to my forked repository i think
+how do you do this
+whats even been happening in 191 since the last quiz
+gonna type up all the different ways to do shit and print it out and then hide it under my blanket while i scan my room lol
+i better fucking be able to make up that exam though else my grade is ouched
+my grade in calc 2 is still 70% even though the exam was put in
+maybe im not as fucked as i thought
+i still need to do super well though
+my gpa and scholarship may live on
+the latter
+i dont wanna be a stupid idiot bird with no concept of currency
+wow ok that exam was shit
+i just took it this morning
+philosophy exams, interesting
+so like two named event
+and then if you do a third it'll do event (2)
+why don't you add an edit button to the list items?
+so you can change the name of the event
+my thing was i only wanted to edit the server
+so i don’t need to understand anything else
+hello
+we were just surprised
+hell yeah
+i'm onto the next round for tas
+nice
+functions
+variables
+data structures
+loops
+conditionals
+security
+object-oriented programming
+functional programming
+concurrency
+[any other 115/116 topic]
+lmao
+"you put a for statement and now your code works but is very slow so it times out in autolab"
+🔥 🔥 🔥
+8/10 of my top 10 shows are now anime
+interesting
+the last terraria update is also finally properly supporting mods (by adding the most popular modding tool as free dlc for it)
+i figured out how to represent 0.99 repeating with only integers
+sleep time
+so maybe you'll learn something in advance!
+and also tom
+how are you making your actor
+first set of actor slides shows how to make them
+thanks
+no problem
+250 online will actually kill me
+this was supposed to be the summer of tom
+ill be in in a minute
+waiting for ta now
+yeah idk what is wrong with my clicker
+at this point i can say i've given p much every lq and hw a good shot
+gamestate doesnt send
+make a test for the class you used for the functionality inside gamestate
+also does the built in test work?
+emil wanna start studying at like 7
+okay good
+i've been waiting for this ta for an hour and a half what is this
+how would you explain polymorphism?
+just *briefly*
+turn animal into another animal
+so the idea of something having "multiple forms" means containing multiple types of information in the same class and being able to declare difference methods using that class
+does scala have a main body? or is it like java where any file can be the main file.
+it has a main method that you can declare in an object
+ah. i'm trying to compare what i'm learning from c++
+c++ is coincidentally an oop based lang
+it was developed using oop principles
+main is just a method you declare to execute your code in
+tbh idk if learning c++ will actually help that much with 116
+oop is only like 2 weeks of the course
+ubnl fsw use c++ to program their machines
+because i was awake
+thank youuu
+....
+10/10 would be forced to be nice to jimmy again
+that makes me feel good to
+id like you to guess
+no i genuinely don't, you are the only one in that group besides maybe buncy who also has a sleep schedule like this
+just go a night without joining the call then
+because i consistently get sleep at the same time no matter how late i stay up
+so then in theory at some point if you keep sleeping an hour later every day youll first wake up at 12am
+so then try to sleep at 11 today
+there doesn't need to be a place to go
+even then thatd only keep me occupied for like 10 minutes
+me too!
+so i understand that the bonus homework is going to be calculated as a total points for each hw / total possible points
+is the bonus hw graded like they add the bonus hw points to the numerator and denominator (as a separate homework), or do they just add the points to the numerator onto your final homework score?
+honestly getting an us grade for a class for a major you're transferring out of doesn't actually matter
+i'm assuming you won't have to retake it, plus it won't hinder your gpa with p/f
+yea, and im gonna just make up the credits in the next two semesters
+you already got an expansion graded?
+one of them, my clicker
+yeahhh
+now i wait for calculator 😅
+oh shit
+where?
+won’t change it
+did you do open-endee?
+i did the second expansion
+he didn't grade expansions 😦
+oh wait i did lol
+just in case for calc 2
+no idea
+uhh you should have gotten an email
+because i mistyped two different things and didnt notice the second typo until after i submitted a second time (you only get 2 submissions)
+i did
+oh shit i never set international politics to su
+p/f i mean
+i dont know because i dont know the course's grading scale
+also i did submit psc to be pass/fail what on earth
+65 is a c
+half the test is not on chapter 11
+i got a 44 out of 100
+thats all i can hope for at this point
+i'm tired of fucking up
+my life has been nothing but a bunch of fuck ups. and i'm not letting my college career also fuck up

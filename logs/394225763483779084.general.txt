@@ -115,3 +115,6 @@ actually it's called "command line parameters" and i'm too lazy to do that
 ah ok
 hehe
 two words:
+e!guilds
+oh right its broken
+anyway

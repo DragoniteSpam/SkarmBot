@@ -8,3 +8,4 @@ lil chat aggregator kind of thing
 hahahah
 gamers gaming
 gamin
+someone keeps on restarting the computer that the bot is on and that's reverting it to the last xkcd
