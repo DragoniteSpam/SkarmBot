@@ -3,5 +3,3 @@ Reading xk.cd
 Invalid file, attempting correction
 next xkcd check scheduled for: 24105420
 Bad users: 0
-Connected as Skarm (Skarm). Yippee!
-next xkcd check scheduled for: 24105420
