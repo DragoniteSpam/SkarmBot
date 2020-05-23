@@ -4615,3 +4615,143 @@ shit if i take a gap semester will i lose my scholarship
 maybe the magic forest where sir charms lives
 go for it!
 i just figured out that my cse116 ta is going to be in my sta301 class
+remember no calculator!
+that wasn't too bad
+oh so true
+my dogs were going wild during the test
+i couldn't focus
+anything you have trouble on?
+wana compare questions or no?
+tbh nah i think i did really bad
+and for the maximising questiong it gave you the equations
+which was nice
+that was just see where it turns neg or pos
+then id here my dog scratch the dog
+but yay i'm free
+congrats on finishing up your exams! 🥳
+tomorrow im too half asleep to code and not give you something garbage
+calculator expansion grades are out!
+1.0 on open ended objective baby
+patrick you're up early
+nice!
+the url is in the post if anyone wants to fuck with it
+good morning
+thanks 🙂
+and heyyy thats pretty good patrick
+now i just need my project contribution and i get an a+
+oh its fixed because i did the form
+i like how we get emails about entering graduate school
+yeah lol
+i'm definitely considering it though
+honestly at this point i think i'll do it
+graded what
+i programmed a bot
+thank god i thought at the start of the semester the class was graded normally so i did the physics engine expansion thinking it was normal extra credit
+else i would have been far from inclined to do it months after
+basically its a film bot
+you add films to a list
+don't feel bad, honestly those things happen to the best of us
+they usually come like at least once a week its just the past few months was adapting to a pandemic
+i remember you said when we watched shawshank redemption
+i could be down for a movie night sometime soon
+i'd watch that again tbh
+yeah but its not a bad thing sorry if it sounded like an insult lol
+plus this time we could watch the dub version
+lmao no i'd only ever take that as praise
+oooooooo the dub
+uhhhhhhhhhhhhhhhhhhhhhhhh
+johnny yung bosch
+galo is killy kametz
+yeah
+johnny yong bosch voices a ton of characters too
+huh he voices naoto (from p4) in blazblue cross tag battle (that one fighting game i forced you guys to play that one time)
+still absolutely furious at the founder's edition for xenoblade europe got
+i wanna get it
+shoutout to the usb that came with the xenoblade x special edition that has like
+5 songs from the soundtrack and fucks up your d:drive if you use i
+the usb does look cool though
+what does it look like?
+okay that is really sick looking
+after you play through definitive you should play 2
+alright
+ohhh yeah
+im just out here waiting for x2 with the hugeass sequel bait at the end of x
+so yeah def play x and 2 if you find the time
+you have the power to make a channel yknow
+yes but is this a thing that we're actually doing?
+im not opposed
+kingboops is essentially just slightly worse admin
+i supposedly added the bot to the channel but ?
+so whats the commands
+!help
+thanks, try it out at your leisure!
+holy shit
+kingboop is admin
+think of my idea like this
+each list is a moment in time
+and an object is adjacent to objects in the next moment in one direction based on its future behavior
+what's inside the inner list that's being repeated
+timeline[second[stuff]]
+it can be anything
+because
+is it because the relationship between the objects next to is and above and below it are taken into account?
+what
+and theres also other things that are moving and doing the same thing simulteneously
+wait, is this like an adjacency matrix kind of?
+wait
+steel-toed stuff is for protection not kicking stuff?
+lmao
+you thought steel toed equipment was for kicking?
+yeah
+but still, c is so nice
+something
+i mean idk how to play terraria but can i join in?
+whenever i get tired
+which is typically from 2-6pm
+thats fine
+ive never even tried it then they come out here with an even harder mode
+people
+patrick.gotosleep()
+hopefully i didnt forget anything
+i mean it's still an important thing
+for me, i try and do boring things before going to bed
+it just kind of sucks because that means that one of us isnt going to play terarria and it would be cool if we could all play
+my heart is beating fast from trying to sleep
+then keep doing so
+i cant empty my head i keep thinking
+shit
+yeah i guess
+just have if(starttime.tostring.length=3)
+thats a bit more awkward and too many lines for me to be assed with typing out though
+same give me a sec
+ready when yall are
+shit im a bit late sorry
+yeah
+right on time
+we're in voice
+click that to add me on steam emil
+they did actually nerf the reaver shark
+not sleepy
+i didnt get to sleep until 4 but yes
+lol nice
+```test("morning test"){
+     assert(patrick.wakeuptime().ismorning)
+i cant tab or space this out on mobile so
+idk if i’ll want to apply next year anyways
+....
+do you know where notre dame is
+lmao
+oh fun fact, notre dame is actually the congregation school got my high school
+cause its a catholic school name
+like 2 months in
+its just how do you socially isolate in a university
+❤️ 2
+the acoustics in here mmmm
+it doesnt exist its fake
+gonna kill anthony
+i 3 think i cannot
+good morning
+damn
+am stupid
+niceeeee
+i just want my calc final graded already so i can stop being so stressed out
