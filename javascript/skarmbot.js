@@ -99,6 +99,10 @@ class Bot {
         }
     }
     
+	OnMemberUpdate(e) {
+		
+	}
+	
     OnMessageCreate(e) {
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {
