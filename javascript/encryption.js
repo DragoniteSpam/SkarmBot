@@ -2,7 +2,7 @@
 const fs = require("fs");
 const crypto = require("crypto-js");
 
-class EncryptTest {
+class Encrypt {
     static initialize() {
         Encrypt.dataToken = fs.readFileSync("..\\aes.txt").toString();
     }
