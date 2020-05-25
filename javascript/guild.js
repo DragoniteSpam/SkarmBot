@@ -6,6 +6,13 @@ const Constants = require("./constants.js");
 
 const guilddb = "data\\guilds.penguin";
 
+const MIN_LINES = 40;
+
+let defaultLines = ["please stand by"];
+fs.readFile("data\\default.birb", function(err, data) {
+    defaultLines = data.toString().split("\n");
+});
+
 class Guild {
     constructor(id) {
         this.id = id;
@@ -67,10 +74,11 @@ class Guild {
     getRandomLine(e) {
         let keywords = e.message.content.toLowerCase().split(" ");
         let keys = Object.keys(this.lines);
-        // if there are no stored messages, you can't return anything
-        if (keys.length == 0) {
-            return undefined;
+        // if there are no stored messages, use the default log instead
+        if (keys.length < MIN_LINES) {
+            keys = defaultLines;
         }
+        
         let sort = function(array) {
             array.sort(function(a, b) {
                 return b.length - a.length;
