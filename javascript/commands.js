@@ -216,10 +216,12 @@ Argo:
 
 Extra ideas came from SuperDragonite2172, willofd2011, Cadance and probably other people.
 
-Thanks to basically everyone on the Kingdom of Zeal server for testing this thing, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
+Thanks to basically everyone on the Kingdom of Zeal server for testing this bot thing, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
 
 Wolfram-Alpha is awesome:
-<https://www.npmjs.com/package/node-wolfram>`
+<https://www.npmjs.com/package/node-wolfram>
+
+Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
             );
         },
         
