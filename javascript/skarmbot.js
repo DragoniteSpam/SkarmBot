@@ -14,6 +14,15 @@ const XKCD = require("./xkcd.js");
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
 
+let timer1min = setInterval(function() {
+	Guilds.save();
+    Users.save();
+}, 60000);
+
+let timer5min = setInterval(function() {
+	
+}, 300000);
+
 class Bot {
     constructor(client) {
         this.client = client;

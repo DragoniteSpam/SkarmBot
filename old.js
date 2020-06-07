@@ -117,58 +117,6 @@ var generallyAnnoying = false;
 utilityCreateUserTable();
 utilityLoadBotStats();
 
-// There are some things that need doing on a regular basis
-var timer15 = setInterval(function(){
-	censorClearDeletionQueue();
-}, 15000);
-// Change this to be however long it needs to for the knuckleheads to stop spamming the bot
-var timer30=setInterval(function(){
-    botCanSpeak=true;
-}, 30000);
-
-var timer60 = setInterval(function(){
-	//censorClearDeletionQueueLong();
-	botCanSendUserCommands=true;
-	/*if(dragoniteActive>0){
-		dragoniteActive--;
-	}
-	if(masterActive>0){
-		masterActive--;
-	}*/
-	generallyAnnoying = false;
-	if(kingActive>0){
-		kingActive--;
-	}
-	//sien("minute tick");
-}, 60000);
-
-var timer5min = setInterval(function(){
-	botCanYellAtCandy=true;
-	for (var user in userTable){
-		userTable[user].todayWasWarned=false;
-	}
-	var now=new Date();
-	if (now.getHours()==4&&now.getMinutes()<10){
-		for (var string in userTable){
-			var user=userTable[string];
-			user.todayMessages=0;
-			user.todayViolence=0;
-			user.todayWarnings=0;
-			if (now.getDay()==0){
-				user.totalWarnings--;
-				if (user.totalWarnings<0){
-					user.totalWarnings=0;
-				}
-			}
-		}
-	}
-	gummyCommandsLast5Minutes--;
-	if (gummyCommandsLast5Minutes<0){
-		gummyCommandsLast5Minutes=0;
-	}
-	fetchPinnedAuto(client.Channels.get(GENERAL));
-}, 300000);
-
 var timerHour=setInterval(function(){
 	for (var user in userTable){
 		userTable[user].pointEligible=true;
@@ -201,13 +149,6 @@ var enlightened = null;
 var earthbound = null;
 
 var botCanAnnounce = true;
-
-// What happens when you first connect
-client.Dispatcher.on(events.GATEWAY_READY, e => {
-	censorLoadList();
-	
-	ZEAL  = client.Guilds.get(GENERAL);
-});
 
 client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e=> {
 	if(e.member.guild.id != ZEAL_SERVER){
@@ -789,30 +730,6 @@ function utilitySilver(e){
 	}
 	
 	return false;
-}
-
-function utilitySkarm(e){
-    sms(e.message.channel, "odds of skyrim: "+esOddsSkyrim+"%\n"+
-        "odds of puns: "+esOddsRandomPun+"%\n"+
-        "odds of something else: "+esOddsRandomLine+"%\n"+
-        "odds of something relatively normal: whatever's left*\n\n"+
-        "* these odds are actually wrong");
-	return false;
-}
-
-function utilityCrash(e){
-    if (e.message.author.id===DRAGONITE||e.message.author.id===MASTER){
-        fs.appendFile("crashes.txt", e.message.author.username+" crashed the bot on "+new Date()+"\r\n", function(err) {
-            if(err) {
-                throw err;
-            }
-            throw "javascript sucks";
-        }); 
-        return true;
-    } else {
-        sms(e.message.channel,"Nice try!");
-        return false;
-    }
 }
 
 /*
