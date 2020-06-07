@@ -78,7 +78,13 @@ class User {
     
     static initialize(client) {
         User.users = {};
-        User.client = client;
+        User.guilds = {};
+        try {
+            User.load();
+            User.client = client;
+        } catch (e) {
+            console.log("something bad happened when loading users: " + e);
+        }
     }
     
     static add(user) {
