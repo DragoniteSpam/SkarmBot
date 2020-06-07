@@ -114,7 +114,12 @@ class Guild {
     
     static initialize(client) {
         Guild.guilds = {};
-        Guild.client = client;
+        try {
+            Guild.load();
+            Guild.client = client;
+        } catch (e) {
+            console.log("something bad happened when loading guilds: " + e);
+        }
     }
     
     static add(guild) {
