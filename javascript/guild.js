@@ -13,30 +13,9 @@ fs.readFile("data\\default.birb", function(err, data) {
     defaultLines = data.toString().split("\n");
 });
 
-class Guild {
-    constructor(id) {
-        this.id = id;
-        
-        this.woe = {
-            message: "",
-            channel: null,
-        };
-        
-        this.mayhem = {
-            roles: [
-                "696896531990577192",
-                "696896610726182952",
-                "696896579629744178",
-            ],
-            basePosition: 2,
-        };
-        
-        this.lines = {};
-        
-        Guild.add(this);
-    }
-    
-    executeMayhem() {
+// since de/serialized objects don't keep their functions
+const linkFunctions = function(guild) {
+    guild.executeMayhem = function() {
         let guildData = Guild.getData(this.id);
         let mayhem = this.mayhem.roles.shift();
         this.mayhem.roles.push(mayhem);
@@ -47,20 +26,19 @@ class Guild {
             }
         }
     }
-    
-    sendWoeMessage(user) {
+    guild.sendWoeMessage = function() {
         // for best results, the woe message should be formatted something like:
         // "Yo, {user.username}! If you can see this, it means you've been
         // restricted from using the server."
         Skarm.sendMessageDelay(this.woe.channel, this.woe.message);
     }
     
-    learnLine(e) {
+    guild.learnLine = function(e) {
         this.lines[e.message.content.toLowerCase()] = true;
         this.pruneLines();
     }
     
-    pruneLines(e) {
+    guild.pruneLines = function() {
         let keys = Object.keys(this.lines);
         if (keys.length <= Constants.Vars.LOG_CAPACITY) {
             return;
@@ -71,7 +49,7 @@ class Guild {
         }
     }
     
-    getRandomLine(e) {
+    guild.getRandomLine = function(e) {
         let keywords = e.message.content.toLowerCase().split(" ");
         let keys = Object.keys(this.lines);
         // if there are no stored messages, use the default log instead
@@ -108,8 +86,33 @@ class Guild {
             }
         }
         
-        return currentMessage;
+        return currentMessage
+    }
+}
+
+class Guild {
+    constructor(id) {
+        this.id = id;
         
+        this.woe = {
+            message: "",
+            channel: null,
+        };
+        
+        this.mayhem = {
+            roles: [
+                "696896531990577192",
+                "696896610726182952",
+                "696896579629744178",
+            ],
+            basePosition: 2,
+        };
+        
+        this.lines = {};
+        
+        Guild.add(this);
+        
+        linkFunctions(this);
     }
     
     static initialize(client) {
@@ -149,6 +152,9 @@ class Guild {
     static load() {
         Encrypt.read(guilddb, function(data, filename) {
             Guild.guilds = JSON.parse(data);
+            for (let g in Guild.guilds) {
+                linkFunctions(Guild.guilds[g]);
+            }
         });
     }
     
