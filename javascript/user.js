@@ -117,6 +117,16 @@ class User {
     static save() {
         Encrypt.write(userdb, JSON.stringify(User.users));
     }
+    
+    static saveDebug() {
+        fs.writeFile("debug/users.butt",
+            JSON.stringify(User.users),
+            "utf8",
+            function(err) {
+                if (err) console.log("something went wrong: " + err);
+            }
+        );
+    }
 }
 
 module.exports = User;

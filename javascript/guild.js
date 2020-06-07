@@ -161,6 +161,16 @@ class Guild {
     static save() {
         Encrypt.write(guilddb, JSON.stringify(Guild.guilds));
     }
+    
+    static saveDebug() {
+        fs.writeFile("debug/guilds.butt",
+            JSON.stringify(Guild.guilds),
+            "utf8",
+            function(err) {
+                if (err) console.log("something went wrong: " + err);
+            }
+        );
+    }
 }
 
 module.exports = Guild;

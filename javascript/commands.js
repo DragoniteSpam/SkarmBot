@@ -433,14 +433,38 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         
         execute(bot, e) {
             if (!Skarm.isGod(e.message.author.id)) {
-                return Skarm.log("False god <@"+e.message.author.id+"> tried to restart me");
+                return Skarm.log("False god <@" + e.message.author.id + "> tried to restart me");
             }
             
             //TODO saveData
-			Skarm.log("Restarting by order of <@"+e.message.author.id+">");
+			Skarm.log("Restarting by order of <@" + e.message.author.id + ">");
 			
 			//gives the bot two seconds to save all files 
-			setTimeout(() => {process.exit(69);},2000);
+			setTimeout(() => {
+                process.exit(69);
+            }, 2000);
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+	Write: {
+        aliases: ["write"],
+        params: [],
+        usageChar: "@",
+        helpText: "Debug command to write the user and guild data to files, unencrypted.",
+        ignoreHidden: false,
+        
+        execute(bot, e) {
+            if (!Skarm.isGod(e.message.author.id)) {
+                return Skarm.log("False god <@" + e.message.author.id + "> tried to persuade me to write out the files unencrypted.");
+            }
+            
+            Guilds.saveDebug();
+            Users.saveDebug();
+            
+            Skarm.sendMessageDelay(e.message.channel, "Saved the debug things!");
         },
         
         help(bot, e) {
