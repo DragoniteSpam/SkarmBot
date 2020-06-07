@@ -1,6 +1,7 @@
 # Additional Requirements:
 
 A discord API token named token.txt placed in the parent of this directory
+
 A Wolfram Alpha token named wolfram.txt placed in the parent of this directory
 
 # SkarmBot
