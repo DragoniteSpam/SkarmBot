@@ -12,7 +12,7 @@ class EncryptTest {
         fs.readFile(filename, function(err, data) {
             if (err) return Skarm.logError(err);
             callback(
-                crypto.AES.decrypt(data, EncryptTest.dataToken).toString(),
+                crypto.AES.decrypt(data.toString(), EncryptTest.dataToken).toString(crypto.enc.Utf8),
                 filename
             );
         });
@@ -45,7 +45,7 @@ class EncryptTest {
 		
 		
 		
-		var filename="testEnc.test";
+		const filename="testEnc.test";
 		//write string and verify it is what is returned
 		var enc2=crypto.AES.encrypt(string, EncryptTest.dataToken).toString();
 		fs.writeFileSync(filename,enc2);
@@ -62,6 +62,17 @@ class EncryptTest {
 			return -1;
 		}
 		
+		const app="asdf CGP Grep";
+		EncryptTest.append(filename,app);
+		setTimeout(() => {EncryptTest.read(filename,function(data,fn){
+			if(data!=(string+app)){
+				console.log("Failed append");
+				console.log("Append output:\t"+data);
+				console.log("Expected output:\t"+string+app);
+				return -1;
+			}
+		});}, 20);
+
 		
 		
 		
