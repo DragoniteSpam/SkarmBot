@@ -1,4 +1,8 @@
-:LOOP
-git pull
-node bot.js > output.txt
-if %ERRORLEVEL% == 69 (goto LOOP)
+REM verify no duplicate tasks are running
+tasklist | find /i "node" 
+if %ERRORLEVEL% ==1 (
+cd C:\bots\Skarmbot
+start truelaunch.bat
+)
+
+timeout /t 10
