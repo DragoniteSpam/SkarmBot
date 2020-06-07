@@ -61,11 +61,11 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e => {
     bot.OnMessageCreate(e);
 });
 
-client.Dispatcher.on(events.GUILD_MEMBER_ADD, e=> {
+client.Dispatcher.on(events.GUILD_MEMBER_ADD, e => {
     bot.OnMemberAdd(e);
 });
 
-client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e=> {
+client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
 	bot.OnMemberUpdate(e);
 });
 

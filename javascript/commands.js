@@ -157,6 +157,24 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+	Hug: {
+        aliases: ["hug"],
+        params: [""],
+        usageChar: "!",
+        helpText: "Hugs a target, or defaults to the summoner.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+			let target = Skarm.commandParamString(e.message.content.toLowerCase()).split(" ")[0];
+			if(target==null)
+				target=e.message.author.username;
+            Skarm.sendMessageDelay(e.message.channel,"*hugs "+target+"*");
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     Help: {
         aliases: ["help"],
         params: ["[term]"],
@@ -212,7 +230,7 @@ Dragonite:
 <https://github.com/DragoniteSpam/SkarmBot>
 
 Argo:
-<please send me a few links of yours that I can shill>
+<https://github.com/Master9000>
 
 Extra ideas came from SuperDragonite2172, willofd2011, Cadance and probably other people.
 
@@ -259,8 +277,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 "***Bot stats, and stuff:***\n```" +
                 "Users (probably): " + Object.keys(Users.users).length + "\n" +
                 "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
-                "Uptime (probably): " + uptimeString + "\n" +
-                "Heap usage (probably): shove it up your @$$```"
+                "Uptime (probably): " + uptimeString + "```"
             );
         },
         
@@ -378,6 +395,52 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             } else {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
             }
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+	Exit: {
+        aliases: ["exit"],
+        params: [],
+        usageChar: "@",
+        helpText: "Terminates the process running the bot safely. Use this to ensure that data is saved before restarting for maintainance or any other reasons. ",
+        ignoreHidden: false,
+        
+        execute(bot, e) {
+            if (!Skarm.isGod(e.message.author.id)) {
+                return Skarm.log("False god <@"+e.message.author.id+"> tried to shut me down");
+            }
+            
+            //TODO saveData
+			Skarm.log("Shutting down by order of <@"+e.message.author.id+">");
+			
+			//gives the bot two seconds to save all files 
+			setTimeout(() => {process.exit(0);},2000);
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+	Restart: {
+        aliases: ["restart"],
+        params: [],
+        usageChar: "@",
+        helpText: "Terminates the process running the bot safely, but with the exit code to restart operation. Use this to ensure that data is saved before restarting for updates. Note that this will only work if the bot is started from `launcher.bat`, which it always should be.",
+        ignoreHidden: false,
+        
+        execute(bot, e) {
+            if (!Skarm.isGod(e.message.author.id)) {
+                return Skarm.log("False god <@"+e.message.author.id+"> tried to restart me");
+            }
+            
+            //TODO saveData
+			Skarm.log("Restarting by order of <@"+e.message.author.id+">");
+			
+			//gives the bot two seconds to save all files 
+			setTimeout(() => {process.exit(69);},2000);
         },
         
         help(bot, e) {

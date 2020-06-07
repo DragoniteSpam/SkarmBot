@@ -42,7 +42,11 @@ class Skarm {
             user === Constants.Users.DRAGO ||
             user === Constants.Users.TIBERIA ||
             user === Constants.Users.ARGO ||
-            user === Constants.Users.MASTER
+            user === Constants.Users.MASTER ||
+			user === Constants.Users.DRAGO.id ||
+            user === Constants.Users.TIBERIA.id ||
+            user === Constants.Users.ARGO.id ||
+            user === Constants.Users.MASTER.id
         );
     }
     

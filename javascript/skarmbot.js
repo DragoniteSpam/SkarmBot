@@ -118,7 +118,7 @@ class Bot {
         if (e.message.deleted) {
             return false;
         }
-        // don't respond to private messages (yet)
+        // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate){
             e.message.channel.sendMessage("private message responses not yet " +
                 "implemented"
@@ -290,6 +290,7 @@ class Bot {
     }
     
     // permissions
+	//TODO 
     permCheckBase(bot, e) {
         return true;
     }
