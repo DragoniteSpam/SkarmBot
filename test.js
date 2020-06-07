@@ -28,9 +28,7 @@ setTimeout(() => {
 setTimeout(() => { 
 	test(EncryptTest.execute(""));
 }, time*n++);
-setTimeout(() => { 
-	test(EncryptTest.execute(null));
-}, time*n++);
+
 
 
 //log results once enough time has passed for all tests to complete
