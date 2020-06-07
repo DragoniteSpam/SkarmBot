@@ -402,7 +402,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         },
     },
 	Exit: {
-        aliases: ["exit"],
+        aliases: ["exit","shutdown"],
         params: [],
         usageChar: "@",
         helpText: "Terminates the process running the bot safely. Use this to ensure that data is saved before restarting for maintainance or any other reasons. ",
