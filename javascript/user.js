@@ -7,17 +7,8 @@ const Discordie = require("discordie");
 const userdb = "data\\users.penguin";
 const SUMMON_COOLDOWN = 60000;
 
-class User {
-    constructor(id) {
-        this.id = id;
-        
-        this.summons = {};
-        this.summonsLastTime = null;
-        
-        User.add(this);
-    }
-    
-    addSummon(term) {
+const linkFunctions = function(user) {
+    user.addSummon = function(term) {
         if (term in this.summons) {
             return false;
         }
@@ -25,7 +16,7 @@ class User {
         return true;
     }
     
-    removeSummon(term) {
+    user.removeSummon = function(term) {
         if (!(term in this.summons)) {
             return false;
         }
@@ -33,7 +24,7 @@ class User {
         return true;
     }
     
-    listSummons() {
+    user.listSummons = function() {
         let terms = [];
         for (let term in this.summons) {
             terms.push(term);
@@ -42,7 +33,7 @@ class User {
         return terms.sort().join(", ");
     }
     
-    attemptSummon(e, term) {
+    user.attemptSummon = function(e, term) {
         let userData = User.getData(this.id);
         // you must be in the same channel
         if (!userData.memberOf(e.message.channel.guild_id)) {
@@ -70,6 +61,19 @@ class User {
                 "> (summon keyword: " + term + ")"
             );
         });
+    }
+}
+
+class User {
+    constructor(id) {
+        this.id = id;
+        
+        this.summons = {};
+        this.summonsLastTime = null;
+        
+        User.add(this);
+        
+        linkFunctions(this);
     }
     
     static initialize(client) {
@@ -104,6 +108,9 @@ class User {
     static load() {
         Encrypt.read(userdb, function(data, filename) {
             User.users = JSON.parse(data);
+            for (let u in User.users) {
+                linkFunctions(User.users[u]);
+            }
         });
     }
     
