@@ -96,7 +96,12 @@ module.exports = {
                 return;
             }
             if (action === "list") {
-                Skarm.sendMessageDelay(e.message.channel, "**" + e.message.author.username + "**, your current summons are:\n```" + userData.listSummons() + "```");
+                let summonString = userData.listSummons();
+                if (summonString.length == 0) {
+                    Skarm.sendMessageDelay(e.message.channel, "**" + e.message.author.username + "**, you currently have no summons!");
+                } else {
+                    Skarm.sendMessageDelay(e.message.channel, "**" + e.message.author.username + "**, your current summons are:\n```" + summonString + "```");
+                }
                 return;
             }
             Skarm.sendMessageDelay(e.message.channel, "Not the correct usage for this command! Consult the help documentation for information on how to use it.");
