@@ -13,6 +13,7 @@ const linkFunctions = function(user) {
             return false;
         }
         this.summons[term] = true;
+        User.save();
         return true;
     }
     
@@ -21,6 +22,7 @@ const linkFunctions = function(user) {
             return false;
         }
         delete this.summons[term];
+        User.save();
         return true;
     }
     
