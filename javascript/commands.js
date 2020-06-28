@@ -22,21 +22,6 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    Wolfy: {
-        aliases: ["wolfram", "wolfy"],
-        params: ["query..."],
-        usageChar: "!",
-        helpText: "Returns a Wolfram|Alpha API request for the given query.",
-        ignoreHidden: true,
-        
-        execute(bot, e) {
-            Web.wolfy(bot, e, Skarm.commandParamString(e.message.content));
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
     Stack: {
         aliases: ["stack", "so", "stackoverflow"],
         params: ["query..."],
@@ -46,21 +31,6 @@ module.exports = {
         
         execute(bot, e) {
             Web.stackOverflow(bot, e, Skarm.commandParamString(e.message.content));
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
-    XKCD: {
-        aliases: ["xkcd"],
-        params: ["id"],
-        usageChar: "!",
-        helpText: "Returns the XKCD with the specified ID",
-        ignoreHidden: true,
-        
-        execute(bot, e) {
-            bot.xkcd.post(e.message.channel, Skarm.commandParamString(e.message.content).split(" ")[0]);
         },
         
         help(bot, e) {
@@ -111,6 +81,36 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+    Wolfy: {
+        aliases: ["wolfram", "wolfy"],
+        params: ["query..."],
+        usageChar: "!",
+        helpText: "Returns a Wolfram|Alpha API request for the given query.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            Web.wolfy(bot, e, Skarm.commandParamString(e.message.content));
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    XKCD: {
+        aliases: ["xkcd"],
+        params: ["id"],
+        usageChar: "!",
+        helpText: "Returns the XKCD with the specified ID",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            bot.xkcd.post(e.message.channel, Skarm.commandParamString(e.message.content).split(" ")[0]);
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     // we're still trying to persuade ourselves that these are funny
     Drago: {
         aliases: ["drago", "dragonite"],
@@ -127,85 +127,9 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    Gummy: {
-        aliases: ["gummy"],
-        params: [],
-        usageChar: "!",
-        helpText: "skarm has an important announcement for the one called Gummy",
-        ignoreHidden: true,
-        
-        execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel, "gummy you are a baka");
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
     //fun
-	Kenobi: {
-		aliases: ["kenobi","wan","obi","highground"],
-		params: [],
-		usageChar: "!",
-		helpText: "skarm is a huge fan of Ewan McGregor",
-		ignoreHidden: true,
-		
-		execute(bot, e){
-			Skarm.sendMessageDelay(e.message.channel, ">>> <:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>");
-		},
-		
-		help(bot, e) {
-			Skarm.help(this,e);
-		},
-	},
+    
 	// special
-	Pinned:{
-		aliases: ["pinned"],
-		params: ["#channel"],
-		usageChar: "!",
-		helpText: "Count how many messages are pinned in a given channel",
-		ignoreHidden: true,
-		execute(bot,e){
-			var channel=e.message.channel;
-			if(e.message.content.split(" ").length==2){
-				var kanal =e.message.content.split(" ")[1].substring(2,e.message.content.split(" ")[1].length-1);
-				try{
-					channel = Guilds.client.Channels.get(kanal);
-				} catch(err){
-					Skarm.sendMessageDelay(e.message.channel,kanal+" is not a valid channel ID");
-					return;
-				}
-			}
-			if(channel == null){
-				return Skarm.sendMessageDelay(e.message.channel,"failed to find channel id");
-			}
-			channel.fetchPinned().then(ex => {e.message.channel.sendMessage("<#"+channel.id+"> has "+
-				ex.messages.length+" pinned message"+((ex.messages.length==1)?"":"s"));});
-		},
-		
-		help(bot,e){
-			Skarm.help(this,e);
-		},
-	},
-    Ping: {
-        aliases: ["ping"],
-        params: [""],
-        usageChar: "!",
-        helpText: "Sends a test message to the channel, and then attempts to edit it. Useful for testing the bot's response time.",
-        ignoreHidden: true,
-        
-        execute(bot, e) {
-            var timeStart = Date.now();
-            // don't use sendMessageDelay - you want this to be instantaneous
-            e.message.channel.sendMessage("Testing response time...").then(e => {
-                e.edit("Response time: `" + (Date.now() - timeStart) + " ms`");
-            });
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
 	Hug: {
         aliases: ["hug"],
         params: [""],
@@ -238,64 +162,75 @@ module.exports = {
             if (!cmd) {
                 Skarm.sendMessageDelay(e.message.channel, "Skarm is a Discord bot made by Dragonite#7992 and Master9000#9716. Use the help command with a command name to see the documentation for it! (At some point in the future I'll compile a full list of the available commands, probably in the form of a wiki page on the Github because who wants to page through documentation in a Discord channel, but that day is not today.)");
                 return;
-            } else {
-                if (bot.mapping.help[cmd]) {
-                    bot.mapping.help[cmd].help(bot, e);
-                    return;
-                }
-                if (bot.mapping.cmd[cmd]) {
-                    bot.mapping.cmd[cmd].help(bot, e);
-                    return;
-                }
-                Skarm.sendMessageDelay(e.message.channel, "Command not found: " + cmd + ". Use the help command followed by the name of the command you wish to look up.");
-                
             }
+            
+            if (bot.mapping.help[cmd]) {
+                bot.mapping.help[cmd].help(bot, e);
+                return;
+            }
+            if (bot.mapping.cmd[cmd]) {
+                bot.mapping.cmd[cmd].help(bot, e);
+                return;
+            }
+            Skarm.sendMessageDelay(e.message.channel, "Command not found: " + cmd + ". Use the help command followed by the name of the command you wish to look up.");
         },
         
         help(bot, e) {
             Skarm.help(this, e);
         },
     },
-    Credits: {
-        aliases: ["credits"],
+    Ping: {
+        aliases: ["ping"],
         params: [""],
         usageChar: "!",
-        helpText: "It's literally just the credits. Why do you need help with this?",
+        helpText: "Sends a test message to the channel, and then attempts to edit it. Useful for testing the bot's response time.",
         ignoreHidden: true,
         
         execute(bot, e) {
-            let version = Math.floor(Math.random() * 0xffffffff);
-            Skarm.sendMessageDelay(e.message.channel,
-`**Skarm Bot 2**\n
-Lead spaghetti chef: Dragonite#7992
-Seondary spaghetti chef: ArgoTheNaut#8957
-Version: ${version}
-
-Library: Discordie (JavaScript):
-<https://qeled.github.io/discordie/#/?_k=m9kij6>
-
-Dragonite:
-<https://www.youtube.com/c/dragonitespam>
-<https://github.com/DragoniteSpam/SkarmBot>
-
-Argo:
-<https://github.com/Master9000>
-
-Extra ideas came from SuperDragonite2172, willofd2011, Cadance and probably other people.
-
-Thanks to basically everyone on the Kingdom of Zeal server for testing this bot thing, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
-
-Wolfram-Alpha is awesome:
-<https://www.npmjs.com/package/node-wolfram>
-
-Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
-            );
+            var timeStart = Date.now();
+            // don't use sendMessageDelay - you want this to be instantaneous
+            e.message.channel.sendMessage("Testing response time...").then(e => {
+                e.edit("Response time: `" + (Date.now() - timeStart) + " ms`");
+            });
         },
         
         help(bot, e) {
             Skarm.help(this, e);
         },
     },
+	Pinned: {
+		aliases: ["fetchpinned"],
+		params: ["#channel"],
+		usageChar: "!",
+		helpText: "First shalt thou take out the Holy Pin. Then shalt thou count to three, no more, no less. Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in My sight, shall snuff it.",
+		ignoreHidden: true,
+        
+		execute(bot,e) {
+			if(e.message.content.split(" ").length != 2) return;
+            
+            let channel = null;
+            let kanal = e.message.content.split(" ")[1].substring(2, e.message.content.split(" ")[1].length - 1);
+            try {
+                channel = Guilds.client.Channels.get(kanal);
+            } catch(err) {
+                Skarm.sendMessageDelay(e.message.channel, kanal + " is not a valid channel ID");
+                return;
+            }
+            
+			if (channel == null) {
+				return Skarm.sendMessageDelay(e.message.channel, "failed to find channel id");
+			}
+            
+			channel.fetchPinned().then(ex => {
+                e.message.channel.sendMessage("<#" + channel.id + "> has " +
+				ex.messages.length + " pinned message" + ((ex.messages.length == 1) ? "" : "s"));
+            });
+		},
+		
+		help(bot,e) {
+			Skarm.help(this, e);
+		},
+	},
     Stats: {
         aliases: ["bot"],
         params: [""],
@@ -343,9 +278,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) {
-                return;
-            }
+            if (!permCheckBase(bot, e)) return;
             
             if (bot.toggleChannel(bot.channelsPinUpvotes, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
@@ -366,9 +299,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) {
-                return;
-            }
+            if (!permCheckBase(bot, e)) return;
             
             if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
@@ -389,9 +320,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) {
-                return;
-            }
+            if (!permCheckBase(bot, e)) return;
             
             if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
@@ -412,9 +341,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) {
-                return;
-            }
+            if (!permCheckBase(bot, e)) return;
             
             if (bot.toggleGuild(bot.guildsWithWelcomeMessage, e.message.channel)) {
                 Skarm.sendMessageDelay(e.message.channel, "Welcome messages will now be sent to **" + e.message.channel.guild.name + "** in this channel!");
@@ -435,9 +362,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: false,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) {
-                return;
-            }
+            if (!permCheckBase(bot, e)) return;
             
             if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
@@ -458,17 +383,18 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: false,
         
         execute(bot, e) {
-            if (!Skarm.isGod(e.message.author.id)) {
-                return Skarm.log("False god <@"+e.message.author.id+"> tried to shut me down");
+            if (!Skarm.isGod(e.message.author.id)) 
+                Skarm.log("False god <@" + e.message.author.id + "> tried to shut me down");
+                return;
             }
             
             //saveData
 			Guilds.save();
 			Users.save();
-			Skarm.log("Shutting down by order of <@"+e.message.author.id+">");
+			Skarm.log("Shutting down by order of <@" + e.message.author.id + ">");
 			
 			//gives the bot two seconds to save all files 
-			setTimeout(() => {process.exit(0);},2000);
+			setTimeout(() => { process.exit(0); }, 2000);
         },
         
         help(bot, e) {
@@ -484,7 +410,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         
         execute(bot, e) {
             if (!Skarm.isGod(e.message.author.id)) {
-                return Skarm.log("False god <@" + e.message.author.id + "> tried to restart me");
+                Skarm.log("False god <@" + e.message.author.id + "> tried to restart me");
+                return;
             }
             
             //saveData
@@ -509,7 +436,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         
         execute(bot, e) {
             if (!Skarm.isGod(e.message.author.id)) {
-                return Skarm.log("False god <@" + e.message.author.id + "> tried to persuade me to write out the files unencrypted.");
+                Skarm.log("False god <@" + e.message.author.id + "> tried to persuade me to write out the files unencrypted.");
+                return;
             }
             
             Guilds.saveDebug();
@@ -531,7 +459,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		
 		execute(bot,e) {
 			if (!Skarm.isGod(e.message.author.id)) {
-                return Skarm.log("False god <@" + e.message.author.id + "> tried to have me quicksave");
+                Skarm.log("False god <@" + e.message.author.id + "> tried to have me quicksave");
+                return;
 			}
 			
 			Guilds.save();
@@ -544,4 +473,45 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			Skarm.help(this,e);
 		},
 	},
+    // credits
+    Credits: {
+        aliases: ["credits"],
+        params: [""],
+        usageChar: "!",
+        helpText: "It's literally just the credits. Why do you need help with this?",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            let version = Math.floor(Math.random() * 0xffffffff);
+            Skarm.sendMessageDelay(e.message.channel,
+`**Skarm Bot 2**\n
+Lead spaghetti chef: Dragonite#7992
+Seondary spaghetti chef: ArgoTheNaut#8957
+Version: ${version}
+
+Library: Discordie (JavaScript):
+<https://qeled.github.io/discordie/#/?_k=m9kij6>
+
+Dragonite:
+<https://www.youtube.com/c/dragonitespam>
+<https://github.com/DragoniteSpam/SkarmBot>
+
+Argo:
+<https://github.com/Master9000>
+
+Extra ideas came from SuperDragonite2172, willofd2011, Cadance and probably other people.
+
+Thanks to basically everyone on the Kingdom of Zeal server for testing this bot thing, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
+
+Wolfram-Alpha is awesome:
+<https://www.npmjs.com/package/node-wolfram>
+
+Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
+            );
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
 }
