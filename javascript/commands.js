@@ -142,7 +142,23 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    // special
+    //fun
+	Kenobi: {
+		aliases: ["kenobi","wan","obi","highground"],
+		params: [],
+		usageChar: "!",
+		helpText: "skarm is a huge fan of Ewan McGregor",
+		ignoreHidden: true,
+		
+		execute(bot, e){
+			Skarm.sendMessageDelay(e.message.channel, ">>> <:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>");
+		},
+		
+		help(bot, e) {
+			Skarm.help(this,e);
+		},
+	},
+	// special
     Ping: {
         aliases: ["ping"],
         params: [""],
@@ -418,7 +434,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 return Skarm.log("False god <@"+e.message.author.id+"> tried to shut me down");
             }
             
-            //TODO saveData
+            //saveData
+			Guilds.save();
+			Users.save();
 			Skarm.log("Shutting down by order of <@"+e.message.author.id+">");
 			
 			//gives the bot two seconds to save all files 
@@ -430,7 +448,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         },
     },
 	Restart: {
-        aliases: ["restart"],
+        aliases: ["restart","reboot"],
         params: [],
         usageChar: "@",
         helpText: "Terminates the process running the bot safely, but with the exit code to restart operation. Use this to ensure that data is saved before restarting for updates. Note that this will only work if the bot is started from `launcher.bat`, which it always should be.",
@@ -441,13 +459,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 return Skarm.log("False god <@" + e.message.author.id + "> tried to restart me");
             }
             
-            //TODO saveData
+            //saveData
+			Guilds.save();
+			Users.save();
 			Skarm.log("Restarting by order of <@" + e.message.author.id + ">");
 			
 			//gives the bot two seconds to save all files 
-			setTimeout(() => {
-                process.exit(69);
-            }, 2000);
+			setTimeout(() => {process.exit(69);}, 2000);
         },
         
         help(bot, e) {

@@ -257,38 +257,13 @@ function massEffect(e, message, msg){
 		var list = client.Guilds.toArray();
 		for (var i in list) {
 			aGF(i,list);
-        }        
-    } else if (message=="e!help"){
-        helpHelpHelp(e);
-        totalBotCommands++;
-    } else if (message=="e!help says"){
-        helpSays(e);
-        totalBotCommands++;
-    } else if (message=="e!help lol"){
-        helpLol(e);
-        totalBotCommands++;
-    } else if (message=="e!help misc"){
-        helpMisc(e);
-        totalBotCommands++;
-    /*} else if (message=="e!help pictures"){
-        helpPictures(e);
-        totalBotCommands++;*/
-    } else if (message=="e!help reactions"){
-        helpReactions(e);
-        totalBotCommands++;
-    } else if (message=="e!help mods"){
-        helpMods(e);
-        totalBotCommands++;
-    // Utilities
-    } else if (message=="e!size"){
+        }       
+    }else if (message=="e!size"){
         utiliyLineCount(e);
         totalBotCommands++;
     } else if (message=="e!sact"){
         utilityActCount(e);
         totalBotCommands++;
-    }else if (message.startsWith("e!kenobi")){
-        totalBotCommands++;
-        utilityKenobi(e);
     }else if (utilPins(e, msg)){
         totalBotCommands++;
     } else if (message.startsWith("e!game ")){
@@ -618,18 +593,6 @@ function userRank(user){
 // Checks to see if the user is allowed to submit messages to the bot
 function userHasKickingBoots(author, channel){
 	return author.can(discordie.Permissions.General.KICK_MEMBERS, channel);
-}
-
-//in response to e!kenobi, prints out a 4x4 emotes image of him, example image of output: https://cdn.discordapp.com/attachments/305548986155008000/424078792382873611/unknown.png
-function utilityKenobi(e){
-	if(e.message.channel==client.Channels.get(ZEAL_SERVER)){
-		return;}
-	//var mess =	"<:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n
-	//			<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n
-	//			<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n
-	//			<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>";
-	sms(e.message.channel,"<:0x0:422896537925058560><:1x0:422896539204059136><:2x0:422896538831028244><:3x0:422896538159808512>\n<:0x1:422896538025590784><:1x1:422896539157921802><:2x1:422896538939818006><:3x1:422896538210009089>\n<:0x2:422896537966739457><:1x2:422896538776502273><:2x2:422896539044806656><:3x2:422896538197688331>\n<:0x3:422896538415529993><:1x3:422896538776371220><:2x3:422896539019640833><:3x3:422896538973634561>");
-	e.message.delete();
 }
 
 /*
