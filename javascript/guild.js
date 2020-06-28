@@ -60,6 +60,10 @@ const linkFunctions = function(guild) {
         return Permissions.BASE;
     };
     
+    guild.hasPermissions = function(user, perm) {
+        return !!(this.getPermissions(user) & perm);
+    };
+    
     guild.getRandomLine = function(e) {
         let keywords = e.message.content.toLowerCase().split(" ");
         let keys = Object.keys(this.lines);
@@ -75,6 +79,7 @@ const linkFunctions = function(guild) {
         }
         
         sort(keywords);
+        
         let currentMessage = "";
         let currentMessageScore = -1;
         let testWords = Math.min(Constants.Vars.SIMILAR_MESSAGE_KEYWORDS,
@@ -100,9 +105,10 @@ const linkFunctions = function(guild) {
         return currentMessage;
     };
     
-    guild.toggleChannel = function(map, channel) {
-        map[channel] = !map[channel];
-        return map[channel];
+    guild.togglePinnedChannel = function(channel) {
+        if (!this.channelsPinUpvotes) this.channelsPinUpvotes = { };
+        this.channelsPinUpvotes[channel] = !this.channelsPinUpvotes[channel];
+        return this.channelsPinUpvotes[channel];
     };
 }
 
@@ -124,8 +130,8 @@ class Guild {
             basePosition: 2,
         };
         
-        this.lines = {};
-        this.channelsPinUpvotes = {};
+        this.lines = { };
+        this.channelsPinUpvotes = { };
         
         Guild.add(this);
         
