@@ -159,6 +159,19 @@ module.exports = {
 		},
 	},
 	// special
+	Pinned:{
+		aliases: ["pinned"],
+		params: [""],
+		usageChar: "!",
+		helpText: "Count how many messages are pinned in the channel",
+		ignoreHidden: true,
+		execute(bot,e){
+			e.message.channel.fetchPinned().then(ex => {Skarm.sendMessageDelay(e.message.channel,ex.messages.length+" pinned message"+((ex.messages.length==1)?"":"s"));});
+		},
+		help(bot,e){
+			Skarm.help(this,e);
+		},
+	},
     Ping: {
         aliases: ["ping"],
         params: [""],
