@@ -52,8 +52,12 @@ const linkFunctions = function(guild) {
     };
     
     guild.getPermissions = function(user) {
-        if (Constants.Moms[user.id]) return Permissions.SUDO;
+        for (let mom in Constants.Moms) {
+            if (Constants.Moms[mom].id == user.id) return Permissions.SUDO;
+        }
+        if (!user.memberOf(this)) return Permissions.NOT_IN_GUILD;
         
+        return Permissions.BASE;
     };
     
     guild.getRandomLine = function(e) {
@@ -93,7 +97,7 @@ const linkFunctions = function(guild) {
             }
         }
         
-        return currentMessage
+        return currentMessage;
     };
     
     guild.toggleChannel = function(map, channel) {
