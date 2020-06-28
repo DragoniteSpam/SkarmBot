@@ -161,17 +161,14 @@ module.exports = {
 	// special
 	Pinned:{
 		aliases: ["pinned"],
-		params: [""],
+		params: ["#channel"],
 		usageChar: "!",
-		helpText: "Count how many messages are pinned in the channel",
+		helpText: "Count how many messages are pinned in a given channel",
 		ignoreHidden: true,
 		execute(bot,e){
 			var channel=e.message.channel;
-			//Skarm.log(e.message.content.split(" ").length +" commands");
 			if(e.message.content.split(" ").length==2){
-				//Skarm.log("2 on pinned");
 				var kanal =e.message.content.split(" ")[1].substring(2,e.message.content.split(" ")[1].length-1);
-				//Skarm.log(kanal);
 				try{
 					channel = Guilds.client.Channels.get(kanal);
 				} catch(err){
@@ -182,7 +179,7 @@ module.exports = {
 			if(channel == null){
 				return Skarm.sendMessageDelay(e.message.channel,"failed to find channel id");
 			}
-			channel.fetchPinned().then(ex => {e.message.channel.sendMessage(/*"<#"+channel.id+"> has "+*/
+			channel.fetchPinned().then(ex => {e.message.channel.sendMessage("<#"+channel.id+"> has "+
 				ex.messages.length+" pinned message"+((ex.messages.length==1)?"":"s"));});
 		},
 		
