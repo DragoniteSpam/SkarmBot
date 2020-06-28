@@ -6,7 +6,7 @@
 class Constants {
     // assume we are connected
     static initialize(client) {
-        Constants.Users = {
+        Constants.Moms = {
             DRAGO: client.Users.get("137336478291329024"),
             TIBERIA: client.Users.get("425428688830726144"),
             MASTER: client.Users.get("162952008712716288"),

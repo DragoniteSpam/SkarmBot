@@ -64,6 +64,10 @@ const linkFunctions = function(user) {
             );
         });
     };
+    
+    user.memberOf = function(guild) {
+        return !!User.client.Users.get(this.id).memberOf(User.client.Guilds.get(guild.id));
+    };
 }
 
 class User {
