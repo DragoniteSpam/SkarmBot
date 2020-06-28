@@ -399,7 +399,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
             } else {
-                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will once again run the censor on **" + e.message.channel.name + "**");
+                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will run the censor on **" + e.message.channel.name + "**");
             }
         },
         
@@ -525,4 +525,26 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
+	Save: {
+		aliases: ["save","quicksave","s"],
+		params: [],
+		usageChar: "@",
+		helpText: "Save skarm's data in memory to storage. Saving data will automatically run during a restart or shutdown command",
+		ignoreHidden: false,
+		
+		execute(bot,e) {
+			if (!Skarm.isGod(e.message.author.id)) {
+                return Skarm.log("False god <@" + e.message.author.id + "> tried to have me quicksave");
+			}
+			
+			Guilds.save();
+			Users.save();
+			
+			Skarm.sendMessageDelay(e.message.channel, "Data has been saved.");
+		},
+		
+		help(bot, e){
+			Skarm.help(this,e);
+		},
+	},
 }
