@@ -37,19 +37,6 @@ class Skarm {
         );
     }
     
-    static isGod(user) {
-        return (
-            user === Constants.Moms.DRAGO ||
-            user === Constants.Moms.TIBERIA ||
-            user === Constants.Moms.ARGO ||
-            user === Constants.Moms.MASTER ||
-			user === Constants.Moms.DRAGO.id ||
-            user === Constants.Moms.TIBERIA.id ||
-            user === Constants.Moms.ARGO.id ||
-            user === Constants.Moms.MASTER.id
-        );
-    }
-    
     static sendMessageDelay(channel, text) {
         channel.sendTyping();
         setTimeout(function() {

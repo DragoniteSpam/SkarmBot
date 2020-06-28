@@ -1072,12 +1072,12 @@ function utilityIsAction(string){
 	}
 	return string.endsWith(first);
 }
-function utilityMunroe(e){
-    var command=e.message.content.split(" ");
-    if (command.length==1){
+function utilityMunroe(e) {
+    var command = e.message.content.split(" ");
+    if (command.length == 1) {
         munroe.toggleChannel(e.message.channel);
     } else {
-        switch (command[1]){
+        switch (command[1]) {
             case "now":
                 munroe.post();
                 break;

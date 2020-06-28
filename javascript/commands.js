@@ -140,8 +140,8 @@ module.exports = {
         
         execute(bot, e) {
 			let target = Skarm.commandParamString(e.message.content.toLowerCase()).split(" ")[0];
-			if(target==null)
-				target=e.message.author.username;
+			if(target == null)
+				target = e.message.author.username;
             Skarm.sendMessageDelay(e.message.channel,"*hugs "+target+"*");
         },
         
@@ -279,11 +279,13 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) return;
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
             
             let guild = Guilds.get(e.message.guild.id);
             
-            if (guild.toggleChannel(guild.channelsPinUpvotes, e.message.channel_id)) {
+            if (guild.togglePinnedChannel(e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
             } else {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
@@ -302,7 +304,9 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) return;
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
             
             if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
@@ -323,7 +327,9 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) return;
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
             
             if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
@@ -344,7 +350,9 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) return;
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.ADMIN)) return;
             
             if (bot.toggleGuild(bot.guildsWithWelcomeMessage, e.message.channel)) {
                 Skarm.sendMessageDelay(e.message.channel, "Welcome messages will now be sent to **" + e.message.channel.guild.name + "** in this channel!");
@@ -365,7 +373,9 @@ module.exports = {
         ignoreHidden: false,
         
         execute(bot, e) {
-            if (!permCheckBase(bot, e)) return;
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.ADMIN)) return;
             
             if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
@@ -386,7 +396,9 @@ module.exports = {
         ignoreHidden: false,
         
         execute(bot, e) {
-            if (!Skarm.isGod(e.message.author.id)) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
                 Skarm.log("False god <@" + e.message.author.id + "> tried to shut me down");
                 return;
             }
@@ -412,7 +424,9 @@ module.exports = {
         ignoreHidden: false,
         
         execute(bot, e) {
-            if (!Skarm.isGod(e.message.author.id)) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
                 Skarm.log("False god <@" + e.message.author.id + "> tried to restart me");
                 return;
             }
@@ -438,7 +452,9 @@ module.exports = {
         ignoreHidden: false,
         
         execute(bot, e) {
-            if (!Skarm.isGod(e.message.author.id)) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
                 Skarm.log("False god <@" + e.message.author.id + "> tried to persuade me to write out the files unencrypted.");
                 return;
             }
@@ -461,7 +477,9 @@ module.exports = {
 		ignoreHidden: false,
 		
 		execute(bot,e) {
-			if (!Skarm.isGod(e.message.author.id)) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
                 Skarm.log("False god <@" + e.message.author.id + "> tried to have me quicksave");
                 return;
 			}

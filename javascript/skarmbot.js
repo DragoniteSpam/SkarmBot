@@ -296,12 +296,6 @@ class Bot {
         
         return false;
     }
-    
-    // permissions
-	//TODO 
-    permCheckBase(bot, e) {
-        return true;
-    }
 }
 
 module.exports = Bot;
