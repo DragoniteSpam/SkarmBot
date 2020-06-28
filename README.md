@@ -8,6 +8,8 @@ A Wolfram Alpha token named wolfram.txt placed in the parent of this directory
 
 Instructions on how to run:
 
+**Make sure node.js is installed and you have all tokens**
+
 In Command Line:
 
 ```cmd
@@ -15,7 +17,7 @@ git pull https://github.com/DragoniteSpam/SkarmBot.git
 
 cd skarmbot
 
-launcher.bat
+node bot.js
 ```
 
 For those happening across this in a search of the Internet, this bot is held together by duct tape and spaghetti and magically magically works. Use at your own risk.
