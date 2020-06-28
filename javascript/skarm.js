@@ -39,14 +39,14 @@ class Skarm {
     
     static isGod(user) {
         return (
-            user === Constants.Users.DRAGO ||
-            user === Constants.Users.TIBERIA ||
-            user === Constants.Users.ARGO ||
-            user === Constants.Users.MASTER ||
-			user === Constants.Users.DRAGO.id ||
-            user === Constants.Users.TIBERIA.id ||
-            user === Constants.Users.ARGO.id ||
-            user === Constants.Users.MASTER.id
+            user === Constants.Moms.DRAGO ||
+            user === Constants.Moms.TIBERIA ||
+            user === Constants.Moms.ARGO ||
+            user === Constants.Moms.MASTER ||
+			user === Constants.Moms.DRAGO.id ||
+            user === Constants.Moms.TIBERIA.id ||
+            user === Constants.Moms.ARGO.id ||
+            user === Constants.Moms.MASTER.id
         );
     }
     

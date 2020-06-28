@@ -3,6 +3,7 @@ const fs = require("fs");
 const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
+const Permissions = require("./permissions.js");
 
 const guilddb = "data\\guilds.penguin";
 
@@ -48,6 +49,11 @@ const linkFunctions = function(guild) {
         for (let i = 0; i < keys.length; i++) {
             delete this.lines[keys[i]];
         }
+    };
+    
+    guild.getPermissions = function(user) {
+        if (Constants.Moms[user.id]) return Permissions.SUDO;
+        
     };
     
     guild.getRandomLine = function(e) {

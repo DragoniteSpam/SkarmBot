@@ -4,6 +4,7 @@ const Constants = require("./constants.js");
 
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
+const Permissions = require("./permissions.js");
 
 module.exports = {
     // general

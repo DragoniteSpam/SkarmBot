@@ -63,7 +63,7 @@ const linkFunctions = function(user) {
                 "> (summon keyword: " + term + ")"
             );
         });
-    }
+    };
 }
 
 class User {
