@@ -328,15 +328,6 @@ function massEffect(e, message, msg){
 	}
 }
 
-function /* boolean*/ utilPins(e, msg){
-	if(msg[0] != "e!pinned") return false;
-	if(msg.length > 1){
-		rangePinned(e,msg);
-		return true;
-	}
-	utilityPinned(e.message.channel, e.message.channel);
-	return true;
-}
 
 function menKing(message){
 	if(message.indexOf("king")<0){
@@ -723,26 +714,8 @@ function helloThere(message){
 	if(Math.random()<.25){
 		sendMessageDelay("GENERAL KENOBI \nYou are a **bold one.**\n<:bluelightsaberyx:422558517287845889> <:greenlightsaberyx:422559631030878209>  <:skarmhead:422560671574523904>   <:bluelightsaberyx:422558517589704704> <:greenlightsaberyx:422559630741340171>", message.channel);
 	}else{
-		var nick = "";
-		if(message.author.username == "SuperDragonite2172"){
-			nick = "general Draco";
-		}else if(message.author.username == "SquidofBaconator"){
-			nick = "general Squid";
-		}else if(message.author.username == "Neon Strike Kitty"){
-				nick = "general Ida";
-		}else if(message.author.username == "KingofZeal"){
-			nick = "King Eyan";
-		}else if(message.author.username == "SuperGummying"){
-			nick = "private gummy";
-			}else if(message.author.username == "Kireina"){
-			nick = "general Panda";
-		}else if(message.author.username == "Wolverale12"){
-			nick = "general wolverale";
-		}else if(message.author.username == "FLUBS"){
-			nick = "specific Luigi";
-		}else{
-			nick = "general " +message.author.username;
-		}
+		var nick = "general " +message.author.username;
+		
 		sendMessageDelay(nick.toUpperCase() + "\nYou are a bold one.\n" + randomLeft()+ randomLeft() + head + randomRight() + randomRight(), message.channel);
 	}
 	generallyAnnoying = true;
@@ -863,18 +836,6 @@ function REACT(message, id){
 	 */
 	 
 	return false;
-}
-
-function otherMentions(message){
-    return 0;
-    
-	var sum=0;
-	for(var i in meNiks){
-		if(message.content.toLowerCase().contains(meNiks[i])){
-			sum++;
-		}
-	}
-	return sum;
 }
 
 /*
@@ -1291,14 +1252,4 @@ function utilityURLExists(path, callback, callbackParams){
             callback(response, callbackParams);
         }
     });
-}
-
-/**
-  *********************** 
-  *this looks different *
-  ***********************
-  */
-
-function rangePinned(e, msg){				
-	utilityPinned(client.Channels.get(msg[1].substring(2,msg[1].length-1)),e.message.channel);
 }

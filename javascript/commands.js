@@ -166,8 +166,26 @@ module.exports = {
 		helpText: "Count how many messages are pinned in the channel",
 		ignoreHidden: true,
 		execute(bot,e){
-			e.message.channel.fetchPinned().then(ex => {Skarm.sendMessageDelay(e.message.channel,ex.messages.length+" pinned message"+((ex.messages.length==1)?"":"s"));});
+			var channel=e.message.channel;
+			//Skarm.log(e.message.content.split(" ").length +" commands");
+			if(e.message.content.split(" ").length==2){
+				//Skarm.log("2 on pinned");
+				var kanal =e.message.content.split(" ")[1].substring(2,e.message.content.split(" ")[1].length-1);
+				//Skarm.log(kanal);
+				try{
+					channel = Guilds.client.Channels.get(kanal);
+				} catch(err){
+					Skarm.sendMessageDelay(e.message.channel,kanal+" is not a valid channel ID");
+					return;
+				}
+			}
+			if(channel == null){
+				return Skarm.sendMessageDelay(e.message.channel,"failed to find channel id");
+			}
+			channel.fetchPinned().then(ex => {e.message.channel.sendMessage(/*"<#"+channel.id+"> has "+*/
+				ex.messages.length+" pinned message"+((ex.messages.length==1)?"":"s"));});
 		},
+		
 		help(bot,e){
 			Skarm.help(this,e);
 		},
