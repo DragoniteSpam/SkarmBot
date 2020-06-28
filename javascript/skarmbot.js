@@ -45,7 +45,6 @@ class Bot {
         this.minimumMessageReplyLength = 3;
         
         this.shanties = new ShantyCollection();
-        this.channelsPinUpvotes = {};
         this.channelsWhoLikeXKCD = {};
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
@@ -203,6 +202,10 @@ class Bot {
         this.parrot(e);
         
         return false;
+    }
+    
+    OnMessageReactionAdd(e) {
+        
     }
     
     // functionality

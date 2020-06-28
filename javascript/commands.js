@@ -280,7 +280,9 @@ module.exports = {
         execute(bot, e) {
             if (!permCheckBase(bot, e)) return;
             
-            if (bot.toggleChannel(bot.channelsPinUpvotes, e.message.channel_id)) {
+            let guild = Guilds.get(e.message.guild.id);
+            
+            if (guild.toggleChannel(guild.channelsPinUpvotes, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
             } else {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
@@ -383,7 +385,7 @@ module.exports = {
         ignoreHidden: false,
         
         execute(bot, e) {
-            if (!Skarm.isGod(e.message.author.id)) 
+            if (!Skarm.isGod(e.message.author.id)) {
                 Skarm.log("False god <@" + e.message.author.id + "> tried to shut me down");
                 return;
             }

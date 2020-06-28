@@ -25,18 +25,19 @@ const linkFunctions = function(guild) {
                 roleData.setPosition(this.mayhem.basePosition);
             }
         }
-    }
+    };
+    
     guild.sendWoeMessage = function() {
         // for best results, the woe message should be formatted something like:
         // "Yo, {user.username}! If you can see this, it means you've been
         // restricted from using the server."
         Skarm.sendMessageDelay(this.woe.channel, this.woe.message);
-    }
+    };
     
     guild.learnLine = function(e) {
         this.lines[e.message.content.toLowerCase()] = true;
         this.pruneLines();
-    }
+    };
     
     guild.pruneLines = function() {
         let keys = Object.keys(this.lines);
@@ -47,7 +48,7 @@ const linkFunctions = function(guild) {
         for (let i = 0; i < keys.length; i++) {
             delete this.lines[keys[i]];
         }
-    }
+    };
     
     guild.getRandomLine = function(e) {
         let keywords = e.message.content.toLowerCase().split(" ");
@@ -87,7 +88,12 @@ const linkFunctions = function(guild) {
         }
         
         return currentMessage
-    }
+    };
+    
+    guild.toggleChannel = function(map, channel) {
+        map[channel] = !map[channel];
+        return map[channel];
+    };
 }
 
 class Guild {
@@ -109,6 +115,7 @@ class Guild {
         };
         
         this.lines = {};
+        this.channelsPinUpvotes = {};
         
         Guild.add(this);
         
