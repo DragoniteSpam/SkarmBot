@@ -1,6 +1,7 @@
 "use strict";
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
+const Web = require("./web.js");
 
 const Users = require("./user.js");
 const Guilds = require("./guild.js");

@@ -1,9 +1,4 @@
 "use strict";
-const Skarm = require("./skarm.js");
-const Constants = require("./constants.js");
-
-const Users = require("./user.js");
-const Guilds = require("./guild.js");
 
 module.exports = {
     NOT_IN_GUILD:           0x0000,

@@ -9,12 +9,8 @@ const wolfy = new(require("node-wolfram"))(
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 
-class Web {
-    constructor(client) {
-        this.client = client;
-    }
-    
-    static wolfy(bot, e, query) {
+module.exports = {
+    wolfy: function(bot, e, query) {
         wolfy.query(query, function(err, result) {
             if (err) {
                 Skarm.log(err);
@@ -44,16 +40,16 @@ class Web {
                 Skarm.sendMessageDelay(e.message.channel, ">>> " + display);
             }
         });
-    }
+    },
     
-    static google(bot, e, query) {
+    google: function(bot, e, query) {
         Skarm.sendMessageDelay(
             e.message.channel,
             "http://google.com/search?q=" + query.replaceAll(" ", "+")
         );
-    }
+    },
     
-    static stackOverflow(bot, e, query) {
+    stackOverflow: function(bot, e, query) {
         if (e.message.author === Constants.Users.MASTER ||
                 e.message.author === Constants.Users.ARGO
             ){
@@ -65,7 +61,5 @@ class Web {
             "https://stackoverflow.com/search?q=" + query.replaceAll(" ", "+") +
             ">"
         );
-    }
+    },
 }
-
-module.exports = Web;

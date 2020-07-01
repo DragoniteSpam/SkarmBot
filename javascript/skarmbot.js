@@ -8,7 +8,6 @@ const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 const Commands = require("./commands.js");
 const Keywords = require("./keywords.js");
-const Web = require("./web.js");
 const XKCD = require("./xkcd.js");
 
 const Users = require("./user.js");
@@ -50,7 +49,6 @@ class Bot {
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
         
-        this.web = new Web(client);
         this.xkcd = new XKCD();
         
         this.mapping = Skarm.addCommands(Commands);

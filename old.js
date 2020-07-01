@@ -1005,31 +1005,6 @@ function utilitySandwich(e){
 	}
 	sms(e.message.channel,"_gives a sandwich to "+target+"_");
 }
-// Loads in the stored values from the swear table.
-function utilityCreateUserTable(){
-    var obj;
-    fs.readdir("./users/", (err, files) => {
-        files.forEach(file => {
-            fs.readFile("./users/"+file, 'utf8', function (err, data){
-                if (err){
-                    console.log(err);
-                }
-                try {
-                    obj=JSON.parse(data);
-                    if (typeof obj.characters==="undefined"){
-                        obj.characters=0;
-                    }
-                    if (typeof obj.todayMessages==="undefined"){
-                        obj.todayMessages=0;
-                    }
-                    userTable[obj.id]=obj;
-                } catch (e){
-                    console.log("bad user file: "+file);
-                }
-            });
-        });
-    });
-}
 
 // Utility that prints out the number of lines in the bot's learned database.
 function utiliyLineCount(e){
