@@ -6,6 +6,7 @@ const Web = require("./web.js");
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
 const Permissions = require("./permissions.js");
+const Skinner = require("./skinnerbox.js");
 
 module.exports = {
     // general
@@ -129,7 +130,49 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    //fun
+    //levels
+	Rank: {
+		aliases: ["rank","level"],
+        params: [],
+        usageChar: "!",
+        helpText: "returns how much exp you have in the guild",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+			let exp=Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id].exp;
+			let lvl=Skinner.getLevel(exp);
+            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: "+ exp + "\nEXP required to go for next level: "+ (Skinner.getMinEXP(lvl)-exp) +
+			"\nCurrent level: "+ lvl);
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+	},
+	SRank: {
+		aliases: ["srank","slevel"],
+        params: ["exp"],
+        usageChar: "@",
+        helpText: "sets how much exp you have in the guild",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)){
+				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+				return;
+			}
+			let exp = e.message.content.split(" ")[1]-0;
+			Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id].exp=exp;
+			let lvl=Skinner.getLevel(exp);
+            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: "+ exp + "\nEXP required to go for next level: "+ (Skinner.getMinEXP(lvl)-exp) +
+			"\nCurrent level: "+ lvl);
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+	},
+	
     
 	// special
 	Hug: {

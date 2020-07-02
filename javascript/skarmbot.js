@@ -38,7 +38,9 @@ class Bot {
         
         this.validShantyReferences = {
             "sing": 0.15,
+			"rum": 0.20,
             "ship": 0.25,
+			"shanty":0.35,
         };
         
         this.minimumMessageReplyLength = 3;
@@ -128,6 +130,21 @@ class Bot {
             return false;
         }
         
+		//provide guild exp
+		if(guildData.expTable ===undefined){
+			guildData.expTable={};
+		}
+		if(e.message.author.id in guildData.expTable){
+			if(guildData.expTable[e.message.author.id].lastMessage +60000 < Date.now()){
+				guildData.expTable[e.message.author.id].exp+= 15+Math.floor(10*Math.random());
+				guildData.expTable[e.message.author.id].lastMessage=Date.now();
+			}
+		}else {
+			guildData.expTable[e.message.author.id] ={};
+			guildData.expTable[e.message.author.id].exp= 15+Math.floor(10*Math.random());
+			guildData.expTable[e.message.author.id].lastMessage=Date.now();
+		}
+		
         // ignore messages that mention anyone or anything
         if (e.message.mentions.length > 0 ||
                 e.message.mention_roles.length > 0 ||

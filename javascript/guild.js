@@ -133,6 +133,10 @@ class Guild {
         this.lines = { };
         this.channelsPinUpvotes = { };
         
+		this.rolesTable = {};
+		this.expTable = {};
+		this.boostTable= {};
+		
         Guild.add(this);
         
         linkFunctions(this);
