@@ -4,6 +4,7 @@ const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
+const Skinner = require("./skinnerbox.js");
 
 const guilddb = "data\\guilds.penguin";
 
@@ -119,10 +120,10 @@ const linkFunctions = function(guild) {
         let author = e.message.author;
         
 		if(author.id in this.expTable) {
-			if (this.expTable[author.id].lastMessage + 60000 >= Date.now()) return;
+			if (this.expTable[author.id].lastMessage + 6000 >= Date.now()) return;
 		}else {
 			this.expTable[author.id] = {
-                exp: 0,
+                exp: Skinner.getMinEXP(0),
                 level: 0,
                 nextLevelEXP: Skinner.getMinEXP(1),
                 lastMessage: undefined,
@@ -134,12 +135,12 @@ const linkFunctions = function(guild) {
         userEXPData.exp += 15 + Math.floor(10 * Math.random());
         userEXPData.lastMessage = Date.now();
         
-        //when a user levels up:
-        if(userEXPData.exp < userEXPData.nextLevelEXP) {
+        // level up?
+        if(userEXPData.exp >= userEXPData.nextLevelEXP) {
             userEXPData.level = Skinner.getLevel(userEXPData.exp);
             userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level + 1);
             
-            e.message.channel.sendMessage("Level up! " + e.message.member.nick
+            e.message.channel.sendMessage("Level up! " + e.message.member.nickMention
                 + " is now **Level " + userEXPData.level + ".**"
             );
             
