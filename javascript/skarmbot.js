@@ -130,21 +130,8 @@ class Bot {
             return false;
         }
         
-		//provide guild exp
-		if(guildData.expTable ===undefined){
-			guildData.expTable={};
-		}
-		if(e.message.author.id in guildData.expTable){
-			if(guildData.expTable[e.message.author.id].lastMessage +60000 < Date.now()){
-				guildData.expTable[e.message.author.id].exp+= 15+Math.floor(10*Math.random());
-				guildData.expTable[e.message.author.id].lastMessage=Date.now();
-			}
-		}else {
-			guildData.expTable[e.message.author.id] ={};
-			guildData.expTable[e.message.author.id].exp= 15+Math.floor(10*Math.random());
-			guildData.expTable[e.message.author.id].lastMessage=Date.now();
-		}
-		
+        guildData.updateEXP(e.message.author.id);
+        
         // ignore messages that mention anyone or anything
         if (e.message.mentions.length > 0 ||
                 e.message.mention_roles.length > 0 ||

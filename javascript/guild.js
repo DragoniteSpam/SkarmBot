@@ -110,6 +110,21 @@ const linkFunctions = function(guild) {
         this.channelsPinUpvotes[channel] = !this.channelsPinUpvotes[channel];
         return this.channelsPinUpvotes[channel];
     };
+    
+    guild.updateEXP = function(authorID) {
+		if (!this.expTable) {
+			this.expTable = { };
+		}
+        
+		if(authorID in this.expTable) {
+			if (this.expTable[authorID].lastMessage + 60000 >= Date.now()) return;
+		}else {
+			this.expTable[authorID] = { exp: 0, lastMessage: undefined, };
+		}
+        
+        this.expTable[authorID].exp += 15 + Math.floor(10 * Math.random());
+        this.expTable[authorID].lastMessage = Date.now();
+    };
 }
 
 class Guild {
