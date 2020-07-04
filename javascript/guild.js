@@ -111,19 +111,59 @@ const linkFunctions = function(guild) {
         return this.channelsPinUpvotes[channel];
     };
     
-    guild.updateEXP = function(authorID) {
+    guild.updateEXP = function(e) {
 		if (!this.expTable) {
 			this.expTable = { };
 		}
         
-		if(authorID in this.expTable) {
-			if (this.expTable[authorID].lastMessage + 60000 >= Date.now()) return;
+        let author = e.message.author;
+        
+		if(author.id in this.expTable) {
+			if (this.expTable[author.id].lastMessage + 60000 >= Date.now()) return;
 		}else {
-			this.expTable[authorID] = { exp: 0, lastMessage: undefined, };
+			this.expTable[author.id] = {
+                exp: 0,
+                level: 0,
+                nextLevelEXP: Skinner.getMinEXP(1),
+                lastMessage: undefined,
+            };
 		}
         
-        this.expTable[authorID].exp += 15 + Math.floor(10 * Math.random());
-        this.expTable[authorID].lastMessage = Date.now();
+        let userEXPData = this.expTable[author.id];
+        
+        userEXPData.exp += 15 + Math.floor(10 * Math.random());
+        userEXPData.lastMessage = Date.now();
+        
+        //when a user levels up:
+        if(userEXPData.exp < userEXPData.nextLevelEXP) {
+            userEXPData.level = Skinner.getLevel(userEXPData.exp);
+            userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level + 1);
+            
+            e.message.channel.sendMessage("Level up! " + e.message.member.nick
+                + " is now **Level " + userEXPData.level + ".**"
+            );
+            
+            //assign level up roles if appropriate
+            if (!this.rolesTable) {
+                this.rolesTable = { };
+            }
+            
+            //give users the role achieved at their level or the next one available bellow it
+            let i = userEXPData.level;
+            for (i; i >= 0; i--) {
+                if (i in this.rolesTable) {
+                    e.message.member.assignRole(this.rolesTable[i]);
+                    if (!this.roleStack) {
+                        for (i; i >= 0; i--) {
+                            if(i in this.rolesTable){
+                                e.message.member.unassignRole(this.rolesTable[i]);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     };
 }
 

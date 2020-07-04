@@ -130,7 +130,7 @@ class Bot {
             return false;
         }
         
-        guildData.updateEXP(e.message.author.id);
+        guildData.updateEXP(e);
         
         // ignore messages that mention anyone or anything
         if (e.message.mentions.length > 0 ||
