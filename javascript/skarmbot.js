@@ -37,10 +37,23 @@ class Bot {
         };
         
         this.validShantyReferences = {
+			"johnny":0.05,
+			"jonny":0.05,
+			"jony":0.05,
+			"johny":0.05,
+			"drunk": 0.10,
             "sing": 0.15,
 			"rum": 0.20,
             "ship": 0.25,
+			"captain":0.30,
 			"shanty":0.35,
+			"shanties":0.40,
+			"sea":0.40,
+			"maui":0.45,
+			"sailor":0.50,
+			"stan":0.55,
+			"dreadnought":0.60,
+			//"shantest":1.2,
         };
         
         this.minimumMessageReplyLength = 3;
@@ -177,6 +190,7 @@ class Bot {
         }
         
         if (this.mentions(e, this.validShantyReferences)) {
+			this.singShanty(e);
             return true;
         }
         
@@ -233,6 +247,10 @@ class Bot {
     // learning and reciting lines
     parrot(e) {
         if (this.mentions(e, this.validNickReferences)) {
+			//once skarm starts singing, he'd rather do that than talk
+			if(this.shanties.isSinging && Math.random()>0.25)
+				return this.singShanty(e);
+			
             let line = this.getRandomLine(e);
             if (line !== undefined) {
                 Skarm.sendMessageDelay(e.message.channel, line);
@@ -242,6 +260,11 @@ class Bot {
         
         this.attemptLearnLine(e);
     }
+	
+	singShanty(e){
+		Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+		return;
+	}
     
     getRandomLine(e) {
         return Guilds.get(e.message.guild.id).getRandomLine(e);

@@ -6,6 +6,8 @@ class ShantyCollection {
     constructor() {
         this.list = [];
         this.scan();
+		this.isSinging=false;
+		this.activeSong=-1;
     }
     
     load(filename) {
@@ -22,6 +24,20 @@ class ShantyCollection {
             });
         });
     }
+	
+	drinkCount(){
+		if(!this.isSinging)
+			return 0;
+		return this.list[this.activeSong].currentLine;
+	}
+	
+	getNextBlock(){
+		if(!this.isSinging){
+			this.isSinging=true;
+			this.activeSong=Math.floor(Math.random()*this.list.length);
+		}
+		return this.list[this.activeSong].getNextBlock(this);
+	}
 }
 
 class Shanty {
@@ -35,7 +51,7 @@ class Shanty {
         // post two lines per message.
     }
     
-    getNextBlock() {
+    getNextBlock(collection) {
         let block = "";
         
         // lazy way of safely fetching the next two lines and resetting if
@@ -47,7 +63,10 @@ class Shanty {
         if (this.currentLine < this.lines.length) {
             block = block + this.lines[this.currentLine] + "\n";
             this.currentLine++;
-        } else {
+        } 
+		if (this.currentLine >= this.lines.length) {
+            collection.isSinging=false;
+			collection.activeSong=-1;
         }
         
         return block;

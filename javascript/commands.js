@@ -276,7 +276,25 @@ module.exports = {
 			Skarm.help(this, e);
 		},
 	},
-    Stats: {
+	Drunk: {
+        aliases: ["drunk"],
+        params: [""],
+        usageChar: "!",
+        helpText: "States how much bird rum the bot has had to drink",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+			var pints = bot.shanties.drinkCount()/2;
+			Skarm.sendMessageDelay(e.message.channel,"Skarm has had "+pints +" pint"+
+			((pints==1)?"s":"")
+			+" of rum");
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+	Stats: {
         aliases: ["bot"],
         params: [""],
         usageChar: "!",
