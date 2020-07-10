@@ -276,6 +276,7 @@ module.exports = {
 			Skarm.help(this, e);
 		},
 	},
+	
 	Drunk: {
         aliases: ["drunk"],
         params: [""],
@@ -288,6 +289,42 @@ module.exports = {
 			Skarm.sendMessageDelay(e.message.channel,"Skarm has had "+pints +" pint"+
 			((pints==1)?"s":"")
 			+" of rum");
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+	Shanties: {
+        aliases: ["shanties"],
+        params: ["query..."],
+        usageChar: "!",
+        helpText: "Prints a list of the shanties skarm knows and is thus likely to sing while under the influence",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+			let target;
+			let words=e.message.content.split(" ");
+			if(words.length==1){
+					target = "";
+			}else{
+				target=e.message.content.substring(e.message.content.indexOf(words[1])).toLowerCase();
+			}
+			var names= bot.shanties.names;
+			var shanties="";
+			for(let i in names){
+				if(names[i].indexOf(target)==-1)
+					continue;
+				shanties+=names[i];
+					shanties+=", ";
+			}
+			if(shanties.length==0){
+				Skarm.sendMessageDelay(e.message.channel, "I can't recall any shanties with that in the title");
+				return;
+			}
+			
+			Skarm.sendMessageDelay(e.message.channel,"I recall the following shanties:\n"+ shanties.substring(0,shanties.length-2));
+			return;
         },
         
         help(bot, e) {

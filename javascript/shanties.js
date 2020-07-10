@@ -5,6 +5,7 @@ const Skarm = require("./skarm.js");
 class ShantyCollection {
     constructor() {
         this.list = [];
+		this.names=[];
         this.scan();
 		this.isSinging=false;
 		this.activeSong=-1;
@@ -13,6 +14,10 @@ class ShantyCollection {
     load(filename) {
         if (fs.existsSync("data/shanties/" + filename)){
             this.list.push(new Shanty(filename));
+			let name = filename.replace(".shanty","");
+			while(name.indexOf("-")>0)
+				name=name.replace("-"," ");
+			this.names.push(name);
         }
     }
     
