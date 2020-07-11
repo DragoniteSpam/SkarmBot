@@ -22,6 +22,13 @@ fs.readFile("data\\default.birb", function(err, data) {
     defaultLines = data.toString().split("\n");
 });
 
+// I'm not a fan of this, but if you load an older version of an object it
+// won't contain new variables that you might have added
+const linkVariables = function(guild) {
+    if (guild.lines === undefined) guild.lines = { };
+    if (guild.actions === undefined) guild.actions = { };
+};
+
 // since de/serialized objects don't keep their functions
 const linkFunctions = function(guild) {
     guild.executeMayhem = function() {
@@ -320,6 +327,7 @@ class Guild {
         Encrypt.read(guilddb, function(data, filename) {
             Guild.guilds = JSON.parse(data);
             for (let g in Guild.guilds) {
+                linkVariables(Guild.guilds[g]);
                 linkFunctions(Guild.guilds[g]);
             }
         });
