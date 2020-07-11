@@ -340,6 +340,27 @@ class Bot {
         
         return false;
     }
+    
+    setGame(game) {
+        if (!game) game = this.getSpaghetti() + " lines of spaghetti";
+        this.client.User.setGame({ name: game, type: 0 });
+        return game;
+    }
+    
+    // javascript devs would be happier if you did this with promises and async.
+    // i can't say i care enough to deal with promises and async.
+    getSpaghetti() {
+        let lines = 0;
+        let files = fs.readdirSync("./javascript/");
+        for (let i in files) {
+            lines = lines + this.lineCount("./javascript/" + files[i]);
+        }
+        return lines + this.lineCount("./bot.js");
+    }
+    
+    lineCount(file) {
+        return fs.readFileSync(file).toString().split("\n").length;
+    }
 }
 
 module.exports = Bot;

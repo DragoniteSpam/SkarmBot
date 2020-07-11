@@ -367,54 +367,6 @@ module.exports = {
         },
     },
     // administrative
-    Pin: {
-        aliases: ["pin"],
-        params: ["query..."],
-        usageChar: "@",
-        helpText: "Toggles the pinning of messages with the required number of upvote reactions in the channel. This command is only usable by users with kicking boots.",
-        ignoreHidden: true,
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
-            
-            let guild = Guilds.get(e.message.guild.id);
-            
-            if (guild.togglePinnedChannel(e.message.channel_id)) {
-                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
-            } else {
-                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
-            }
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
-    Munroe: {
-        aliases: ["munroe"],
-        params: [],
-        usageChar: "@",
-        helpText: "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this.",
-        ignoreHidden: true,
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
-            
-            if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
-                Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
-            } else {
-                Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
-            }
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
     Censor: {
         aliases: ["censor"],
         params: [],
@@ -431,52 +383,6 @@ module.exports = {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
             } else {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will run the censor on **" + e.message.channel.name + "**");
-            }
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
-    Welcome: {
-        aliases: ["welcome"],
-        params: [],
-        usageChar: "@",
-        helpText: "Toggles the welcome message in the guild. If enabled, the welcome message will be sent to the channel this command was used in. This command is only usable by users with kicking boots.",
-        ignoreHidden: true,
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.ADMIN)) return;
-            
-            if (bot.toggleGuild(bot.guildsWithWelcomeMessage, e.message.channel)) {
-                Skarm.sendMessageDelay(e.message.channel, "Welcome messages will now be sent to **" + e.message.channel.guild.name + "** in this channel!");
-            } else {
-                Skarm.sendMessageDelay(e.message.channel, "Welcome messages will no longer be sent to **" + e.message.channel.guild.name + ".**");
-            }
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
-    Hide: {
-        aliases: ["hide"],
-        params: [],
-        usageChar: "@",
-        helpText: "Toggles visibility of the bot in the channel this is used in. This command is only usable by users with kicking boots.",
-        ignoreHidden: false,
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.ADMIN)) return;
-            
-            if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
-                Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
-            } else {
-                Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
             }
         },
         
@@ -512,6 +418,93 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+    Game: {
+        aliases: ["game"],
+        params: [],
+        usageChar: "@",
+        helpText: "Sets Skarm's current game. Setting a blank game will reset it to the line count. This command is only usable by Skarm's moms.",
+        
+        execute(bot, e) {
+            let tokens = e.message.content.split(" ");
+            tokens.shift();
+            Skarm.sendMessageDelay(e.message.channel, "Game set to **" + bot.setGame(tokens.join(" ").trim()) + "**.");
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Hide: {
+        aliases: ["hide"],
+        params: [],
+        usageChar: "@",
+        helpText: "Toggles visibility of the bot in the channel this is used in. This command is only usable by users with kicking boots.",
+        ignoreHidden: false,
+        
+        execute(bot, e) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.ADMIN)) return;
+            
+            if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
+                Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
+            } else {
+                Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
+            }
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Munroe: {
+        aliases: ["munroe"],
+        params: [],
+        usageChar: "@",
+        helpText: "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
+            
+            if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
+                Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
+            } else {
+                Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
+            }
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Pin: {
+        aliases: ["pin"],
+        params: ["query..."],
+        usageChar: "@",
+        helpText: "Toggles the pinning of messages with the required number of upvote reactions in the channel. This command is only usable by users with kicking boots.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
+            
+            let guild = Guilds.get(e.message.guild.id);
+            
+            if (guild.togglePinnedChannel(e.message.channel_id)) {
+                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
+            } else {
+                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
+            }
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
 	Restart: {
         aliases: ["restart","reboot"],
         params: [],
@@ -534,31 +527,6 @@ module.exports = {
 			
 			//gives the bot two seconds to save all files 
 			setTimeout(() => {process.exit(69);}, 2000);
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
-	Write: {
-        aliases: ["write"],
-        params: [],
-        usageChar: "@",
-        helpText: "Debug command to write the user and guild data to files, unencrypted.",
-        ignoreHidden: false,
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
-                Skarm.log("False god <@" + e.message.author.id + "> tried to persuade me to write out the files unencrypted.");
-                return;
-            }
-            
-            Guilds.saveDebug();
-            Users.saveDebug();
-            
-            Skarm.sendMessageDelay(e.message.channel, "Saved the debug things!");
         },
         
         help(bot, e) {
@@ -590,6 +558,54 @@ module.exports = {
 			Skarm.help(this,e);
 		},
 	},
+    Welcome: {
+        aliases: ["welcome"],
+        params: [],
+        usageChar: "@",
+        helpText: "Toggles the welcome message in the guild. If enabled, the welcome message will be sent to the channel this command was used in. This command is only usable by users with kicking boots.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.ADMIN)) return;
+            
+            if (bot.toggleGuild(bot.guildsWithWelcomeMessage, e.message.channel)) {
+                Skarm.sendMessageDelay(e.message.channel, "Welcome messages will now be sent to **" + e.message.channel.guild.name + "** in this channel!");
+            } else {
+                Skarm.sendMessageDelay(e.message.channel, "Welcome messages will no longer be sent to **" + e.message.channel.guild.name + ".**");
+            }
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+	Write: {
+        aliases: ["write"],
+        params: [],
+        usageChar: "@",
+        helpText: "Debug command to write the user and guild data to files, unencrypted.",
+        ignoreHidden: false,
+        
+        execute(bot, e) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
+                Skarm.log("False god <@" + e.message.author.id + "> tried to persuade me to write out the files unencrypted.");
+                return;
+            }
+            
+            Guilds.saveDebug();
+            Users.saveDebug();
+            
+            Skarm.sendMessageDelay(e.message.channel, "Saved the debug things!");
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     // credits
     Credits: {
         aliases: ["credits"],

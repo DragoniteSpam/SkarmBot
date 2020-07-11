@@ -40,10 +40,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     Users.initialize(client);
     Guilds.initialize(client);
 	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
-    client.User.setGame({
-            name: getSpaghetti() + " lines of spaghetti",
-            type: 0,
-    });
+    bot.setGame();
 });
 
 // after GATEWAY_READY (becasue it's got to initalize so many different things)
@@ -76,18 +73,3 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
 client.Dispatcher.on(events.DISCONNECTED, e => {
 	console.log("Error: disconnected at " + Date.now());
 });
-
-// javascript devs would be happier if you did this with promises and async.
-// i can't say i care enough to deal with promises and async.
-function getSpaghetti() {
-    let lines = 0;
-    let files = fs.readdirSync("./javascript/");
-    for (let i in files) {
-        lines = lines + lineCount("./javascript/" + files[i]);
-    }
-    return lines + lineCount("./bot.js");
-}
-
-function lineCount(file) {
-    return fs.readFileSync(file).toString().split("\n").length;
-}
