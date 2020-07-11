@@ -5,18 +5,19 @@ const Skarm = require("./skarm.js");
 class ShantyCollection {
     constructor() {
         this.list = [];
-		this.names=[];
+		this.names = [];
         this.scan();
-		this.isSinging=false;
-		this.activeSong=-1;
+		this.isSinging = false;
+		this.activeSong = -1;
     }
     
     load(filename) {
-        if (fs.existsSync("data/shanties/" + filename)){
+        if (fs.existsSync("data/shanties/" + filename)) {
             this.list.push(new Shanty(filename));
-			let name = filename.replace(".shanty","");
-			while(name.indexOf("-")>0)
-				name=name.replace("-"," ");
+			let name = filename.replace(".shanty", "");
+			while (name.indexOf("-") > 0) {
+				name = name.replace("-", " ");
+            }
 			this.names.push(name);
         }
     }
@@ -30,16 +31,15 @@ class ShantyCollection {
         });
     }
 	
-	drinkCount(){
-		if(!this.isSinging)
-			return 0;
+	drinkCount() {
+		if (!this.isSinging) return 0;
 		return this.list[this.activeSong].currentLine;
 	}
 	
-	getNextBlock(){
-		if(!this.isSinging){
-			this.isSinging=true;
-			this.activeSong=Math.floor(Math.random()*this.list.length);
+	getNextBlock() {
+		if (!this.isSinging) {
+			this.isSinging = true;
+			this.activeSong = Math.floor(Math.random() * this.list.length);
 		}
 		return this.list[this.activeSong].getNextBlock(this);
 	}

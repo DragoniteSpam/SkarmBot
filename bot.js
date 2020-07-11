@@ -74,7 +74,7 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
 });
 
 client.Dispatcher.on(events.DISCONNECTED, e => {
-	console.log("Error: disconnected at " +Date.now());
+	console.log("Error: disconnected at " + Date.now());
 });
 
 // javascript devs would be happier if you did this with promises and async.

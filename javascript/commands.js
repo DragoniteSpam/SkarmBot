@@ -285,10 +285,9 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-			var pints = bot.shanties.drinkCount()/2;
-			Skarm.sendMessageDelay(e.message.channel,"Skarm has had "+pints +" pint"+
-			((pints==1)?"s":"")
-			+" of rum");
+			var pints = bot.shanties.drinkCount() / 2;
+			Skarm.sendMessageDelay(e.message.channel, "Skarm has had " + pints +
+                " pint" + ((pints == 1) ? "s" : "") + " of rum");
         },
         
         help(bot, e) {
@@ -304,26 +303,24 @@ module.exports = {
         
         execute(bot, e) {
 			let target;
-			let words=e.message.content.split(" ");
-			if(words.length==1){
+			let words = e.message.content.split(" ");
+			if (words.length == 1) {
 					target = "";
-			}else{
-				target=e.message.content.substring(e.message.content.indexOf(words[1])).toLowerCase();
+			} else {
+				target = e.message.content.substring(e.message.content.indexOf(words[1])).toLowerCase();
 			}
-			var names= bot.shanties.names;
-			var shanties="";
-			for(let i in names){
-				if(names[i].indexOf(target)==-1)
-					continue;
-				shanties+=names[i];
-					shanties+=", ";
+			var names = bot.shanties.names;
+			var shanties = "";
+			for (let i in names) {
+				if (names[i].indexOf(target) == -1) continue;
+				shanties += names[i] + ",";
 			}
-			if(shanties.length==0){
+			if (shanties.length == 0) {
 				Skarm.sendMessageDelay(e.message.channel, "I can't recall any shanties with that in the title");
 				return;
 			}
 			
-			Skarm.sendMessageDelay(e.message.channel,"I recall the following shanties:\n"+ shanties.substring(0,shanties.length-2));
+			Skarm.sendMessageDelay(e.message.channel, "I recall the following shanties:\n" + shanties.substring(0,shanties.length - 2));
 			return;
         },
         

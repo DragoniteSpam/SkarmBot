@@ -25,35 +25,35 @@ class Bot {
         
         // referneces: you will speak if these are mentioned
         this.validNickReferences = {
-            "skarm": 1,
-            "skram!": 1,
-            "birdbrain": 1,
-            "spaghetti": 0.05,
+            "skarm":        1,
+            "skram!":       1,
+            "birdbrain":    1,
+            "spaghetti":    0.05,
         };
         
         this.validESReferences = {
-            "balgruuf": 0.25,
-            "ulfric": 0.25,
+            "balgruuf":     0.25,
+            "ulfric":       0.25,
         };
         
         this.validShantyReferences = {
-			"johnny":0.05,
-			"jonny":0.05,
-			"jony":0.05,
-			"johny":0.05,
-			"drunk": 0.10,
-            "sing": 0.15,
-			"rum": 0.20,
-            "ship": 0.25,
-			"captain":0.30,
-			"shanty":0.35,
-			"shanties":0.40,
-			"sea":0.40,
-			"maui":0.45,
-			"sailor":0.50,
-			"stan":0.55,
-			"dreadnought":0.60,
-			//"shantest":1.2,
+			"johnny":       0.05,
+			"jonny":        0.05,
+			"jony":         0.05,
+			"johny":        0.05,
+			"drunk":        0.10,
+            "sing":         0.15,
+			"rum":          0.20,
+            "ship":         0.25,
+			"captain":      0.30,
+			"shanty":       0.35,
+			"shanties":     0.40,
+			"sea":          0.40,
+			"maui":         0.45,
+			"sailor":       0.50,
+			"stan":         0.55,
+			"dreadnought":  0.60,
+			//"shantest":   1.2,
         };
         
         this.minimumMessageReplyLength = 3;
@@ -117,21 +117,23 @@ class Bot {
     }
     
 	OnMemberUpdate(e) {
-		if(e.rolesRemoved.length>0){
-			let changes = "Roles removed for "+e.member.username + " in " + e.guild.name+": ";
-			for(let i in e.rolesRemoved){
-				changes+= e.rolesRemoved[i].name;
-				if(i<e.rolesRemoved.length-1)
-					changes+=", ";
+		if(e.rolesRemoved.length > 0){
+			let changes = "Roles removed for " + e.member.username + " in " + e.guild.name + ": ";
+			for (let i in e.rolesRemoved) {
+				changes += e.rolesRemoved[i].name;
+				if (i < e.rolesRemoved.length - 1) {
+					changes += ", ";
+                }
 			}
 			Skarm.log(changes);
 		}
-		if(e.rolesAdded.length>0){
-			let changes = "Roles added for "+e.member.username + " in " + e.guild.name+": ";
-			for(let i in e.rolesAdded){
-				changes+= e.rolesAdded[i].name;
-				if(i<e.rolesAdded.length-1)
-					changes+=", ";
+		if (e.rolesAdded.length > 0){
+			let changes = "Roles added for " + e.member.username + " in " + e.guild.name + ": ";
+			for (let i in e.rolesAdded) {
+				changes += e.rolesAdded[i].name;
+				if (i < e.rolesAdded.length - 1) {
+					changes += ", ";
+                }
 			}
 			Skarm.log(changes);
 		}
@@ -265,8 +267,9 @@ class Bot {
     parrot(e) {
         if (this.mentions(e, this.validNickReferences)) {
 			//once skarm starts singing, he'd rather do that than talk
-			if(this.shanties.isSinging && Math.random()>0.25)
+			if (this.shanties.isSinging && Math.random()>0.25) {
 				return this.singShanty(e);
+            }
 			
             let line = this.getRandomLine(e);
             if (line !== undefined) {
@@ -278,9 +281,8 @@ class Bot {
         this.attemptLearnLine(e);
     }
 	
-	singShanty(e){
+	singShanty(e) {
 		Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
-		return;
 	}
     
     getRandomLine(e) {
