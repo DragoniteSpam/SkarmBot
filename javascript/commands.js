@@ -558,7 +558,7 @@ module.exports = {
 		helpText: "Save skarm's data in memory to storage. Saving data will automatically run during a restart or shutdown command",
 		ignoreHidden: false,
 		
-		execute(bot,e) {
+		execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
             if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
@@ -573,7 +573,37 @@ module.exports = {
 		},
 		
 		help(bot, e){
-			Skarm.help(this,e);
+			Skarm.help(this, e);
+		},
+	},
+	SuggestionBlacklist: {
+		aliases: ["suggestion-blacklist"],
+		params: ["userID"],
+		usageChar: "@",
+		helpText: "Blacklist a user from submittion suggestions. This command is only usable by Skarm's moms.",
+		ignoreHidden: false,
+		
+		execute(bot, e) {
+            var userData = Users.get(e.message.author.id);
+            var guildData = Guilds.get(e.message.guild.id);
+            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
+                Skarm.log("False god <@" + e.message.author.id + "> tried to blacklist someone from submitting suggestions.");
+                return;
+			}
+			
+            let user = e.message.content.split(" ")[1];
+            
+            if (!user) {
+                Skarm.sendMessageDelay(e.message.channel, "No user with that ID found.");
+                return;
+            }
+			
+			Users.get(user).setSuggestionBlacklist(true);
+            Skarm.sendMessageDelay(e.message.channel, "**" + bot.client.Users.get(user).nickMention + "** has been blacklisted from submitting suggestions.");
+		},
+		
+		help(bot, e){
+			Skarm.help(this, e);
 		},
 	},
     Welcome: {
