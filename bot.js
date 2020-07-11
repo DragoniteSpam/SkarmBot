@@ -73,6 +73,10 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
 	bot.OnMessageReaction(e);
 });
 
+client.Dispatcher.on(events.DISCONNECTED, e => {
+	console.log("Error: disconnected at " +Date.now());
+});
+
 // javascript devs would be happier if you did this with promises and async.
 // i can't say i care enough to deal with promises and async.
 function getSpaghetti() {

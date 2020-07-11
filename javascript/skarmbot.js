@@ -117,7 +117,24 @@ class Bot {
     }
     
 	OnMemberUpdate(e) {
-		
+		if(e.rolesRemoved.length>0){
+			let changes = "Roles removed for "+e.member.username + " in " + e.guild.name+": ";
+			for(let i in e.rolesRemoved){
+				changes+= e.rolesRemoved[i].name;
+				if(i<e.rolesRemoved.length-1)
+					changes+=", ";
+			}
+			Skarm.log(changes);
+		}
+		if(e.rolesAdded.length>0){
+			let changes = "Roles added for "+e.member.username + " in " + e.guild.name+": ";
+			for(let i in e.rolesAdded){
+				changes+= e.rolesAdded[i].name;
+				if(i<e.rolesAdded.length-1)
+					changes+=", ";
+			}
+			Skarm.log(changes);
+		}
 	}
 	
     OnMessageCreate(e) {

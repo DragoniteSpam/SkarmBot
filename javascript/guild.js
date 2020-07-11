@@ -155,7 +155,7 @@ const linkFunctions = function(guild) {
                 if (i in this.rolesTable) {
                     e.message.member.assignRole(this.rolesTable[i]);
                     if (!this.roleStack) {
-                        for (i; i >= 0; i--) {
+                        for (i--; i >= 0; i--) {
                             if(i in this.rolesTable){
                                 e.message.member.unassignRole(this.rolesTable[i]);
                             }
