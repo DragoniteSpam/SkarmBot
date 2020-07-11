@@ -57,6 +57,28 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+    Suggest: {
+        aliases: ["suggest", "suggestion"],
+        params: ["query..."],
+        usageChar: "!",
+        helpText: "Submit a suggestion for the bot for future consideration. Abusing this command will result in the death star being fired in the general vicinity of your house.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            let userData = Users.get(e.message.author.id);
+            let guildData = Guilds.get(e.message.guild.id);
+            if (userData.getSuggestionBlacklist()) return;
+            
+            let discordUserData = e.message.author;
+            let tokens = e.message.content.split(" ");
+            tokens.shift();
+            Skarm.sendMessageDelay(e.message.channel, "Suggestion from **" + discordUserData.username + "#" + discordUserData.discriminator + ":** " + tokens.join(" "));
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     Summon: {
         aliases: ["summon", "summons"],
         params: ["add|remove|list", "term"],
