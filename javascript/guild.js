@@ -11,6 +11,13 @@ const guilddb = "data\\guilds.penguin";
 const MIN_LINES = 40;
 
 let defaultLines = ["please stand by"];
+
+let messageIsAction = function(message) {
+    if (message.startsWith("_") && message.endsWith("_")) return true;
+    if (message.startsWith("*") && message.endsWith("*")) return true;
+    return false;
+};
+
 fs.readFile("data\\default.birb", function(err, data) {
     defaultLines = data.toString().split("\n");
 });
@@ -36,7 +43,77 @@ const linkFunctions = function(guild) {
         Skarm.sendMessageDelay(this.woe.channel, this.woe.message);
     };
     
+    guild.learnAction = function(e) {
+        let message = e.message.content;
+        message = message.substring(1, message.length - 1).toLowerCase();
+        this.actions[message] = true;
+        this.pruneActions();
+    };
+    
+    guild.pruneActions = function() {
+        let keys = Object.keys(this.actions);
+        if (keys.length <= Constants.Vars.LOG_CAPACITY) {
+            return;
+        }
+        
+        for (let i = 0; i < keys.length; i++) {
+            delete this.actions[keys[i]];
+        }
+    };
+    
+    guild.getActionCount = function() {
+        return Object.keys(this.actions).length;
+    };
+    
+    guild.getRandomAction = function(e) {
+        let message = e.message.content;
+        message = message.substring(1, message.length - 1).toLowerCase();
+        let keywords = message.split(" ");
+        
+        let keys = Object.keys(this.lines);
+        // if there are no stored messages, use the default log instead
+        if (keys.length < MIN_LINES) {
+            keys = defaultLines;
+        }
+        
+        let sort = function(array) {
+            array.sort(function(a, b) {
+                return b.length - a.length;
+            });
+        }
+        
+        sort(keywords);
+        
+        let currentMessage = "";
+        let currentMessageScore = -1;
+        let testWords = Math.min(Constants.Vars.SIMILAR_MESSAGE_KEYWORDS,
+            keywords.length);
+        
+        // try a given number of messages
+        for (let i = 0; i < Constants.Vars.SIMILAR_MESSAGE_ATTEMPTS; i++) {
+            let message = keys[Math.floor(Math.random() * keys.length)];
+            let messageScore = 0;
+            // messages are scored based on how many of the longest words
+            // in the original they share
+            for (let j = 0; j < testWords; j++) {
+                if (message.includes(keywords[i])) {
+                    messageScore++
+                }
+            }
+            if (messageScore > currentMessageScore) {
+                currentMessageScore = messageScore;
+                currentMessage = message;
+            }
+        }
+        
+        return "_" + currentMessage + "_";
+    };
+    
     guild.learnLine = function(e) {
+        if (messageIsAction(e.message.content)) {
+            guild.learnAction(e);
+            return;
+        }
         this.lines[e.message.content.toLowerCase()] = true;
         this.pruneLines();
     };
@@ -56,20 +133,9 @@ const linkFunctions = function(guild) {
         return Object.keys(this.lines).length;
     };
     
-    guild.getPermissions = function(user) {
-        for (let mom in Constants.Moms) {
-            if (Constants.Moms[mom].id == user.id) return Permissions.SUDO;
-        }
-        if (!user.memberOf(this)) return Permissions.NOT_IN_GUILD;
-        
-        return Permissions.BASE;
-    };
-    
-    guild.hasPermissions = function(user, perm) {
-        return !!(this.getPermissions(user) & perm);
-    };
-    
     guild.getRandomLine = function(e) {
+        if (messageIsAction(e.message.content)) return this.getRandomAction(e);
+        
         let keywords = e.message.content.toLowerCase().split(" ");
         let keys = Object.keys(this.lines);
         // if there are no stored messages, use the default log instead
@@ -108,6 +174,19 @@ const linkFunctions = function(guild) {
         }
         
         return currentMessage;
+    };
+    
+    guild.getPermissions = function(user) {
+        for (let mom in Constants.Moms) {
+            if (Constants.Moms[mom].id == user.id) return Permissions.SUDO;
+        }
+        if (!user.memberOf(this)) return Permissions.NOT_IN_GUILD;
+        
+        return Permissions.BASE;
+    };
+    
+    guild.hasPermissions = function(user, perm) {
+        return !!(this.getPermissions(user) & perm);
     };
     
     guild.togglePinnedChannel = function(channel) {
@@ -191,6 +270,7 @@ class Guild {
         };
         
         this.lines = { };
+        this.actions = { };
         this.channelsPinUpvotes = { };
         
 		this.rolesTable = {};

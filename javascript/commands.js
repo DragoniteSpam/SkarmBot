@@ -226,7 +226,6 @@ module.exports = {
         },
 	},
 	
-    
 	// special
 	Hug: {
         aliases: ["hug"],
