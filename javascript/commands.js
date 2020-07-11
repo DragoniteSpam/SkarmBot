@@ -110,6 +110,38 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+    Sudo: {
+        aliases: ["sudo", "su"],
+        params: [],
+        usageChar: "!",
+        helpText: "Shows the user's access level (pleb, moderator, admin, Mom, etc).",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            let userData = Users.get(e.message.author.id);
+            let guildData = Guilds.get(e.message.author.id);
+            let member = e.message.author.memberOf(e.message.guild);
+            
+            let permissions = guildData.getPermissions(userData);
+            let permNames = [ ];
+            
+            if (permissions & Permissions.NOT_IN_GUILD) permNames.push("NOT_IN_GUILD");
+            if (permissions & Permissions.RESTIRCTED) permNames.push("RESTIRCTED");
+            if (permissions & Permissions.BASE) permNames.push("BASE");
+            if (permissions & Permissions.MOD) permNames.push("MOD");
+            if (permissions & Permissions.ADMIN) permNames.push("ADMIN");
+            if (permissions & Permissions.SUDO) permNames.push("MOM");
+            
+            Skarm.sendMessageDelay(e.message.channel, "Current permissions of **" +
+                member.name + "** in **" + e.message.guild.name + ":**\n" +
+                permNames
+            );
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     Summon: {
         aliases: ["summon", "summons"],
         params: ["add|remove|list", "term"],
