@@ -21,9 +21,26 @@ let commandParamString = function(message) {
 
 module.exports = {
     // general
+    Actions: {
+        aliases: ["action", "actions", "actioncount"],
+        params: [],
+        usageChar: "!",
+        helpText: "Returns the number of actions in Skarm's log for the current server.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            let guild = e.message.guild;
+            Skarm.sendMessageDelay(e.message.channel, "Actions known for **" +
+                guild.name + "**: " + Guilds.get(guild.id).getActionCount());
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     Lines: {
-        aliases: ["line", "lines", "lineCount"],
-        params: ["query..."],
+        aliases: ["line", "lines", "linecount"],
+        params: [],
         usageChar: "!",
         helpText: "Returns the number of messages in Skarm's log for the current server.",
         ignoreHidden: true,
