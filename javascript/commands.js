@@ -10,6 +10,23 @@ const Skinner = require("./skinnerbox.js");
 
 module.exports = {
     // general
+    Lines: {
+        aliases: ["line", "lines", "lineCount"],
+        params: ["query..."],
+        usageChar: "!",
+        helpText: "Returns the number of messages in Skarm's log for the current server.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            let guild = e.message.guild;
+            Skarm.sendMessageDelay(e.message.channel, "Lines known for **" +
+                guild.name + "**: " + Guilds.get(guild.id).getLineCount());
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     Google: {
         aliases: ["google"],
         params: ["query..."],
@@ -139,10 +156,11 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-			let exp=Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id].exp;
-			let lvl=Skinner.getLevel(exp);
-            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: "+ exp + "\nEXP required to go for next level: "+ (Skinner.getMinEXP(lvl)-exp) +
-			"\nCurrent level: "+ lvl);
+			let exp = Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id].exp;
+			let lvl = Skinner.getLevel(exp);
+            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " +
+                exp + "\nEXP required to go for next level: " +
+                (Skinner.getMinEXP(lvl) - exp) + "\nCurrent level: " + lvl);
         },
         
         help(bot, e) {
@@ -420,9 +438,9 @@ module.exports = {
     },
     Game: {
         aliases: ["game"],
-        params: [],
+        params: ["[name]"],
         usageChar: "@",
-        helpText: "Sets Skarm's current game. Setting a blank game will reset it to the line count. This command is only usable by Skarm's moms.",
+        helpText: "Sets Skarm's current game. Omitting the game name will reset it to the spaghetti count. This command is only usable by Skarm's moms.",
         
         execute(bot, e) {
             let tokens = e.message.content.split(" ");

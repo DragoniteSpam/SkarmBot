@@ -52,6 +52,10 @@ const linkFunctions = function(guild) {
         }
     };
     
+    guild.getLineCount = function() {
+        return Object.keys(this.lines).length;
+    };
+    
     guild.getPermissions = function(user) {
         for (let mom in Constants.Moms) {
             if (Constants.Moms[mom].id == user.id) return Permissions.SUDO;
