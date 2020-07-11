@@ -66,14 +66,48 @@ class Skarm {
         // hash table (JS object); each alias of each command is added. It
         // returns one object for the general commands, and another for the
         // Help commands (without the bot prefix).
-        let mapping = {};
-        let helpMapping = {};
+        let mapping = { };
+        let helpMapping = { };
+        let badData = [ ];
         
         for (let cmd in commands) {
-            for (let alias of commands[cmd].aliases) {
-                mapping["e" + commands[cmd].usageChar + alias] = commands[cmd];
-                helpMapping[alias] = commands[cmd];
+            let cmdData = commands[cmd];
+            if (!Array.isArray(cmdData.aliases)) {
+                badData.push("Some command has no aliases (we'd tell you what it is, but it literally doesn't have a name");
+                continue;
             }
+            if (!Array.isArray(cmdData.params)) {
+                badData.push(cmdData.aliases[0] + " has no parameter list");
+                continue;
+            }
+            if (typeof(cmdData.usageChar) !== "string") {
+                badData.push(cmdData.aliases[0] + " has no usage character");
+                continue;
+            }
+            if (typeof(cmdData.helpText) !== "string") {
+                badData.push(cmdData.aliases[0] + " has no help text");
+                continue;
+            }
+            if (typeof(cmdData.execute) !== "function") {
+                badData.push(cmdData.aliases[0] + " has no execution function");
+                continue;
+            }
+            if (typeof(cmdData.help) !== "function") {
+                badData.push(cmdData.aliases[0] + " has no help function");
+                continue;
+            }
+            if (cmdData.ignoreHidden === undefined) {
+                badData.push(cmdData.aliases[0] + " has no ignoreHidden property");
+                continue;
+            }
+            for (let alias of cmdData.aliases) {
+                mapping["e" + cmdData.usageChar + alias] = cmdData;
+                helpMapping[alias] = cmdData;
+            }
+        }
+        
+        if (badData.length > 0) {
+            throw "Could not add commands:\n" + badData.join("\n");
         }
         
         return { cmd: mapping, help: helpMapping };
@@ -82,7 +116,7 @@ class Skarm {
     static addKeywords(keywords) {
         // keywords are similar to commands, but minus the prefix and the
         // documentation
-        let mapping = {};
+        let mapping = { };
         
         for (let kwd in keywords) {
             for (let alias of keywords[kwd].aliases) {

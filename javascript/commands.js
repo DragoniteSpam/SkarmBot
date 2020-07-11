@@ -134,7 +134,7 @@ module.exports = {
             
             Skarm.sendMessageDelay(e.message.channel, "Current permissions of **" +
                 member.name + "** in **" + e.message.guild.name + ":**\n" +
-                permNames
+                permNames.join(", ")
             );
         },
         
@@ -517,6 +517,7 @@ module.exports = {
         params: ["[name]"],
         usageChar: "@",
         helpText: "Sets Skarm's current game. Omitting the game name will reset it to the spaghetti count. This command is only usable by Skarm's moms.",
+        ignoreHidden: false,
         
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "Game set to **" + bot.setGame(commandParamString(e.message.content)) + "**.");
