@@ -155,7 +155,7 @@ class Bot {
             return false;
         }
         // don't respond to private messages (yet) //TODO
-        if (e.message.isPrivate){
+        if (e.message.isPrivate) {
             e.message.channel.sendMessage("private message responses not yet " +
                 "implemented"
             );
