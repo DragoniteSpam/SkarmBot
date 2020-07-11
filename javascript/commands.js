@@ -8,6 +8,17 @@ const Guilds = require("./guild.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 
+let commandParamTokens = function(message) {
+    let tokens = message.trim().split(" ");
+    tokens.shift();
+    return tokens;
+};
+let commandParamString = function(message) {
+    let tokens = message.trim().split(" ");
+    tokens.shift();
+    return tokens.join(" ");
+};
+
 module.exports = {
     // general
     Lines: {
@@ -35,7 +46,7 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            Web.google(bot, e, Skarm.commandParamString(e.message.content));
+            Web.google(bot, e, commandParamString(e.message.content));
         },
         
         help(bot, e) {
@@ -50,7 +61,7 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            Web.stackOverflow(bot, e, Skarm.commandParamString(e.message.content));
+            Web.stackOverflow(bot, e, commandParamString(e.message.content));
         },
         
         help(bot, e) {
@@ -70,8 +81,7 @@ module.exports = {
             if (userData.getSuggestionBlacklist()) return;
             
             let discordUserData = e.message.author;
-            let tokens = e.message.content.split(" ");
-            tokens.shift();
+            let tokens = commandParamTokens(e.message.content);
             if (tokens.length == 0) {
                 Skarm.sendMessageDelay(e.message.channel, "Please include a message with your suggestion!");
                 return;
@@ -91,7 +101,7 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            let params = Skarm.commandParamString(e.message.content.toLowerCase()).split(" ");
+            let params = commandParamTokens(e.message.content.toLowerCase());
             let userData = Users.get(e.message.author.id);
             let action = params[0];
             let term = params[1];
@@ -135,7 +145,7 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            Web.wolfy(bot, e, Skarm.commandParamString(e.message.content));
+            Web.wolfy(bot, e, commandParamString(e.message.content));
         },
         
         help(bot, e) {
@@ -150,7 +160,7 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            bot.xkcd.post(e.message.channel, Skarm.commandParamString(e.message.content).split(" ")[0]);
+            bot.xkcd.post(e.message.channel, commandParamTokens(e.message.content)[0]);
         },
         
         help(bot, e) {
@@ -201,15 +211,14 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)){
+			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)) {
 				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			let exp = e.message.content.split(" ")[1]-0;
-			Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id].exp=exp;
-			let lvl=Skinner.getLevel(exp);
-            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: "+ exp + "\nEXP required to go for next level: "+ (Skinner.getMinEXP(lvl)-exp) +
-			"\nCurrent level: "+ lvl);
+			let exp = commandParamTokens(e.message.content)[0] - 0;
+			Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id].exp = exp;
+			let lvl = Skinner.getLevel(exp);
+            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " + exp + "\nEXP required to go for next level: " + (Skinner.getMinEXP(lvl) - exp) + "\nCurrent level: " + lvl);
         },
         
         help(bot, e) {
@@ -227,10 +236,9 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-			let target = Skarm.commandParamString(e.message.content.toLowerCase()).split(" ")[0];
-			if(target == null)
-				target = e.message.author.username;
-            Skarm.sendMessageDelay(e.message.channel,"*hugs "+target+"*");
+			let target = commandParamTokens(e.message.content)[0];
+			if(target == null) target = e.message.author.username;
+            Skarm.sendMessageDelay(e.message.channel, "_hugs " + target + "_");
         },
         
         help(bot, e) {
@@ -245,9 +253,8 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-            let params = e.message.content.split(" ");
-            params.shift();
-            let cmd = params[0];
+            let cmd = commandParamTokens(e.message.content)[0];
+            
             if (!cmd) {
                 Skarm.sendMessageDelay(e.message.channel, "Skarm is a Discord bot made by Dragonite#7992 and Master9000#9716. Use the help command with a command name to see the documentation for it! (At some point in the future I'll compile a full list of the available commands, probably in the form of a wiki page on the Github because who wants to page through documentation in a Discord channel, but that day is not today.)");
                 return;
@@ -295,10 +302,11 @@ module.exports = {
 		ignoreHidden: true,
         
 		execute(bot,e) {
-			if(e.message.content.split(" ").length != 2) return;
+            let tokens = commandParamTokens(e.message.content);
+			if (tokens.length != 2) return;
             
             let channel = null;
-            let kanal = e.message.content.split(" ")[1].substring(2, e.message.content.split(" ")[1].length - 1);
+            let kanal = tokens[0].substring(2, tokens[0].length - 1);
             try {
                 channel = Guilds.client.Channels.get(kanal);
             } catch(err) {
@@ -339,32 +347,26 @@ module.exports = {
         },
     },
 	Shanties: {
-        aliases: ["shanties"],
+        aliases: ["shanties", "shanty"],
         params: ["query..."],
         usageChar: "!",
         helpText: "Prints a list of the shanties skarm knows and is thus likely to sing while under the influence",
         ignoreHidden: true,
         
         execute(bot, e) {
-			let target;
-			let words = e.message.content.split(" ");
-			if (words.length == 1) {
-					target = "";
-			} else {
-				target = e.message.content.substring(e.message.content.indexOf(words[1])).toLowerCase();
-			}
+			let target = commandParamString(e.message.content);
 			var names = bot.shanties.names;
 			var shanties = "";
 			for (let i in names) {
-				if (names[i].indexOf(target) == -1) continue;
-				shanties += names[i] + ",";
+				if (!names[i].includes(target)) continue;
+				shanties += names[i] + ", ";
 			}
 			if (shanties.length == 0) {
-				Skarm.sendMessageDelay(e.message.channel, "I can't recall any shanties with that in the title");
+				Skarm.sendMessageDelay(e.message.channel, "I can't recall any shanties with that in the title ヽ( ｡ ヮﾟ)ノ");
 				return;
 			}
 			
-			Skarm.sendMessageDelay(e.message.channel, "I recall the following shanties:\n" + shanties.substring(0,shanties.length - 2));
+			Skarm.sendMessageDelay(e.message.channel, "I recall the following shanties:\n" + shanties.substring(0,shanties.trim().length - 1));
 			return;
         },
         
@@ -469,9 +471,7 @@ module.exports = {
         helpText: "Sets Skarm's current game. Omitting the game name will reset it to the spaghetti count. This command is only usable by Skarm's moms.",
         
         execute(bot, e) {
-            let tokens = e.message.content.split(" ");
-            tokens.shift();
-            Skarm.sendMessageDelay(e.message.channel, "Game set to **" + bot.setGame(tokens.join(" ").trim()) + "**.");
+            Skarm.sendMessageDelay(e.message.channel, "Game set to **" + bot.setGame(commandParamString(e.message.content)) + "**.");
         },
         
         help(bot, e) {
@@ -617,7 +617,7 @@ module.exports = {
                 return;
 			}
 			
-            let user = e.message.content.split(" ")[1];
+            let user = commandParamTokens(e.message.content)[0];
             let discordUser = bot.client.Users.get(user);
             
             if (!discordUser) {
@@ -648,7 +648,7 @@ module.exports = {
                 return;
 			}
 			
-            let user = e.message.content.split(" ")[1];
+            let user = commandParamTokens(e.message.content)[1];
             let discordUser = bot.client.Users.get(user);
             
             if (!discordUser) {

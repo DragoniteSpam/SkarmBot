@@ -92,12 +92,6 @@ class Skarm {
         
         return mapping;
     }
-    
-    static commandParamString(message) {
-        let tokens = message.trim().split(" ");
-        tokens.shift();
-        return tokens.join(" ");
-    }
 }
 
 module.exports = Skarm;
