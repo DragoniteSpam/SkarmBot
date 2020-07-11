@@ -24,8 +24,9 @@ class Constants {
         };
         
         Constants.Channels = {
-            LOG: client.Channels.get("430545618314985504"), // #core-dump
-            DELETED: client.Channels.get("414291195028570112"),
+            LOG:            client.Channels.get("430545618314985504"), // #core-dump
+            DELETED:        client.Channels.get("414291195028570112"),
+            SUGGESTIONS:    client.Channels.get("484857065542647826"),
         };
         
         Constants.Vars = {

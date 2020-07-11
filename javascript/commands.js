@@ -72,7 +72,11 @@ module.exports = {
             let discordUserData = e.message.author;
             let tokens = e.message.content.split(" ");
             tokens.shift();
-            Skarm.sendMessageDelay(e.message.channel, "Suggestion from **" + discordUserData.username + "#" + discordUserData.discriminator + ":** " + tokens.join(" "));
+            if (tokens.length == 0) {
+                Skarm.sendMessageDelay(e.message.channel, "Please include a message with your suggestion!");
+                return;
+            }
+            Skarm.sendMessageDelay(Constants.Channels.SUGGESTIONS, "Suggestion from **" + discordUserData.username + "#" + discordUserData.discriminator + ":** " + tokens.join(" "));
         },
         
         help(bot, e) {
