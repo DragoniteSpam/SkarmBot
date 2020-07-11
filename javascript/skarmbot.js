@@ -29,6 +29,7 @@ class Bot {
             "skram!":       1,
             "birdbrain":    1,
             "spaghetti":    0.05,
+            "botface":      1,
         };
         
         this.validESReferences = {
