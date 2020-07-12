@@ -244,9 +244,9 @@ const linkFunctions = function(guild) {
             userEXPData.level = Skinner.getLevel(userEXPData.exp);
             userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level + 1);
             
-            e.message.channel.sendMessage("Level up! " + e.message.member.nickMention
-                + " is now **Level " + userEXPData.level + ".**"
-            );
+			//set to >1 in case of level 0 role or for a hidden "point of trust" level
+			if(this.announcesLevels)
+				e.message.channel.sendMessage("Level up! " + e.message.member.nickMention+ " is now **Level " + userEXPData.level + ".**");
             
             //assign level up roles if appropriate
             if (!this.rolesTable) {
@@ -298,8 +298,9 @@ class Guild {
 		this.expTable = { };
 		this.boostTable = { };
 		this.moderators = { };
+		this.announcesLevels=false;
 		
-        Guild.add(this);
+		Guild.add(this);
         
         linkFunctions(this);
     }

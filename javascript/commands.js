@@ -339,6 +339,31 @@ module.exports = {
         },
 	},
 	
+	GuildAnnouncementSwitch: {
+		aliases: ["announce","levelannounce"],
+        params: [],
+        usageChar: "@",
+        helpText: "Toggles the state of announcing when a user levels up in the guild",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)) {
+				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+				return;
+			}
+			Guilds.get(e.message.channel.guild_id).announcesLevels= !Guilds.get(e.message.channel.guild_id).announcesLevels;
+			if(Guilds.get(e.message.channel.guild_id).announcesLevels){
+				Skarm.sendMessageDelay(e.message.channel,"Level ups will now be announced in this guild");
+				return;
+			}
+			Skarm.sendMessageDelay(e.message.channel,"Level ups will no longer be announced in this guild");
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+	},
+	
 	// special
 	Hug: {
         aliases: ["hug"],
