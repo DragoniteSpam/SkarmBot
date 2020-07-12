@@ -66,6 +66,10 @@ const linkFunctions = function(user) {
     };
     
     user.memberOf = function(guild) {
+		if(guild.id==null)
+			return false;
+		if(User.client.Guilds.get(guild.id)==null)
+			return false;
         return !!User.client.Users.get(this.id).memberOf(User.client.Guilds.get(guild.id));
     };
     

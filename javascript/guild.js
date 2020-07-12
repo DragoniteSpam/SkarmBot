@@ -189,6 +189,20 @@ const linkFunctions = function(guild) {
         }
         if (!user.memberOf(this)) return Permissions.NOT_IN_GUILD;
         
+		let server=Guild.client.Guilds.get(this.id);
+		let members = server.members;
+		for(let i in members){
+			if(members[i].id==user.id){
+				let perms=members[i].permissionsFor(server);
+				if(perms.General.ADMINISTRATOR)
+					return Permissions.ADMIN | Permissions.MOD;
+				break;
+			}
+		}
+		
+		if(user.id in this.moderators)
+			return Permissions.MOD;
+		
         return Permissions.BASE;
     };
     
@@ -280,9 +294,10 @@ class Guild {
         this.actions = { };
         this.channelsPinUpvotes = { };
         
-		this.rolesTable = {};
-		this.expTable = {};
-		this.boostTable= {};
+		this.rolesTable = { };
+		this.expTable = { };
+		this.boostTable = { };
+		this.moderators = { };
 		
         Guild.add(this);
         

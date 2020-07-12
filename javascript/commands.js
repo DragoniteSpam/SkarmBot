@@ -112,30 +112,94 @@ module.exports = {
     },
     Sudo: {
         aliases: ["sudo", "su"],
-        params: [],
+        params: ["mention"],
         usageChar: "!",
         helpText: "Shows the user's access level (pleb, moderator, admin, Mom, etc).",
         ignoreHidden: true,
         
         execute(bot, e) {
-            let userData = Users.get(e.message.author.id);
-            let guildData = Guilds.get(e.message.author.id);
-            let member = e.message.author.memberOf(e.message.guild);
+            let guildData = Guilds.get(e.message.guild.id);
+			let words=commandParamTokens(e.message.content);
+			let userData = Users.get(e.message.author.id);
             
+			
+			let member;
+			if(words.length==1){
+				let id=words[0].replace("<","").replace("@","").replace("!","").replace(">","");
+				member=Guilds.client.Users.get(id).memberOf(e.message.guild);
+				userData=Users.get(id);
+				if(member==null){
+					Skarm.sendMessageDelay("Failed to find mentioned member. Please try again using the format `e!su <@userID>`");
+					return;
+				}
+			}else{
+				member = e.message.author.memberOf(e.message.guild);
+            }
             let permissions = guildData.getPermissions(userData);
             let permNames = [ ];
             
-            if (permissions & Permissions.NOT_IN_GUILD) permNames.push("NOT_IN_GUILD");
+            if (permissions === Permissions.NOT_IN_GUILD) permNames.push("NOT_IN_GUILD");
             if (permissions & Permissions.RESTIRCTED) permNames.push("RESTIRCTED");
             if (permissions & Permissions.BASE) permNames.push("BASE");
             if (permissions & Permissions.MOD) permNames.push("MOD");
             if (permissions & Permissions.ADMIN) permNames.push("ADMIN");
-            if (permissions & Permissions.SUDO) permNames.push("MOM");
+            if (permissions == Permissions.SUDO) permNames.push("MOM");
             
+			
             Skarm.sendMessageDelay(e.message.channel, "Current permissions of **" +
                 member.name + "** in **" + e.message.guild.name + ":**\n" +
                 permNames.join(", ")
             );
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+	Knight: {
+        aliases: ["mod", "knight"],
+        params: ["member"],
+        usageChar: "@",
+        helpText: "Administrator command for appointing and removing moderators.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+            let userData = Users.get(e.message.author.id);
+            let guildData = Guilds.get(e.message.guild.id);
+			let words=commandParamTokens(e.message.content);
+			if(!guildData.moderators)
+				guildData.moderators={ };
+			if(words.length==0){
+				let list = Object.keys(guildData.moderators);
+				if(list.length==0){
+					Skarm.sendMessageDelay(e.message.channel,"The administrators have not approved of any mods at this time. Use `e@mod @member` to add someone to the mod list.");
+					return;
+				}
+				
+				let mods = "";
+				for(let i in list){
+					var mod =Guilds.client.Users.get(list[i]);
+					if(mod!=null)
+						mods+= mod.username+", ";
+				}
+				Skarm.sendMessageDelay(e.message.channel,"The current moderators in this guild are: "+mods.substring(0,mods.length-2));
+				return;
+			}
+			//no param => list mods
+			
+			//mention => toggle
+            let member = words[0].replace("<","").replace("@","").replace("!","").replace(">","");
+			
+			Skarm.log("Toggling state of: "+member);
+			
+			if(member in guildData.moderators){
+				delete guildData.moderators[member];
+				Skarm.sendMessageDelay(e.message.channel,"Removed <@"+member+"> from the moderators list.");
+				
+			}else{
+				guildData.moderators[member]=Date.now();
+				Skarm.sendMessageDelay(e.message.channel,"Added <@"+member+"> to the moderators list.");
+			}
         },
         
         help(bot, e) {
