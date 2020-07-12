@@ -278,7 +278,7 @@ module.exports = {
 	// special
 	Hug: {
         aliases: ["hug"],
-        params: [""],
+        params: ["<victim>"],
         usageChar: "!",
         helpText: "Hugs a target, or defaults to the summoner.",
         ignoreHidden: true,
