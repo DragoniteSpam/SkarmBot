@@ -20,7 +20,7 @@ const Users = require("./javascript/user.js");
 const Guilds = require("./javascript/guild.js");
 
 // i'm in?
-const token = fs.readFileSync("..\\descrution.txt").toString();
+const token = fs.readFileSync("..\\token.txt").toString();
 
 // javascript
 String.prototype.replaceAll = function(search, replacement) {

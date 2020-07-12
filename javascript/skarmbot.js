@@ -164,15 +164,7 @@ class Bot {
         }
         
         guildData.updateEXP(e);
-        
-        // ignore messages that mention anyone or anything
-        if (e.message.mentions.length > 0 ||
-                e.message.mention_roles.length > 0 ||
-                e.message.mention_everyone
-            ) {
-            return false;
-        }
-        
+                
         // now we can start doing stuff
         let author = e.message.author;
         let text = e.message.content.toLowerCase();
@@ -192,6 +184,14 @@ class Bot {
             }
         }
         
+        // ignore messages that mention anyone or anything
+        if (e.message.mentions.length > 0 ||
+                e.message.mention_roles.length > 0 ||
+                e.message.mention_everyone
+            ) {
+            return false;
+        }
+		
         // ignore hidden channels after this
         if (this.channelsHidden[e.message.channel_id]) {
             return false;
