@@ -804,21 +804,66 @@ module.exports = {
 	},
     Welcome: {
         aliases: ["welcome"],
-        params: [],
+        params: ["enable", "disable", "set <message>"],
         usageChar: "@",
-        helpText: "Toggles the welcome message in the guild. If enabled, the welcome message will be sent to the channel this command was used in. This command is only usable by users with kicking boots.",
+        helpText: "Configure welcome messages for the guild\n"+
+		"Usage:\n`e@welcome enable`\n"+
+		"`e@welcome set Welcome <newmember>! Please don't be evil!`\n"+
+		"`e@welcome set -` removes welcome message from that channel",
         ignoreHidden: true,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.ADMIN)) return;
-            
-            if (bot.toggleGuild(bot.guildsWithWelcomeMessage, e.message.channel)) {
-                Skarm.sendMessageDelay(e.message.channel, "Welcome messages will now be sent to **" + e.message.channel.guild.name + "** in this channel!");
-            } else {
-                Skarm.sendMessageDelay(e.message.channel, "Welcome messages will no longer be sent to **" + e.message.channel.guild.name + ".**");
-            }
+			if(guildData.welcoming===undefined)
+				guildData.welcoming=true;
+			if(guildData.welcomes===undefined){
+				guildData.welcomes = { };
+			}
+            if (!guildData.hasPermissions(userData, Permissions.MOD)) return;
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+			if(tokens[0]=="enable" || tokens[0]=="e"){
+				guildData.welcoming=true;
+				Skarm.sendMessageDelay(e.message.channel,"Welcome messages have been enabled. Use e@welcome set to configure welcome messages");
+				return;
+			}
+			if(tokens[0]=="disable" || tokens[0]=="d"){
+				guildData.welcoming=false;
+				Skarm.sendMessageDelay(e.message.channel,"Welcome messages have been disabled. All messages configured with e@welcome will not be sent");
+				return;
+			}
+			if(tokens[0]=="set" || tokens[0]=="s"){
+				let welcome = e.message.content.trim().split(" ");
+				welcome.shift();
+				welcome.shift();
+				welcome = welcome.join(" ");
+				if(tokens.length==1){
+					Skarm.sendMessageDelay(e.message.channel, "Current welcome message is:\n"+guildData.welcomes[e.message.channel.id]);
+					return;
+				}
+				if(welcome.trim() =="-"){
+					delete guildData.welcomes[e.message.channel];
+					Skarm.sendMessageDelay(e.message.channel, "Welcome message removed");
+					return;
+				}
+				guildData.welcomes[e.message.channel.id]=welcome;
+				Skarm.sendMessageDelay(e.message.channel,"Welcome message set to: "+guildData.welcomes[e.message.channel.id]);
+				return;
+			}
+			
+			if(!guildData.welcoming){
+				Skarm.sendMessageDelay(e.message.channel, e.message.guild.name + " does not currently send welcome messages. Welcome messages can be turned on with e@welcome enable");
+				return;
+			}
+			let retStr="";
+			for(let channel in guildData.welcomes){
+				retStr+="<#"+channel+">"+ guildData.welcomes[channel]+"\n";
+			}
+			if(retStr==""){
+				Skarm.sendMessageDelay(e.message.channel,"There are currently no welcome messages in "+e.message.guild.name+". Sending any newly configured messages is currently "+ ((guildData.welcoming)?"enabled":"disabled"));
+				return;
+			}
+			Skarm.sendMessageDelay(e.message.channel,"Current welcome messages in "+e.message.guild.name+":\n"+retStr);
         },
         
         help(bot, e) {

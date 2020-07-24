@@ -300,6 +300,9 @@ class Guild {
 		this.moderators = { };
 		this.announcesLevels=false;
 		
+		this.welcoming = true;
+		this.welcomes = { };
+		
 		Guild.add(this);
         
         linkFunctions(this);

@@ -110,11 +110,16 @@ class Bot {
     }
     
     OnMemberAdd(e) {
-        let welcomeChannel = this.client.Channels.get(this.guildsWithWelcomeMessage[e.guild.id]);
-        if (welcomeChannel) {
-            Skarm.sendMessageDelay(welcomeChannel, e.member.mention + ", Welcome to **" + e.guild.name + "!** Please don't be evil!");
-        } else {
-        }
+        let guildData = Guilds.get(e.guild.id);
+		if(guildData.welcoming){
+			for(let channel in guildData.welcomes){
+				let sms = guildData.welcomes[channel];
+				while(sms.indexOf("<newmember>")>-1){
+					sms=sms.replace("<newmember>","<@"+e.member.id+">");
+				}
+				this.client.Channels.get(channel).sendMessage(sms);
+			}
+		}
     }
     
 	OnMemberUpdate(e) {
