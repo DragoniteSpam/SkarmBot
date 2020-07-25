@@ -730,8 +730,7 @@ module.exports = {
                 return;
 			}
 			
-			Guilds.save();
-			Users.save();
+            bot.save();
 			
 			Skarm.sendMessageDelay(e.message.channel, "Data has been saved.");
 		},
@@ -885,8 +884,7 @@ module.exports = {
                 return;
             }
             
-            Guilds.saveDebug();
-            Users.saveDebug();
+            bot.saveDebug();
             
             Skarm.sendMessageDelay(e.message.channel, "Saved the debug things!");
         },

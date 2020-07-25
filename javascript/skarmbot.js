@@ -13,13 +13,12 @@ const XKCD = require("./xkcd.js");
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
 
-let timer30min = setInterval(function() {
-	Guilds.save();
-    Users.save();
-}, 1800000);
-
 class Bot {
     constructor(client) {
+        this.timer30min = setInterval(function() {
+            this.save();
+        }.bind(this), 10000);
+
         this.client = client;
         this.nick = "Skarm";
         
@@ -345,6 +344,16 @@ class Bot {
         }
         
         return false;
+    }
+    
+    save() {
+        Guilds.save();
+        Users.save();
+    }
+    
+    saveDebug() {
+        Guilds.saveDebug();
+        Users.saveDebug();
     }
     
     setGame(game) {

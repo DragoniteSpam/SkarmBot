@@ -189,12 +189,12 @@ const linkFunctions = function(guild) {
         }
         if (!user.memberOf(this)) return Permissions.NOT_IN_GUILD;
         
-		let server=Guild.client.Guilds.get(this.id);
+		let server = Guild.client.Guilds.get(this.id);
 		let members = server.members;
-		for(let i in members){
-			if(members[i].id==user.id){
+		for (let i in members) {
+			if (members[i].id == user.id) {
 				let perms=members[i].permissionsFor(server);
-				if(perms.General.ADMINISTRATOR)
+				if (perms.General.ADMINISTRATOR)
 					return Permissions.ADMIN | Permissions.MOD;
 				break;
 			}
