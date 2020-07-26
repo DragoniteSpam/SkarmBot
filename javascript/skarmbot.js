@@ -244,9 +244,6 @@ class Bot {
         return false;
     }
     
-    OnMessageReactionAdd(e) {
-        
-    }
     
     // functionality
     censor(e) {

@@ -69,9 +69,6 @@ client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
 	bot.OnMemberUpdate(e);
 });
 
-client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
-	bot.OnMessageReaction(e);
-});
 
 client.Dispatcher.on(events.DISCONNECTED, e => {
 	console.log("Error: disconnected at " + Date.now());
