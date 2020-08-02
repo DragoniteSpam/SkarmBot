@@ -669,6 +669,7 @@ module.exports = {
         usageChar: "@",
         helpText: "Toggles the censor in the guild. This command is only usable by users with kicking boots. Hint: if you wish to cause mass pandemonium, be generous with your kicking boots.",
         ignoreHidden: true,
+        perms: Permissions.MOD,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -692,6 +693,7 @@ module.exports = {
         usageChar: "@",
         helpText: "Terminates the process running the bot safely. Use this to ensure that data is saved before restarting for maintainance or any other reasons. ",
         ignoreHidden: false,
+        perms: Permissions.MOM,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -720,6 +722,7 @@ module.exports = {
         usageChar: "@",
         helpText: "Sets Skarm's current game. Omitting the game name will reset it to the spaghetti count. This command is only usable by Skarm's moms.",
         ignoreHidden: false,
+        perms: Permissions.MOM,
         
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "Game set to **" + bot.setGame(commandParamString(e.message.content)) + "**.");
@@ -735,6 +738,7 @@ module.exports = {
         usageChar: "@",
         helpText: "Toggles visibility of the bot in the channel this is used in. This command is only usable by users with kicking boots.",
         ignoreHidden: false,
+        perms: Permissions.MOD,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -758,6 +762,7 @@ module.exports = {
         usageChar: "@",
         helpText: "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this.",
         ignoreHidden: true,
+        perms: Permissions.MOD,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -781,6 +786,7 @@ module.exports = {
         usageChar: "@",
         helpText: "Toggles the pinning of messages with the required number of upvote reactions in the channel. This command is only usable by users with kicking boots.",
         ignoreHidden: true,
+        perms: Permissions.MOD,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -806,6 +812,7 @@ module.exports = {
         usageChar: "@",
         helpText: "Terminates the process running the bot safely, but with the exit code to restart operation. Use this to ensure that data is saved before restarting for updates. Note that this will only work if the bot is started from `launcher.bat`, which it always should be.",
         ignoreHidden: false,
+        perms: Permissions.MOM,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -834,6 +841,7 @@ module.exports = {
 		usageChar: "@",
 		helpText: "Save skarm's data in memory to storage. Saving data will automatically run during a restart or shutdown command",
 		ignoreHidden: false,
+        perms: Permissions.MOM,
 		
 		execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -858,6 +866,7 @@ module.exports = {
 		usageChar: "@",
 		helpText: "Blacklist a user from submittion suggestions. This command is only usable by Skarm's moms.",
 		ignoreHidden: false,
+        perms: Permissions.MOM,
 		
 		execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -889,6 +898,7 @@ module.exports = {
 		usageChar: "@",
 		helpText: "Whitelist a user for submittion suggestions. This command is only usable by Skarm's moms.",
 		ignoreHidden: false,
+        perms: Permissions.MOM,
 		
 		execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -923,6 +933,7 @@ module.exports = {
 		"`e@welcome set Welcome <newmember>! Please don't be evil!`\n"+
 		"`e@welcome set -` removes welcome message from that channel",
         ignoreHidden: true,
+        perms: Permissions.ADMIN,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
@@ -988,6 +999,7 @@ module.exports = {
         usageChar: "@",
         helpText: "Debug command to write the user and guild data to files, unencrypted.",
         ignoreHidden: false,
+        perms: Permissions.MOM,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);

@@ -175,15 +175,22 @@ class Bot {
         let first = text.split(" ")[0];
         
         // this is where all of the command stuff happens
-        if (this.mapping.cmd[first]) {
-            if (!this.channelsHidden[e.message.channel_id] ||
-                    !this.mapping.cmd[first].ignoreHidden
-                ) {
+        let cmdData = this.mapping.cmd[first];
+        if (cmdData) {
+            if (!this.channelsHidden[e.message.channel_id] || !cmdData.ignoreHidden) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and
                 // you don't otherwise have a way to reference it
-                this.mapping.cmd[first].execute(this, e);
+                Skarm.sendMessageDelay(e.message.channel, cmdData.perms);
+                if (guildData.hasPermissions(userData, cmdData.perms)) {
+                    cmdData.execute(this, e);
+                } else {
+                    Skarm.sendMessageDelay(e.message.channel, "**" + author.username +
+                        "** was not found in the sudoers file. This incident will" +
+                        " be reported. Prepare to get coal in your christmas" +
+                        " stocking this year, " + author.username + ".");
+                }
                 return true;
             }
         }

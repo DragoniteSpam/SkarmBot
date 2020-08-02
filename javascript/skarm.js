@@ -1,6 +1,7 @@
 "use strict";
 const fs = require("fs");
 const Constants = require("./constants.js");
+const Permissions = require("./permissions.js");
 
 // Static methods. Static methods everywhere.
 class Skarm {
@@ -100,6 +101,9 @@ class Skarm {
             if (cmdData.ignoreHidden === undefined) {
                 badData.push(cmdData.aliases[0] + " has no ignoreHidden property");
                 continue;
+            }
+            if (cmdData.perms === undefined) {
+                cmdData.perms = Permissions.BASE;
             }
             for (let alias of cmdData.aliases) {
                 mapping["e" + cmdData.usageChar + alias] = cmdData;

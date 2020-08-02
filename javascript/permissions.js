@@ -7,4 +7,7 @@ module.exports = {
     MOD:                    0x0004,
     ADMIN:                  0x0008,
     SUDO:                   0xfffe,
+    MOM:                    0xfffe,
+    SU:                     0xfffe,
+    DO: /* a deer, a female deer */ 0xfffe,
 };

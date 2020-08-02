@@ -184,6 +184,7 @@ const linkFunctions = function(guild) {
     };
     
     guild.getPermissions = function(user) {
+        return Permissions.BASE;
         for (let mom in Constants.Moms) {
             if (Constants.Moms[mom].id == user.id) return Permissions.SUDO;
         }
@@ -207,7 +208,7 @@ const linkFunctions = function(guild) {
     };
     
     guild.hasPermissions = function(user, perm) {
-        return !!(this.getPermissions(user) & perm);
+        return (this.getPermissions(user) >= perm);
     };
     
     guild.togglePinnedChannel = function(channel) {
