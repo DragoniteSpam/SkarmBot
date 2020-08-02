@@ -243,7 +243,8 @@ module.exports = {
                 }
                 return;
             }
-            Skarm.sendMessageDelay(e.message.channel, "Not the correct usage for this command! Consult the help documentation for information on how to use it.");
+            
+            Skarm.erroneousCommandHelpPlease(e.message.channel, "summon");
         },
         
         help(bot, e) {

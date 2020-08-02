@@ -62,6 +62,13 @@ class Skarm {
         Skarm.sendMessageDelay(e.message.channel, helpString);
     }
     
+    
+    static erroneousCommandHelpPlease(channel, word) {
+        this.sendMessageDelay(channel, "Not the correct usage for this command! " +
+            "Consult the help documentation (`e!help " + word + "`) for " +
+            "information on how to use it.");
+    }
+    
     static addCommands(commands) {
         // this function takes an object of Command objects and adds them to a
         // hash table (JS object); each alias of each command is added. It
