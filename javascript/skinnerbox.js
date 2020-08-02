@@ -36,4 +36,5 @@ module.exports = {
     getMinEXP: function(level) {
         return EXPREQ[level];
     },
+	EXPREQ,
 };

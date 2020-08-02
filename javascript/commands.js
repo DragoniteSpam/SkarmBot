@@ -338,7 +338,83 @@ module.exports = {
             Skarm.help(this, e);
         },
 	},
-	
+	ViewRoleReward: {
+		aliases: ["rolerewards"],
+		params: [],
+		usageChar: "!",
+		helpText: "Displays roles rewarded for leveling up",
+		ignoreHidden:true,
+		execute(bot,e){
+			let roles = Guilds.get(e.message.guild.id).rolesTable;
+			if(Object.keys(roles).length==0){
+				Skarm.sendMessageDelay(e.message.channel,"No roles configured to be rewarded from leveling up in "+e.message.guild.name);
+				return;
+			}
+			let msg = "\n>>> ";
+			for(let i in roles){
+				msg+=i+"=>\t<@&"+roles[i]+">";
+			}
+			Skarm.sendMessageDelay(e.message.channel,"Roles rewarded from leveling up in "+e.message.guild.name+msg);
+		},
+		help(bot, e) {
+            Skarm.help(this, e);
+        },
+	},
+	SetRoleReward: {
+		aliases: ["setlevelreward","levelreward","reward","slr"],
+		params: ["level","@role | unbind"],
+		usageChar:"@",
+		helpText: "Configures a role reward for reaching a certain level. Only one role can be assigned to be granted at any given level. Current maximum level is: "+Skinner.EXPREQ.length,
+		ignoreHidden:true,
+		execute(bot, e) {
+			if(e.message.guild==null){
+				Skarm.sendMessageDelay(e.message.channel, "Error: guild not found.");
+				return;
+			}
+			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)) {
+				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+				return;
+			}
+			let pars = commandParamTokens(e.message.content);
+			if(pars.length!=2){
+				if(pars.length==0){
+					let roles = Guilds.get(e.message.guild.id).rolesTable;
+					if(Object.keys(roles).length==0){
+						Skarm.sendMessageDelay(e.message.channel,"No roles configured to be rewarded from leveling up in "+e.message.guild.name);
+						return;
+					}
+					let msg = "\n>>> ";
+					for(let i in roles){
+						msg+=i+"=>\t<@&"+roles[i]+">";
+					}
+					Skarm.sendMessageDelay(e.message.channel,"Roles rewarded from leveling up in "+e.message.guild.name+msg);
+					return;
+				}
+				Skarm.help(this,e);
+				return;
+			}
+			if(!((pars[0]-0)<Skinner.EXPREQ.length && (pars[0]-0)>=0)){
+				Skarm.help(this,e);
+				return;
+			}
+			if(pars[1]==="unbind"){
+				delete Guilds.get(e.message.guild.id).rolesTable[pars[0]-0];
+				Skarm.sendMessageDelay(e.message.channel,"Unbound role attached to level "+pars[0]);
+				return;
+			}
+			pars[1]=pars[1].replace("<","").replace("@","").replace("&","").replace(">","");
+			if(pars[1]>0){
+				Guilds.get(e.message.guild.id).rolesTable[pars[0]-0]=pars[1];
+				Skarm.sendMessageDelay(e.message.channel,"Set level "+pars[0]+" to reward <@&"+pars[1]+">");
+				return;
+			}
+			Skarm.help(bot,e);
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+	},
 	GuildAnnouncementSwitch: {
 		aliases: ["announce","levelannounce"],
         params: [],
@@ -363,7 +439,24 @@ module.exports = {
             Skarm.help(this, e);
         },
 	},
-	
+	RoleRefresh: {
+		aliases: ["refresh","roleRefresh"],
+        params: [],
+        usageChar: "!",
+        helpText: "Refreshes level up role assignments (Role rewards need to be configured for this to do anything useful)",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+			let guile = Guilds.get(e.message.channel.guild_id);
+			guile.roleCheck(e,guile.expTable[e.message.author.id]);
+			Skarm.sendMessageDelay("Refreshed your roles!");
+			return;
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+	},
 	// special
 	Hug: {
         aliases: ["hug"],
