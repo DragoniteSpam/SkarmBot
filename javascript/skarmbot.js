@@ -182,7 +182,6 @@ class Bot {
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and
                 // you don't otherwise have a way to reference it
-                Skarm.sendMessageDelay(e.message.channel, cmdData.perms);
                 if (guildData.hasPermissions(userData, cmdData.perms)) {
                     cmdData.execute(this, e);
                 } else {

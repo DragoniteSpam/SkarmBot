@@ -674,7 +674,6 @@ module.exports = {
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
             
             if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
@@ -698,10 +697,6 @@ module.exports = {
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
-                Skarm.log("False god <@" + e.message.author.id + "> tried to shut me down");
-                return;
-            }
             
             //saveData
 			Guilds.save();
@@ -725,7 +720,8 @@ module.exports = {
         perms: Permissions.MOM,
         
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel, "Game set to **" + bot.setGame(commandParamString(e.message.content)) + "**.");
+            Skarm.sendMessageDelay(e.message.channel, "Game set to **" +
+                bot.setGame(commandParamString(e.message.content)) + "**.");
         },
         
         help(bot, e) {
@@ -738,12 +734,11 @@ module.exports = {
         usageChar: "@",
         helpText: "Toggles visibility of the bot in the channel this is used in. This command is only usable by users with kicking boots.",
         ignoreHidden: false,
-        perms: Permissions.MOD,
+        perms: Permissions.ADMIN,
         
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.ADMIN)) return;
             
             if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
@@ -767,7 +762,6 @@ module.exports = {
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
             
             if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
@@ -791,7 +785,6 @@ module.exports = {
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.BASE)) return;
             
             let guild = Guilds.get(e.message.guild.id);
             
@@ -817,10 +810,6 @@ module.exports = {
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
-                Skarm.log("False god <@" + e.message.author.id + "> tried to restart me");
-                return;
-            }
             
             //saveData
 			Guilds.save();
@@ -846,11 +835,7 @@ module.exports = {
 		execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
-                Skarm.log("False god <@" + e.message.author.id + "> tried to have me quicksave");
-                return;
-			}
-			
+            
             bot.save();
 			
 			Skarm.sendMessageDelay(e.message.channel, "Data has been saved.");
@@ -871,11 +856,7 @@ module.exports = {
 		execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
-                Skarm.log("False god <@" + e.message.author.id + "> tried to blacklist someone from submitting suggestions.");
-                return;
-			}
-			
+            
             let user = commandParamTokens(e.message.content)[0];
             let discordUser = bot.client.Users.get(user);
             
@@ -903,11 +884,7 @@ module.exports = {
 		execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
-                Skarm.log("False god <@" + e.message.author.id + "> tried to whitelist someone from submitting suggestions.");
-                return;
-			}
-			
+            
             let user = commandParamTokens(e.message.content)[1];
             let discordUser = bot.client.Users.get(user);
             
@@ -943,7 +920,7 @@ module.exports = {
 			if(guildData.welcomes===undefined){
 				guildData.welcomes = { };
 			}
-            if (!guildData.hasPermissions(userData, Permissions.MOD)) return;
+            
             let tokens = commandParamTokens(e.message.content.toLowerCase());
 			if(tokens[0]=="enable" || tokens[0]=="e"){
 				guildData.welcoming=true;
@@ -1004,10 +981,6 @@ module.exports = {
         execute(bot, e) {
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
-            if (!guildData.hasPermissions(userData, Permissions.SUDO)) {
-                Skarm.log("False god <@" + e.message.author.id + "> tried to persuade me to write out the files unencrypted.");
-                return;
-            }
             
             bot.saveDebug();
             
