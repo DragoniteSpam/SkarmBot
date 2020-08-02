@@ -24,11 +24,12 @@ class Bot {
         
         // referneces: you will speak if these are mentioned
         this.validNickReferences = {
-            "skarm":        1,
-            "skram!":       1,
-            "birdbrain":    1,
-            "spaghetti":    0.05,
-            "botface":      1,
+            "skarm":        					1,
+            "skram!":       					1,
+            "birdbrain":    					1,
+            "spaghetti":    					0.05,
+            "botface":      					1,
+			"something completely different":	1,
         };
         
         this.validESReferences = {
@@ -275,7 +276,7 @@ class Bot {
     parrot(e) {
         if (this.mentions(e, this.validNickReferences)) {
 			//once skarm starts singing, he'd rather do that than talk
-			if (this.shanties.isSinging && Math.random()>0.25) {
+			if (this.shanties.isSinging && Math.random()<this.shanties.ivanhoe * this.shanties.drinkCount()) {
 				return this.singShanty(e);
             }
 			

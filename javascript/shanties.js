@@ -9,6 +9,7 @@ class ShantyCollection {
         this.scan();
 		this.isSinging = false;
 		this.activeSong = -1;
+		this.ivanhoe=1/16;
     }
     
     load(filename) {

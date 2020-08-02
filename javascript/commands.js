@@ -110,7 +110,27 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    Sudo: {
+    Skarll: {
+        aliases: ["skarm"],
+        params: [],
+        usageChar: "!",
+        helpText: "Provides a nanosecondly forecast of what the odds are that skarm will say something stupid (100%) and more importantly: what stupid thing Skarm'll say.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+			let shanty = Math.floor(bot.shanties.ivanhoe*bot.shanties.drinkCount()*100);
+			let skyrim=0;
+            Skarm.sendMessageDelay(e.message.channel, "Current shanty forecast: **" +shanty+"%**\n"+
+			"Something completely normal: 0%\n"+
+			"Something completely different: "+(100-shanty-skyrim)+"%"
+            );
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+	Sudo: {
         aliases: ["sudo", "su"],
         params: ["mention"],
         usageChar: "!",
