@@ -63,9 +63,9 @@ class Skarm {
     }
     
     
-    static erroneousCommandHelpPlease(channel, word) {
+    static erroneousCommandHelpPlease(channel, cmd) {
         this.sendMessageDelay(channel, "Not the correct usage for this command! " +
-            "Consult the help documentation (`e!help " + word + "`) for " +
+            "Consult the help documentation (`e!help " + cmd.aliases[0] + "`) for " +
             "information on how to use it.");
     }
     

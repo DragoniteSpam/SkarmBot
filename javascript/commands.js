@@ -244,7 +244,7 @@ module.exports = {
                 return;
             }
             
-            Skarm.erroneousCommandHelpPlease(e.message.channel, "summon");
+            Skarm.erroneousCommandHelpPlease(e.message.channel, this);
         },
         
         help(bot, e) {
