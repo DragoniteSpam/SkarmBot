@@ -36,6 +36,9 @@ client.connect({
 
 let bot;
 
+//last Connection, last Disconnect
+let uptimeController= [0,0];
+
 client.Dispatcher.on(events.GATEWAY_READY, e => {
     bot = new SkarmBot(client);
     Constants.initialize(client);
@@ -44,6 +47,10 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     Guilds.initialize(client);
 	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
     bot.setGame();
+	uptimeController[0]=Date.now();
+	if(uptimeController[1]>0){
+		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
+	}
 });
 
 // after GATEWAY_READY (becasue it's got to initalize so many different things)
@@ -71,5 +78,6 @@ client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
 
 
 client.Dispatcher.on(events.DISCONNECTED, e => {
-	console.log("Error: disconnected at " + Date.now());
+	console.log("Error: disconnected at " + (new Date()).toString());
+	uptimeController[1]=Date.now();
 });

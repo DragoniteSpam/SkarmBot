@@ -72,7 +72,7 @@ const linkFunctions = function(guild) {
         return Object.keys(this.actions).length;
     };
     
-    guild.getRandomAction = function(e) {
+	guild.getRandomAction = function(e) {
         let message = e.message.content;
         message = message.substring(1, message.length - 1).toLowerCase();
         let keywords = message.split(" ");
@@ -116,7 +116,7 @@ const linkFunctions = function(guild) {
         return "_" + currentMessage + "_";
     };
     
-    guild.learnLine = function(e) {
+	guild.learnLine = function(e) {
         if (messageIsAction(e.message.content)) {
             guild.learnAction(e);
             return;
@@ -125,7 +125,7 @@ const linkFunctions = function(guild) {
         this.pruneLines();
     };
     
-    guild.pruneLines = function() {
+	guild.pruneLines = function() {
         let keys = Object.keys(this.lines);
         if (keys.length <= Constants.Vars.LOG_CAPACITY) {
             return;
@@ -136,11 +136,11 @@ const linkFunctions = function(guild) {
         }
     };
     
-    guild.getLineCount = function() {
+	guild.getLineCount = function() {
         return Object.keys(this.lines).length;
     };
     
-    guild.getRandomLine = function(e) {
+	guild.getRandomLine = function(e) {
         if (messageIsAction(e.message.content)) return this.getRandomAction(e);
         
         let keywords = e.message.content.toLowerCase().split(" ");
@@ -183,7 +183,7 @@ const linkFunctions = function(guild) {
         return currentMessage;
     };
     
-    guild.getPermissions = function(user) {
+	guild.getPermissions = function(user) {
         for (let mom in Constants.Moms) {
             if (Constants.Moms[mom].id == user.id) return Permissions.SUDO;
         }
@@ -206,17 +206,17 @@ const linkFunctions = function(guild) {
         return Permissions.BASE;
     };
     
-    guild.hasPermissions = function(user, perm) {
+	guild.hasPermissions = function(user, perm) {
         return (this.getPermissions(user) >= perm);
     };
     
-    guild.togglePinnedChannel = function(channel) {
+	guild.togglePinnedChannel = function(channel) {
         if (!this.channelsPinUpvotes) this.channelsPinUpvotes = { };
         this.channelsPinUpvotes[channel] = !this.channelsPinUpvotes[channel];
         return this.channelsPinUpvotes[channel];
     };
     
-    guild.updateEXP = function(e) {
+	guild.updateEXP = function(e) {
 		if (!this.expTable) {
 			this.expTable = { };
 		}
@@ -240,9 +240,10 @@ const linkFunctions = function(guild) {
         userEXPData.lastMessage = Date.now();
         
         // level up?
-        if(userEXPData.exp >= userEXPData.nextLevelEXP) {
-            userEXPData.level = Skinner.getLevel(userEXPData.exp);
-            userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level + 1);
+		let oldLevel=userEXPData.level;
+		userEXPData.level = Skinner.getLevel(userEXPData.exp);
+        if(userEXPData.exp >= userEXPData.nextLevelEXP || isNaN(userEXPData.nextLevelEXP) || oldLevel!=userEXPData.level) {
+            userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level);
             
 			//set to >1 in case of level 0 role or for a hidden "point of trust" level
 			if(this.announcesLevels)
@@ -305,6 +306,7 @@ class Guild {
         this.channelsPinUpvotes = { };
         
 		this.rolesTable = { };
+		this.roleStack=false;	
 		this.expTable = { };
 		this.boostTable = { };
 		this.moderators = { };

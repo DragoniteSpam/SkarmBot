@@ -306,11 +306,13 @@ module.exports = {
         ignoreHidden: true,
         
         execute(bot, e) {
-			let exp = Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id].exp;
-			let lvl = Skinner.getLevel(exp);
+			let user = Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id];
+			let exp = user.exp;
+			let lvl = user.level;//Skinner.getLevel(exp);
+			let toNextLvl = user.nextLevelEXP-exp;
             Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " +
                 exp + "\nEXP required to go for next level: " +
-                (Skinner.getMinEXP(lvl) - exp) + "\nCurrent level: " + lvl);
+                toNextLvl + "\nCurrent level: " + lvl);
         },
         
         help(bot, e) {
@@ -329,10 +331,46 @@ module.exports = {
 				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			let exp = commandParamTokens(e.message.content)[0] - 0;
-			Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id].exp = exp;
-			let lvl = Skinner.getLevel(exp);
-            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " + exp + "\nEXP required to go for next level: " + (Skinner.getMinEXP(lvl) - exp) + "\nCurrent level: " + lvl);
+			let user = Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id];
+			user.exp = commandParamTokens(e.message.content)[0] - 0;
+			user.level = Skinner.getLevel(user.exp);
+			user.nextLevelEXP = Skinner.getMinEXP(user.level);
+            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " + user.exp + "\nEXP required to go for next level: " + (user.nextLevelEXP - user.exp) + "\nCurrent level: " + user.level);
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+	},
+	RoleStack: {
+		aliases: ["rolestack"],
+        params: ["enable/disable"],
+        usageChar: "@",
+        helpText: "Toggles whether or not to keep previous roles when rewarding a new level up role.",
+        ignoreHidden: true,
+        
+        execute(bot, e) {
+			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)) {
+				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+				return;
+			}
+			let guildData = Guilds.get(e.message.channel.guild_id);
+			let tokens = commandParamTokens(e.message.content);
+			if(tokens.length==0){
+				Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+((guildData.roleStack)?" currently rewards":" doesn't currently reward")+" stacked roles");
+				return;
+			}
+			if(tokens[0]=="enable" || tokens[0]=="e"){
+				guildData.roleStack=true;
+				Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+" will now reward stacked roles");
+				return;
+			}
+			if(tokens[0]=="disable" || tokens[0]=="d"){
+				guildData.roleStack=false;
+				Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+" will not reward stacked roles");
+				return;
+			}
+			Skarm.help(this,e);
         },
         
         help(bot, e) {
@@ -441,7 +479,7 @@ module.exports = {
         },
 	},
 	RoleRefresh: {
-		aliases: ["refresh","roleRefresh"],
+		aliases: ["role","refresh","rolerefresh"],
         params: [],
         usageChar: "!",
         helpText: "Refreshes level up role assignments (Role rewards need to be configured for this to do anything useful)",
@@ -450,7 +488,7 @@ module.exports = {
         execute(bot, e) {
 			let guile = Guilds.get(e.message.channel.guild_id);
 			guile.roleCheck(e,guile.expTable[e.message.author.id]);
-			Skarm.sendMessageDelay("Refreshed your roles!");
+			Skarm.sendMessageDelay(e.message.channel,"Refreshed your roles!");
 			return;
         },
         
