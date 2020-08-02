@@ -486,7 +486,7 @@ module.exports = {
             let cmd = commandParamTokens(e.message.content)[0];
             
             if (!cmd) {
-                Skarm.sendMessageDelay(e.message.channel, "Skarm is a Discord bot made by Dragonite#7992 and Master9000#9716. Use the help command with a command name to see the documentation for it! (At some point in the future I'll compile a full list of the available commands, probably in the form of a wiki page on the Github because who wants to page through documentation in a Discord channel, but that day is not today.)");
+                Skarm.sendMessageDelay(e.message.channel, "Skarm is a Discord bot made by Dragonite#7992 and Master9000#9716. Use the help command with a command name to see the documentation for it! Type either `e!help [command-name]` to get help on a specific command, or `e!help ?` to see a list of all available commands.");
                 return;
             }
             
@@ -494,10 +494,30 @@ module.exports = {
                 bot.mapping.help[cmd].help(bot, e);
                 return;
             }
+            
             if (bot.mapping.cmd[cmd]) {
                 bot.mapping.cmd[cmd].help(bot, e);
                 return;
             }
+            
+            if (cmd === "?") {
+                let keys = Object.keys(bot.mapping.unaliased);
+                keys.sort();
+                let alphabet = [];
+                
+                for (let i = 0; i < keys.length; i++) {
+                    if (alphabet.length == 0 || alphabet[alphabet.length - 1].charAt(0) != keys[i].charAt(0)) {
+                        alphabet[alphabet.length] = keys[i];
+                    } else {
+                        alphabet[alphabet.length - 1] += ", " + keys[i];
+                    }
+                }
+                
+                Skarm.sendMessageDelay(e.message.channel, "Available commands: ```" +
+                    alphabet.join("\n") + "```\nSome commands have additional aliases.");
+                return;
+            }
+            
             Skarm.sendMessageDelay(e.message.channel, "Command not found: " + cmd + ". Use the help command followed by the name of the command you wish to look up.");
         },
         

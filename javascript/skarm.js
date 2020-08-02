@@ -67,6 +67,7 @@ class Skarm {
         // returns one object for the general commands, and another for the
         // Help commands (without the bot prefix).
         let mapping = { };
+        let raw = { };
         let helpMapping = { };
         let badData = [ ];
         
@@ -104,13 +105,15 @@ class Skarm {
                 mapping["e" + cmdData.usageChar + alias] = cmdData;
                 helpMapping[alias] = cmdData;
             }
+            // this is without the e and the usage char
+            raw[cmdData.aliases[0]] = cmdData;
         }
         
         if (badData.length > 0) {
             throw "Could not add commands:\n" + badData.join("\n");
         }
         
-        return { cmd: mapping, help: helpMapping };
+        return { cmd: mapping, help: helpMapping, unaliased: raw };
     }
     
     static addKeywords(keywords) {
