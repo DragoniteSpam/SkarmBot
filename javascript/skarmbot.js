@@ -35,6 +35,11 @@ class Bot {
         this.validESReferences = {
             "balgruuf":     0.25,
             "ulfric":       0.25,
+            "dovah":      	0.45,
+            "whiterun":     0.25,
+            "imperial":     0.05,
+            "war":          0.05,
+            "ysmir":        0.50,
         };
         
         this.validShantyReferences = {
@@ -60,6 +65,8 @@ class Bot {
         this.minimumMessageReplyLength = 3;
         
         this.shanties = new ShantyCollection();
+		this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
+		this.skyrimOddsModifier = 1/20; 
         this.channelsWhoLikeXKCD = {};
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
@@ -217,6 +224,7 @@ class Bot {
         this.summons(e);
         
         if (this.mentions(e, this.validESReferences)) {
+			this.returnSkyrim(e);
             return true;
         }
         
@@ -276,9 +284,17 @@ class Bot {
     parrot(e) {
         if (this.mentions(e, this.validNickReferences)) {
 			//once skarm starts singing, he'd rather do that than talk
-			if (this.shanties.isSinging && Math.random()<this.shanties.ivanhoe * this.shanties.drinkCount()) {
+			let seed = Math.random();
+			if (this.shanties.isSinging && seed<this.shanties.ivanhoe * this.shanties.drinkCount()) {
 				return this.singShanty(e);
             }
+			//reset the seed weight
+			if(this.shanties.isSigning)
+				seed = (seed + this.shanties.ivanhoe * this.shanties.drinkCount())/(1+this.shanties.ivanhoe * this.shanties.drinkCount());
+			//roll for skyrim
+			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
+				return this.returnSkyrim(e);
+			}
 			
             let line = this.getRandomLine(e);
             if (line !== undefined) {
@@ -292,6 +308,10 @@ class Bot {
 	
 	singShanty(e) {
 		Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+	}
+	
+	returnSkyrim(e){
+		Skarm.sendMessageDelay(e.message.channel,this.skyrim[Math.floor(this.skyrim.length * Math.random())]);
 	}
     
     getRandomLine(e) {

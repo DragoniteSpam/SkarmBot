@@ -119,10 +119,11 @@ module.exports = {
         
         execute(bot, e) {
 			let shanty = Math.floor(bot.shanties.ivanhoe*bot.shanties.drinkCount()*100);
-			let skyrim=0;
+			let skyrim=Math.floor((new Date).getDay()*bot.skyrimOddsModifier*100);
             Skarm.sendMessageDelay(e.message.channel, "Current shanty forecast: **" +shanty+"%**\n"+
-			"Something completely normal: 0%\n"+
-			"Something completely different: "+(100-shanty-skyrim)+"%"
+			"The Elder Scrolls Forecast: **"+skyrim+"%**\n"+
+			"Something completely normal: **0%**\n"+
+			"Something completely different: **"+(100-shanty-skyrim)+"%**."
             );
         },
         
