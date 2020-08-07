@@ -321,13 +321,24 @@ module.exports = {
     //levels
 	Rank: {
 		aliases: ["rank","level"],
-        params: [],
+        params: ["<optionally mention a guild member>"],
         usageChar: "!",
         helpText: "returns how much exp you have in the guild",
         ignoreHidden: true,
         
         execute(bot, e) {
-			let user = Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id];
+			let guildData =Guilds.get(e.message.channel.guild_id);
+			let target = e.message.author.id;
+			let tok =commandParamTokens(e.message.content);
+			if(tok.length==1){
+				tok = tok[0].replace("<","").replace("@","").replace(">","").replace("!","");
+				if(!(tok in guildData.expTable)){
+					Skarm.sendMessageDelay(e.message.channel,"Error: this user may have not talked at all or you didn't mention them properly.");
+					return;
+				}
+				target = tok;
+			}
+			let user = guildData.expTable[target];
 			let exp = user.exp;
 			let lvl = user.level;//Skinner.getLevel(exp);
 			let toNextLvl = user.nextLevelEXP-exp;
@@ -508,7 +519,7 @@ module.exports = {
         
         execute(bot, e) {
 			let guile = Guilds.get(e.message.channel.guild_id);
-			guile.roleCheck(e,guile.expTable[e.message.author.id]);
+			guile.roleCheck(e.message.member,guile.expTable[e.message.author.id]);
 			Skarm.sendMessageDelay(e.message.channel,"Refreshed your roles!");
 			return;
         },

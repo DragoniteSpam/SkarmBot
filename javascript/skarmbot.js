@@ -9,6 +9,7 @@ const Constants = require("./constants.js");
 const Commands = require("./commands.js");
 const Keywords = require("./keywords.js");
 const XKCD = require("./xkcd.js");
+const Skinner = require("./skinnerbox.js");
 
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
@@ -118,6 +119,15 @@ class Bot {
     
     OnMemberAdd(e) {
         let guildData = Guilds.get(e.guild.id);
+		if(!(e.member.id in guildData.expTable)){
+			guildData.expTable[e.member.id] = {
+                exp: Skinner.getMinEXP(0),
+                level: 0,
+                nextLevelEXP: Skinner.getMinEXP(1),
+                lastMessage: undefined,
+            };
+		}
+		guildData.roleCheck(e.member,guildData.expTable[e.member.id]);
 		if(guildData.welcoming){
 			for(let channel in guildData.welcomes){
 				let sms = guildData.welcomes[channel];
@@ -176,7 +186,7 @@ class Bot {
         }
         
         guildData.updateEXP(e);
-                
+		
         // now we can start doing stuff
         let author = e.message.author;
         let text = e.message.content.toLowerCase();

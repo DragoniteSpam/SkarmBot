@@ -254,24 +254,24 @@ const linkFunctions = function(guild) {
                 this.rolesTable = { };
             }
             
-			this.roleCheck(e,userEXPData);
+			this.roleCheck(e.message.member,userEXPData);
         }
     };
 	
-	guild.roleCheck = function(e, userEXPData) {
+	guild.roleCheck = function(member, userEXPData) {
 		if(Object.keys(guild.rolesTable).length==0)
 			return;
 		//give users the role achieved at their level or the next one available bellow it
             let i = userEXPData.level;
 		for (i; i >= 0; i--) {
 			if (i in this.rolesTable) {
-				e.message.member.assignRole(this.rolesTable[i]);
+				member.assignRole(this.rolesTable[i]);
 				if (!this.roleStack) {
 					let n=i;
 					for (i--; i >= 0; i--) {
 						if(i in this.rolesTable){
 							if(this.rolesTable[i] != this.rolesTable[n]){
-								e.message.member.unassignRole(this.rolesTable[i]);
+								member.unassignRole(this.rolesTable[i]);
 							}
 						}
 					}
