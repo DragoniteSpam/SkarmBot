@@ -289,18 +289,13 @@ module.exports = {
     },
     XKCD: {
         aliases: ["xkcd"],
-        params: ["id"],
+        params: ["[id]"],
         usageChar: "!",
-        helpText: "Returns the XKCD with the specified ID",
+        helpText: "Returns the XKCD with the specified ID; if no ID is specified, it will return the latest strip instead.",
         ignoreHidden: true,
         
         execute(bot, e) {
-			let words = commandParamTokens(e.message.content);
-            if (words.length == 0) {
-                Skarm.sendMessageDelay(e.message.channel, "Please specify the ID of the xkcd you want to fetch!");
-                return;
-            }
-            bot.xkcd.post(e.message.channel, words[0]);
+            bot.xkcd.post(e.message.channel, commandParamTokens(e.message.content)[0]);
         },
         
         help(bot, e) {

@@ -40,7 +40,7 @@ class XKCD {
     }
     
     post(channel, id) {
-        Skarm.sendMessageDelay(channel, "https://xkcd.com/" + id + "/");
+        Skarm.sendMessageDelay(channel, "https://xkcd.com/" + ((id === undefined) ? "" : (id + "/")));
     }
 }
 
