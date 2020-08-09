@@ -40,7 +40,14 @@ class XKCD {
     }
     
     post(channel, id) {
-        Skarm.sendMessageDelay(channel, "https://xkcd.com/" + ((id === undefined) ? "" : (id + "/")));
+        id = id || "";
+        if (id.match(/\d+/)) {
+            Skarm.sendMessageDelay(channel, "https://xkcd.com/" + id + "/");
+        } else if (id == "") {
+            Skarm.sendMessageDelay(channel, "https://xkcd.com/");
+        } else {
+            Skarm.sendMessageDelay(channel, "still working on the title lookup");
+        }
     }
 }
 

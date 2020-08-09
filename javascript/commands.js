@@ -291,7 +291,7 @@ module.exports = {
         aliases: ["xkcd"],
         params: ["[id]"],
         usageChar: "!",
-        helpText: "Returns the XKCD with the specified ID; if no ID is specified, it will return the latest strip instead.",
+        helpText: "Returns the XKCD with the specified ID; if no ID is specified, it will return the latest strip instead. ID may be an index or a strip name.",
         ignoreHidden: true,
         
         execute(bot, e) {
