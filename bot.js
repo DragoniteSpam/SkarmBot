@@ -6,6 +6,7 @@
 const discordie = require("discordie");
 const fs = require("fs");
 const request = require("request");
+const { spawn } = require("child_process");
 // discord things
 const client = new discordie({autoReconnect:true});
 const events = discordie.Events;
@@ -41,10 +42,14 @@ let uptimeController= [0,0];
 
 client.Dispatcher.on(events.GATEWAY_READY, e => {
     bot = new SkarmBot(client);
+	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
     Constants.initialize(client);
     Encrypt.initialize();
-    Users.initialize(client);
-    Guilds.initialize(client);
+	dataPuller.on('exit', (code) => {
+		console.log("Pulled in skarmData");
+		Users.initialize(client);
+		Guilds.initialize(client);
+	});
 	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
     bot.setGame();
 	uptimeController[0]=Date.now();

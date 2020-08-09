@@ -4,7 +4,7 @@ const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
 const Discordie = require("discordie");
 
-const userdb = "data\\users.penguin";
+const userdb = "..\\skarmData\\users.penguin";
 const SUMMON_COOLDOWN = 60000;
 
 const linkFunctions = function(user) {
@@ -138,11 +138,13 @@ class User {
             for (let u in User.users) {
                 linkFunctions(User.users[u]);
             }
+			console.log("Initialized "+Object.keys(User.users).length + " Users");
         });
     }
     
     static save() {
         Encrypt.write(userdb, JSON.stringify(User.users));
+		console.log("Saved User Data");
     }
     
     static saveDebug() {

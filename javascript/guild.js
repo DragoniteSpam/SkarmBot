@@ -6,7 +6,7 @@ const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 
-const guilddb = "data\\guilds.penguin";
+const guilddb = "..\\skarmData\\guilds.penguin";
 
 const MIN_LINES = 40;
 
@@ -361,11 +361,13 @@ class Guild {
                 linkVariables(Guild.guilds[g]);
                 linkFunctions(Guild.guilds[g]);
             }
+			console.log("Initialized "+ Object.keys(Guild.guilds).length + " Guilds");
         });
     }
     
     static save() {
         Encrypt.write(guilddb, JSON.stringify(Guild.guilds));
+		console.log("Saved Guild Data");
     }
     
     static saveDebug() {

@@ -28,6 +28,12 @@ class Constants {
             DELETED:        client.Channels.get("414291195028570112"),
             SUGGESTIONS:    client.Channels.get("484857065542647826"),
         };
+		
+		Constants.SaveCodes = {
+			DONOTHING:		-1,
+			EXIT:			0,
+			REBOOT:			69,
+		};
         
         Constants.Vars = {
             LEARN_MESSAGE_ODDS: 0.3,

@@ -766,16 +766,9 @@ module.exports = {
         perms: Permissions.MOM,
         
         execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            
-            //saveData
-			Guilds.save();
-			Users.save();
+            //save data before a shutdown
+			bot.save(Constants.SaveCodes.EXIT);
 			Skarm.log("Shutting down by order of <@" + e.message.author.id + ">");
-			
-			//gives the bot two seconds to save all files 
-			setTimeout(() => { process.exit(0); }, 2000);
         },
         
         help(bot, e) {
@@ -879,16 +872,9 @@ module.exports = {
         perms: Permissions.MOM,
         
         execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            
-            //saveData
-			Guilds.save();
-			Users.save();
+            //save memory before a restart 
+			bot.save(Constants.SaveCodes.REBOOT);
 			Skarm.log("Restarting by order of <@" + e.message.author.id + ">");
-			
-			//gives the bot two seconds to save all files 
-			setTimeout(() => {process.exit(69);}, 2000);
         },
         
         help(bot, e) {
@@ -896,7 +882,7 @@ module.exports = {
         },
     },
 	Save: {
-		aliases: ["save","quicksave","s"],
+		aliases: ["save","quicksave","s","f5"],
 		params: [],
 		usageChar: "@",
 		helpText: "Save skarm's data in memory to storage. Saving data will automatically run during a restart or shutdown command",
@@ -904,11 +890,7 @@ module.exports = {
         perms: Permissions.MOM,
 		
 		execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            
-            bot.save();
-			
+			bot.save(Constants.SaveCodes.DONOTHING);
 			Skarm.sendMessageDelay(e.message.channel, "Data has been saved.");
 		},
 		
