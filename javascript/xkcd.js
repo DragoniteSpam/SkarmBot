@@ -7,11 +7,14 @@ class XKCD {
         this.channels = [];
         this.latestDate = new Date();
         this.timeout = null;
+        
+        this.load();
     }
     
     save() {
         var required = {
-            channels: this.channels
+            latestDate: this.latestDate,
+            latestIndex: this.latestIndex,
         };
         
         fs.writeFile(".\\data\\xk.cd", JSON.stringify(required), function(err) {
@@ -22,33 +25,22 @@ class XKCD {
     }
     
     load() {
-        if (fs.existsSync(".\\data\\xk.cd")){
-            var loaded = JSON.parse(fs.readFileSync(".\\data\\xk.cd")
-                .toString());
-            
-            if (loaded.channels !== undefined){
-                this.channels = loaded.channels;
-            }
+        let loaded = { };
+        if (fs.existsSync(".\\data\\xk.cd")) {
+            loaded = JSON.parse(fs.readFileSync(".\\data\\xk.cd").toString());
         }
         
-        this.schedule();
+        loaded.latestDate = loaded.latestDate || Date.now();
+        loaded.latestIndex = loaded.latestIndex || 2343;
+        
+        this.latestDate = loaded.latestDate;
+        this.latestIndex = loaded.latestIndex;
+        
+        //this.schedule();
     }
     
     post(channel, id) {
         Skarm.sendMessageDelay(channel, "https://xkcd.com/" + id + "/");
-    }
-    
-    toggleChannel(channel){
-        if (this.channels.includes(channel.id)){
-            Skarm.todo();
-            sendMessageDelay("xkcds will no longer be sent to this channel!", channel);
-            this.channels.splice(this.channels.indexOf(channel.id), 1);
-        } else {
-            sendMessageDelay("xkcds will now be sent to this channel!", channel);
-            this.channels.push(channel.id);
-        }
-        
-        this.save();
     }
 }
 

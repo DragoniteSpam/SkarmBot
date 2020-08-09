@@ -822,20 +822,26 @@ module.exports = {
     },
     Munroe: {
         aliases: ["munroe"],
-        params: [],
+        params: ["cmd"],
         usageChar: "@",
         helpText: "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this.",
         ignoreHidden: true,
         perms: Permissions.MOD,
         
         execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
+            let userData = Users.get(e.message.author.id);
+            let guildData = Guilds.get(e.message.guild.id);
+			let args = commandParamTokens(e.message.content);
             
-            if (bot.toggleChannel(bot.channelsWhoLikeXKCD, e.message.channel_id)) {
-                Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
-            } else {
-                Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
+            switch (args[0]) {
+                case "enable":
+                    bot.addChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
+                    Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
+                    break;
+                case "disable":
+                    bot.removeChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
+                    Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
+                    break;
             }
         },
         

@@ -19,7 +19,7 @@ class Bot {
     constructor(client) {
         this.timer30min = setInterval(function() {
             this.save(Constants.SaveCodes.DONOTHING);
-        }.bind(this), 30*60*1000);
+        }.bind(this), 30 * 60 * 1000);
 
         this.client = client;
         this.nick = "Skarm";
@@ -280,6 +280,14 @@ class Bot {
         return map[channel];
     }
     
+    removeChannel(map, channel) {
+        map[channel] = false;
+    }
+    
+    addChannel(map, channel) {
+        map[channel] = true;
+    }
+    
     toggleGuild(map, channel) {
         // guilds have a channel associated with them
         if (!!map[channel.guild_id]) {
@@ -384,6 +392,7 @@ class Bot {
     save(saveCode) {
         Guilds.save();
         Users.save();
+        this.xkcd.save();
 		let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
 		savior.on('exit', (code) =>{
 			console.log("Recieved code: "+code+" on saving data to GIT");
