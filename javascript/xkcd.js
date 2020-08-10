@@ -4,39 +4,17 @@ const Skarm = require("./skarm.js");
 
 class XKCD {
     constructor() {
-        this.channels = [];
-        this.latestDate = new Date();
-        this.timeout = null;
-        
-        this.load();
+        this.schedule();
     }
     
-    save() {
-        var required = {
-            latestDate: this.latestDate,
-            latestIndex: this.latestIndex,
-        };
-        
-        fs.writeFile(".\\data\\xk.cd", JSON.stringify(required), function(err) {
-            if (err) {
-                Skarm.log("failed to write out the xkcd data for some reason");
+    schedule() {
+        setTimeout(function() {
+            let now = Date.now();
+            if (now.getHours() == 19 && (now.getDay() == 1 || now.getDay() == 3 || now.getDay() == 5)) {
+                this.post();
             }
-        });
-    }
-    
-    load() {
-        let loaded = { };
-        if (fs.existsSync(".\\data\\xk.cd")) {
-            loaded = JSON.parse(fs.readFileSync(".\\data\\xk.cd").toString());
-        }
-        
-        loaded.latestDate = loaded.latestDate || Date.now();
-        loaded.latestIndex = loaded.latestIndex || 2343;
-        
-        this.latestDate = loaded.latestDate;
-        this.latestIndex = loaded.latestIndex;
-        
-        //this.schedule();
+            this.schedule();
+        }, 1000 * 3600);
     }
     
     post(channel, id) {

@@ -392,7 +392,6 @@ class Bot {
     save(saveCode) {
         Guilds.save();
         Users.save();
-        this.xkcd.save();
 		let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
 		savior.on('exit', (code) =>{
 			console.log("Recieved code: "+code+" on saving data to GIT");
