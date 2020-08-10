@@ -9,7 +9,7 @@ class XKCD {
     
     schedule() {
         setTimeout(function() {
-            let now = Date.now();
+            let now = new Date();
             if (now.getHours() == 19 && (now.getDay() == 1 || now.getDay() == 3 || now.getDay() == 5)) {
                 this.post();
             }
