@@ -714,7 +714,7 @@ module.exports = {
                 uptimeString = uptimeDays + ((uptimeDays > 1) ? " days, " : " day, ");
             }
             if (uptimeHours > 0) {
-                uptimeString += uptimeHours + ((uptimeHouse > 1) ? " hours, " : " hour, ");
+                uptimeString += uptimeHours + ((uptimeHours > 1) ? " hours, " : " hour, ");
             }
             if (uptimeMinutes > 0) {
                 uptimeString += uptimeMinutes + ((uptimeMinutes > 1) ? " minutes, " : " minute, ");
