@@ -2,6 +2,7 @@
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 const Web = require("./web.js");
+const os = require("os");
 
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
@@ -227,7 +228,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    Summon: {
+	Summon: {
         aliases: ["summon", "summons"],
         params: ["add|remove|list", "term"],
         usageChar: "!",
@@ -238,41 +239,52 @@ module.exports = {
             let params = commandParamTokens(e.message.content.toLowerCase());
             let userData = Users.get(e.message.author.id);
             let action = params[0];
-            let term = params[1];
+			var term;
+			if(params.length){
+				term = params[1];
+			}else{
+				term = "";
+			}
+			let retina = "";
             if (action === "add") {
-                if (userData.addSummon(term)) {
-                    Skarm.sendMessageDelay(e.message.channel, "**" + term + "** is now a summon for " + e.message.author.username + "!");
-                } else {
-                    Skarm.sendMessageDelay(e.message.channel, "Could not add the term " + term + " as a summon. (Has it already been added?)");
-                }
+				for(let i=1;i<params.length;i++){
+					if (userData.addSummon(params[i].replace(",",""))) {
+						retina+= "**" + params[i] + "** is now a summon for " + e.message.author.username + "!\n";
+					} else {
+						retina+= "Could not add the term " + params[i] + " as a summon. (Has it already been added?)\n";
+					}
+				}
+				Skarm.sendMessageDelay(e.message.channel,retina);
                 return;
             }
             if (action === "remove") {
-                if (userData.removeSummon(term)) {
-                    Skarm.sendMessageDelay(e.message.channel, "**" + term + "** is no longer a summon for " + e.message.author.username + "!");
-                } else {
-                    Skarm.sendMessageDelay(e.message.channel, "Could not remove the term " + term + " as a summon. (Does it exist in the summon list?)");
-                }
+				for(let i=1;i<params.length;i++){
+					if (userData.removeSummon(params[i].replace(",",""))) {
+						retina+= "**" + params[i] + "** is no longer a summon for " + e.message.author.username + "!\n";
+					} else {
+						retina+= "Could not remove the term " + params[i] + " as a summon. (Does it exist in the summon list?)\n";
+					}
+				}
+				Skarm.sendMessageDelay(e.message.channel,retina);
                 return;
             }
             if (action === "list") {
-                let summonString = userData.listSummons();
+                let summonString = userData.listSummons(term);
                 if (summonString.length == 0) {
-                    Skarm.sendMessageDelay(e.message.channel, "**" + e.message.author.username + "**, you currently have no summons!");
+					retina+="**" + e.message.author.username + "**, you currently have no summons!";
                 } else {
-                    Skarm.sendMessageDelay(e.message.channel, "**" + e.message.author.username + "**, your current summons are:\n```" + summonString + "```");
+                    retina+= "**" + e.message.author.username + "**, your current summons are:\n```" + summonString + "```";
                 }
+				Skarm.sendMessageDelay(e.message.channel,retina);
                 return;
             }
-            
             Skarm.erroneousCommandHelpPlease(e.message.channel, this);
         },
-        
         help(bot, e) {
             Skarm.help(this, e);
         },
     },
-    Wolfy: {
+	Wolfy: {
         aliases: ["wolfram", "wolfy"],
         params: ["query..."],
         usageChar: "!",
@@ -287,7 +299,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    XKCD: {
+	XKCD: {
         aliases: ["xkcd"],
         params: ["id"],
         usageChar: "!",
@@ -714,7 +726,7 @@ module.exports = {
                 uptimeString = uptimeDays + ((uptimeDays > 1) ? " days, " : " day, ");
             }
             if (uptimeHours > 0) {
-                uptimeString += uptimeHours + ((uptimeHouse > 1) ? " hours, " : " hour, ");
+                uptimeString += uptimeHours + ((uptimeHours > 1) ? " hours, " : " hour, ");
             }
             if (uptimeMinutes > 0) {
                 uptimeString += uptimeMinutes + ((uptimeMinutes > 1) ? " minutes, " : " minute, ");
@@ -725,6 +737,7 @@ module.exports = {
                 "***Bot stats, and stuff:***\n```" +
                 "Users (probably): " + Object.keys(Users.users).length + "\n" +
                 "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
+				"Host: "+os.hostname()+"\n"+
                 "Uptime (probably): " + uptimeString + "```"
             );
         },
@@ -1086,3 +1099,4 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         },
     },
 }
+
