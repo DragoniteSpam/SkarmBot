@@ -104,14 +104,19 @@ class Bot {
     
     OnMessageReactionAdd(e) {
         const UPVOTE = 0x2b06;
-        const REQUIRED_UPVOTES = 1;
+        const REQUIRED_UPVOTES = 3;
         
-        if (e.message !== null && !e.message.pinned && this.channelsPinUpvotes[e.message.channel_id] /*!== undefined && === true */) {
+		if(!e.message.guild)
+			return;
+		
+		
+		
+        if (e.message !== null && !e.message.pinned && Guilds.get(e.message.guild.id).channelsPinUpvotes[e.message.channel_id] /*!== undefined && === true */) {
             let upvotes = 0;
             for (let i in e.message.reactions) {
                 let reaction = e.message.reactions[i];
                 if (reaction.emoji.name.charCodeAt(0) === UPVOTE && ++upvotes == REQUIRED_UPVOTES) {
-                    e.message.pin().catch(_ => { });
+                    e.message.pin().catch(_ => {console.log('Failed to pin');});
                     break;
                 }
             }

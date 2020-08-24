@@ -26,12 +26,14 @@ const linkFunctions = function(user) {
         return true;
     }
     
-    user.listSummons = function() {
+    user.listSummons = function(v) {
+		v = v || "";
         let terms = [];
         for (let term in this.summons) {
-            terms.push(term);
+			if(term.includes(v)){
+				terms.push(term);
+			}
         }
-        
         return terms.sort().join(", ");
     }
     
