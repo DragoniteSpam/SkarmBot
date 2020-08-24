@@ -4,17 +4,14 @@ const Skarm = require("./skarm.js");
 
 class XKCD {
     constructor() {
-        this.schedule();
+        setInterval(this.evalPost, 1000 * 3600);
     }
     
-    schedule() {
-        setTimeout(function() {
-            let now = new Date();
-            if (now.getHours() == 19 && (now.getDay() == 1 || now.getDay() == 3 || now.getDay() == 5)) {
-                this.post();
-            }
-            this.schedule();
-        }, 1000 * 3600);
+    evalPost() {
+        let now = new Date();
+        if (now.getHours() == 21 && (now.getDay() == 1 || now.getDay() == 3 || now.getDay() == 5)) {
+            this.post();
+        }
     }
     
     post(channel, id) {
