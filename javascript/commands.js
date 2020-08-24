@@ -634,7 +634,7 @@ module.exports = {
 		helpText: "First shalt thou take out the Holy Pin. Then shalt thou count to three, no more, no less. Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in My sight, shall snuff it.",
 		ignoreHidden: true,
         
-		execute(bot,e) {
+		execute(bot, e) {
             let tokens = commandParamTokens(e.message.content);
 			if (tokens.length != 2) return;
             
@@ -786,6 +786,27 @@ module.exports = {
         
         help(bot, e) {
             Skarm.help(this, e);
+        },
+    },
+    Fourchan: {
+        aliases: ["4"],
+        params: ["id", "t..."],
+        usageChar: "@",
+        helpText: "Hey, what are you doing here?!",
+        ignoreHidden: true,
+        perms: Permissions.MOM,
+        
+        execute(bot, e) {
+            let tokens = commandParamTokens(e.message.content);
+			if (tokens.length < 3) return;
+            
+            let destination = tokens.splice(0, 1)[0];
+            let chan = bot.client.Channels.get(destination);
+            if (chan) Skarm.sendMessageDelay(chan, tokens.join(" "));
+        },
+        
+        help(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "(◕ ε ◕)");
         },
     },
     Game: {
