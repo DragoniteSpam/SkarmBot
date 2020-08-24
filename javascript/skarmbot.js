@@ -343,6 +343,7 @@ class Bot {
     }
     
     attemptLearnLine(e) {
+        if (e.message.content.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/)) return;
         let hash = (this.messageHash(e) / 10) % 1;
         if (hash < Constants.Vars.LEARN_MESSAGE_ODDS) {
             Guilds.get(e.message.guild.id).learnLine(e);
