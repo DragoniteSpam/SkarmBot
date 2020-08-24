@@ -30,6 +30,7 @@ class Constants {
         };
 		
 		Constants.SaveCodes = {
+			NOSAVE: 		42,
 			DONOTHING:		-1,
 			EXIT:			0,
 			REBOOT:			69,

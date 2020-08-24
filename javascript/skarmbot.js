@@ -74,7 +74,7 @@ class Bot {
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
         
-        this.xkcd = new XKCD();
+        this.xkcd = new XKCD(this);
         
         this.mapping = Skarm.addCommands(Commands);
         this.keywords = Skarm.addKeywords(Keywords);
@@ -396,6 +396,10 @@ class Bot {
     }
     
     save(saveCode) {
+		if(saveCode===Constants.SaveCodes.NOSAVE)
+			process.exit(Constants.SaveCodes.NOSAVE);
+		
+		
         Guilds.save();
         Users.save();
 		let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);

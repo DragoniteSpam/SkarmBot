@@ -200,6 +200,10 @@ const linkFunctions = function(guild) {
 			}
 		}
 		
+		if(this.moderators===undefined){
+			this.moderators={};
+		}
+		
 		if(user.id in this.moderators)
 			return Permissions.MOD;
 		
