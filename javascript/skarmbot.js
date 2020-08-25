@@ -262,7 +262,7 @@ class Bot {
                 continue;
             }
             
-            if (Math.random() > keyword.odds && false) {
+            if (Math.random() > keyword.odds) {
                 continue;
             }
             
