@@ -262,14 +262,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 let keys =[];// Object.keys(bot.mapping.unaliased);
 				let guildData = Guilds.get(e.message.channel.guild_id);
 				let userData = Users.get(e.message.author.id);
+                let categories = {};
 
 				for(let key in bot.mapping.unaliased){
-					if(bot.mapping.unaliased[key].usageChar == "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms))
+					if(bot.mapping.unaliased[key].usageChar == "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms)){
 						keys.push(key);
+						let cat = bot.mapping.unaliased[key].category;
+						if(cat in categories){
+							categories[cat].push(key);
+						}else{
+							categories[cat]= [key];
+						}
+					}
 				}
-                keys.sort();
-                let alphabet = [];
-                
+				
+				let alphabet = [];
+				for(let sets in categories){
+					categories[sets].sort();
+					alphabet.push(sets +":\n"+ categories[sets].join(", "));
+				}
+				
+				
+                /** TO BE REPLACED
                 for (let i = 0; i < keys.length; i++) {
                     if (alphabet.length == 0 || alphabet[alphabet.length - 1].charAt(0) != keys[i].charAt(0)) {
                         alphabet[alphabet.length] = keys[i];
@@ -277,9 +291,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                         alphabet[alphabet.length - 1] += ", " + keys[i];
                     }
                 }
-                
+                */
                 Skarm.sendMessageDelay(e.message.channel, "Available commands: ```" +
-                    alphabet.join("\n") + "```\nSome commands have additional aliases.");
+                    alphabet.join("\n\n") + "```\nSome commands have additional aliases.");
                 return;
             }
             
@@ -521,10 +535,11 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	*/
 	Knight: {
         aliases: ["mod", "knight"],
-        params: ["member"],
+        params: ["member | clear"],
         usageChar: "@",
-        helpText: "Administrator command for appointing and removing moderators.",
+        helpText: "Administrator command for appointing and removing moderators. Use `e@mod clear` to remove all moderators (caution is advised).",
         ignoreHidden: true,
+        perms: Permissions.ADMIN,
         category: "administrative",
 		
         execute(bot, e) {
@@ -549,7 +564,11 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 				Skarm.sendMessageDelay(e.message.channel,"The current moderators in this guild are: "+mods.substring(0,mods.length-2));
 				return;
 			}
-			//no param => list mods
+			
+			if(words[0]=="clear" || words[0]=="c"){
+				guildData.moderators={};
+				Skarm.sendMessageDelay(e.message.channel,"Removed everyone from the moderators list.");
+			}
 			
 			//mention => toggle
             let member = words[0].replace("<","").replace("@","").replace("!","").replace(">","");
@@ -735,7 +754,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		"`e@welcome set Welcome <newmember>! Please don't be evil!`\n"+
 		"`e@welcome set -` removes welcome message from that channel",
         ignoreHidden: true,
-        perms: Permissions.ADMIN,
+        perms: Permissions.MOD,
 		category: "administrative",
         
         execute(bot, e) {
@@ -1171,6 +1190,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		helpText: "Whitelist a user for submittion suggestions. This command is only usable by Skarm's moms.",
 		ignoreHidden: false,
         perms: Permissions.MOM,
+		category: "infrastructure",
 		
 		execute(bot, e) {
             var userData = Users.get(e.message.author.id);
