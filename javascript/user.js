@@ -127,7 +127,9 @@ class User {
     }
     
     static get(id) {
-        return User.users[id] ? User.users[id] : new User(id);
+		if(User.users)
+			return User.users[id] ? User.users[id] : new User(id);
+		return null;
     }
     
     static getData(id) {

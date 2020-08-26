@@ -106,6 +106,10 @@ class Bot {
         const UPVOTE = 0x2b06;
         const REQUIRED_UPVOTES = 3;
         
+		if(!e)
+			return;
+		if(!e.message)
+			return Skarm.log("encountered null message in onMessageReactionAdd???");
 		if(!e.message.guild)
 			return;
 		
@@ -171,6 +175,13 @@ class Bot {
     OnMessageCreate(e) {
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {
+			if(e.message.author.id===Constants.ID){
+				if(e.message.content === "sorry..."){
+					setTimeout(function(){
+						e.message.delete();
+					}, 12000);
+				}
+			}
             return false;
         }
         
@@ -319,10 +330,11 @@ class Bot {
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);
 			}
-			
-            let line = this.getRandomLine(e);
+			let guild = Guilds.get(e.message.guild.id);
+            let line = guild.getRandomLine(e);
             if (line !== undefined) {
                 Skarm.sendMessageDelay(e.message.channel, line);
+				guild.lastSendLine=line;
             }
             return;
         }

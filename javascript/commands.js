@@ -815,7 +815,24 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
-	
+	Soap: {
+        aliases: ["soap"],
+        params: [],
+        usageChar: "@",
+        helpText: "Wash out skarm's mouth with soap if he picked up potty language from chat.",
+        ignoreHidden: true,
+        perms: Permissions.MOD,
+        category: "administrative",
+		
+        execute(bot, e) {
+            Guilds.get(e.message.guild.id).soap();
+			Skarm.sendMessageDelay(e.message.channel,"sorry...");
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
 	
 	/**
 	*	leveling

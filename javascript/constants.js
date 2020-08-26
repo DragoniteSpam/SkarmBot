@@ -13,6 +13,8 @@ class Constants {
             ARGO: client.Users.get("263474950181093396"),
         }
         
+		Constants.ID = client.User.id;
+		
         Constants.Days = {
             SUNDAY: 0,
             MONDAY: 1,

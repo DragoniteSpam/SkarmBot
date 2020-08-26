@@ -43,6 +43,12 @@ const linkFunctions = function(guild) {
         }
     };
     
+	guild.soap = function () {
+		if(this.lastSendLine)
+			delete this.lines[this.lastSendLine];
+		this.lastSendLine=undefined;
+	}
+	
     guild.sendWoeMessage = function() {
         // for best results, the woe message should be formatted something like:
         // "Yo, {user.username}! If you can see this, it means you've been
@@ -318,6 +324,8 @@ class Guild {
 		
 		this.welcoming = true;
 		this.welcomes = { };
+		
+		this.lastSendLine=undefined;
 		
 		Guild.add(this);
         
