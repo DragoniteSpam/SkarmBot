@@ -35,25 +35,28 @@ class XKCD {
         this.interval = setInterval(function() {
 			console.log("Running timeout xkcd function");
             let now = new Date();
-            if (now.getHours() == 19 && (now.getDay()&1)) {
+            if (now.getHours() == 20 && (now.getDay()&1)) {
 				for(var channel in tis.bot.channelsWhoLikeXKCD){
 					tis.post(tis.bot.client.Channels.get(channel));
 				}
 				console.log("pushed out xkcds");
             }
 			//set to 60 for testing
-        }, 1000 * 3600);
+        }, 1000 * 60*60);
     }
     
     post(channel, id) {
         id = id || "";
         if (id.match(/\d+/)) {
             Skarm.sendMessageDelay(channel, "https://xkcd.com/" + id + "/");
-        } else if (id == "") {
+			return;
+        } 
+		if (id == "") {
             Skarm.sendMessageDelay(channel, "https://xkcd.com/");
-        } else {
-            Skarm.sendMessageDelay(channel, "still working on the title lookup");
+			return;
         }
+		Skarm.sendMessageDelay(channel, "still working on the title lookup");
+		return;
     }
 	
 	

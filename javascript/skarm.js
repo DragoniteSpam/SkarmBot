@@ -39,10 +39,18 @@ class Skarm {
     }
     
     static sendMessageDelay(channel, text) {
-        channel.sendTyping();
-        setTimeout(function() {
-            channel.sendMessage(text);
-        }, Math.random() * 2000 + 1000);
+		try{
+			channel.sendTyping();
+			setTimeout(function() {
+				channel.sendMessage(text);
+			}, Math.random() * 2000 + 1000);
+		} catch {
+			if(channel==null){
+				console.log("null channel target with message: "+text);
+				return;
+			}
+			console.log("failed to send message: "+text+" to channel "+channel.id);
+		}
     }
     
     static help(cmd, e) {
