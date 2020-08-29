@@ -9,7 +9,7 @@ class ShantyCollection {
         this.scan();
 		this.isSinging = false;
 		this.activeSong = -1;
-		this.ivanhoe=1/16; //Probability of shanties variable
+		this.ivanhoe=1/4; //Probability of shanties variable
     }
     
     load(filename) {
