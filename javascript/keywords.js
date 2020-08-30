@@ -85,7 +85,7 @@ module.exports = {
         },
     },
 	Faith: {
-        aliases: ["faithless"],
+        aliases: ["faithless","faith"],
         standalone: true,
         odds: 0.05,
         
