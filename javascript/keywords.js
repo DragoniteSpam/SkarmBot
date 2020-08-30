@@ -87,7 +87,7 @@ module.exports = {
 	Faith: {
         aliases: ["faithless","faith"],
         standalone: true,
-        odds: 0.05,
+        odds: 0.01,
         
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "Faith is the denial of observation so that belief can be preserved.");
