@@ -84,4 +84,13 @@ module.exports = {
             Skarm.sendMessageDelay(e.message.channel, "it is critical that we send an attack group there immediately. it is a system we cannot afford to lose.");
         },
     },
+	Faith: {
+        aliases: ["faithless"],
+        standalone: true,
+        odds: 0.05,
+        
+        execute(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "Faith is the denial of observation so that belief can be preserved.");
+        },
+    },
 }
