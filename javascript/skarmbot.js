@@ -16,9 +16,12 @@ const Users = require("./user.js");
 const Guilds = require("./guild.js");
 
 class Bot {
-    constructor(client) {
+    constructor(client,instance) {
+		this.instance=instance;
         this.timer30min = setInterval(function() {
             this.save(Constants.SaveCodes.DONOTHING);
+			this.xkcd.lock--;
+			console.log("XKCD Lock state: "+this.xkcd.lock+"\t|\tInstance: "+this.instance);
         }.bind(this), 30 * 60 * 1000);
 
         this.client = client;

@@ -11,6 +11,7 @@ class XKCD {
 		this.initialize();
 		this.interval=null;
         this.schedule();
+		this.lock=0;
     }
     
 	save(){
@@ -30,19 +31,7 @@ class XKCD {
 		if(!this.interval){
 			clearInterval(this.interval);
 		}
-		
-		var tis = this;
-        this.interval = setInterval(function() {
-			console.log("Running timeout xkcd function");
-            let now = new Date();
-            if (now.getHours() == 20 && (now.getDay()&1)) {
-				for(var channel in tis.bot.channelsWhoLikeXKCD){
-					tis.post(tis.bot.client.Channels.get(channel));
-				}
-				console.log("pushed out xkcds");
-            }
-			//set to 60 for testing
-        }, 1000 * 60*60);
+        this.interval = setInterval(this.sweep, 1000 * 60*60);
     }
     
     post(channel, id) {
@@ -59,7 +48,19 @@ class XKCD {
 		return;
     }
 	
-	
+	sweep() {
+			console.log("Running xkcd.sweep function");
+            let now = new Date();
+            if (now.getHours() == 20 && (now.getDay()&1) && this.lock <1) {
+				this.lock = 3;
+				for(var channel in this.bot.channelsWhoLikeXKCD){
+					this.post(this.bot.client.Channels.get(channel));
+				}
+				console.log("pushed out xkcds");
+				
+            }
+			//set to 60 for testing
+        }
 }
 
 module.exports = XKCD;

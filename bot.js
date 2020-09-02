@@ -36,12 +36,12 @@ client.connect({
 });
 
 let bot;
-
+var instance = 0;
 //last Connection, last Disconnect
 let uptimeController= [0,0];
 
 client.Dispatcher.on(events.GATEWAY_READY, e => {
-    bot = new SkarmBot(client);
+    bot = new SkarmBot(client,++instance);
 	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
     Constants.initialize(client);
     Encrypt.initialize();

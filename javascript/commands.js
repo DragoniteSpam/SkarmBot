@@ -712,9 +712,23 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     bot.removeChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
                     Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
                     break;
+			}
+			let leave=true;
+			for (let mom in Constants.Moms) {
+				if (Constants.Moms[mom].id == e.message.author.id){
+					leave=false;
+				} 
+			}
+			if(leave)return;
+			switch (args[0]){
 				case "dump":
 					Skarm.log(JSON.stringify(bot.channelsWhoLikeXKCD));
-					break
+					break;
+				case "push":
+					bot.xkcd.sweep(); //lack of break is intentional to log lock
+				case "lockcheck":
+					Skarm.log(bot.xkcd.lock);
+					break;
             }
         },
         

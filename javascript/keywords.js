@@ -85,12 +85,27 @@ module.exports = {
         },
     },
 	Faith: {
-        aliases: ["faithless","faith"],
+        aliases: ["faithless imperial"],
         standalone: true,
-        odds: 0.01,
+        odds: 0.1,
         
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel, "Faith is the denial of observation so that belief can be preserved.");
+			
+			function getRandSky(){
+				return bot.skyrim[Math.floor(Math.random()*bot.skyrim.length)];//TODO
+			}
+			
+			var ret=[
+				"Faith is the denial of observation so that belief can be preserved.",
+				"We'll drive out the stormcloaks and restore what we own. Like Imperial soaps and towlettes. They used to make me feel so clean. I LOVE, **LOVE** moist towlettes.",
+			];
+			var rend="";
+			for(var i =0;i<40;i++){
+				while(Math.random()<(1 - (1/40)) && !rend.includes("stormcl"))
+					rend = getRandSky();
+				ret.push(rend);
+			}
+            Skarm.sendMessageDelay(e.message.channel, ret[Math.floor(Math.random()*ret.length)]);
         },
     },
 }

@@ -14,6 +14,7 @@ class Constants {
         }
         
 		Constants.ID = client.User.id;
+		Constants.client=client;
 		
         Constants.Days = {
             SUNDAY: 0,
