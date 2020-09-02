@@ -77,7 +77,7 @@ class Bot {
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
         
-        this.xkcd = new XKCD(this);
+        this.xkcd = new XKCD(this,instance);
         
         this.mapping = Skarm.addCommands(Commands);
         this.keywords = Skarm.addKeywords(Keywords);
@@ -289,7 +289,14 @@ class Bot {
         return false;
     }
     
-    
+    /**
+	* Deletes anything that may not be picked up by garbage collection upon the termination of this object.
+	*/
+	poisonPill(){
+		clearInterval(this.timer30min);
+		this.xkcd.poisonPill();
+	}
+	
     // functionality
     censor(e) {
     }

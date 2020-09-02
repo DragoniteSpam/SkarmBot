@@ -41,6 +41,9 @@ var instance = 0;
 let uptimeController= [0,0];
 
 client.Dispatcher.on(events.GATEWAY_READY, e => {
+	if(bot){
+		bot.poisonPill();
+	}
     bot = new SkarmBot(client,++instance);
 	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
     Constants.initialize(client);

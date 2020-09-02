@@ -6,12 +6,13 @@ const Encrypt = require("./encryption.js");
 const xkcddb = "..\\skarmData\\xkcd.penguin";
 
 class XKCD {
-    constructor(bot) {
+    constructor(bot,instance) {
 		this.bot=bot;
 		this.initialize();
 		this.interval=null;
         this.schedule();
 		this.lock=0;
+		this.instance=instance;
     }
     
 	save(){
@@ -23,8 +24,12 @@ class XKCD {
 		var tis = this;
 		Encrypt.read(xkcddb, function(data, filename) {
             tis.bot.channelsWhoLikeXKCD = JSON.parse(data);
-			console.log("Initialized "+Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels");
+			console.log("Initialized "+Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels on Instance "+tis.instance);
         });
+	}
+	
+	poisonPill(){
+		clearInterval(this.interval);
 	}
 	
     schedule() {
@@ -39,7 +44,7 @@ class XKCD {
         if (id.match(/\d+/)) {
             Skarm.sendMessageDelay(channel, "https://xkcd.com/" + id + "/");
 			return;
-        } 
+        }
 		if (id == "") {
             Skarm.sendMessageDelay(channel, "https://xkcd.com/");
 			return;
@@ -49,7 +54,7 @@ class XKCD {
     }
 	
 	sweep() {
-			console.log("Running xkcd.sweep function");
+			console.log("Running xkcd.sweep function on Instance "+this.instance);
             let now = new Date();
             if (now.getHours() == 20 && (now.getDay()&1) && this.lock <1) {
 				this.lock = 3;

@@ -69,7 +69,7 @@ module.exports = {
     Debug: {
         aliases: ["debug"],
         standalone: false,
-        odds: 1,
+        odds: 0.3,
         
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "the bugs didn't go away, they just got better at hiding");
