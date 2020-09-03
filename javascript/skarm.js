@@ -45,8 +45,12 @@ class Skarm {
 			console.log("null channel target with message: "+text);
 			return;
 		}
+		if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
+			this.log("Missing permission to read messages in " + channel.name);
+			return;
+		}
 		if(!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)){
-			this.log("Missing permission to send Message in " + channel.name);
+			this.log("Missing permission to send message in " + channel.name);
 			return;
 		}
 		
@@ -54,7 +58,7 @@ class Skarm {
 			channel.sendTyping();
 			setTimeout(function() {
 				channel.sendMessage(text);
-			}, Math.random() * 2000 + 1000);
+			}, Math.random() * 2000 + 1500);
 		} catch {
 			
 			console.log("failed to send message: "+text+" to channel "+channel.id);

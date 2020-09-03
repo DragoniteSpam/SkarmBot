@@ -725,7 +725,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 					Skarm.log(JSON.stringify(bot.channelsWhoLikeXKCD));
 					break;
 				case "push":
-					bot.xkcd.sweep(); //lack of break is intentional to log lock
+					bot.xkcd.sweep(true); //lack of break is intentional to log lock
 				case "lockcheck":
 					Skarm.log(bot.xkcd.lock);
 					break;
