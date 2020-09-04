@@ -34,13 +34,16 @@ const linkVariables = function(guild) {
 const linkFunctions = function(guild) {
     guild.executeMayhem = function() {
         let guildData = Guild.getData(this.id);
-        return;
-        let mayhem = this.mayhem.roles.shift();
-        this.mayhem.roles.push(mayhem);
-        for (let i = 0; i < guildData.roles.length; i++) {
-            let roleData = guildData.roles[i];
-            if (roleData.id === mayhem) {
-                roleData.setPosition(this.mayhem.basePosition);
+        for (let roleID in this.mayhemRoles) {
+            for (let i = 0; i < guildData.roles.length; i++) {
+                let roleData = guildData.roles[i];
+                if (roleData.id === roleID) {
+                    try {
+                        roleData.commit(roleData.name, Math.floor(Math.random() * 16777215), roleData.hoist, roleData.mentionable);
+                    } catch (e) {
+                        // if you dont have permission to mess with the role, don't i guess
+                    }
+                }
             }
         }
     };
