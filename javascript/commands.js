@@ -699,11 +699,11 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			let args = commandParamTokens(e.message.content);
 			
             if (args.length == 0) {
-				var roles = Object.keys(guildData.mayhem.roles);
+				var roles = Object.keys(guildData.mayhemRoles);
                 for (let i = 0; i < roles.length; i++) {
                     let found = false;
                     for (let role of e.message.guild.roles) {
-                        if (role.id === roles[i] && guildData.mayhem.roles[roles[i]]) {
+                        if (role.id === roles[i] && guildData.mayhemRoles[roles[i]]) {
                             roles[i] = role.name;
                             found = true;
                             break;
@@ -744,9 +744,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             }
             
             if (guildData.toggleMayhem(args[0])) {
-                Skarm.sendMessageDelay(e.message.channel, roleData.name + " has been added as a mayhem color");
+                Skarm.sendMessageDelay(e.message.channel, "**" + roleData.name + "** has been added as a mayhem color");
             } else {
-                Skarm.sendMessageDelay(e.message.channel, roleData.name + " has been removed as a mayhem color");
+                Skarm.sendMessageDelay(e.message.channel, "**" + roleData.name + "** has been removed as a mayhem color");
             }
         },
         

@@ -27,6 +27,7 @@ fs.readFile("data\\default.birb", function(err, data) {
 const linkVariables = function(guild) {
     if (guild.lines === undefined) guild.lines = { };
     if (guild.actions === undefined) guild.actions = { };
+    if (guild.mayhemRoles === undefined) guild.mayhemRoles = { };
 };
 
 // since de/serialized objects don't keep their functions
@@ -45,8 +46,8 @@ const linkFunctions = function(guild) {
     };
     
     guild.toggleMayhem = function(id) {
-        this.mayhem.roles[id] = this.mayhem.roles[id] ? undefined : id;
-        return !!this.mayhem.roles[id];
+        this.mayhemRoles[id] = this.mayhemRoles[id] ? undefined : id;
+        return !!this.mayhemRoles[id];
     };
     
 	guild.soap = function () {
@@ -307,10 +308,7 @@ class Guild {
             channel: null,
         };
         
-        this.mayhem = {
-            roles: { },
-            basePosition: 2,
-        };
+        this.mayhemRoles = { };
         
         this.lines = { };
         this.actions = { };
