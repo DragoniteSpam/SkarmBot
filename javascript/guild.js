@@ -33,6 +33,7 @@ const linkVariables = function(guild) {
 const linkFunctions = function(guild) {
     guild.executeMayhem = function() {
         let guildData = Guild.getData(this.id);
+        return;
         let mayhem = this.mayhem.roles.shift();
         this.mayhem.roles.push(mayhem);
         for (let i = 0; i < guildData.roles.length; i++) {
@@ -43,10 +44,14 @@ const linkFunctions = function(guild) {
         }
     };
     
+    guild.toggleMayhem = function(id) {
+        this.mayhem.roles[id] = this.mayhem.roles[id] ? undefined : id;
+        return !!this.mayhem.roles[id];
+    };
+    
 	guild.soap = function () {
-		if(this.lastSendLine)
-			delete this.lines[this.lastSendLine];
-		this.lastSendLine=undefined;
+		if(this.lastSendLine) delete this.lines[this.lastSendLine];
+		this.lastSendLine = undefined;
 	}
 	
     guild.sendWoeMessage = function() {
@@ -303,11 +308,7 @@ class Guild {
         };
         
         this.mayhem = {
-            roles: [
-                "696896531990577192",
-                "696896610726182952",
-                "696896579629744178",
-            ],
+            roles: { },
             basePosition: 2,
         };
         
@@ -333,7 +334,7 @@ class Guild {
     }
     
     static initialize(client) {
-        Guild.guilds = {};
+        Guild.guilds = { };
         try {
             Guild.load();
             Guild.client = client;

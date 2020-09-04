@@ -684,6 +684,49 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
+    Mayhem: {
+        aliases: ["mayhem", "chaos"],
+        params: ["[role]"],
+        usageChar: "@",
+        helpText: "Toggles a role to function as a mayhem color. Please use the role ID as to avoid tagging people unnecessarily. If no parameter is specified, a list of the mayhem roles will be printed instead.",
+        ignoreHidden: true,
+        perms: Permissions.MOD,
+		category: "administrative",
+        
+        execute(bot, e) {
+            let userData = Users.get(e.message.author.id);
+            let guildData = Guilds.get(e.message.guild.id);
+			let args = commandParamTokens(e.message.content);
+			
+            if (args.length == 0) {
+				// list roles
+				return;
+			}
+			
+            let roleData = undefined;
+            for (let role of e.message.guild.roles) {
+                if (role.id === args[0]) {
+                    roleData = role;
+                    break;
+                }
+            }
+            
+            if (!roleData) {
+                Skarm.sendMessageDelay(e.message.channel, "Invalid role ID specified (be sure to use the role's ID instead of the @ tag, because people find being pinged to be very annoying)");
+                return;
+            }
+            
+            if (guildData.toggleMayhem(args[0])) {
+                Skarm.sendMessageDelay(e.message.channel, roleData.name + " has been added as a mayhem color");
+            } else {
+                Skarm.sendMessageDelay(e.message.channel, roleData.name + " has been removed as a mayhem color");
+            }
+        },
+        
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     Munroe: {
         aliases: ["munroe"],
         params: ["cmd"],
