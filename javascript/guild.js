@@ -326,7 +326,7 @@ class Guild {
 		this.welcoming = true;
 		this.welcomes = { };
 		
-		this.lastSendLine=undefined;
+		this.lastSendLine = undefined;
 		
 		Guild.add(this);
         

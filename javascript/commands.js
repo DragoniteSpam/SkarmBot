@@ -699,7 +699,34 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			let args = commandParamTokens(e.message.content);
 			
             if (args.length == 0) {
-				// list roles
+				var roles = Object.keys(guildData.mayhem.roles);
+                for (let i = 0; i < roles.length; i++) {
+                    let found = false;
+                    for (let role of e.message.guild.roles) {
+                        if (role.id === roles[i] && guildData.mayhem.roles[roles[i]]) {
+                            roles[i] = role.name;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        guildData.toggleMayhem(roles[i]);
+                        roles[i] = undefined;
+                    }
+                }
+                // if any invalid roles are in the mayhem list (deleted roles,
+                // etc) remove them
+                for (let i = 0; i < roles.length; i++) {
+                    if (roles[i] === undefined) {
+                        roles.splice(i, 1);
+                    }
+                }
+                roles.sort();
+                if (roles.length === 0) {
+                    Skarm.sendMessageDelay(e.message.channel, "No mayhem roles have been set up yet!");
+                } else {
+                    Skarm.sendMessageDelay(e.message.channel, "**Current mayhem roles:**\n" + roles.join(", "));
+                }
 				return;
 			}
 			
