@@ -13,6 +13,8 @@ class XKCD {
         this.schedule();
 		this.lock=0;
 		this.instance=instance;
+		this.references=JSON.parse(fs.readFileSync(".\\fun\\xkcd-log.json").toString().toLowerCase());
+		console.log(JSON.stringify(this.references).substring(0,200));
     }
     
 	save(){
@@ -49,7 +51,26 @@ class XKCD {
             Skarm.sendMessageDelay(channel, "https://xkcd.com/");
 			return;
         }
-		Skarm.sendMessageDelay(channel, "still working on the title lookup");
+		let results = [];
+		for(let i in this.references.alphabetized){
+			//console.log(this.references.alphabetized[i][0]);
+			if(this.references.alphabetized[i][0].includes(id)){
+				results.push("https://xkcd.com/" + this.references.alphabetized[i][1] + "/");
+			}
+		}
+		if(results.length>1){
+			for(let i in results){
+				results[i]="<"+results[i]+">";
+			}
+			Skarm.sendMessageDelay(channel,"Could not find an exact match, try one of these: <"+results.join("\n"));
+			return;
+		}
+		if(results.length==1){
+			Skarm.sendMessageDelay(channel,results[0]);
+			return;
+		}
+
+		Skarm.sendMessageDelay(channel, "I'm not sure what you mean.");
 		return;
     }
 	
