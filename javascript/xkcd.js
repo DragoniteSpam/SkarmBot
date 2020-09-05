@@ -42,7 +42,7 @@ class XKCD {
 
 	post(channel, id) {
 		id = (id || "").toLowerCase();
-		if (id.match(/\d+/)) {
+		if (id.match(/^\d+$/)) {
 			Skarm.sendMessageDelay(channel, "https://xkcd.com/" + id + "/");
 			return;
 		}
