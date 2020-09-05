@@ -62,7 +62,7 @@ class XKCD {
 			for(let i in results){
 				results[i]="<"+results[i]+">";
 			}
-			Skarm.sendMessageDelay(channel,"Could not find an exact match, try one of these: <"+results.join("\n"));
+			Skarm.sendMessageDelay(channel,"Could not find an exact match, try one of these:\n"+results.join("\n"));
 			return;
 		}
 		if(results.length==1){
