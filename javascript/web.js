@@ -14,7 +14,7 @@ module.exports = {
         wolfy.query(query, function(err, result) {
             if (err) {
                 Skarm.log(err);
-                sms(e.message.channel, "(Wolfy was not quite sure what to do " +
+                Skarm.sendMessageDelay(e.message.channel, "(Wolfy was not quite sure what to do " +
                     "with that input.)"
                 );
             } else {
