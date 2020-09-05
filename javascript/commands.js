@@ -521,7 +521,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		category: "web",
 		
         execute(bot, e) {
-            bot.xkcd.post(e.message.channel, commandParamTokens(e.message.content)[0]);
+            bot.xkcd.post(e.message.channel, commandParamTokens(e.message.content).join(" "));
         },
         
         help(bot, e) {
@@ -768,8 +768,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             let guildData = Guilds.get(e.message.guild.id);
 			let args = commandParamTokens(e.message.content);
 			
-            if(args.length==0){
-				Skarm.sendMessageDelay(e.message.channel,"XKCDs are "+((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "":"not ") +"currently being sent to "+e.message.channel.name);
+            if (args.length == 0) {
+				Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
 				return;
 			}
 			
@@ -783,14 +783,17 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
                     break;
 			}
-			let leave=true;
+            
+			let leave = true;
 			for (let mom in Constants.Moms) {
 				if (Constants.Moms[mom].id == e.message.author.id){
-					leave=false;
+					leave = false;
 				} 
 			}
-			if(leave)return;
-			switch (args[0]){
+            
+			if (leave) return;
+            
+			switch (args[0]) {
 				case "dump":
 					Skarm.log(JSON.stringify(bot.channelsWhoLikeXKCD));
 					break;
