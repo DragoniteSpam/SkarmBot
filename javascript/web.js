@@ -45,7 +45,7 @@ module.exports = {
     google: function(bot, e, query) {
         Skarm.sendMessageDelay(
             e.message.channel,
-            "http://google.com/search?q=" + query.replaceAll(" ", "+")
+            "https://www.ecosia.org/search?q=" + query.replaceAll(" ", "+")
         );
     },
     

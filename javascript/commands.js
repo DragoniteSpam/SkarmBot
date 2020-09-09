@@ -455,10 +455,10 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	*	web
 	*/
 	Google: {
-        aliases: ["google"],
+        aliases: ["google", "cosia"],
         params: ["query..."],
         usageChar: "!",
-        helpText: "Returns the results of a Google search of the specified query.",
+        helpText: "Returns the results of a web search of the specified query. The `cosia` alias is an acceptable usage of punning.",
         ignoreHidden: true,
         category: "web",
 		
