@@ -435,24 +435,14 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
     },
 	Suggest: {
         aliases: ["suggest", "suggestion"],
-        params: ["query..."],
+        params: [""],
         usageChar: "!",
-        helpText: "Submit a suggestion for the bot for future consideration. Abusing this command will result in the death star being fired in the general vicinity of your house.",
+        helpText: "Provides a list to the Github Issues page, where you may complain to your heart's content.",
         ignoreHidden: true,
         category: "meta",
 		
         execute(bot, e) {
-            let userData = Users.get(e.message.author.id);
-            let guildData = Guilds.get(e.message.guild.id);
-            if (userData.getSuggestionBlacklist()) return;
-            
-            let discordUserData = e.message.author;
-            let tokens = commandParamTokens(e.message.content);
-            if (tokens.length == 0) {
-                Skarm.sendMessageDelay(e.message.channel, "Please include a message with your suggestion!");
-                return;
-            }
-            Skarm.sendMessageDelay(Constants.Channels.SUGGESTIONS, "Suggestion from **" + discordUserData.username + "#" + discordUserData.discriminator + ":** " + tokens.join(" "));
+            Skarm.sendMessageDelay(e.message.channel, "You may submit your questions and complaints here: https://github.com/DragoniteSpam/SkarmBot/issues");
         },
         
         help(bot, e) {
@@ -1255,64 +1245,6 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		execute(bot, e) {
 			bot.save(Constants.SaveCodes.DONOTHING);
 			Skarm.sendMessageDelay(e.message.channel, "Data has been saved.");
-		},
-		
-		help(bot, e){
-			Skarm.help(this, e);
-		},
-	},
-	SuggestionBlacklist: {
-		aliases: ["suggestion-blacklist"],
-		params: ["userID"],
-		usageChar: "@",
-		helpText: "Blacklist a user from submittion suggestions. This command is only usable by Skarm's moms.",
-		ignoreHidden: false,
-        perms: Permissions.MOM,
-		category: "infrastructure",
-		
-		execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            
-            let user = commandParamTokens(e.message.content)[0];
-            let discordUser = bot.client.Users.get(user);
-            
-            if (!discordUser) {
-                Skarm.sendMessageDelay(e.message.channel, "No user with that ID found.");
-                return;
-            }
-			
-			Users.get(user).setSuggestionBlacklist(true);
-            Skarm.sendMessageDelay(e.message.channel, "**" + bot.client.Users.get(user).nickMention + "** has been blacklisted from submitting suggestions.");
-		},
-		
-		help(bot, e){
-			Skarm.help(this, e);
-		},
-	},
-	SuggestionWhitelist: {
-		aliases: ["suggestion-whitelist"],
-		params: ["userID"],
-		usageChar: "@",
-		helpText: "Whitelist a user for submittion suggestions. This command is only usable by Skarm's moms.",
-		ignoreHidden: false,
-        perms: Permissions.MOM,
-		category: "infrastructure",
-		
-		execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            
-            let user = commandParamTokens(e.message.content)[1];
-            let discordUser = bot.client.Users.get(user);
-            
-            if (!discordUser) {
-                Skarm.sendMessageDelay(e.message.channel, "No user with that ID found.");
-                return;
-            }
-			
-			Users.get(user).setSuggestionBlacklist(false);
-            Skarm.sendMessageDelay(e.message.channel, "**" + discordUser.nickMention + "** has been whitelisted for submitting suggestions.");
 		},
 		
 		help(bot, e){

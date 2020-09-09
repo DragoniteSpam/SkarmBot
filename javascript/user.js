@@ -74,17 +74,6 @@ const linkFunctions = function(user) {
 			return false;
         return !!User.client.Users.get(this.id).memberOf(User.client.Guilds.get(guild.id));
     };
-    
-    user.setSuggestionBlacklist = function(state) {
-        this.suggestionBlacklist = state;
-    };
-    
-    user.getSuggestionBlacklist = function() {
-        if (this.suggestionBlacklist === undefined) {
-            this.suggestionBlacklist = false;
-        }
-        return this.suggestionBlacklist;
-    };
 }
 
 class User {
