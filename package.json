@@ -1,6 +1,6 @@
 {
-  "name": "EyanSays",
-  "version": "2.0.0",
+  "name": "Skarm Zii Boann",
+  "version": "2.1.0",
   "description": "The quick brown fox jumped over the lazy drago",
   "main": "bot.js",
   "scripts": {
@@ -14,5 +14,9 @@
     "node-wolfram": "0.0.1",
     "os": "^0.1.1",
     "request": "^2.88.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DragoniteSpam/SkarmBot.git"
   }
 }
