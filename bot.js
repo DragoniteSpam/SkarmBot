@@ -44,17 +44,17 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	if(bot){
 		bot.poisonPill();
 	}
-    bot = new SkarmBot(client,++instance);
 	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
-    Constants.initialize(client);
-    Encrypt.initialize();
+	Constants.initialize(client);
+	Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
 		console.log("Pulled in skarmData");
 		Users.initialize(client);
 		Guilds.initialize(client);
+		bot = new SkarmBot(client,++instance);
+		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
+		bot.setGame();
 	});
-	Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
-    bot.setGame();
 	uptimeController[0]=Date.now();
 	if(uptimeController[1]>0){
 		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
@@ -65,23 +65,38 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 // try to put all of the actual event code in skarmbot.js to keep this main
 // file clean
 client.Dispatcher.on(events.MESSAGE_DELETE, e => {
-	bot.OnMessageDelete(e);
+	if(bot)
+		bot.OnMessageDelete(e);
+	else
+		console.log("message delete event while bot is undefined");
 });
 
 client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
-    bot.OnMessageReactionAdd(e);
+	if (bot)
+	    bot.OnMessageReactionAdd(e);
+	else
+		console.log("message reaction add event while bot is undefined");
 });
 
 client.Dispatcher.on(events.MESSAGE_CREATE, e => {
-    bot.OnMessageCreate(e);
+	if(bot)
+   		bot.OnMessageCreate(e);
+	else
+		console.log("message create event while bot is undefined");
 });
 
 client.Dispatcher.on(events.GUILD_MEMBER_ADD, e => {
-    bot.OnMemberAdd(e);
+	if(bot)
+	    bot.OnMemberAdd(e);
+	else
+		console.log("guild member add event while bot is undefined");
 });
 
 client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
-	bot.OnMemberUpdate(e);
+	if(bot)
+		bot.OnMemberUpdate(e);
+	else
+		console.log("guild member update event while bot is undefined");
 });
 
 

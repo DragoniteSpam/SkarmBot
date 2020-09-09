@@ -60,6 +60,7 @@ const linkFunctions = function(guild) {
                         // I don't know if discord wants the color to be in BGR
                         // or RGB order, but in this case it doesn't actually matter
                         let output = Math.floor(r | (g << 8) | (b << 16));
+                        //console.log("Changing "+roleData.name +" color from "+roleData.color + " to "+output);
                         roleData.commit(roleData.name, output, roleData.hoist, roleData.mentionable);
                     } catch (e) {
                         console.log(e);
@@ -383,6 +384,8 @@ class Guild {
     }
     
     static get(id) {
+        while(process.uptime() <3)
+            ;
         return Guild.guilds[id] ? Guild.guilds[id] : new Guild(id);
     }
     

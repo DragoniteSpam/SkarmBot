@@ -94,7 +94,7 @@ class Bot {
                     string = e.message.content + " by " +
                         e.message.author.username;
                 }
-                fs.appendFile("./deleted.txt", string + "\r\n", (err) => {
+                fs.appendFile("../skarmData/deleted.txt", string + "\r\n", (err) => {
                     if (err){
                         Skarm.logError(err);
                     }
