@@ -18,6 +18,7 @@ const Guilds = require("./guild.js");
 class Bot {
     constructor(client,instance) {
 		this.instance=instance;
+		this.pid = Math.floor(Math.random()*1000)&(-32)+this.instance;
         this.timer30min = setInterval(function() {
             this.save(Constants.SaveCodes.DONOTHING);
 			this.xkcd.lock--;
