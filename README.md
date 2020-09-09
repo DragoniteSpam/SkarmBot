@@ -1,3 +1,5 @@
+### This is the original version of SkarmBot. It is mainly still here for historical and / or comedic purposes; I would not recommend using any of the code you find in it.
+
 # Additional Requirements:
 
 A discord API token named token.txt placed in the parent of this directory
