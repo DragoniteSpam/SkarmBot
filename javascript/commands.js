@@ -425,6 +425,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 "Users (probably): " + Object.keys(Users.users).length + "\n" +
                 "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
 				"Host: "+os.hostname()+"\n"+
+                "vPID: "+bot.pid+"\n"+
                 "Uptime (probably): " + uptimeString + "```"
             );
         },
@@ -909,7 +910,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         aliases: ["soap"],
         params: [],
         usageChar: "@",
-        helpText: "Wash out skarm's mouth with soap if he picked up potty language from chat.",
+        helpText: "Wash skarm's mouth out with soap if he picked up potty language from chat.",
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
@@ -1198,7 +1199,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
     },
     Exit: {
         aliases: ["exit","shutdown"],
-        params: ["-nosave"],
+        params: ["-nosave", "vPID"],
         usageChar: "@",
         helpText: "Terminates the process running the bot safely. Use this to ensure that data is saved before restarting for maintainance or any other reasons. Use the extension -nosave to prevent commiting to skarmData.",
         ignoreHidden: false,
@@ -1207,16 +1208,19 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         
         
         execute(bot, e) {
+            let savecode = Constants.SaveCodes.EXIT;
             //save data before a shutdown
 			let tok = commandParamTokens(e.message.content.toLowerCase());
-			if (tok.length && (tok[0] == "-nosave" || tok[0]== "-ns")){
-				Skarm.log("Shutting down without saving by order of <@" + e.message.author.id + ">");
-				bot.save(Constants.SaveCodes.NOSAVE);
-				return;
-			}
-			
-			
-			bot.save(Constants.SaveCodes.EXIT);
+			for(let i in tok){
+                if(tok[i] === "-nosave" || tok[i]=== "-ns"){
+                    //Skarm.log("Shutting down without saving by order of <@" + e.message.author.id + ">");
+                    savecode=(Constants.SaveCodes.NOSAVE);
+                }
+                if(tok[i]-0 <1040 && tok[i]-0 !== bot.pid){
+                    return;
+                }
+            }
+			bot.save(savecode);
 			Skarm.log("Shutting down by order of <@" + e.message.author.id + ">");
         },
         
