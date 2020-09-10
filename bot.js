@@ -55,30 +55,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		bot = new SkarmBot(client,++instance);
 		// try to put all of the actual event code in skarmbot.js to keep this main
 		// file clean
-		client.Dispatcher.on(events.MESSAGE_DELETE, e => {
-			bot.OnMessageDelete(e);
-		});
 
-		client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
-			bot.OnMessageReactionAdd(e);
-		});
-
-		client.Dispatcher.on(events.MESSAGE_CREATE, e => {
-			bot.OnMessageCreate(e);
-		});
-
-		client.Dispatcher.on(events.GUILD_MEMBER_ADD, e => {
-			bot.OnMemberAdd(e);
-		});
-
-		client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
-			bot.OnMemberUpdate(e);
-		});
-
-		client.Dispatcher.on(events.DISCONNECTED, e => {
-			console.log("Error: disconnected at " + (new Date()).toString());
-			uptimeController[1]=Date.now();
-		});
 
 		bot.setGame("e!help");
 	});
@@ -88,4 +65,35 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	if(uptimeController[1]>0){
 		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
 	}
+});
+
+
+client.Dispatcher.on(events.MESSAGE_DELETE, e => {
+	if(bot)
+		bot.OnMessageDelete(e);
+});
+
+client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
+	if(bot)
+		bot.OnMessageReactionAdd(e);
+});
+
+client.Dispatcher.on(events.MESSAGE_CREATE, e => {
+	if(bot)
+		bot.OnMessageCreate(e);
+});
+
+client.Dispatcher.on(events.GUILD_MEMBER_ADD, e => {
+	if(bot)
+		bot.OnMemberAdd(e);
+});
+
+client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
+	if(bot)
+		bot.OnMemberUpdate(e);
+});
+
+client.Dispatcher.on(events.DISCONNECTED, e => {
+	console.log("Error: disconnected at " + (new Date()).toString());
+	uptimeController[1]=Date.now();
 });
