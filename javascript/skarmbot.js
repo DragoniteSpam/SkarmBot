@@ -32,6 +32,14 @@ class Bot {
             this.xkcd.lock--;
             console.log("XKCD Lock state: "+this.xkcd.lock+"\t|\tInstance: "+this.instance);
         }.bind(this), 30 * 60 * 1000);
+
+        this.timer1min = setInterval(function() {
+            if(this.game>-1)
+                this.client.User.setGame({ name: this.games[++(this.game)%this.games.length], type: 0 });
+            else
+                clearInterval(this.timer1min);
+        },60*1000);
+
         this.instance=instance;
         this.pid = Math.floor(Math.random()*1024)&(-32)+this.instance;
 
@@ -92,6 +100,9 @@ class Bot {
 
         this.mapping = Skarm.addCommands(Commands);
         this.keywords = Skarm.addKeywords(Keywords);
+
+        this.games = ["e!help", this.getSpaghetti() + " lines of spaghetti"];
+        this.game=0;
     }
 
     // events
@@ -133,7 +144,7 @@ class Bot {
             let upvotes = 0;
             for (let i in e.message.reactions) {
                 let reaction = e.message.reactions[i];
-                if (reaction.emoji.name.charCodeAt(0) === UPVOTE && ++upvotes == REQUIRED_UPVOTES) {
+                if (reaction.emoji.name.charCodeAt(0) === UPVOTE && ++upvotes === REQUIRED_UPVOTES) {
                     e.message.pin().catch(_ => {console.log('Failed to pin');});
                     break;
                 }
@@ -305,6 +316,7 @@ class Bot {
 	*/
 	poisonPill(){
 		clearInterval(this.timer30min);
+		clearInterval(this.timer1min);
 		this.xkcd.poisonPill();
 	}
 	
@@ -384,7 +396,7 @@ class Bot {
     }
     
     messageHash(e) {
-        if (e.message.content.length == 0) {
+        if (e.message.content.length === 0) {
             return 0;
         }
         
@@ -399,7 +411,6 @@ class Bot {
     
     // summons
     summons(e) {
-        let content = e.message.content;
         for (let user in Users.users) {
             let userData = Users.get(user);
             for (let term in userData.summons) {
@@ -429,9 +440,11 @@ class Bot {
     }
     
     save(saveCode) {
-		if(saveCode===Constants.SaveCodes.NOSAVE)
-			process.exit(Constants.SaveCodes.NOSAVE);
-		
+		if(saveCode===Constants.SaveCodes.NOSAVE){
+		    this.client.disconnect();
+            process.exit(Constants.SaveCodes.NOSAVE);
+        }
+
 		
         Guilds.save();
         Users.save();
@@ -442,7 +455,10 @@ class Bot {
 				return;
 			if(saveCode===undefined)
 				return;
-			setTimeout(() => {process.exit(saveCode);},2000);
+			setTimeout(() => {
+			    this.client.disconnect();
+			    process.exit(saveCode);
+			},2000);
 		});
     }
     
@@ -451,12 +467,7 @@ class Bot {
         Users.saveDebug();
     }
     
-    setGame(game) {
-        if (!game) game = this.getSpaghetti() + " lines of spaghetti";
-        this.client.User.setGame({ name: game, type: 0 });
-        return game;
-    }
-    
+
     // javascript devs would be happier if you did this with promises and async.
     // i can't say i care enough to deal with promises and async.
     getSpaghetti() {
