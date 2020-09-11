@@ -28,7 +28,7 @@ const token = fs.readFileSync(target).toString();
 
 // javascript
 String.prototype.replaceAll = function(search, replacement) {
-    return this.replace(new RegExp(search, "g"), '+');
+    return this.replace(new RegExp(search, "g"), replacement);
 };
 
 client.connect({
