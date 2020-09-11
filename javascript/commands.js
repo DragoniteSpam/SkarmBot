@@ -244,7 +244,17 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             let cmd = commandParamTokens(e.message.content)[0];
             
             if (!cmd) {
-                Skarm.sendMessageDelay(e.message.channel, "Skarm is a Discord bot made by Dragonite#7992 and Master9000#9716. Use the help command with a command name to see the documentation for it! Type either `e!help [command-name]` to get help on a specific command, or `e!help ?` to see a list of all available commands.");
+                Skarm.sendMessageDelay(e.message.channel, "Help:",false,{
+                    color: Skarm.generateRGB(),
+                    description: "Skarm is a Discord bot made by "+Constants.Moms.DRAGO.mention+" and "+Constants.Moms.MASTER.mention+".\n"+
+                        "Use the help command with a command name to see the documentation for it!\n"+
+                        "Type either `e!help [command-name]` to get help on a specific command, or `e!help ?` to see a list of all available commands.\n",
+                        /*  title: "github",
+                            url: "http://github.com/DragoniteSpam/Skarmbot",
+                        */
+                        timestamp: new Date(),
+                        footer: {text: e.message.author.nick}
+                });
                 return;
             }
             
@@ -265,7 +275,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 let categories = {};
 
 				for(let key in bot.mapping.unaliased){
-					if(bot.mapping.unaliased[key].usageChar == "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms)){
+					if(bot.mapping.unaliased[key].usageChar === "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms)){
 						keys.push(key);
 						let cat = bot.mapping.unaliased[key].category;
 						if(cat in categories){
@@ -279,10 +289,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 				let alphabet = [];
 				for(let sets in categories){
 					categories[sets].sort();
-					alphabet.push(sets +":\n"+ categories[sets].join(", "));
+					alphabet.push({name: sets,value: categories[sets].join(", ")});
 				}
-				
-				
+
                 /** TO BE REPLACED
                 for (let i = 0; i < keys.length; i++) {
                     if (alphabet.length == 0 || alphabet[alphabet.length - 1].charAt(0) != keys[i].charAt(0)) {
@@ -292,8 +301,15 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     }
                 }
                 */
-                Skarm.sendMessageDelay(e.message.channel, "Available commands: ```" +
-                    alphabet.join("\n\n") + "```\nSome commands have additional aliases.");
+                let embedobj= {
+                    color: Skarm.generateRGB(),
+                    title: "Commands",
+                    timestamp: new Date(),
+                    fields: alphabet,
+                    footer: {text: e.message.member.nick||e.message.author.username + " | "}
+                };
+
+                Skarm.sendMessageDelay(e.message.channel, " ",false,embedobj);//"Available commands: ```" + alphabet.join("\n\n") + "```\nSome commands have additional aliases.");
                 return;
             }
             
@@ -1146,7 +1162,39 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	/**
 	*	infrastructure
 	*/
-	Fourchan: {
+
+    /**
+     * {    color: 0x3498db,    author: {name: "author name"},    title: "This is an embed",    url: "http://google.com",    timestamp: "2016-11-13T03:43:32.127Z",    fields: [{name: "some field", value: "some value"}],    footer: {text: "footer text"}  }
+     */
+
+    Test: {
+        aliases: ["test"],
+        params: [""],
+        usageChar: "@",
+        helpText: "Hey, what are you doing here?!",
+        ignoreHidden: true,
+        perms: Permissions.MOM,
+        category: "infrastructure",
+
+        execute(bot, e) {
+            e.message.channel.sendMessage("message with an embed", false, {
+                color: Skarm.generateRGB(),
+                author: {name: e.message.author.nick},
+                description: "Skarmory is brought to you by node js, github, Discord, and by viewers like you. Thank you.\nPBS",
+                title: "This is an embed",
+                url: "http://xkcd.com/303",
+                timestamp: new Date(),
+                fields: [{name: "G", value: "And now"},{name: "R", value: "for something"},{name: "E", value: "completely"},{name: "P", value: "different"}],
+                footer: {text: "bottom text"}
+            });
+
+        },
+
+        help(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "(◕ ε ◕)");
+        },
+    },
+    Fourchan: {
         aliases: ["4"],
         params: ["id", "t..."],
         usageChar: "@",
@@ -1154,16 +1202,16 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOM,
         category: "infrastructure",
-        
+
         execute(bot, e) {
             let tokens = commandParamTokens(e.message.content);
-			if (tokens.length < 3) return;
-            
+            if (tokens.length < 3) return;
+
             let destination = tokens.splice(0, 1)[0];
             let chan = bot.client.Channels.get(destination);
             if (chan) Skarm.sendMessageDelay(chan, tokens.join(" "));
         },
-        
+
         help(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "(◕ ε ◕)");
         },

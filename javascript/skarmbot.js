@@ -16,28 +16,37 @@ const Users = require("./user.js");
 const Guilds = require("./guild.js");
 
 class Bot {
+    /**
+     * timer30min: tasks skarm will perform once every half hour. Write additional scheduled tasks here.
+     * instance: tracks how many times skarm has reconnected after disconnecting due to a network hiccup
+     * pid: a random number generated and bound to a given instance of the Bot class for the sake of being able to terminate a specific instance of skarm when multiple are running during testing or accidental forks
+     * client: pointer to Discordie object used to access all discord data not supplied by the event skarm has to handle
+     *
+     * Referneces: Skarm will speak if these are mentioned
+     *
+     *
+     **/
     constructor(client,instance) {
-		this.instance=instance;
-		this.pid = Math.floor(Math.random()*1000)&(-32)+this.instance;
         this.timer30min = setInterval(function() {
             this.save(Constants.SaveCodes.DONOTHING);
-			this.xkcd.lock--;
-			console.log("XKCD Lock state: "+this.xkcd.lock+"\t|\tInstance: "+this.instance);
+            this.xkcd.lock--;
+            console.log("XKCD Lock state: "+this.xkcd.lock+"\t|\tInstance: "+this.instance);
         }.bind(this), 30 * 60 * 1000);
+        this.instance=instance;
+        this.pid = Math.floor(Math.random()*1024)&(-32)+this.instance;
 
         this.client = client;
         this.nick = "Skarm";
-        
-        // referneces: you will speak if these are mentioned
+
         this.validNickReferences = {
             "skarm":        					1,
             "skram!":       					1,
             "birdbrain":    					1,
-            "spaghetti":    					0.05,
+            "spaghetti":    					0.1,
             "botface":      					1,
 			"something completely different":	1,
         };
-        
+
         this.validESReferences = {
             "balgruuf":     0.25,
             "ulfric":       0.25,
@@ -46,8 +55,9 @@ class Bot {
             "imperial":     0.05,
             "war":          0.05,
             "ysmir":        0.50,
+            "shor":         0.69,
         };
-        
+
         this.validShantyReferences = {
 			"johnny":       0.05,
 			"jonny":        0.05,
@@ -67,29 +77,29 @@ class Bot {
 			"dreadnought":  0.60,
 			//"shantest":   1.2,
         };
-        
+
         this.minimumMessageReplyLength = 3;
-        
+
         this.shanties = new ShantyCollection();
 		this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
-		this.skyrimOddsModifier = 1/20; 
+		this.skyrimOddsModifier = 1/20;
         this.channelsWhoLikeXKCD = {};
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
-        
+
         this.xkcd = new XKCD(this,instance);
-        
+
         this.mapping = Skarm.addCommands(Commands);
         this.keywords = Skarm.addKeywords(Keywords);
     }
-    
+
     // events
     OnMessageDelete(e) {
         var string = "";
-        if (e.message != null){
+        if (e.message){
             if (!e.message.author.bot){
-                if (e.message == null){
+                if (e.message){
                     string = "<message not cached>"; 
                 } else {
                     string = e.message.content + " by " +

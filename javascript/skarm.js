@@ -23,8 +23,8 @@ class Skarm {
     static isWeekend() {
         let day = Date.now().getDay();
         return (
-            day == Constants.Days.SUNDAY ||
-            day == Constants.Days.SATURDAY
+            day === Constants.Days.SUNDAY ||
+            day === Constants.Days.SATURDAY
         );
     }
     
@@ -40,7 +40,7 @@ class Skarm {
         );
     }
     
-    static sendMessageDelay(channel, text) {
+    static sendMessageDelay(channel, text,tts,obj) {
 		if(channel==null){
 			console.log("null channel target with message: "+text);
 			return;
@@ -57,7 +57,7 @@ class Skarm {
 		try{
 			channel.sendTyping();
 			setTimeout(function() {
-				channel.sendMessage(text);
+				channel.sendMessage(text,tts,obj);
 			}, Math.random() * 2000 + 1500);
 		} catch {
 			
@@ -159,6 +159,30 @@ class Skarm {
         }
         
         return mapping;
+    }
+
+    static generateRGB(){
+        let h = Math.random() * 360;
+        let s = Math.random() * 0.25 + 0.75;
+        let v = Math.random() * 0.25 + 0.75;
+        let c = v * s;
+        let x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+        let m = v - c;
+        let r = 1, b = 1, g = 1;
+        switch (Math.floor(h / 60)) {
+            case 0: r = c; g = x; b = 0; break;
+            case 1: r = x; g = c; b = 0; break;
+            case 2: r = 0; g = c; b = x; break;
+            case 3: r = 0; g = x; b = c; break;
+            case 4: r = x; g = 0; b = c; break;
+            case 5: r = c; g = 0; b = x; break;
+        }
+        r = Math.floor((r + m) * 255);
+        g = Math.floor((g + m) * 255);
+        b = Math.floor((b + m) * 255);
+        // I don't know if discord wants the color to be in BGR
+        // or RGB order, but in this case it doesn't actually matter
+        return Math.floor(r | (g << 8) | (b << 16));
     }
 }
 
