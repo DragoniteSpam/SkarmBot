@@ -244,7 +244,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             let cmd = commandParamTokens(e.message.content)[0];
             
             if (!cmd) {
-                Skarm.sendMessageDelay(e.message.channel, "Help:",false,{
+                Skarm.sendMessageDelay(e.message.channel, " ",false,{
                     color: Skarm.generateRGB(),
                     description: "Skarm is a Discord bot made by "+Constants.Moms.DRAGO.mention+" and "+Constants.Moms.MASTER.mention+".\n"+
                         "Use the help command with a command name to see the documentation for it!\n"+
