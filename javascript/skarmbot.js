@@ -27,25 +27,12 @@ class Bot {
      *
      **/
     constructor(client,instance) {
-        this.timer30min = setInterval(function() {
-            this.save(Constants.SaveCodes.DONOTHING);
-            this.xkcd.lock--;
-            console.log("XKCD Lock state: "+this.xkcd.lock+"\t|\tInstance: "+this.instance);
-        }.bind(this), 30 * 60 * 1000);
-
-        this.timer1min = setInterval(function() {
-            if(this.game>-1)
-                this.client.User.setGame({ name: this.games[++(this.game)%this.games.length], type: 0 });
-            else
-                clearInterval(this.timer1min);
-        },60*1000);
-
         this.instance=instance;
+
         this.pid = Math.floor(Math.random()*1024)&(-32)+this.instance;
-
         this.client = client;
-        this.nick = "Skarm";
 
+        this.nick = "Skarm";
         this.validNickReferences = {
             "skarm":        					1,
             "skram!":       					1,
@@ -89,20 +76,33 @@ class Bot {
         this.minimumMessageReplyLength = 3;
 
         this.shanties = new ShantyCollection();
-		this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
-		this.skyrimOddsModifier = 1/20;
+
+        this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
+        this.skyrimOddsModifier = 1/20;
         this.channelsWhoLikeXKCD = {};
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
-
         this.xkcd = new XKCD(this,instance);
 
         this.mapping = Skarm.addCommands(Commands);
+
         this.keywords = Skarm.addKeywords(Keywords);
 
         this.games = ["e!help", this.getSpaghetti() + " lines of spaghetti"];
         this.game=0;
+
+        this.timer30min = setInterval(function() {
+            this.save(Constants.SaveCodes.DONOTHING);
+            this.xkcd.lock--;
+            console.log("XKCD Lock state: "+this.xkcd.lock+"\t|\tInstance: "+this.instance);
+        }.bind(this), 30 * 60 * 1000);
+
+        this.timer1min = setInterval(function() {
+            if(this.game > -1) {
+                this.client.User.setGame({name: this.games[(++this.game) % this.games.length], type: 0});
+            }
+        }.bind(this),60*1000);
     }
 
     // events

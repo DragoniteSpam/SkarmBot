@@ -1210,15 +1210,14 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         aliases: ["game"],
         params: ["[name]"],
         usageChar: "@",
-        helpText: "Sets Skarm's current game. Omitting the game name will reset it to the spaghetti count. This command is only usable by Skarm's moms.",
+        helpText: "Sets Skarm's current game. Omitting the game name will reset it to the spaghetti count.",
         ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
-        
-        
+
         execute(bot, e) {
             let cps = commandParamString(e.message.content);
-            if(!cps || cps==="cycle") {
+            if(cps===undefined ||cps===null || cps.length<1 || cps==="cycle") {
                 bot.game = 0;
                 cps=bot.games[bot.game];
             }else{
