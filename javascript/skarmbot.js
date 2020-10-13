@@ -2,7 +2,6 @@
 // actual bot code goes here, because i want to try to only have bot.js
 // for delegating work on events
 const fs = require("fs");
-const { spawn } = require("child_process");
 
 const { ShantyCollection, Shanty } = require("./shanties.js");
 const Skarm = require("./skarm.js");
@@ -440,26 +439,25 @@ class Bot {
     }
     
     save(saveCode) {
-		if(saveCode===Constants.SaveCodes.NOSAVE){
-		    this.client.disconnect();
+	if (saveCode === Constants.SaveCodes.NOSAVE) {
+	    this.client.disconnect();
             process.exit(Constants.SaveCodes.NOSAVE);
         }
-
 		
         Guilds.save();
         Users.save();
-		let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
-		savior.on('exit', (code) =>{
-			console.log("Recieved code: "+code+" on saving data to GIT");
-			if(saveCode===Constants.SaveCodes.DONOTHING)
-				return;
-			if(saveCode===undefined)
-				return;
-			setTimeout(() => {
-			    this.client.disconnect();
-			    process.exit(saveCode);
-			},2000);
-		});
+	let savior = processSaveData();
+	savior.on('exit', (code) => {
+	    console.log("Recieved code: " + code + " on saving data to GIT");
+	    if (saveCode === Constants.SaveCodes.DONOTHING)
+		return;
+	    if (saveCode === undefined)
+		return;
+	    setTimeout(() => {
+		this.client.disconnect();
+		process.exit(saveCode);
+	    }, 2000);
+	});
     }
     
     saveDebug() {
