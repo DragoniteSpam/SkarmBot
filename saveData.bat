@@ -11,5 +11,4 @@ if %errorlevel% == 1 (
 git add *.penguin
 git commit -a -m "Periodic commit"
 git push
-cd ..\SkarmBot
 exit /b %errorlevel%

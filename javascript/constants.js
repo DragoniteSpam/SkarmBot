@@ -29,6 +29,8 @@ class Constants {
         Constants.Channels = {
             LOG:            client.Channels.get("430545618314985504"), // #core-dump
             DELETED:        client.Channels.get("414291195028570112"),
+            TODO:      		client.Channels.get("766054985443311677"),
+			SPAM: 			client.Channels.get("678456248735367168"),
         };
 		
 		Constants.SaveCodes = {
