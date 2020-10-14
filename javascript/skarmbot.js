@@ -2,7 +2,6 @@
 // actual bot code goes here, because i want to try to only have bot.js
 // for delegating work on events
 const fs = require("fs");
-const { spawn } = require("child_process");
 
 const { ShantyCollection, Shanty } = require("./shanties.js");
 const Skarm = require("./skarm.js");
@@ -440,11 +439,10 @@ class Bot {
     }
     
     save(saveCode) {
-		if(saveCode===Constants.SaveCodes.NOSAVE){
-		    this.client.disconnect();
+	if (saveCode === Constants.SaveCodes.NOSAVE) {
+	    this.client.disconnect();
             process.exit(Constants.SaveCodes.NOSAVE);
         }
-
 		
         Guilds.save();
         Users.save();
@@ -461,6 +459,7 @@ class Bot {
 			    process.exit(saveCode);
 			},2000);
 		});
+
     }
     
     saveDebug() {
