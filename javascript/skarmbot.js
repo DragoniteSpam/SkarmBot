@@ -446,18 +446,20 @@ class Bot {
 		
         Guilds.save();
         Users.save();
-	let savior = processSaveData();
-	savior.on('exit', (code) => {
-	    console.log("Recieved code: " + code + " on saving data to GIT");
-	    if (saveCode === Constants.SaveCodes.DONOTHING)
-		return;
-	    if (saveCode === undefined)
-		return;
-	    setTimeout(() => {
-		this.client.disconnect();
-		process.exit(saveCode);
-	    }, 2000);
-	});
+		this.xkcd.save();
+		let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
+		savior.on('exit', (code) =>{
+			console.log("Recieved code: "+code+" on saving data to GIT");
+			if(saveCode===Constants.SaveCodes.DONOTHING)
+				return;
+			if(saveCode===undefined)
+				return;
+			setTimeout(() => {
+			    this.client.disconnect();
+			    process.exit(saveCode);
+			},2000);
+		});
+
     }
     
     saveDebug() {

@@ -1153,10 +1153,26 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	*	infrastructure
 	*/
 
-    /**
+    /*
      * {    color: 0x3498db,    author: {name: "author name"},    title: "This is an embed",    url: "http://google.com",    timestamp: "2016-11-13T03:43:32.127Z",    fields: [{name: "some field", value: "some value"}],    footer: {text: "footer text"}  }
      */
+	Todo: {
+        aliases: ["todo"],
+        params: ["create the todo command"],
+        usageChar: "@",
+        helpText: "Logs to the todo list for the dev team",
+        ignoreHidden: false,
+        perms: Permissions.MOM,
+        category: "infrastructure",
 
+        execute(bot, e) {
+            Skarm.todo(commandParamString(e.message.content));
+        },
+
+        help(bot, e) {
+			Skarm.help(this, e);
+		},
+    },
     Test: {
         aliases: ["test"],
         params: [""],

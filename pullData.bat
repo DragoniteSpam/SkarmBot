@@ -9,5 +9,4 @@ if %errorlevel% == 1 (
 )
 
 git pull
-cd ..\SkarmBot
 exit /b %errorlevel%

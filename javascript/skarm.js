@@ -12,7 +12,14 @@ class Skarm {
     }
     
     static todo(message) {
-        throw "not yet implemented: " + message;
+		console.error(message);
+		Constants.Channels.TODO.sendMessage(message);
+    }
+	
+	//Use for when debugging many steps at a time. 
+	//TODO: potentially build function spamBuffer for concatenating several spam calls into a single sent message to handle rate limits better
+	static spam(message) {
+		Constants.Channels.SPAM.sendMessage(message);
     }
     
     static logError(err) {
