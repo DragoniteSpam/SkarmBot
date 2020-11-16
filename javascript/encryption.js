@@ -1,11 +1,11 @@
 "use strict";
 const fs = require("fs");
 const crypto = require("crypto-js");
-const Skarm = require("..\\javascript\\skarm.js");
+const Skarm = require("./skarm.js");
 
 class Encrypt {
     static initialize() {
-        Encrypt.dataToken = fs.readFileSync("..\\aes.txt").toString();
+        Encrypt.dataToken = fs.readFileSync("../aes.txt").toString();
     }
     
     static read(filename, callback) {

@@ -21,9 +21,9 @@ const Users = require("./javascript/user.js");
 const Guilds = require("./javascript/guild.js");
 
 // i'm in?
-var target = "..\\descrution.txt";
+var target = "../descrution.txt";
 if(process.argv.length>2 && process.argv[2]==="beta")
-	target="..\\token.txt";
+	target="../token.txt";
 const token = fs.readFileSync(target).toString();
 
 // javascript
@@ -46,17 +46,19 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	if(bot){
 		bot.poisonPill();
 	}
-
+/*
 	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
+*/
     Constants.initialize(client);
     Encrypt.initialize();
-	dataPuller.on('exit', (code) => {
-		console.log("Pulled in skarmData with code "+code);
+/*	dataPuller.on('exit', (code) => {
+		console.log("Pulled in skarmData with code "+code);*/
 		Users.initialize(client);
 		Guilds.initialize(client);
 		bot = new SkarmBot(client,++instance);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
-	});
+/*	});
+*/
 	uptimeController[0]=Date.now();
 	if(uptimeController[1]>0){
 		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");

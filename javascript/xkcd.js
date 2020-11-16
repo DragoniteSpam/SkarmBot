@@ -3,7 +3,7 @@ const fs = require("fs");
 const Skarm = require("./skarm.js");
 const Encrypt = require("./encryption.js");
 
-const xkcddb = "..\\skarmData\\xkcd.penguin";
+const xkcddb = "../skarmData/xkcd.penguin";
 
 class XKCD {
 	constructor(bot, instance) {
@@ -13,7 +13,7 @@ class XKCD {
 		this.schedule();
 		this.lock = 0;
 		this.instance = instance;
-		this.references = JSON.parse(fs.readFileSync(".\\fun\\xkcd-log.json").toString().toLowerCase());
+		this.references = JSON.parse(fs.readFileSync("./fun/xkcd-log.json").toString().toLowerCase());
 	}
 
 	save() {
