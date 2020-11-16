@@ -6,7 +6,10 @@ switch (process.platform) {
                 module.exports = {
                         processSaveData: function() {
                                 return spawn("cmd.exe", ["/c", "saveData.bat"]);
-                        };
+                        },
+			userFile: "../skarmData/users.penguin",
+			xkcdFile: "../skarmData/xkcd.penguin",
+			guildFile: "../skarmData/guilds.penguin",
                 };
                 break;
         case "linux":
@@ -17,7 +20,10 @@ switch (process.platform) {
                                         // eat the standard output
                                 });
                                 return script;
-                        };
+                        },
+			userFile: "./skarmData/users.penguin",
+			xkcdFile: "./skarmData/xkcd.penguin",
+			guildFile: "./skarmData/guilds.penguin",
                 };
                 break;
         case "darwin": /* OSX */

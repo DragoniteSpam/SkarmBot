@@ -3,8 +3,9 @@ const fs = require("fs");
 const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
 const Discordie = require("discordie");
+const Platform = require("./platform.js");
 
-const userdb = "../skarmData/users.penguin";
+const userdb = Platform.userFile;
 const SUMMON_COOLDOWN = 60000;
 
 const linkFunctions = function(user) {

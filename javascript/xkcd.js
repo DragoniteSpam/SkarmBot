@@ -2,8 +2,9 @@
 const fs = require("fs");
 const Skarm = require("./skarm.js");
 const Encrypt = require("./encryption.js");
+const Platform = require("./platform.js");
 
-const xkcddb = "../skarmData/xkcd.penguin";
+const xkcddb = Platform.xkcdFile;
 
 class XKCD {
 	constructor(bot, instance) {

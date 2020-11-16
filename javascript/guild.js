@@ -5,8 +5,9 @@ const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
+const Platform = require("./platform.js");
 
-const guilddb = "../skarmData/guilds.penguin";
+const guilddb = Platform.guildFile;
 
 const MIN_LINES = 40;
 
