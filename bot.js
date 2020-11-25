@@ -44,7 +44,9 @@ let uptimeController= [0,0];
 // file clean
 client.Dispatcher.on(events.GATEWAY_READY, e => {
 	if(bot){
-		bot.poisonPill();
+		uptimeController[0]=Date.now();
+		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
+		return;
 	}
 
 	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
@@ -57,10 +59,6 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		bot = new SkarmBot(client,++instance);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
 	});
-	uptimeController[0]=Date.now();
-	if(uptimeController[1]>0){
-		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
-	}
 });
 
 
