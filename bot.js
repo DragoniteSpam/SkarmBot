@@ -88,6 +88,6 @@ client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
 });
 
 client.Dispatcher.on(events.DISCONNECTED, e => {
-	console.log("Error: disconnected at " + (new Date()).toString());
+	console.error("Network Error: disconnected at " + (new Date()).toString());
 	uptimeController[1]=Date.now();
 });
