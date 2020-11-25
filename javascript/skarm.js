@@ -1,4 +1,5 @@
 "use strict";
+
 const fs = require("fs");
 const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
@@ -71,7 +72,11 @@ class Skarm {
 			console.log("failed to send message: "+text+" to channel "+channel.id);
 		}
     }
-    
+
+    static queueMessage(Guilds,channel, message, tts, obj){
+        Guilds.get(channel.guild_id).queueMessage(channel,message,tts,obj);
+    }
+
     static help(cmd, e) {
         let helpString = "Documentation:\n```";
         let paramString = "";

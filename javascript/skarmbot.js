@@ -10,6 +10,7 @@ const Commands = require("./commands.js");
 const Keywords = require("./keywords.js");
 const XKCD = require("./xkcd.js");
 const Skinner = require("./skinnerbox.js");
+const { spawn } = require("child_process");
 
 const Users = require("./user.js");
 const Guilds = require("./guild.js");

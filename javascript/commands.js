@@ -1222,6 +1222,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.sendMessageDelay(e.message.channel, "(◕ ε ◕)");
         },
     },
+    Fivechan: {
+        aliases: ["5"],
+        params: ["id", "t..."],
+        usageChar: "@",
+        helpText: "Hey, what are you doing here?!",
+        ignoreHidden: true,
+        perms: Permissions.MOM,
+        category: "infrastructure",
+
+        execute(bot, e) {
+            let tokens = commandParamTokens(e.message.content);
+            if (tokens.length < 3) return;
+
+            let destination = tokens.splice(0, 1)[0];
+            let chan = bot.client.Channels.get(destination);
+            if (chan) Skarm.queueMessage(Guilds,chan, tokens.join(" "));
+        },
+
+        help(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "(◕ ε ◕)");
+        },
+    },
     Game: {
         aliases: ["game"],
         params: ["[name]"],

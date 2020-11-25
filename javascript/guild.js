@@ -156,10 +156,28 @@ const linkFunctions = function(guild) {
 	guild.getLineCount = function() {
         return Object.keys(this.lines).length;
     };
-    
+
+    guild.queueMessage = function(channel,message,tts,object){
+        if(!this.channelBuffer){
+            this.channelBuffer = {};
+        }
+        if(channel.id in this.channelBuffer){
+            this.channelBuffer[channel.id].push({_1: message, _2:tts, _3: object});
+        }else{
+            this.channelBuffer[channel.id]=[{_1: message, _2:tts, _3: object}];
+        }
+        //console.log(`Enqueued message: ${message} for ${channel.id}`);
+    };
+
 	guild.getRandomLine = function(e) {
         if (messageIsAction(e.message.content)) return this.getRandomAction(e);
-        
+
+        if(!this.channelBuffer)
+            this.channelBuffer={};
+        if(e.message.channel.id in this.channelBuffer && this.channelBuffer[e.message.channel.id].length > 0) {
+            return this.channelBuffer[e.message.channel.id].shift()._1;
+        }
+
         let keywords = e.message.content.toLowerCase().split(" ");
         let keys = Object.keys(this.lines);
         // if there are no stored messages, use the default log instead
