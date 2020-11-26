@@ -38,7 +38,7 @@ class Skarm {
             Skarm.spamBufferTimer = setInterval(function (){
                 Skarm.spam(Skarm.spamBufferString.substring(0,2000));
                 Skarm.spamBufferString=Skarm.spamBufferString.substring(2000);
-            },2000).bind(this);
+            },2000);
         }
         Skarm.spamBufferString+=message+"\r\n";
     }
@@ -49,7 +49,7 @@ class Skarm {
      */
     static logError(err) {
         console.error(err);
-        Skarm.spam(err);
+        Skarm.spamBuffer(err);
     }
     
     static isWeekend() {
