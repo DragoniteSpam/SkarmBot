@@ -63,13 +63,13 @@ class Bot {
             "rum":          0.04,
             "ship":         0.05,
             "captain":      0.06,
-            "shanty":       0.07,
-            "shanties":     0.08,
             "sea":          0.08,
             "maui":         0.09,
             "sailor":       0.10,
             "stan":         0.11,
-            "dreadnought":  0.12,
+            "shanty":       0.35,
+            "shanties":     0.40,
+            "dreadnought":  0.50,
 			//"shantest":     1.2,
         };
 
