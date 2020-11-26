@@ -10,6 +10,7 @@ const Commands = require("./commands.js");
 const Keywords = require("./keywords.js");
 const XKCD = require("./xkcd.js");
 const Skinner = require("./skinnerbox.js");
+const { spawn } = require("child_process");
 
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
@@ -53,23 +54,23 @@ class Bot {
         };
 
         this.validShantyReferences = {
-			"johnny":       0.05,
-			"jonny":        0.05,
-			"jony":         0.05,
-			"johny":        0.05,
-			"drunk":        0.10,
-            "sing":         0.15,
-			"rum":          0.20,
-            "ship":         0.25,
-			"captain":      0.30,
-			"shanty":       0.35,
-			"shanties":     0.40,
-			"sea":          0.40,
-			"maui":         0.45,
-			"sailor":       0.50,
-			"stan":         0.55,
-			"dreadnought":  0.60,
-			//"shantest":   1.2,
+            "johnny":       0.01,
+            "jonny":        0.01,
+            "jony":         0.01,
+            "johny":        0.01,
+            "drunk":        0.02,
+            "sing":         0.03,
+            "rum":          0.04,
+            "ship":         0.05,
+            "captain":      0.06,
+            "sea":          0.08,
+            "maui":         0.09,
+            "sailor":       0.10,
+            "stan":         0.11,
+            "shanty":       0.35,
+            "shanties":     0.40,
+            "dreadnought":  0.50,
+			//"shantest":     1.2,
         };
 
         this.minimumMessageReplyLength = 3;
@@ -215,14 +216,10 @@ class Bot {
         
         // i don't know how you would delete a message the instant it's created,
         // but apparently it can happen...
-        if (e.message.deleted) {
-            return false;
-        }
+        if (e.message.deleted) {return false;}
         // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate) {
-            e.message.channel.sendMessage("private message responses not yet " +
-                "implemented"
-            );
+            e.message.channel.sendMessage("private message responses not yet implemented");
             return false;
         }
         
@@ -352,12 +349,10 @@ class Bot {
         if (this.mentions(e, this.validNickReferences)) {
 			//once skarm starts singing, he'd rather do that than talk
 			let seed = Math.random();
-			if (this.shanties.isSinging && seed<this.shanties.ivanhoe * this.shanties.drinkCount()) {
-				return this.singShanty(e);
-            }
+			//if (this.shanties.isSinging && seed<this.shanties.ivanhoe * this.shanties.drinkCount()) {return this.singShanty(e);}
 			//reset the seed weight
-			if(this.shanties.isSigning)
-				seed = (seed + this.shanties.ivanhoe * this.shanties.drinkCount())/(1+this.shanties.ivanhoe * this.shanties.drinkCount());
+			//if(this.shanties.isSigning)
+			//	seed = (seed + this.shanties.ivanhoe * this.shanties.drinkCount())/(1+this.shanties.ivanhoe * this.shanties.drinkCount());
 			//roll for skyrim
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);
@@ -375,7 +370,13 @@ class Bot {
     }
 	
 	singShanty(e) {
-		Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+	    console.log("they've started singing");
+	    const guildData = Guilds.get(e.message.channel.guild_id);
+	    guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
+	    while(this.shanties.isSinging)
+            guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
+		//Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+        this.parrot(e);
 	}
 	
 	returnSkyrim(e){

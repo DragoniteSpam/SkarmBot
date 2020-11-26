@@ -214,7 +214,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
-	Drunk: {
+	/*
+
+    Drunk: {
         aliases: ["drunk"],
         params: [""],
         usageChar: "!",
@@ -232,8 +234,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
+	 */
 	Help: {
-        aliases: ["help", "man"],
+        aliases: ["help", "man","?"],
         params: ["[term]"],
         usageChar: "!",
         helpText: "Provides an encyclopedia entry for the specified command. Or alternatively, the bot as a whole.",
@@ -242,7 +245,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         
         execute(bot, e) {
             let cmd = commandParamTokens(e.message.content)[0];
-            
+            if(e.message.content==="e!?")
+                cmd = "?";
+
             if (!cmd) {
                 Skarm.sendMessageDelay(e.message.channel, " ",false,{
                     color: Skarm.generateRGB(),
@@ -257,50 +262,40 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 });
                 return;
             }
-            
-            if (bot.mapping.help[cmd]) {
-                bot.mapping.help[cmd].help(bot, e);
-                return;
-            }
-            
-            if (bot.mapping.cmd[cmd]) {
-                bot.mapping.cmd[cmd].help(bot, e);
-                return;
-            }
-            
+
             if (cmd === "?") {
                 let keys =[];// Object.keys(bot.mapping.unaliased);
-				let guildData = Guilds.get(e.message.channel.guild_id);
-				let userData = Users.get(e.message.author.id);
+                let guildData = Guilds.get(e.message.channel.guild_id);
+                let userData = Users.get(e.message.author.id);
                 let categories = {};
 
-				for(let key in bot.mapping.unaliased){
-					if(bot.mapping.unaliased[key].usageChar === "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms)){
-						keys.push(key);
-						let cat = bot.mapping.unaliased[key].category;
-						if(cat in categories){
-							categories[cat].push(key);
-						}else{
-							categories[cat]= [key];
-						}
-					}
-				}
-				
-				let alphabet = [];
-				for(let sets in categories){
-					categories[sets].sort();
-					alphabet.push({name: sets,value: categories[sets].join(", ")});
-				}
+                for(let key in bot.mapping.unaliased){
+                    if(bot.mapping.unaliased[key].usageChar === "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms)){
+                        keys.push(key);
+                        let cat = bot.mapping.unaliased[key].category;
+                        if(cat in categories){
+                            categories[cat].push(key);
+                        }else{
+                            categories[cat]= [key];
+                        }
+                    }
+                }
+
+                let alphabet = [];
+                for(let sets in categories){
+                    categories[sets].sort();
+                    alphabet.push({name: sets,value: categories[sets].join(", ")});
+                }
 
                 /** TO BE REPLACED
-                for (let i = 0; i < keys.length; i++) {
+                 for (let i = 0; i < keys.length; i++) {
                     if (alphabet.length == 0 || alphabet[alphabet.length - 1].charAt(0) != keys[i].charAt(0)) {
                         alphabet[alphabet.length] = keys[i];
                     } else {
                         alphabet[alphabet.length - 1] += ", " + keys[i];
                     }
                 }
-                */
+                 */
                 let embedobj= {
                     color: Skarm.generateRGB(),
                     title: "Commands",
@@ -312,7 +307,18 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 Skarm.sendMessageDelay(e.message.channel, " ",false,embedobj);//"Available commands: ```" + alphabet.join("\n\n") + "```\nSome commands have additional aliases.");
                 return;
             }
+
+            if (bot.mapping.help[cmd]) {
+                bot.mapping.help[cmd].help(bot, e);
+                return;
+            }
             
+            if (bot.mapping.cmd[cmd]) {
+                bot.mapping.cmd[cmd].help(bot, e);
+                return;
+            }
+            
+
             Skarm.sendMessageDelay(e.message.channel, "Command not found: " + cmd + ". Use the help command followed by the name of the command you wish to look up.");
         },
         
@@ -1216,6 +1222,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             let destination = tokens.splice(0, 1)[0];
             let chan = bot.client.Channels.get(destination);
             if (chan) Skarm.sendMessageDelay(chan, tokens.join(" "));
+        },
+
+        help(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "(◕ ε ◕)");
+        },
+    },
+    Fivechan: {
+        aliases: ["5"],
+        params: ["id", "t..."],
+        usageChar: "@",
+        helpText: "Hey, what are you doing here?!",
+        ignoreHidden: true,
+        perms: Permissions.MOM,
+        category: "infrastructure",
+
+        execute(bot, e) {
+            let tokens = commandParamTokens(e.message.content);
+            if (tokens.length < 3) return;
+
+            let destination = tokens.splice(0, 1)[0];
+            let chan = bot.client.Channels.get(destination);
+            if (chan) Skarm.queueMessage(Guilds,chan, tokens.join(" "));
         },
 
         help(bot, e) {

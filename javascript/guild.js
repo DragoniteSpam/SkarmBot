@@ -42,7 +42,7 @@ const linkFunctions = function(guild) {
                         let output = Skarm.generateRGB();
                         roleData.commit(roleData.name, output, roleData.hoist, roleData.mentionable);
                     } catch (e) {
-                        console.log(e);
+                        console.error(e);
                         // if you dont have permission to mess with the role, don't i guess
                     }
                 }
@@ -156,10 +156,40 @@ const linkFunctions = function(guild) {
 	guild.getLineCount = function() {
         return Object.keys(this.lines).length;
     };
-    
+
+    guild.queueMessage = function(channel,message,tts,object){
+        //console.log("enqueueing...");
+        if(!this.channelBuffer){
+            this.channelBuffer = {};
+        }
+        if(channel.id in this.channelBuffer){
+            this.channelBuffer[channel.id].push({_1: message, _2:tts, _3: object});
+        }else{
+            this.channelBuffer[channel.id]=[{_1: message, _2:tts, _3: object}];
+        }
+        //console.log(`Enqueued message: '${JSON.stringify(this.channelBuffer[channel.id])}' for ${channel.id}`);
+        //console.log(`New buffer length: ${this.channelBuffer[channel.id].length}`);
+    };
+
 	guild.getRandomLine = function(e) {
         if (messageIsAction(e.message.content)) return this.getRandomAction(e);
-        
+
+        //handle the queue message buffer for e@5 and shanties
+        //console.log("checking the buffer...");
+        if(typeof(this.channelBuffer)==="undefined") {
+            //console.log(`redefining channel buffer: ${JSON.stringify(this.channelBuffer)}`);
+            this.channelBuffer = {};
+        }
+        if(e.message.channel.id in this.channelBuffer) {
+            if (this.channelBuffer[e.message.channel.id].length > 0) {
+                return this.channelBuffer[e.message.channel.id].shift()._1;
+            }else{
+                //console.log("no messages in buffer");
+            }
+        }else{
+            //console.log("channel has no buffer. Channel ID:"+e.message.channel.id+"\n guild channelBuffer object:"+JSON.stringify(this.channelBuffer));
+        }
+
         let keywords = e.message.content.toLowerCase().split(" ");
         let keys = Object.keys(this.lines);
         // if there are no stored messages, use the default log instead
