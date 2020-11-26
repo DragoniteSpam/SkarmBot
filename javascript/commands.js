@@ -1146,7 +1146,6 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			let guile = Guilds.get(e.message.channel.guild_id);
 			guile.roleCheck(e.message.member,guile.expTable[e.message.author.id]);
 			Skarm.sendMessageDelay(e.message.channel,"Refreshed your roles!");
-			return;
         },
         
         help(bot, e) {
