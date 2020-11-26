@@ -70,7 +70,7 @@ class Bot {
             "sailor":       0.10,
             "stan":         0.11,
             "dreadnought":  0.12,
-			//"shantest":   1.2,
+			//"shantest":     1.2,
         };
 
         this.minimumMessageReplyLength = 3;
@@ -216,14 +216,10 @@ class Bot {
         
         // i don't know how you would delete a message the instant it's created,
         // but apparently it can happen...
-        if (e.message.deleted) {
-            return false;
-        }
+        if (e.message.deleted) {return false;}
         // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate) {
-            e.message.channel.sendMessage("private message responses not yet " +
-                "implemented"
-            );
+            e.message.channel.sendMessage("private message responses not yet implemented");
             return false;
         }
         
@@ -353,12 +349,10 @@ class Bot {
         if (this.mentions(e, this.validNickReferences)) {
 			//once skarm starts singing, he'd rather do that than talk
 			let seed = Math.random();
-			if (this.shanties.isSinging && seed<this.shanties.ivanhoe * this.shanties.drinkCount()) {
-				return this.singShanty(e);
-            }
+			//if (this.shanties.isSinging && seed<this.shanties.ivanhoe * this.shanties.drinkCount()) {return this.singShanty(e);}
 			//reset the seed weight
-			if(this.shanties.isSigning)
-				seed = (seed + this.shanties.ivanhoe * this.shanties.drinkCount())/(1+this.shanties.ivanhoe * this.shanties.drinkCount());
+			//if(this.shanties.isSigning)
+			//	seed = (seed + this.shanties.ivanhoe * this.shanties.drinkCount())/(1+this.shanties.ivanhoe * this.shanties.drinkCount());
 			//roll for skyrim
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);
@@ -376,7 +370,13 @@ class Bot {
     }
 	
 	singShanty(e) {
-		Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+	    console.log("they've started singing");
+	    const guildData = Guilds.get(e.message.channel.guild_id);
+	    guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
+	    while(this.shanties.isSinging)
+            guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
+		//Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+        this.parrot(e);
 	}
 	
 	returnSkyrim(e){
