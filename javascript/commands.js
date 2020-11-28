@@ -1146,7 +1146,6 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			let guile = Guilds.get(e.message.channel.guild_id);
 			guile.roleCheck(e.message.member,guile.expTable[e.message.author.id]);
 			Skarm.sendMessageDelay(e.message.channel,"Refreshed your roles!");
-			return;
         },
         
         help(bot, e) {
@@ -1181,7 +1180,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
     },
     Test: {
         aliases: ["test"],
-        params: [""],
+        params: ["<test>"],
         usageChar: "@",
         helpText: "Hey, what are you doing here?!",
         ignoreHidden: true,
@@ -1189,17 +1188,54 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         category: "infrastructure",
 
         execute(bot, e) {
-            e.message.channel.sendMessage("message with an embed", false, {
+            e.message.channel.sendMessage("running test...", false, {
                 color: Skarm.generateRGB(),
                 author: {name: e.message.author.nick},
-                description: "Skarmory is brought to you by node js, github, Discord, and by viewers like you. Thank you.\nPBS",
+                description: "Skarmory is brought to you by node js, github, Discord, and by viewers like you. Thank you.\r\n-PBS",
                 title: "This is an embed",
                 url: "http://xkcd.com/303",
                 timestamp: new Date(),
                 fields: [{name: "G", value: "And now"},{name: "R", value: "for something"},{name: "E", value: "completely"},{name: "P", value: "different"}],
                 footer: {text: "bottom text"}
             });
-
+            if(commandParamString(e.message.content)==="spam") {
+                Skarm.spamBuffer("Well, what've you got?");
+                Skarm.spamBuffer("Well, there's egg and bacon");
+                Skarm.spamBuffer("egg sausage and bacon");
+                Skarm.spamBuffer("egg and spam");
+                Skarm.spamBuffer("egg bacon and spam");
+                Skarm.spamBuffer("egg bacon sausage and spam");
+                Skarm.spamBuffer("spam bacon sausage and spam");
+                Skarm.spamBuffer("spam egg spam spam bacon and spam");
+                Skarm.spamBuffer("spam sausage spam spam bacon spam tomato and spam");
+                Skarm.spamBuffer("Spam spam spam spam...");
+                Skarm.spamBuffer("spam spam spam egg and spam");
+                Skarm.spamBuffer("spam spam spam spam spam spam baked beans spam spam spam");
+                Skarm.spamBuffer("Spam!  Lovely spam!  Lovely spam!");
+                Skarm.spamBuffer("...or Lobster Thermidor au Crevette with a Mornay sauce served in a Provencale manner with shallots and aubergines garnished with truffle pate, brandy and with a fried egg on top and spam.");
+                Skarm.spamBuffer("Have you got anything without spam?");
+                Skarm.spamBuffer("Waitress: Well, there's spam egg sausage and spam, that's not got much spam in it.");
+                Skarm.spamBuffer("I don't want ANY spam!");
+                Skarm.spamBuffer("Why can't she have egg bacon spam and sausage?");
+                Skarm.spamBuffer("THAT'S got spam in it!");
+                Skarm.spamBuffer("Hasn't got as much spam in it as spam egg sausage and spam, has it?");
+                Skarm.spamBuffer("Spam spam spam spam");
+                Skarm.spamBuffer("Could you do the egg bacon spam and sausage without the spam then?");
+                Skarm.spamBuffer("Urgghh");
+                Skarm.spamBuffer("What do you mean 'Urgghh'? I don't like spam!");
+                Skarm.spamBuffer("Lovely spam! Wonderful spam!");
+                Skarm.spamBuffer("Shut up!");
+                Skarm.spamBuffer("Lovely spam! Wonderful spam!");
+                Skarm.spamBuffer("Shut up! Bloody Vikings!");
+                Skarm.spamBuffer("You can't have egg bacon spam and sausage without the spam.");
+                Skarm.spamBuffer("I don't like spam!");
+                Skarm.spamBuffer("Sshh, dear, don't cause a fuss. I'll have your spam. I love it. I'm having spam spam spam spam spam spam spam beaked beans spam spam spam and spam!");
+                Skarm.spamBuffer("Spam spam spam spam. Lovely spam! Wonderful spam!");
+                Skarm.spamBuffer("Shut up!! Baked beans are off.");
+                Skarm.spamBuffer("Well could I have her spam instead of the baked beans then?");
+                Skarm.spamBuffer("You mean spam spam spam spam spam spam... ");
+                Skarm.spamBuffer("**Spam spam spam spam. Lovely spam! Wonderful spam! Spam spa-a-a-a-a-am spam spa-a-a-a-a-am spam. Lovely spam! Lovely spam! Lovely spam! Lovely spam! Lovely spam! Spam spam spam spam!**");
+            }
         },
 
         help(bot, e) {

@@ -17,15 +17,39 @@ class Skarm {
 		Constants.Channels.TODO.sendMessage(message);
     }
 	
-	//Use for when debugging many steps at a time. 
-	//TODO: potentially build function spamBuffer for concatenating several spam calls into a single sent message to handle rate limits better
+	/**Mass data output stream which can be freely used for spam and during debugging.
+    * @param message the message to be sent to the spam channel
+    */
 	static spam(message) {
-		Constants.Channels.SPAM.sendMessage(message);
+        if(message.length>0)
+            return Constants.Channels.SPAM.sendMessage(message);
+        return null;
     }
-    
+
+    /**
+     * concatenating several spam calls into a single sent message to handle rate limits better,
+     // one message per 2 seconds will fly under the discord server timeout limit of 6 actions/6 seconds
+     // 2000: the count of milliseconds between messages sent and the max character count for a discord message
+     * @param message the message to be added to the spam buffer
+     */
+    static spamBuffer(message){
+        if(Skarm.spamBufferString === undefined) {
+            Skarm.spamBufferString = "";
+            Skarm.spamBufferTimer = setInterval(function (){
+                Skarm.spam(Skarm.spamBufferString.substring(0,2000));
+                Skarm.spamBufferString=Skarm.spamBufferString.substring(2000);
+            },2000);
+        }
+        Skarm.spamBufferString+=message+"\r\n";
+    }
+
+    /**
+     * standard error output stream which also sends a copy of errors to spam aka #stderr
+     * @param err the error object
+     */
     static logError(err) {
-        // you can do whatever you want i guess
-		console.error(err);
+        console.error(err);
+        Skarm.spamBuffer(err);
     }
     
     static isWeekend() {

@@ -355,7 +355,9 @@ class Guild {
 		this.boostTable = { };
 		this.moderators = { };
 		this.announcesLevels=false;
-		
+
+		this.channelBuffer = { };
+
 		this.welcoming = true;
 		this.welcomes = { };
 		
