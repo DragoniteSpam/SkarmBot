@@ -36,7 +36,6 @@ client.connect({
 });
 
 let bot;
-var instance = 0;
 //last Connection, last Disconnect
 let uptimeController= [0,0];
 
@@ -53,12 +52,14 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     Constants.initialize(client);
     Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
-		console.log("Pulled in skarmData with code "+code);
+		console.log("Pulled in skarmData.\nGit revision count:"+code);
 		Users.initialize(client);
 		Guilds.initialize(client);
-		bot = new SkarmBot(client,++instance);
+		bot = new SkarmBot(client,code);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
 	});
+	dataPuller.on("error",(err)=>{console.error(err);});
+	dataPuller.on("message",(message) => {console.log(message);});
 });
 
 
