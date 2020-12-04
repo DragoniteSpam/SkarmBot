@@ -97,7 +97,7 @@ module.exports = {
         aliases: ["summon", "summons"],
         params: ["add|remove|list", "term"],
         usageChar: "!",
-        helpText: "Skarm can be asked to send you notifications for messages with certain keywords (often your username, or other topics you like to know about - for example, \"Wooloo\" or \"programming\"). You can add, remove, or list your summons.",
+        helpText: "Skarm can be asked to send you notifications for messages with certain keywords (often your username, or other topics you like to know about - for example, \"Wooloo\" or \"programming\"). You can add, remove, or list your summons.\nMessages that skarm sends containing your summons will be deleted after 15 seconds (30 seconds for e!summons list).",
         ignoreHidden: true,
         category: "general",
 		
@@ -120,7 +120,7 @@ module.exports = {
 						retina+= "Could not add the term " + params[i] + " as a summon. (Has it already been added?)\n";
 					}
 				}
-				Skarm.sendMessageDelay(e.message.channel,retina);
+				Skarm.sendMessageDelete(e.message.channel,retina,false,null,15000);
                 return;
             }
             if (action === "remove") {
@@ -131,7 +131,7 @@ module.exports = {
 						retina+= "Could not remove the term " + params[i] + " as a summon. (Does it exist in the summon list?)\n";
 					}
 				}
-				Skarm.sendMessageDelay(e.message.channel,retina);
+				Skarm.sendMessageDelete(e.message.channel,retina,false,null,15000);
                 return;
             }
             if (action === "list") {
@@ -141,7 +141,7 @@ module.exports = {
                 } else {
                     retina+= "**" + e.message.author.username + "**, your current summons are:\n```" + summonString + "```";
                 }
-				Skarm.sendMessageDelay(e.message.channel,retina);
+				Skarm.sendMessageDelete(e.message.channel,retina,false,null,30000);
                 return;
             }
             Skarm.erroneousCommandHelpPlease(e.message.channel, this);
@@ -1198,7 +1198,12 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 fields: [{name: "G", value: "And now"},{name: "R", value: "for something"},{name: "E", value: "completely"},{name: "P", value: "different"}],
                 footer: {text: "bottom text"}
             });
-            if(commandParamString(e.message.content)==="spam") {
+            let tokens =commandParamTokens(e.message.content);
+            if(tokens[0]==="delete"){
+                tokens.shift();
+                Skarm.sendMessageDelete(e.message.channel,`Testing delete message timeout ${5000}\n`+tokens.join(" "),false,null,5000);
+            }
+            if(tokens[0]==="spam") {
                 Skarm.spamBuffer("Well, what've you got?");
                 Skarm.spamBuffer("Well, there's egg and bacon");
                 Skarm.spamBuffer("egg sausage and bacon");

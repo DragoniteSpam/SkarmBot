@@ -85,6 +85,7 @@ class Bot {
         this.guildsWithWelcomeMessage = {};
         this.xkcd = new XKCD(this,instance);
 
+        this.toBeDeletedCache = {};
         this.mapping = Skarm.addCommands(Commands);
 
         this.keywords = Skarm.addKeywords(Keywords);
@@ -132,11 +133,11 @@ class Bot {
         const REQUIRED_UPVOTES = 3;
         
 		if(!e)
-			return;
-		if(!e.message)
-			return Skarm.log("encountered null message in onMessageReactionAdd???");
+			return Skarm.log("encountered null event in OnMessageReactionAdd");
+		if(e.message==null)
+			return Skarm.log("encountered null message in onMessageReactionAdd");
 		if(!e.message.guild)
-			return;
+			return Skarm.log("encountered null guild in OnMessageReactionAdd");
 		
 		
 		
