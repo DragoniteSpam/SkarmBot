@@ -11,6 +11,8 @@ const Keywords = require("./keywords.js");
 const XKCD = require("./xkcd.js");
 const Skinner = require("./skinnerbox.js");
 const { spawn } = require("child_process");
+const Permissions = require("./permissions.js");
+
 
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
@@ -85,6 +87,14 @@ class Bot {
         this.guildsWithWelcomeMessage = {};
         this.xkcd = new XKCD(this,instance);
 
+        /**
+         * keeps a short lifespan cache of messages sent by skarm which are going to be deleted,
+         * and provides a fast lane for the author who triggered the message or a moderator to remove the message without waiting for the timer.
+         * This hashmap is modified by OnMessageReactionAdd and Skarm.sendMessageDelete
+         * @structure MessageID:String: -> {senderID:String,self:Boolean,timeout:JStimeout}
+         */
+        this.toBeDeletedCache = {};
+
         this.mapping = Skarm.addCommands(Commands);
 
         this.keywords = Skarm.addKeywords(Keywords);
@@ -130,16 +140,33 @@ class Bot {
     OnMessageReactionAdd(e) {
         const UPVOTE = 0x2b06;
         const REQUIRED_UPVOTES = 3;
-        
+        const REDX = '\u274c';
+
 		if(!e)
-			return;
-		if(!e.message)
-			return Skarm.log("encountered null message in onMessageReactionAdd???");
+			return Skarm.log("encountered null event in OnMessageReactionAdd");
+		if(e.message==null)
+			return Skarm.log("encountered null message in onMessageReactionAdd");
 		if(!e.message.guild)
-			return;
+			return Skarm.log("encountered null guild in OnMessageReactionAdd");
 		
-		
-		
+		if(e.message.id in this.toBeDeletedCache) {
+            for (let i in e.message.reactions) {
+                let reaction = e.message.reactions[i];
+                //Skarm.log(JSON.stringify(reaction));
+                if (reaction.emoji.name === REDX) {
+                    if (this.toBeDeletedCache[e.message.id].self) {
+                        this.toBeDeletedCache[e.message.id].self = true;
+                    } else {
+                        if (this.toBeDeletedCache[e.message.id].senderID === e.user.id || Guilds.get(e.message.guild.id).hasPermissions(e.user, Permissions.MOD)) {
+                            clearTimeout(this.toBeDeletedCache[e.message.id].timeout);
+                            e.message.delete();
+                            delete this.toBeDeletedCache[e.message.id];
+                        }
+                    }
+                }
+            }
+        }
+
         if (e.message !== null && !e.message.pinned && Guilds.get(e.message.guild.id).channelsPinUpvotes[e.message.channel_id] /*!== undefined && === true */) {
             let upvotes = 0;
             for (let i in e.message.reactions) {

@@ -71,30 +71,73 @@ class Skarm {
             day === Constants.Days.TUESDAY
         );
     }
-    
+
     static sendMessageDelay(channel, text,tts,obj) {
-		if(channel==null){
-			console.log("null channel target with message: "+text);
-			return;
-		}
-		if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
-			this.log("Missing permission to read messages in " + channel.name);
-			return;
-		}
-		if(!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)){
-			this.log("Missing permission to send message in " + channel.name);
-			return;
-		}
-		
-		try{
-			channel.sendTyping();
-			setTimeout(function() {
-				channel.sendMessage(text,tts,obj);
-			}, Math.random() * 2000 + 1500);
-		} catch {
-			
-			console.log("failed to send message: "+text+" to channel "+channel.id);
-		}
+        if(channel==null){
+            console.log("null channel target with message: "+text);
+            return;
+        }
+        if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
+            this.log("Missing permission to read messages in " + channel.name);
+            return;
+        }
+        if(!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)){
+            this.log("Missing permission to send message in " + channel.name);
+            return;
+        }
+
+        try{
+            channel.sendTyping();
+            setTimeout(function() {
+                channel.sendMessage(text,tts,obj);
+            }, Math.random() * 2000 + 1500);
+        } catch {
+
+            console.log("failed to send message: "+text+" to channel "+channel.id);
+        }
+    }
+
+    /**
+     * Sends a message then deletes the message after a predefined time interval or upon reaction from the user who prompted the message or a moderator+.
+     * @param channel the guild channel where the message will be sent.
+     * @param text the content of the message
+     * @param tts virtually useless parameter. Pay no regard.
+     * @param obj Support for messages sent as embeds.
+     * @param timer the millisecond count between the time the message arrives in the discord server and when it is deleted.
+     * @param senderID The ID of the author of the message who will be able to delete the message prematurely if they so choose.
+     * @param skarmbotObject a reference to the skarmbot.js object in order to update the toBeDeletedCache mapping of MessageID to senderID which will be created for the duration of the message's existence.
+     */
+    static sendMessageDelete(channel, text,tts,obj,timer,senderID,skarmbotObject) {
+        if(channel==null){
+            console.log("null channel target with message: "+text);
+            return;
+        }
+        if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
+            this.log("Missing permission to read messages in " + channel.name);
+            return;
+        }
+        if(!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)){
+            this.log("Missing permission to send message in " + channel.name);
+            return;
+        }
+
+        try{
+            channel.sendMessage(text,tts,obj).then((message => {
+                message.addReaction("\u274c");
+                var timeout = setTimeout(() => {
+                    delete skarmbotObject.toBeDeletedCache[message.id];
+                    try {
+                        message.delete();
+                    }catch (e) {
+                        //message was probably deleted by means of reaction.
+                        return Skarm.logError(JSON.stringify(e));
+                    }
+                },timer);
+                skarmbotObject.toBeDeletedCache[message.id]={senderID:senderID,self:false,timeout:timeout};
+            }));
+        } catch {
+            console.error("failed to send message: [REDACTED] to channel "+channel.id);
+        }
     }
 
     static queueMessage(Guilds,channel, message, tts, obj){
