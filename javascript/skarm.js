@@ -123,16 +123,17 @@ class Skarm {
 
         try{
             channel.sendMessage(text,tts,obj).then((message => {
-                skarmbotObject.toBeDeletedCache[message.id]=senderID;
                 message.addReaction("\u274c");
-                setTimeout(() => {
+                var timeout = setTimeout(() => {
                     delete skarmbotObject.toBeDeletedCache[message.id];
                     try {
                         message.delete();
                     }catch (e) {
                         //message was probably deleted by means of reaction.
+                        return Skarm.logError(JSON.stringify(e));
                     }
                 },timer);
+                skarmbotObject.toBeDeletedCache[message.id]={senderID:senderID,self:false,timeout:timeout};
             }));
         } catch {
             console.error("failed to send message: [REDACTED] to channel "+channel.id);

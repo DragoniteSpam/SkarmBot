@@ -97,7 +97,8 @@ module.exports = {
         aliases: ["summon", "summons"],
         params: ["add|remove|list", "term"],
         usageChar: "!",
-        helpText: "Skarm can be asked to send you notifications for messages with certain keywords (often your username, or other topics you like to know about - for example, \"Wooloo\" or \"programming\"). You can add, remove, or list your summons.\nMessages that skarm sends containing your summons will be deleted after 15 seconds (30 seconds for e!summons list).",
+        helpText: "Skarm can be asked to send you notifications for messages with certain keywords (often your username, or other topics you like to know about - for example, \"Wooloo\" or \"programming\"). You can add, remove, or list your summons." +
+            "\nMessages that skarm sends containing your summons will be deleted after 15 seconds (30 seconds for e!summons list) or immediately by clicking \u274c.",
         ignoreHidden: true,
         category: "general",
 		
@@ -120,7 +121,7 @@ module.exports = {
 						retina+= "Could not add the term " + params[i] + " as a summon. (Has it already been added?)\n";
 					}
 				}
-				Skarm.sendMessageDelete(e.message.channel,retina,false,null,15000);
+				Skarm.sendMessageDelete(e.message.channel,retina,false,null,15000,e.message.author.id,bot);
                 return;
             }
             if (action === "remove") {
@@ -131,7 +132,7 @@ module.exports = {
 						retina+= "Could not remove the term " + params[i] + " as a summon. (Does it exist in the summon list?)\n";
 					}
 				}
-				Skarm.sendMessageDelete(e.message.channel,retina,false,null,15000);
+				Skarm.sendMessageDelete(e.message.channel,retina,false,null,15000,e.message.author.id,bot);
                 return;
             }
             if (action === "list") {
@@ -141,7 +142,7 @@ module.exports = {
                 } else {
                     retina+= "**" + e.message.author.username + "**, your current summons are:\n```" + summonString + "```";
                 }
-				Skarm.sendMessageDelete(e.message.channel,retina,false,null,30000);
+				Skarm.sendMessageDelete(e.message.channel,retina,false,null,30000,e.message.author.id,bot);
                 return;
             }
             Skarm.erroneousCommandHelpPlease(e.message.channel, this);
@@ -1188,20 +1189,26 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         category: "infrastructure",
 
         execute(bot, e) {
-            e.message.channel.sendMessage("running test...", false, {
-                color: Skarm.generateRGB(),
-                author: {name: e.message.author.nick},
-                description: "Skarmory is brought to you by node js, github, Discord, and by viewers like you. Thank you.\r\n-PBS",
-                title: "This is an embed",
-                url: "http://xkcd.com/303",
-                timestamp: new Date(),
-                fields: [{name: "G", value: "And now"},{name: "R", value: "for something"},{name: "E", value: "completely"},{name: "P", value: "different"}],
-                footer: {text: "bottom text"}
-            });
             let tokens =commandParamTokens(e.message.content);
+            if(tokens.length===0) {
+                e.message.channel.sendMessage("running test...", false, {
+                    color: Skarm.generateRGB(),
+                    author: {name: e.message.author.nick},
+                    description: "Skarmory is brought to you by node js, github, Discord, and by viewers like you. Thank you.\r\n-PBS",
+                    title: "This is an embed",
+                    url: "http://xkcd.com/303",
+                    timestamp: new Date(),
+                    fields: [{name: "G", value: "And now"}, {name: "R", value: "for something"}, {
+                        name: "E",
+                        value: "completely"
+                    }, {name: "P", value: "different"}],
+                    footer: {text: "bottom text"}
+                });
+            }
             if(tokens[0]==="delete"){
                 tokens.shift();
-                Skarm.sendMessageDelete(e.message.channel,`Testing delete message timeout ${5000}\n`+tokens.join(" "),false,null,5000);
+                const timeout = 15000;
+                Skarm.sendMessageDelete(e.message.channel,`Testing delete message timeout ${timeout}\n`+tokens.join(" "),false,null,timeout,e.message.author.id,bot);
             }
             if(tokens[0]==="spam") {
                 Skarm.spamBuffer("Well, what've you got?");
