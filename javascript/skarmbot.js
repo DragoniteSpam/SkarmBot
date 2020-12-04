@@ -20,18 +20,18 @@ const Guilds = require("./guild.js");
 class Bot {
     /**
      * timer30min: tasks skarm will perform once every half hour. Write additional scheduled tasks here.
-     * instance: tracks how many times skarm has reconnected after disconnecting due to a network hiccup
-     * pid: a random number generated and bound to a given instance of the Bot class for the sake of being able to terminate a specific instance of skarm when multiple are running during testing or accidental forks
+     * version: the count of how many git commits skarm is currently sitting on.
+     * pid: a random number generated and bound to a given version of the Bot class for the sake of being able to terminate a specific instance of skarm when multiple are running during testing or accidental forks occur
      * client: pointer to Discordie object used to access all discord data not supplied by the event skarm has to handle
      *
      * Referneces: Skarm will speak if these are mentioned
      *
      *
      **/
-    constructor(client,instance) {
-        this.instance=instance;
+    constructor(client,version) {
+        this.version=version;
 
-        this.pid = Math.floor(Math.random()*1024)&(-32)+this.instance;
+        this.pid = Math.floor(Math.random()*1024)&(-32)+this.version;
         this.client = client;
 
         this.nick = "Skarm";
@@ -85,7 +85,7 @@ class Bot {
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
-        this.xkcd = new XKCD(this,instance);
+        this.xkcd = new XKCD(this);
 
         /**
          * keeps a short lifespan cache of messages sent by skarm which are going to be deleted,
@@ -105,7 +105,7 @@ class Bot {
         this.timer30min = setInterval(function() {
             this.save(Constants.SaveCodes.DONOTHING);
             this.xkcd.lock--;
-            console.log("XKCD Lock state: "+this.xkcd.lock+"\t|\tInstance: "+this.instance);
+            console.log("XKCD Lock state: "+this.xkcd.lock);
         }.bind(this), 30 * 60 * 1000);
 
         this.timer1min = setInterval(function() {

@@ -52,7 +52,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     Constants.initialize(client);
     Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
-		console.log("Pulled in skarmData.\nGit revision count:"+code);
+		console.log("Pulled in skarmData.\nGit revision count: "+code);
 		Users.initialize(client);
 		Guilds.initialize(client);
 		bot = new SkarmBot(client,code);

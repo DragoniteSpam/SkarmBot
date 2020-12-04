@@ -6,13 +6,12 @@ const Encrypt = require("./encryption.js");
 const xkcddb = "..\\skarmData\\xkcd.penguin";
 
 class XKCD {
-	constructor(bot, instance) {
+	constructor(bot) {
 		this.bot = bot;
 		this.initialize();
 		this.interval = null;
 		this.schedule();
 		this.lock = 0;
-		this.instance = instance;
 		this.references = JSON.parse(fs.readFileSync(".\\fun\\xkcd-log.json").toString().toLowerCase());
 	}
 
@@ -25,7 +24,7 @@ class XKCD {
 		var tis = this;
 		Encrypt.read(xkcddb, function (data, filename) {
 			tis.bot.channelsWhoLikeXKCD = JSON.parse(data);
-			console.log("Initialized " + Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels on Instance " + tis.instance);
+			console.log("Initialized " + Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels ");
 		});
 	}
 
@@ -97,7 +96,7 @@ class XKCD {
 	sweep(n) {
 		var d = new Date(); // for now
 		var datetext = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-		console.log("Running xkcd.sweep function on Instance " + this.instance + "\tCurrent time: " + datetext);
+		console.log("Running xkcd.sweep function.\tCurrent time: " + datetext);
 		let now = new Date();
 		if (this.lock < 1 && (n || now.getHours() === 22 && (now.getDay() & 1))) {
 			this.lock = 3 + (n ? 10 : 0);

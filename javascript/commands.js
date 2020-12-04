@@ -402,8 +402,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         category: "meta",
 		
         execute(bot, e) {
-			let shanty = Math.floor(bot.shanties.ivanhoe*bot.shanties.drinkCount()*100);
-			let skyrim=Math.floor((new Date).getDay()*bot.skyrimOddsModifier*100);
+            //shanty counter is intentionally wrong following shanties being buffered on a per-channel basis
+			let shanty = Math.floor(Math.random()*5000)/100;
+			let skyrim=Math.floor((new Date).getDay()*bot.skyrimOddsModifier*10000)/100;
             Skarm.sendMessageDelay(e.message.channel, "Current shanty forecast: **" +shanty+"%**\n"+
 			"The Elder Scrolls Forecast: **"+skyrim+"%**\n"+
 			"Something completely normal: **0%**\n"+
@@ -448,6 +449,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
 				"Host: "+os.hostname()+"\n"+
                 "vPID: "+bot.pid+"\n"+
+                "Version: "+bot.version+"\n"+
                 "Uptime (probably): " + uptimeString + "```"
             );
         },
