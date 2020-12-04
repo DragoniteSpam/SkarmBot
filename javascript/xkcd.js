@@ -99,7 +99,7 @@ class XKCD {
 		var datetext = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
 		console.log("Running xkcd.sweep function on Instance " + this.instance + "\tCurrent time: " + datetext);
 		let now = new Date();
-		if (this.lock < 1 && (n || now.getHours() === 19 && (now.getDay() & 1))) {
+		if (this.lock < 1 && (n || now.getHours() === 22 && (now.getDay() & 1))) {
 			this.lock = 3 + (n ? 10 : 0);
 			for (var channel in this.bot.channelsWhoLikeXKCD) {
 				this.post(this.bot.client.Channels.get(channel));
