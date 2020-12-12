@@ -88,6 +88,11 @@ client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
 		bot.OnMemberUpdate(e);
 });
 
+client.Dispatcher.on(events.GUILD_MEMBER_REMOVE, e => {
+	if(bot)
+		bot.OnMemberRemove(e);
+});
+
 client.Dispatcher.on(events.DISCONNECTED, e => {
 	console.error("Network Error: disconnected at " + (new Date()).toString());
 	uptimeController[1]=Date.now();

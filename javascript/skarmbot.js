@@ -44,6 +44,8 @@ class Bot {
 			"something completely different":	1,
         };
 
+        this.skyrimOddsModifier = 1/20;
+        //words that will get skarm to talk skyrim
         this.validESReferences = {
             "balgruuf":     0.25,
             "ulfric":       0.25,
@@ -55,6 +57,7 @@ class Bot {
             "shor":         0.69,
         };
 
+        //words that will get skarm singing
         this.validShantyReferences = {
             "johnny":       0.01,
             "jonny":        0.01,
@@ -75,12 +78,11 @@ class Bot {
 			//"shantest":     1.2,
         };
 
+
         this.minimumMessageReplyLength = 3;
 
         this.shanties = new ShantyCollection();
-
         this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
-        this.skyrimOddsModifier = 1/20;
         this.channelsWhoLikeXKCD = {};
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
@@ -223,7 +225,11 @@ class Bot {
 			Skarm.log(changes);
 		}
 	}
-	
+
+	OnMemberRemove(e) {
+        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.MEMBER_LEAVE,e);
+    }
+
     OnMessageCreate(e) {
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {
@@ -348,6 +354,7 @@ class Bot {
 
 
 
+    //does many things, and stuff and things...
     censor(e) {
     }
     
@@ -380,11 +387,6 @@ class Bot {
         if (this.mentions(e, this.validNickReferences)) {
 			//once skarm starts singing, he'd rather do that than talk
 			let seed = Math.random();
-			//if (this.shanties.isSinging && seed<this.shanties.ivanhoe * this.shanties.drinkCount()) {return this.singShanty(e);}
-			//reset the seed weight
-			//if(this.shanties.isSigning)
-			//	seed = (seed + this.shanties.ivanhoe * this.shanties.drinkCount())/(1+this.shanties.ivanhoe * this.shanties.drinkCount());
-			//roll for skyrim
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);
 			}
@@ -425,7 +427,8 @@ class Bot {
     getRandomLine(e) {
         return Guilds.get(e.message.guild.id).getRandomLine(e);
     }
-    
+
+
     attemptLearnLine(e) {
         if (e.message.content.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/)) return;
         let hash = (this.messageHash(e) / 10) % 1;
@@ -448,7 +451,7 @@ class Bot {
         return hash;
     }
     
-    // summons
+    //checks if anyone's summons are triggered by the message and sends them out
     summons(e) {
         for (let user in Users.users) {
             let userData = Users.get(user);

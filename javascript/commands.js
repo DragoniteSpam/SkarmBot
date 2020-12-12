@@ -775,18 +775,18 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this.",
         ignoreHidden: true,
         perms: Permissions.MOD,
-		category: "administrative",
-        
+        category: "administrative",
+
         execute(bot, e) {
             let userData = Users.get(e.message.author.id);
             let guildData = Guilds.get(e.message.guild.id);
-			let args = commandParamTokens(e.message.content);
-			
+            let args = commandParamTokens(e.message.content);
+
             if (args.length === 0) {
-				Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
-				return;
-			}
-			
+                Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
+                return;
+            }
+
             switch (args[0]) {
                 case "enable":
                     bot.addChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
@@ -796,30 +796,82 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     bot.removeChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
                     Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
                     break;
-			}
-            
-			let leave = true;
-			for (let mom in Constants.Moms) {
-				if (Constants.Moms[mom].id === e.message.author.id){
-					leave = false;
-				} 
-			}
-            
-			if (leave) return;
-            
-			// noinspection FallThroughInSwitchStatementJS
+            }
+
+            let leave = true;
+            for (let mom in Constants.Moms) {
+                if (Constants.Moms[mom].id === e.message.author.id){
+                    leave = false;
+                }
+            }
+
+            if (leave) return;
+
+            // noinspection FallThroughInSwitchStatementJS
             switch (args[0]) {
-				case "dump":
-					Skarm.log(JSON.stringify(bot.channelsWhoLikeXKCD));
-					break;
-				case "push":
-					bot.xkcd.sweep(true); //lack of break is intentional to log lock
-				case "lockcheck":
-					Skarm.log(bot.xkcd.lock);
-					break;
+                case "dump":
+                    Skarm.log(JSON.stringify(bot.channelsWhoLikeXKCD));
+                    break;
+                case "push":
+                    bot.xkcd.sweep(true); //lack of break is intentional to log lock
+                case "lockcheck":
+                    Skarm.log(bot.xkcd.lock);
+                    break;
             }
         },
-        
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Notify: {
+        aliases: ["notify"],
+        params: ["#"],
+        usageChar: "@",
+        helpText: "Toggles the notifications of various information for this channel.  Use without a number input to view current state of channel.",
+        ignoreHidden: true,
+        perms: Permissions.MOD,
+        category: "administrative",
+
+        execute(bot, e) {
+            let userData = Users.get(e.message.author.id);
+            let guildData = Guilds.get(e.message.guild.id);
+            let notifChannels = guildData.notificationChannels;
+            let args = commandParamTokens(e.message.content);
+
+            if (args.length === 0) {
+                Skarm.sendMessageDelay(e.message.channel, " ",false,{
+                    color: Constants.Colors.BLUE,
+                    author: {name: e.message.author.nick},
+                    description: `Configure notification settings for <#${e.message.channel.id}>:\r\n\r\n`+
+                        `1: **${(e.message.channel.id in notifChannels.MEMBER_LEAVE) ? "Disable":"Enable"}** member join/leave notifications\n`+
+                        `2: **${(e.message.channel.id in notifChannels.KICK_BAN) ? "Disable":"Enable"}** kick/ban notifications\n`+
+                        `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE) ? "Disable":"Enable"}** name change notifications\n`+
+                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL) ? "Disable":"Enable"}** voice channel join/change/leave notifications`,
+                    timestamp: new Date(),
+                });
+                return;
+            }
+
+            switch (args[0]) {
+                case "1":
+                    if (e.message.channel.id in notifChannels.MEMBER_LEAVE) {
+                        delete notifChannels.MEMBER_LEAVE[e.message.channel.id];
+                        Skarm.sendMessageDelay(e.message.channel, "Member leave notifications will no longer be sent to **" + e.message.channel.name + "!**");
+                    }else{
+                        notifChannels.MEMBER_LEAVE[e.message.channel.id] = Date.now();
+                        Skarm.sendMessageDelay(e.message.channel, "Member leave notifications will now be sent to **" + e.message.channel.name + "!**");
+                    }
+                    break;
+                    /*
+            case "disable":
+                bot.removeChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
+                Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
+                break;
+                */
+            }
+        },
+
         help(bot, e) {
             Skarm.help(this, e);
         },
@@ -938,6 +990,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
+
 	
 	/**
 	*	leveling

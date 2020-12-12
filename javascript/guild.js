@@ -28,6 +28,12 @@ const linkVariables = function(guild) {
     if (guild.lines === undefined) guild.lines = { };
     if (guild.actions === undefined) guild.actions = { };
     if (guild.mayhemRoles === undefined) guild.mayhemRoles = { };
+    if (guild.notificationChannels === undefined) guild.notificationChannels = {
+        NAME_CHANGE:    {},
+        KICK_BAN:       {},
+        VOICE_CHANNEL:  {},
+        MEMBER_LEAVE:   {},
+    };
 };
 
 // since de/serialized objects don't keep their functions
@@ -332,6 +338,26 @@ const linkFunctions = function(guild) {
 			}
 		}
 	};
+
+    /**
+     * Handles distributing notifications to guilds
+     * @param client the discordie object to retrieve Channel objects to send messages to
+     * @param notification the notification ID from Constants.Notifications
+     * @param eventObject the relevant data which is unique on a per-notification basis, contained within the object wrapper.  The @notification must specify what its contents are.
+     */
+	guild.notify = function(client, notification, eventObject) {
+	    if(notification === Constants.Notifications.MEMBER_LEAVE){
+	        let user = eventObject.user;
+	        for(let channelID in guild.notificationChannels.MEMBER_LEAVE){
+	            Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+                    color: Constants.Colors.RED,
+                    description: `**${user.username}#${user.discriminator}** has left the server. (${user.id})`,
+                    timestamp: new Date(),
+                    footer: {text: "User Leave"}
+                });
+            }
+        }
+    };
 }
 
 class Guild {
@@ -357,6 +383,19 @@ class Guild {
 		this.announcesLevels=false;
 
 		this.channelBuffer = { };
+        /**
+         * The collection of channels which have been opted by the moderators to receive various notifications:
+         * The contents of each inner object are of the form {channel:String -> timestamp:Float}
+         * timestamp correlates to when the value was added to the hashset.
+         * @type {{NAME_CHANGE: {}, KICK_BAN: {}, VOICE_CHANNEL: {}, MEMBER_LEAVE: {}, XKCD: {}}}
+         */
+		this.notificationChannels = {
+            NAME_CHANGE:    {},
+            KICK_BAN:       {},
+            VOICE_CHANNEL:  {},
+            MEMBER_LEAVE:   {},
+            XKCD:           {},
+        };
 
 		this.welcoming = true;
 		this.welcomes = { };

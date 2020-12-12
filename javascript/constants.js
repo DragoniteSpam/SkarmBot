@@ -52,7 +52,23 @@ class Constants {
             SIMILAR_MESSAGE_KEYWORDS: 3,
             LOG_CAPACITY: 6000,
         };
-        
+
+        //Notifications emitted to guilds upon certain events
+        Constants.Notifications = {
+            NAME_CHANGE:    1<<1,
+            KICK_BAN:       1<<2,
+            VOICE_CHANNEL:  1<<3,
+            MEMBER_LEAVE:   1<<4,
+            XKCD:           1<<5,
+        };
+
+        //The standard RGB color palette skarm uses in embedded messages
+        Constants.Colors = {
+            RED:    0xee7777,
+            GREEN:  0x77ee77,
+            BLUE:   0x7777ee,
+        };
+
         console.log("Initialized constants...");
     }
 }
