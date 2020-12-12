@@ -344,6 +344,7 @@ const linkFunctions = function(guild) {
      * @param client the discordie object to retrieve Channel objects to send messages to
      * @param notification the notification ID from Constants.Notifications
      * @param eventObject the relevant data which is unique on a per-notification basis, contained within the object wrapper.  The @notification must specify what its contents are.
+     * @return success state: 0 - all good, 1 - not yet implemented.
      */
 	guild.notify = function(client, notification, eventObject) {
 	    if(notification === Constants.Notifications.MEMBER_LEAVE){
@@ -356,6 +357,10 @@ const linkFunctions = function(guild) {
                     footer: {text: "User Leave"}
                 });
             }
+	        return 0;
+        }
+	    if(notification === Constants.Notifications.MEMBER_JOIN){
+
         }
     };
 }

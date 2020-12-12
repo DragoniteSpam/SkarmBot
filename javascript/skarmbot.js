@@ -122,7 +122,7 @@ class Bot {
         var string = "";
         if (e.message){
             if (!e.message.author.bot){
-                if (e.message){
+                if (!e.message){
                     string = "<message not cached>"; 
                 } else {
                     string = e.message.content + " by " +
