@@ -857,10 +857,37 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 case "1":
                     if (e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) {
                         delete notifChannels.MEMBER_JOIN_LEAVE[e.message.channel.id];
-                        Skarm.sendMessageDelay(e.message.channel, "Member leave notifications will no longer be sent to **" + e.message.channel.name + "!**");
+                        Skarm.sendMessageDelay(e.message.channel, "Member join/leave notifications will no longer be sent to **" + e.message.channel.name + "!**");
                     }else{
                         notifChannels.MEMBER_JOIN_LEAVE[e.message.channel.id] = Date.now();
-                        Skarm.sendMessageDelay(e.message.channel, "Member leave notifications will now be sent to **" + e.message.channel.name + "!**");
+                        Skarm.sendMessageDelay(e.message.channel, "Member join/leave notifications will now be sent to **" + e.message.channel.name + "!**");
+                    }
+                    break;
+                case "2":
+                    if (e.message.channel.id in notifChannels.KICK_BAN) {
+                        delete notifChannels.KICK_BAN[e.message.channel.id];
+                        Skarm.sendMessageDelay(e.message.channel, "Member kick/ban notifications will no longer be sent to **" + e.message.channel.name + "!**");
+                    }else{
+                        notifChannels.KICK_BAN[e.message.channel.id] = Date.now();
+                        Skarm.sendMessageDelay(e.message.channel, "Member kick/ban notifications will now be sent to **" + e.message.channel.name + "!**");
+                    }
+                    break;
+                case "3":
+                    if (e.message.channel.id in notifChannels.NAME_CHANGE) {
+                        delete notifChannels.NAME_CHANGE[e.message.channel.id];
+                        Skarm.sendMessageDelay(e.message.channel, "Member name change notifications will no longer be sent to **" + e.message.channel.name + "!**");
+                    }else{
+                        notifChannels.NAME_CHANGE[e.message.channel.id] = Date.now();
+                        Skarm.sendMessageDelay(e.message.channel, "Member name change notifications will now be sent to **" + e.message.channel.name + "!**");
+                    }
+                    break;
+                case "4":
+                    if (e.message.channel.id in notifChannels.VOICE_CHANNEL) {
+                        delete notifChannels.VOICE_CHANNEL[e.message.channel.id];
+                        Skarm.sendMessageDelay(e.message.channel, "Voice channel activity notifications will no longer be sent to **" + e.message.channel.name + "!**");
+                    }else{
+                        notifChannels.VOICE_CHANNEL[e.message.channel.id] = Date.now();
+                        Skarm.sendMessageDelay(e.message.channel, "Voice channel activity notifications will now be sent to **" + e.message.channel.name + "!**");
                     }
                     break;
                     /*
