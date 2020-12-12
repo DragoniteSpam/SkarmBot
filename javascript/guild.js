@@ -29,10 +29,10 @@ const linkVariables = function(guild) {
     if (guild.actions === undefined) guild.actions = { };
     if (guild.mayhemRoles === undefined) guild.mayhemRoles = { };
     if (guild.notificationChannels === undefined) guild.notificationChannels = {
-        NAME_CHANGE:    {},
-        KICK_BAN:       {},
-        VOICE_CHANNEL:  {},
-        MEMBER_LEAVE:   {},
+        NAME_CHANGE:        {},
+        KICK_BAN:           {},
+        VOICE_CHANNEL:      {},
+        MEMBER_JOIN_LEAVE:   {},
     };
 };
 
@@ -348,7 +348,7 @@ const linkFunctions = function(guild) {
 	guild.notify = function(client, notification, eventObject) {
 	    if(notification === Constants.Notifications.MEMBER_LEAVE){
 	        let user = eventObject.user;
-	        for(let channelID in guild.notificationChannels.MEMBER_LEAVE){
+	        for(let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE){
 	            Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
                     color: Constants.Colors.RED,
                     description: `**${user.username}#${user.discriminator}** has left the server. (${user.id})`,
@@ -390,11 +390,35 @@ class Guild {
          * @type {{NAME_CHANGE: {}, KICK_BAN: {}, VOICE_CHANNEL: {}, MEMBER_LEAVE: {}, XKCD: {}}}
          */
 		this.notificationChannels = {
-            NAME_CHANGE:    {},
-            KICK_BAN:       {},
-            VOICE_CHANNEL:  {},
-            MEMBER_LEAVE:   {},
-            XKCD:           {},
+            /**
+             * set of channels which receive name change notifications in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            NAME_CHANGE:            {},
+
+            /**
+             * set of channels which receive kick and ban notifications in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            KICK_BAN:               {},
+
+            /**
+             * set of channels which receive voice channel activity notifications in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            VOICE_CHANNEL:          {},
+
+            /**
+             * set of channels which receive member join and leave notifications in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            MEMBER_JOIN_LEAVE:      {},
+
+            /**
+             * set of channels which receive xkcds in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            XKCD:                   {},
         };
 
 		this.welcoming = true;

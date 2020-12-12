@@ -844,7 +844,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     color: Constants.Colors.BLUE,
                     author: {name: e.message.author.nick},
                     description: `Configure notification settings for <#${e.message.channel.id}>:\r\n\r\n`+
-                        `1: **${(e.message.channel.id in notifChannels.MEMBER_LEAVE) ? "Disable":"Enable"}** member join/leave notifications\n`+
+                        `1: **${(e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) ? "Disable":"Enable"}** member join/leave notifications\n`+
                         `2: **${(e.message.channel.id in notifChannels.KICK_BAN) ? "Disable":"Enable"}** kick/ban notifications\n`+
                         `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE) ? "Disable":"Enable"}** name change notifications\n`+
                         `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL) ? "Disable":"Enable"}** voice channel join/change/leave notifications`,
@@ -855,11 +855,11 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 
             switch (args[0]) {
                 case "1":
-                    if (e.message.channel.id in notifChannels.MEMBER_LEAVE) {
-                        delete notifChannels.MEMBER_LEAVE[e.message.channel.id];
+                    if (e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) {
+                        delete notifChannels.MEMBER_JOIN_LEAVE[e.message.channel.id];
                         Skarm.sendMessageDelay(e.message.channel, "Member leave notifications will no longer be sent to **" + e.message.channel.name + "!**");
                     }else{
-                        notifChannels.MEMBER_LEAVE[e.message.channel.id] = Date.now();
+                        notifChannels.MEMBER_JOIN_LEAVE[e.message.channel.id] = Date.now();
                         Skarm.sendMessageDelay(e.message.channel, "Member leave notifications will now be sent to **" + e.message.channel.name + "!**");
                     }
                     break;

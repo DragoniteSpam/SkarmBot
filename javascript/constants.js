@@ -58,15 +58,17 @@ class Constants {
             NAME_CHANGE:    1<<1,
             KICK_BAN:       1<<2,
             VOICE_CHANNEL:  1<<3,
+            MEMBER_JOIN:    1<<4-1,
             MEMBER_LEAVE:   1<<4,
-            XKCD:           1<<5,
+            ROLE_CHANGE:    1<<5,
+            XKCD:           1<<6,
         };
 
         //The standard RGB color palette skarm uses in embedded messages
         Constants.Colors = {
-            RED:    0xee7777,
-            GREEN:  0x77ee77,
-            BLUE:   0x7777ee,
+            RED:    0xff6666,
+            GREEN:  0x66ff66,
+            BLUE:   0x6666ff,
         };
 
         console.log("Initialized constants...");
