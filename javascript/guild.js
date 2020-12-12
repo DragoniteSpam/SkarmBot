@@ -360,7 +360,16 @@ const linkFunctions = function(guild) {
 	        return 0;
         }
 	    if(notification === Constants.Notifications.MEMBER_JOIN){
-
+            let member = eventObject.member;
+            for(let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE){
+                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+                    color: Constants.Colors.GREEN,
+                    description: `**${member.username}#${member.discriminator}** has joined the server. (${member.id})`,
+                    timestamp: new Date(),
+                    footer: {text: "User Join"}
+                });
+            }
+            return 0;
         }
     };
 }

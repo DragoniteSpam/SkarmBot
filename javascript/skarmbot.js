@@ -192,6 +192,7 @@ class Bot {
             };
 		}
 		guildData.roleCheck(e.member,guildData.expTable[e.member.id]);
+		guildData.notify(this.client,Constants.Notifications.MEMBER_JOIN,e);
 		if(guildData.welcoming){
 			for(let channel in guildData.welcomes){
 				let sms = guildData.welcomes[channel];
