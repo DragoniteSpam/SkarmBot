@@ -231,6 +231,14 @@ class Bot {
         Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.MEMBER_LEAVE,e);
     }
 
+    OnGuildBanAdd(e) {
+        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.BAN, e);
+    }
+
+    OnGuildBanRemove(e) {
+        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.BAN_REMOVE, e);
+    }
+
     OnMessageCreate(e) {
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {

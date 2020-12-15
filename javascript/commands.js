@@ -845,7 +845,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     author: {name: e.message.author.nick},
                     description: `Configure notification settings for <#${e.message.channel.id}>:\r\n\r\n`+
                         `1: **${(e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) ? "Disable":"Enable"}** member join/leave notifications\n`+
-                        `2: **${(e.message.channel.id in notifChannels.KICK_BAN) ? "Disable":"Enable"}** kick/ban notifications\n`+
+                        `2: **${(e.message.channel.id in notifChannels.BAN) ? "Disable":"Enable"}** ban notifications\n`+
                         `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE) ? "Disable":"Enable"}** name change notifications\n`+
                         `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL) ? "Disable":"Enable"}** voice channel join/change/leave notifications`,
                     timestamp: new Date(),

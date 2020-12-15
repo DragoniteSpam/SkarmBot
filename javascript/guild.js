@@ -30,9 +30,9 @@ const linkVariables = function(guild) {
     if (guild.mayhemRoles === undefined) guild.mayhemRoles = { };
     if (guild.notificationChannels === undefined) guild.notificationChannels = {
         NAME_CHANGE:        {},
-        KICK_BAN:           {},
+        BAN:                {},
         VOICE_CHANNEL:      {},
-        MEMBER_JOIN_LEAVE:   {},
+        MEMBER_JOIN_LEAVE:  {},
     };
 };
 
@@ -350,7 +350,7 @@ const linkFunctions = function(guild) {
 	    if(notification === Constants.Notifications.MEMBER_LEAVE){
 	        let user = eventObject.user;
 	        for(let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE){
-	            Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+	            Skarm.sendMessageDelay(client.Channels.get(channelID)," "+JSON.stringify(eventObject.getCachedData()),false,{
                     color: Constants.Colors.RED,
                     description: `**${user.username}#${user.discriminator}** has left the server. (${user.id})`,
                     timestamp: new Date(),
@@ -359,7 +359,7 @@ const linkFunctions = function(guild) {
             }
 	        return 0;
         }
-	    if(notification === Constants.Notifications.MEMBER_JOIN){
+        if(notification === Constants.Notifications.MEMBER_JOIN){
             let member = eventObject.member;
             for(let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE){
                 Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
@@ -371,6 +371,43 @@ const linkFunctions = function(guild) {
             }
             return 0;
         }
+        if(notification === Constants.Notifications.BAN){//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
+            let member = eventObject.user;
+            for(let channelID in guild.notificationChannels.BAN){
+                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+                    color: Constants.Colors.RED,
+                    description: `**${member.username}#${member.discriminator}** has been banned from the server. (${member.id})`,
+                    timestamp: new Date(),
+                    footer: {text: "User Banned"}
+                });
+            }
+            return 0;
+        }
+        if(notification === Constants.Notifications.BAN_REMOVE){//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
+            let member = eventObject.user;
+            for(let channelID in guild.notificationChannels.BAN){
+                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+                    color: Constants.Colors.GREEN,
+                    description: `**${member.username}#${member.discriminator}** has been unbanned from the server. (${member.id})`,
+                    timestamp: new Date(),
+                    footer: {text: "Ban Removed"}
+                });
+            }
+            return 0;
+        }
+        if(notification === Constants.Notifications.VOICE_JOIN){//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
+            let member = eventObject.user;
+            for(let channelID in guild.notificationChannels.GREEN){
+                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+                    color: Constants.Colors.GREEN,
+                    description: `**${member.username}#${member.discriminator}** has joined the voice channel. **${eventObject.channel.name}**`,
+                    timestamp: new Date(),
+                    footer: {text: "Voice Channel Join"}
+                });
+            }
+            return 0;
+        }
+
     };
 }
 
@@ -411,10 +448,10 @@ class Guild {
             NAME_CHANGE:            {},
 
             /**
-             * set of channels which receive kick and ban notifications in this guild.
+             * set of channels which receive ban notifications in this guild.
              * @type{channel:String -> timestamp:Float}
              */
-            KICK_BAN:               {},
+            BAN:                    {},
 
             /**
              * set of channels which receive voice channel activity notifications in this guild.
