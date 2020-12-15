@@ -240,11 +240,13 @@ class Bot {
     }
 
     OnVoiceChannelJoin(e){
-        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.VOICE_JOIN, e);
+        console.log(JSON.stringify(e));
+        Guilds.get(e.guildId).notify(this.client,Constants.Notifications.VOICE_JOIN, e);
     }
 
     OnVoiceChannelLeave(e){
-        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.VOICE_LEAVE, e);
+        console.log(JSON.stringify(e));
+        Guilds.get(e.guildId).notify(this.client,Constants.Notifications.VOICE_LEAVE, e);
     }
 
     OnMessageCreate(e) {

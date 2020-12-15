@@ -103,14 +103,23 @@ client.Dispatcher.on(events.GUILD_BAN_REMOVE, e => {
 		bot.OnGuildBanRemove(e);
 });
 
-client.Dispatcher.on(events.VOICE_CHANNEL_JOIN, e => {
-	if(bot)
-		bot.OnVoiceChannelJoin(e);
-});
+//During a channel switch: Leave event will always precede the subsequent join event.
+// This delta time will be of as little as <1ms.
+// Because of this, these packets may be expected to arrive out of order.
+// 20ms async period suggested for any channel state switching.
 
 client.Dispatcher.on(events.VOICE_CHANNEL_JOIN, e => {
 	if(bot)
+		bot.OnVoiceChannelJoin(e);
+	console.log(Date.now());
+	console.log("Channel join event: "+JSON.stringify(e));
+});
+
+client.Dispatcher.on(events.VOICE_CHANNEL_LEAVE, e => {
+	if(bot)
 		bot.OnVoiceChannelLeave(e);
+	console.log(Date.now());
+	console.log("Channel leave event: "+JSON.stringify(e));
 });
 
 client.Dispatcher.on(events.DISCONNECTED, e => {

@@ -398,6 +398,7 @@ const linkFunctions = function(guild) {
         if(notification === Constants.Notifications.VOICE_JOIN){
             let member = eventObject.user;
             for(let channelID in guild.notificationChannels.GREEN){
+                console.log("notify loop: "+JSON.stringify(eventObject));
                 Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
                     color: Constants.Colors.GREEN,
                     description: `**${member.username}#${member.discriminator}** has joined the voice channel. **${eventObject.channel.name}**`,
@@ -410,7 +411,7 @@ const linkFunctions = function(guild) {
         if(notification === Constants.Notifications.VOICE_LEAVE){
             let member = eventObject.user;
             for(let channelID in guild.notificationChannels.RED){
-                var dsc = `**${member.username}#${member.discriminator}** has left the voice channel. **${eventObject.channel.name}**`;
+                let dsc = `**${member.username}#${member.discriminator}** has left the voice channel. **${eventObject.channel.name}**`;
                 if(eventObject.newChannelId != null)
                     dsc = `**${member.username}#${member.discriminator}** has switched from **${eventObject.channel.name}** to **${client.Channels.get(eventObject.newChannelId).name}**`;
                 Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
