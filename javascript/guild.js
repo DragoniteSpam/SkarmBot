@@ -395,7 +395,7 @@ const linkFunctions = function(guild) {
             }
             return 0;
         }
-        if(notification === Constants.Notifications.VOICE_JOIN){//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
+        if(notification === Constants.Notifications.VOICE_JOIN){
             let member = eventObject.user;
             for(let channelID in guild.notificationChannels.GREEN){
                 Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
@@ -403,6 +403,21 @@ const linkFunctions = function(guild) {
                     description: `**${member.username}#${member.discriminator}** has joined the voice channel. **${eventObject.channel.name}**`,
                     timestamp: new Date(),
                     footer: {text: "Voice Channel Join"}
+                });
+            }
+            return 0;
+        }
+        if(notification === Constants.Notifications.VOICE_LEAVE){
+            let member = eventObject.user;
+            for(let channelID in guild.notificationChannels.RED){
+                var dsc = `**${member.username}#${member.discriminator}** has left the voice channel. **${eventObject.channel.name}**`;
+                if(eventObject.newChannelId != null)
+                    dsc = `**${member.username}#${member.discriminator}** has switched from **${eventObject.channel.name}** to **${client.Channels.get(eventObject.newChannelId).name}**`;
+                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+                    color: Constants.Colors.GREEN,
+                    description: dsc,
+                    timestamp: new Date(),
+                    footer: {text: "Voice Channel Leave"}
                 });
             }
             return 0;

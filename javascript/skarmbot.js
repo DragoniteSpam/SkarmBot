@@ -239,6 +239,14 @@ class Bot {
         Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.BAN_REMOVE, e);
     }
 
+    OnVoiceChannelJoin(e){
+        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.VOICE_JOIN, e);
+    }
+
+    OnVoiceChannelLeave(e){
+        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.VOICE_LEAVE, e);
+    }
+
     OnMessageCreate(e) {
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {

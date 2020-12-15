@@ -60,7 +60,7 @@ class Constants {
             BAN_REMOVE:     1<<2+1, //5
             VOICE_JOIN:     1<<3-1, //7
             VOICE_SWITCH:   1<<3,   //8
-            VOICE_LEAVE:    1<<3+1,   //9
+            VOICE_LEAVE:    1<<3+1, //9
             MEMBER_JOIN:    1<<4-1, //15
             MEMBER_LEAVE:   1<<4,   //16
             ROLE_CHANGE:    1<<5,   //32

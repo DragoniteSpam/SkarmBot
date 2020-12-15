@@ -103,6 +103,16 @@ client.Dispatcher.on(events.GUILD_BAN_REMOVE, e => {
 		bot.OnGuildBanRemove(e);
 });
 
+client.Dispatcher.on(events.VOICE_CHANNEL_JOIN, e => {
+	if(bot)
+		bot.OnVoiceChannelJoin(e);
+});
+
+client.Dispatcher.on(events.VOICE_CHANNEL_JOIN, e => {
+	if(bot)
+		bot.OnVoiceChannelLeave(e);
+});
+
 client.Dispatcher.on(events.DISCONNECTED, e => {
 	console.error("Network Error: disconnected at " + (new Date()).toString());
 	uptimeController[1]=Date.now();
