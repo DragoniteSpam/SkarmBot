@@ -32,8 +32,10 @@ const linkVariables = function(guild) {
         NAME_CHANGE:        {},
         BAN:                {},
         VOICE_CHANNEL:      {},
+        ASYNC_HANDLER:      {},
         MEMBER_JOIN_LEAVE:  {},
     };
+    if(guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
 };
 
 // since de/serialized objects don't keep their functions
@@ -344,25 +346,25 @@ const linkFunctions = function(guild) {
      * @param client the discordie object to retrieve Channel objects to send messages to
      * @param notification the notification ID from Constants.Notifications
      * @param eventObject the relevant data which is unique on a per-notification basis, contained within the object wrapper.  The @notification must specify what its contents are.
-     * @return success state: 0 - all good, 1 - not yet implemented.
+     * @return success state: 0 - all good, 1 - not yet implemented, 2 - event not acted upon due to concurrent thread trigger. Occurs on voice channel join and leave
      */
 	guild.notify = function(client, notification, eventObject) {
-	    if(notification === Constants.Notifications.MEMBER_LEAVE){
-	        let user = eventObject.user;
-	        for(let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE){
-	            Skarm.sendMessageDelay(client.Channels.get(channelID)," "+JSON.stringify(eventObject.getCachedData()),false,{
+        if (notification === Constants.Notifications.MEMBER_LEAVE) {
+            let user = eventObject.user;
+            for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " " + JSON.stringify(eventObject.getCachedData()), false, {
                     color: Constants.Colors.RED,
                     description: `**${user.username}#${user.discriminator}** has left the server. (${user.id})`,
                     timestamp: new Date(),
                     footer: {text: "User Leave"}
                 });
             }
-	        return 0;
+            return 0;
         }
-        if(notification === Constants.Notifications.MEMBER_JOIN){
+        if (notification === Constants.Notifications.MEMBER_JOIN) {
             let member = eventObject.member;
-            for(let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE){
-                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+            for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.GREEN,
                     description: `**${member.username}#${member.discriminator}** has joined the server. (${member.id})`,
                     timestamp: new Date(),
@@ -371,10 +373,10 @@ const linkFunctions = function(guild) {
             }
             return 0;
         }
-        if(notification === Constants.Notifications.BAN){//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
+        if (notification === Constants.Notifications.BAN) {//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
             let member = eventObject.user;
-            for(let channelID in guild.notificationChannels.BAN){
-                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+            for (let channelID in guild.notificationChannels.BAN) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.RED,
                     description: `**${member.username}#${member.discriminator}** has been banned from the server. (${member.id})`,
                     timestamp: new Date(),
@@ -383,10 +385,10 @@ const linkFunctions = function(guild) {
             }
             return 0;
         }
-        if(notification === Constants.Notifications.BAN_REMOVE){//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
+        if (notification === Constants.Notifications.BAN_REMOVE) {//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
             let member = eventObject.user;
-            for(let channelID in guild.notificationChannels.BAN){
-                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+            for (let channelID in guild.notificationChannels.BAN) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.GREEN,
                     description: `**${member.username}#${member.discriminator}** has been unbanned from the server. (${member.id})`,
                     timestamp: new Date(),
@@ -395,27 +397,51 @@ const linkFunctions = function(guild) {
             }
             return 0;
         }
-        if(notification === Constants.Notifications.VOICE_JOIN){
+        if (notification === Constants.Notifications.VOICE_JOIN) {
             let member = eventObject.user;
-            for(let channelID in guild.notificationChannels.GREEN){
-                console.log("notify loop: "+JSON.stringify(eventObject));
-                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
+            for (let channelID in guild.notificationChannels.VOICE_CHANNEL) {
+                //console.log("notify loop: " + JSON.stringify(eventObject));
+                let dsc = `**${member.username}#${member.discriminator}** has joined the voice channel. **${eventObject.channel.name}**`;
+                if(guild.notificationChannels.ASYNC_HANDLER[member.id]===eventObject.channelId){
+                    //console.log(`Previous state is equal to current state: ${guild.notificationChannels.ASYNC_HANDLER[member.id]}`);
+                    return 2;
+                }else {
+                    if (guild.notificationChannels.ASYNC_HANDLER[member.id] != null) {
+                        dsc = `**${member.username}#${member.discriminator}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.channelId).name}**`;
+                    }
+                    guild.notificationChannels.ASYNC_HANDLER[member.id] = eventObject.channelId;
+                }
+
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.GREEN,
-                    description: `**${member.username}#${member.discriminator}** has joined the voice channel. **${eventObject.channel.name}**`,
+                    description: dsc,
                     timestamp: new Date(),
                     footer: {text: "Voice Channel Join"}
                 });
             }
             return 0;
         }
-        if(notification === Constants.Notifications.VOICE_LEAVE){
+        if (notification === Constants.Notifications.VOICE_LEAVE) {
             let member = eventObject.user;
-            for(let channelID in guild.notificationChannels.RED){
+            for (let channelID in guild.notificationChannels.VOICE_CHANNEL) {
                 let dsc = `**${member.username}#${member.discriminator}** has left the voice channel. **${eventObject.channel.name}**`;
-                if(eventObject.newChannelId != null)
-                    dsc = `**${member.username}#${member.discriminator}** has switched from **${eventObject.channel.name}** to **${client.Channels.get(eventObject.newChannelId).name}**`;
-                Skarm.sendMessageDelay(client.Channels.get(channelID)," ",false,{
-                    color: Constants.Colors.GREEN,
+
+                if (eventObject.newChannelId != null) {
+                    if(guild.notificationChannels.ASYNC_HANDLER[member.id]===eventObject.newChannelId){
+                        return 2;
+                    }else{
+                        if(!guild.notificationChannels.ASYNC_HANDLER[member.id]){
+                            Skarm.logError("User channel swap data was lost during downtime.");
+                        }else {
+                            dsc = `**${member.username}#${member.discriminator}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.newChannelId).name}**`;
+                            guild.notificationChannels.ASYNC_HANDLER[member.id] = eventObject.newChannelId;
+                        }
+                    }
+                } else {
+                    delete guild.notificationChannels.ASYNC_HANDLER[member.id];
+                }
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.RED,
                     description: dsc,
                     timestamp: new Date(),
                     footer: {text: "Voice Channel Leave"}
@@ -480,6 +506,9 @@ class Guild {
              * @type{channel:String -> timestamp:Float}
              */
             MEMBER_JOIN_LEAVE:      {},
+
+            //
+            ASYNC_HANDLER:          {},
 
             /**
              * set of channels which receive xkcds in this guild.

@@ -111,15 +111,11 @@ client.Dispatcher.on(events.GUILD_BAN_REMOVE, e => {
 client.Dispatcher.on(events.VOICE_CHANNEL_JOIN, e => {
 	if(bot)
 		bot.OnVoiceChannelJoin(e);
-	console.log(Date.now());
-	console.log("Channel join event: "+JSON.stringify(e));
 });
 
 client.Dispatcher.on(events.VOICE_CHANNEL_LEAVE, e => {
 	if(bot)
 		bot.OnVoiceChannelLeave(e);
-	console.log(Date.now());
-	console.log("Channel leave event: "+JSON.stringify(e));
 });
 
 client.Dispatcher.on(events.DISCONNECTED, e => {

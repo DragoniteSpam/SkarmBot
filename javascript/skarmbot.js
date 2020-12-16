@@ -240,13 +240,17 @@ class Bot {
     }
 
     OnVoiceChannelJoin(e){
-        console.log(JSON.stringify(e));
+        //console.log("Voice join event: "+JSON.stringify(e));
         Guilds.get(e.guildId).notify(this.client,Constants.Notifications.VOICE_JOIN, e);
     }
 
-    OnVoiceChannelLeave(e){
-        console.log(JSON.stringify(e));
-        Guilds.get(e.guildId).notify(this.client,Constants.Notifications.VOICE_LEAVE, e);
+    OnVoiceChannelLeave(e) {
+        //timeout exists to test async condition in which join event arrives first.
+        // This will likely only ever arrive first under congested network traffic conditions
+        //setTimeout(() => {}, 20);
+        //console.log("Voice leave event: " + JSON.stringify(e));
+        Guilds.get(e.guildId).notify(this.client, Constants.Notifications.VOICE_LEAVE, e);
+
     }
 
     OnMessageCreate(e) {
