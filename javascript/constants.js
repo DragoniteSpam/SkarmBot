@@ -55,16 +55,17 @@ class Constants {
 
         //Notifications emitted to guilds upon certain events
         Constants.Notifications = {
-            NAME_CHANGE:    0x0001, //2
-            BAN:            0x0002, //4
-            BAN_REMOVE:     0x0004, //8
-            VOICE_JOIN:     0x0008, //16
-            VOICE_SWITCH:   0x0010, //32
-            VOICE_LEAVE:    0x0020, //64
-            MEMBER_JOIN:    0x0040, //128
-            MEMBER_LEAVE:   0x0080,
-            ROLE_CHANGE:    0x0100,
-            XKCD:           0x0200,
+            NAME_CHANGE:    0x0001,
+            NICK_CHANGE:    0x0002,
+            BAN:            0x0004,
+            BAN_REMOVE:     0x0008,
+            VOICE_JOIN:     0x0010,
+            VOICE_SWITCH:   0x0020,
+            VOICE_LEAVE:    0x0040,
+            MEMBER_JOIN:    0x0080,
+            MEMBER_LEAVE:   0x0100,
+            ROLE_CHANGE:    0x0200,
+            XKCD:           0x0400,
         };
 
         //The standard RGB color palette skarm uses in embedded messages

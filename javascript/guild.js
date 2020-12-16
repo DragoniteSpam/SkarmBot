@@ -5,6 +5,7 @@ const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
+const Users = require("./user.js");
 
 const guilddb = "..\\skarmData\\guilds.penguin";
 
@@ -30,10 +31,12 @@ const linkVariables = function(guild) {
     if (guild.mayhemRoles === undefined) guild.mayhemRoles = { };
     if (guild.notificationChannels === undefined) guild.notificationChannels = {
         NAME_CHANGE:        {},
+
         BAN:                {},
         VOICE_CHANNEL:      {},
-        ASYNC_HANDLER:      {},
+
         MEMBER_JOIN_LEAVE:  {},
+        ASYNC_HANDLER:      {},
     };
     if(guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
 };
@@ -346,7 +349,11 @@ const linkFunctions = function(guild) {
      * @param client the discordie object to retrieve Channel objects to send messages to
      * @param notification the notification ID from Constants.Notifications
      * @param eventObject the relevant data which is unique on a per-notification basis, contained within the object wrapper.  The @notification must specify what its contents are.
-     * @return success state: 0 - all good, 1 - not yet implemented, 2 - event not acted upon due to concurrent thread trigger. Occurs on voice channel join and leave
+     * @return success state:
+     *      0 - all good,
+     *      1 - not yet implemented,
+     *      2 - event not acted upon due to concurrent thread trigger. Occurs on voice channel join and leave
+     *      3 - event thrown without proper cause
      */
 	guild.notify = function(client, notification, eventObject) {
         if (notification === Constants.Notifications.MEMBER_LEAVE) {
@@ -449,6 +456,40 @@ const linkFunctions = function(guild) {
             }
             return 0;
         }
+        if (notification === Constants.Notifications.NICK_CHANGE) {
+            let member = eventObject.member;
+            let oldName="";
+            if(eventObject.previousNick){
+                oldName=eventObject.previousNick;
+            }else{
+                oldName=member.username;
+            }
+            for (let channelID in guild.notificationChannels.NAME_CHANGE) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.BLUE,
+                    description: `User nickname update: **${oldName}** is now known as **${member.name}**!  (<@${member.id}>)`,
+                    timestamp: new Date(),
+                    footer: {text: "Nickname change"}
+                });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.NAME_CHANGE) {
+            console.log("Notification of name change:" + JSON.stringify(eventObject));
+            let member = eventObject.member;
+            let oldName= Users.get(eventObject.user.id).previousName;
+            if(!oldName) return 3;
+
+            for (let channelID in guild.notificationChannels.NAME_CHANGE) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.BLUE,
+                    description: `**${oldName}** is now known as **${member.username}#${member.discriminator}**!  (<@${member.id}>)`,
+                    timestamp: new Date(),
+                    footer: {text: "Username change"}
+                });
+            }
+            return 0;
+        }
 
     };
 }
@@ -500,15 +541,13 @@ class Guild {
              * @type{channel:String -> timestamp:Float}
              */
             VOICE_CHANNEL:          {},
+            ASYNC_HANDLER:          {},
 
             /**
              * set of channels which receive member join and leave notifications in this guild.
              * @type{channel:String -> timestamp:Float}
              */
             MEMBER_JOIN_LEAVE:      {},
-
-            //
-            ASYNC_HANDLER:          {},
 
             /**
              * set of channels which receive xkcds in this guild.

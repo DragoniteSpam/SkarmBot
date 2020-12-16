@@ -225,7 +225,8 @@ class Bot {
 			}
 			Skarm.log(changes);
 		}
-	}
+		if(e.previousNick !== e.member.nick) Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.NICK_CHANGE, e);
+    }
 
 	OnMemberRemove(e) {
         Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.MEMBER_LEAVE,e);
@@ -362,7 +363,20 @@ class Bot {
         
         return false;
     }
-    
+
+    OnPresenceUpdate(e){
+        console.log("Presence Update detected. User object: "+ JSON.stringify(e.user));
+        Guilds.get(e.guildId).notify(this.client, Constants.Notifications.NAME_CHANGE, e);
+
+    }
+
+    OnPresenceMemberUpdate(e){
+        console.log("Presence Update detected.");
+        if(e.old.username !== e.new.username){
+            Users.get(e.new.id).previousName = e.old.username+"#"+e.old.discriminator;
+        }
+    }
+
     /**
 	* Deletes anything that may not be picked up by garbage collection upon the termination of this object.
 	*/

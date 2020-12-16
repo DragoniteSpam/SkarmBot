@@ -79,7 +79,9 @@ const linkFunctions = function(user) {
 class User {
     constructor(id) {
         this.id = id;
-        
+
+        this.previousName = undefined;
+
         this.summons = {};
         this.summonsLastTime = null;
         

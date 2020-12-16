@@ -62,6 +62,20 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	dataPuller.on("message",(message) => {console.log(message);});
 });
 
+client.Dispatcher.on(events.PRESENCE_UPDATE, e => {
+	if(bot)
+		setTimeout(()=>{bot.OnPresenceUpdate(e);},20);
+});
+
+client.Dispatcher.on(events.PRESENCE_MEMBER_INFO_UPDATE, e => {
+	if(bot)
+		bot.OnPresenceMemberUpdate(e);
+});
+
+client.Dispatcher.on(events.MESSAGE_CREATE, e => {
+	if(bot)
+		bot.OnMessageCreate(e);
+});
 
 client.Dispatcher.on(events.MESSAGE_DELETE, e => {
 	if(bot)
@@ -73,10 +87,6 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
 		bot.OnMessageReactionAdd(e);
 });
 
-client.Dispatcher.on(events.MESSAGE_CREATE, e => {
-	if(bot)
-		bot.OnMessageCreate(e);
-});
 
 client.Dispatcher.on(events.GUILD_MEMBER_ADD, e => {
 	if(bot)
@@ -93,6 +103,7 @@ client.Dispatcher.on(events.GUILD_MEMBER_REMOVE, e => {
 		bot.OnMemberRemove(e);
 });
 
+
 client.Dispatcher.on(events.GUILD_BAN_ADD, e => {
 	if(bot)
 		bot.OnGuildBanAdd(e);
@@ -103,8 +114,9 @@ client.Dispatcher.on(events.GUILD_BAN_REMOVE, e => {
 		bot.OnGuildBanRemove(e);
 });
 
-//During a channel switch: Leave event will always precede the subsequent join event.
-// This delta time will be of as little as <1ms.
+
+//During a channel switch: Leave event will always be sent before the join event.
+// This delta time may be of as little as <1ms.
 // Because of this, these packets may be expected to arrive out of order.
 // 20ms async period suggested for any channel state switching.
 
@@ -117,6 +129,7 @@ client.Dispatcher.on(events.VOICE_CHANNEL_LEAVE, e => {
 	if(bot)
 		bot.OnVoiceChannelLeave(e);
 });
+
 
 client.Dispatcher.on(events.DISCONNECTED, e => {
 	console.error("Network Error: disconnected at " + (new Date()).toString());
