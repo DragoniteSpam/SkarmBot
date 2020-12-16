@@ -475,9 +475,9 @@ const linkFunctions = function(guild) {
             return 0;
         }
         if (notification === Constants.Notifications.NAME_CHANGE) {
-            console.log("Notification of name change:" + JSON.stringify(eventObject));
             let member = eventObject.member;
             let oldName= Users.get(eventObject.user.id).previousName;
+            Skarm.spam("Notification of name change: "+oldName +" -> " + JSON.stringify(eventObject.user));
             if(!oldName) return 3;
 
             for (let channelID in guild.notificationChannels.NAME_CHANGE) {

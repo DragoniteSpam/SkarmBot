@@ -365,7 +365,8 @@ class Bot {
     }
 
     OnPresenceUpdate(e){
-        console.log("Presence Update detected. User object: "+ JSON.stringify(e.user));
+        if(e.user.bot)return;
+        Skarm.spam("Presence Update detected. User object: "+ JSON.stringify(e.user));
         Guilds.get(e.guildId).notify(this.client, Constants.Notifications.NAME_CHANGE, e);
 
     }
@@ -374,6 +375,12 @@ class Bot {
         console.log("Presence Update detected.");
         if(e.old.username !== e.new.username){
             Users.get(e.new.id).previousName = e.old.username+"#"+e.old.discriminator;
+            Skarm.spam(`Username update:  ${Users.get(e.new.id).previousName} is now ${e.new.username}`);
+            setTimeout(() =>{
+                Users.get(e.new.id).previousName = undefined;
+            },10000);
+        }else{
+            Skarm.spam(e.old.username+" -> "+ e.new.username);
         }
     }
 
