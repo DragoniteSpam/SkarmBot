@@ -356,6 +356,8 @@ const linkFunctions = function(guild) {
      *      3 - event thrown without proper cause
      */
 	guild.notify = function(client, notification, eventObject) {
+	    if(guild===undefined)
+	        return Skarm.logError("Undefined guild");
         if (notification === Constants.Notifications.MEMBER_LEAVE) {
             let user = eventObject.user;
             for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
@@ -477,13 +479,19 @@ const linkFunctions = function(guild) {
         if (notification === Constants.Notifications.NAME_CHANGE) {
             let member = eventObject.member;
             let oldName= Users.get(eventObject.user.id).previousName;
-            Skarm.spam("Notification of name change: "+oldName +" -> " + JSON.stringify(eventObject.user));
-            if(!oldName) return 3;
-
+            //Skarm.logError(`Might be sending out name change notification out to guild: ${JSON.stringify(guild.id)}\n> ${JSON.stringify(guild.notificationChannels)}`);
+            //Skarm.spam("Notification of name change: "+oldName +" -> " + JSON.stringify(eventObject.user));
+            if(oldName===undefined){// && !guild.hasPermissions(eventObject.user,Permissions.MOM)){
+                Skarm.logError("scratch that");
+                return 3;
+            }
             for (let channelID in guild.notificationChannels.NAME_CHANGE) {
+                let dsc = `**${oldName}** is now known as **${member.username}#${member.discriminator}**!  (<@${member.id}>)`;
+                //Skarm.spam(`Sending message to <#${channelID}> regarding name change of ${oldName}:\n`);
+                //Skarm.spam(dsc);
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.BLUE,
-                    description: `**${oldName}** is now known as **${member.username}#${member.discriminator}**!  (<@${member.id}>)`,
+                    description: dsc,
                     timestamp: new Date(),
                     footer: {text: "Username change"}
                 });
