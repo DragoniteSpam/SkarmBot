@@ -164,6 +164,10 @@ module.exports = {
             let page = 0;
             if (tokens.length === 1)
                 page = tokens[0]-1;
+            if(isNaN(page)){
+                Skarm.sendMessageDelay(e.message.channel,"Expected page input as an integer. e.g.: `e!activity 2`");
+                return;
+            }
             //Skarm.logError(page);
             let guild = Guilds.get(e.message.guild.id);
             let table = guild.sortActivityTable();
