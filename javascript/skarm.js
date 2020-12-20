@@ -48,7 +48,7 @@ class Skarm {
      * @param err the error object
      */
     static logError(err) {
-        console.error(err);
+        console.error(new Date +":\t"+err);
         Skarm.spamBuffer(err);
     }
     
@@ -122,7 +122,9 @@ class Skarm {
         }
 
         try{
+            //Skarm.logError("Sending async message");
             channel.sendMessage(text,tts,obj).then((message => {
+                //Skarm.logError("Async to be deleted message sent");
                 message.addReaction("\u274c");
                 var timeout = setTimeout(() => {
                     delete skarmbotObject.toBeDeletedCache[message.id];

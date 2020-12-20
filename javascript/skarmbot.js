@@ -266,11 +266,7 @@ class Bot {
 			}
             return false;
         }
-        
-        let userData = Users.get(e.message.author.id);
-        let guildData = Guilds.get(e.message.channel.guild_id);
-        guildData.executeMayhem();
-        
+
         // i don't know how you would delete a message the instant it's created,
         // but apparently it can happen...
         if (e.message.deleted) {return false;}
@@ -279,9 +275,13 @@ class Bot {
             e.message.channel.sendMessage("private message responses not yet implemented");
             return false;
         }
-        
+
+        let userData = Users.get(e.message.author.id);
+        let guildData = Guilds.get(e.message.channel.guild_id);
+        guildData.executeMayhem();
         guildData.updateEXP(e);
-		
+		guildData.updateActivity(e);
+
         // now we can start doing stuff
         let author = e.message.author;
         let text = e.message.content.toLowerCase();

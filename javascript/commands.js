@@ -151,9 +151,53 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	
-	
-	/**
+    Activity: {
+        aliases: ["activity","activityTable"],
+        params: ["page"],
+        usageChar: "!",
+        helpText: "Prints out a table of guild activity from the past month.  Use the page option to access data outside of the top 10.",
+        ignoreHidden: true,
+        category: "general",
+
+        execute(bot, e) {
+            let tokens = commandParamTokens(e.message.content);
+            let page = 0;
+            if (tokens.length === 1)
+                page = tokens[0]-1;
+            //Skarm.logError(page);
+            let guild = Guilds.get(e.message.guild.id);
+            let table = guild.sortActivityTable();
+            let messageObject = {
+                color: Skarm.generateRGB(),
+                description:"",
+                author: {name: e.message.author.nick},
+                title: "Server Activity",
+                timestamp: new Date(),
+                //fields: [],
+                footer: {text: `Page ${page+1}/${Math.ceil(table.length/10)}`},
+            };
+            //Skarm.logError("Table: "+JSON.stringify(table));
+            for(let i=0; i+page*10<table.length && i<10 && page>=0; i++){
+                let user = bot.client.Users.get(table[i+page*10].userID);
+                //Skarm.logError("Asserting that bot object properties are valid. Keys: "+JSON.stringify(Object.keys(bot)));
+                //Skarm.logError("Asserting that bot.client.Users collection exists: "+JSON.stringify(bot.client.Users));
+                messageObject.description+= `\`${table[i+page*10].totalWords}\`   \t${user.username}#${user.discriminator}\r\n`;
+            }
+            if(page*10 > table.length){
+                Skarm.sendMessageDelay(e.message.channel,"Requested page is outside of active member range.  Please try again.");
+                return;
+            }
+            Skarm.sendMessageDelete(e.message.channel," ",false,messageObject,1<<20,e.message.author,bot);
+            //Skarm.logError("Message sent to smd");
+        },
+
+        help(bot,e) {
+            Skarm.help(this, e);
+        },
+    },
+
+
+    /**
 	*	meta
 	*/
 	Actions: {

@@ -502,24 +502,36 @@ const linkFunctions = function(guild) {
 
     };
 
+	//TODO: make this into timsort if the runtime is bad
 	guild.sortActivityTable = function (){
-
+	    for(let i in guild.activityTable){
+	        guild.minSortActivityTable(i);
+        }
+	    return guild.activityTable.sort((a,b)=>{return b.totalWords-a.totalWords;});
     };
 
-	//aggregates and cleans up total words then performs a single swap if appropriate
+    //I'm throwing in -0 at the end of various things to make sure that any numbers stored as strings are cast properly
+
+    //aggregates and cleans up total words then performs a single swap if appropriate
     guild.minSortActivityTable = function (i) {
+        //Skarm.spam("Partially sorting at index "+i);
+        i=i-0;
         let updatedTotal=0;
         for(let day in guild.activityTable[i].days){
             if(((day-0) + 31*24*60*60*1000)<Date.now()){
                 delete guild.activityTable[i].days[day];
             }else{
-                //I'm throwing in -0 at the end of various things to make sure that any numbers stored as strings are cast properly
-                updatedTotal += guild.activityTable[i].days-0;
+                //Skarm.spam(guild.activityTable[i].da)
+                updatedTotal += guild.activityTable[i].days[day]-0;
             }
         }
+        //Skarm.spam("Updated total: "+updatedTotal);
         guild.activityTable[i].totalWords=updatedTotal;
+        //Skarm.spam(`new total words for ${JSON.stringify(guild.activityTable[i])}`);
 
         if(i===0)return;
+        //Skarm.spam(i);
+        //Skarm.spam(JSON.stringify(guild.activityTable));
         if(guild.activityTable[i].totalWords > guild.activityTable[i-1].totalWords){
             let temp = guild.activityTable[i];
             guild.activityTable[i]=guild.activityTable[i-1];
@@ -547,7 +559,7 @@ const linkFunctions = function(guild) {
 	    guild.activityTable.push({
             userID:e.message.author.id,
             days:{},
-            totalWords:0
+            totalWords:0,
 	    });
 	    guild.activityTable[guild.activityTable.length-1].days[day]=wordCount;
     };
