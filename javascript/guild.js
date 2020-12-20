@@ -38,7 +38,8 @@ const linkVariables = function(guild) {
         MEMBER_JOIN_LEAVE:  {},
         ASYNC_HANDLER:      {},
     };
-    if(guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
+    if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
+    if (guild.activityTable === undefined) guild.activityTable = [ ];
 };
 
 // since de/serialized objects don't keep their functions
@@ -476,7 +477,7 @@ const linkFunctions = function(guild) {
             }
             return 0;
         }
-        if (notification === Constants.Notifications.NAME_CHANGE) {
+        if (notification === Constants.Notifications.NAME_CHANGE) {//TODO: MAY NOT BE FULLY OPERATIONAL
             let member = eventObject.member;
             let oldName= Users.get(eventObject.user.id).previousName;
             Skarm.logError(`Might be sending out name change notification out to guild: ${JSON.stringify(guild.id)}\n> ${JSON.stringify(guild.notificationChannels)}`);
@@ -499,6 +500,56 @@ const linkFunctions = function(guild) {
             return 0;
         }
 
+    };
+
+	guild.sortActivityTable = function (){
+
+    };
+
+	//aggregates and cleans up total words then performs a single swap if appropriate
+    guild.minSortActivityTable = function (i) {
+        let updatedTotal=0;
+        for(let day in guild.activityTable[i].days){
+            if(((day-0) + 31*24*60*60*1000)<Date.now()){
+                delete guild.activityTable[i].days[day];
+            }else{
+                //I'm throwing in -0 at the end of various things to make sure that any numbers stored as strings are cast properly
+                updatedTotal += guild.activityTable[i].days-0;
+            }
+        }
+        guild.activityTable[i].totalWords=updatedTotal;
+
+        if(i===0)return;
+        if(guild.activityTable[i].totalWords > guild.activityTable[i-1].totalWords){
+            let temp = guild.activityTable[i];
+            guild.activityTable[i]=guild.activityTable[i-1];
+            guild.activityTable[i-1]=temp;
+        }
+    };
+
+	guild.updateActivity = function(e) {
+	    let day = Date.now();
+	    let wordCount = e.message.content.replaceAll("  "," ").replaceAll("\r\n","\n").replaceAll("\n\n","\n").replaceAll("\n"," ").split(" ").length;
+	    day -= day % (24* 60* 60* 1000);
+	    for(let i in guild.activityTable){
+	        let member = guild.activityTable[i];
+	        if(member.userID===e.message.author.id){
+	            if(day in member.days){
+	                member.days[day]+=wordCount;
+                }else{
+	                member.days[day]=wordCount;
+                }
+	            guild.minSortActivityTable(i);
+	            return;
+            }
+        }
+
+	    guild.activityTable.push({
+            userID:e.message.author.id,
+            days:{},
+            totalWords:0
+	    });
+	    guild.activityTable[guild.activityTable.length-1].days[day]=wordCount;
     };
 }
 
@@ -523,6 +574,9 @@ class Guild {
 		this.boostTable = { };
 		this.moderators = { };
 		this.announcesLevels=false;
+
+		//[{userID -> String, days -> {Date:Long -> wordCount:Int},totalWords -> Int}]
+		this.activityTable = [];
 
 		this.channelBuffer = { };
         /**
