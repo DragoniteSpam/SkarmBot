@@ -199,7 +199,7 @@ class Bot {
 				while(sms.indexOf("<newmember>")>-1){
 					sms=sms.replace("<newmember>","<@"+e.member.id+">");
 				}
-				this.client.Channels.get(channel).sendMessage(sms);
+				Skarm.sendMessageDelay(this.client.Channels.get(channel),sms);
 			}
 		}
     }

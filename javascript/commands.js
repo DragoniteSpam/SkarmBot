@@ -68,24 +68,28 @@ module.exports = {
         
 		execute(bot, e) {
             let tokens = commandParamTokens(e.message.content);
-			if (tokens.length !== 2) return;
-            
-            let channel = null;
-            let kanal = tokens[0].substring(2, tokens[0].length - 1);
-            try {
-                channel = Guilds.client.Channels.get(kanal);
-            } catch(err) {
-                Skarm.sendMessageDelay(e.message.channel, kanal + " is not a valid channel ID");
-                return;
+
+            let channel,targetChannelID;
+			if (tokens.length === 0) {
+			    channel = e.message.channel;
+			    targetChannelID=channel.id;
+            } else {
+                channel = null;
+                targetChannelID = tokens[0].substring(2, tokens[0].length - 1);
+                try {
+                    channel = bot.client.Channels.get(targetChannelID);
+                } catch (err) {
+                    Skarm.sendMessageDelay(e.message.channel, targetChannelID + " is not a valid channel ID");
+                    return;
+                }
             }
             
-			if (channel == null) {
+			if (channel === null) {
 				return Skarm.sendMessageDelay(e.message.channel, "failed to find channel id");
 			}
             
 			channel.fetchPinned().then(ex => {
-                e.message.channel.sendMessage("<#" + channel.id + "> has " +
-				ex.messages.length + " pinned message" + ((ex.messages.length === 1) ? "" : "s"));
+                Skarm.sendMessageDelay(e.message.channel,"<#" + targetChannelID + "> has " + ex.messages.length + " pinned message" + ((ex.messages.length === 1) ? "" : "s"));
             });
 		},
 		
@@ -313,14 +317,12 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             }
 
             if (cmd === "?") {
-                let keys =[];// Object.keys(bot.mapping.unaliased);
                 let guildData = Guilds.get(e.message.channel.guild_id);
                 let userData = Users.get(e.message.author.id);
                 let categories = {};
 
                 for(let key in bot.mapping.unaliased){
                     if(bot.mapping.unaliased[key].usageChar === "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms)){
-                        keys.push(key);
                         let cat = bot.mapping.unaliased[key].category;
                         if(cat in categories){
                             categories[cat].push(key);
@@ -335,16 +337,6 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     categories[sets].sort();
                     alphabet.push({name: sets,value: categories[sets].join(", ")});
                 }
-
-                /** TO BE REPLACED
-                 for (let i = 0; i < keys.length; i++) {
-                    if (alphabet.length == 0 || alphabet[alphabet.length - 1].charAt(0) != keys[i].charAt(0)) {
-                        alphabet[alphabet.length] = keys[i];
-                    } else {
-                        alphabet[alphabet.length - 1] += ", " + keys[i];
-                    }
-                }
-                 */
                 let embedobj= {
                     color: Skarm.generateRGB(),
                     title: "Commands",
@@ -402,7 +394,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         category: "meta",
         
         execute(bot, e) {
-            var timeStart = Date.now();
+            let timeStart = Date.now();
             // don't use sendMessageDelay - you want this to be instantaneous
             e.message.channel.sendMessage("Testing response time...").then(e => {
                 e.edit("Response time: `" + (Date.now() - timeStart) + " ms`");
