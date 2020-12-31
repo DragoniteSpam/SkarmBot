@@ -257,19 +257,21 @@ class Bot {
     OnMessageCreate(e) {
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {
-			if(e.message.author.id===Constants.ID){
-				if(e.message.content === "sorry..."){
-					setTimeout(function(){
-						e.message.delete();
-					}, 12000);
-				}
-			}
+            if (e.message.author.id === Constants.ID) {
+                if (e.message.content === "sorry...") {
+                    setTimeout(function () {
+                        e.message.delete();
+                    }, 12000);
+                }
+            }
             return false;
         }
 
         // i don't know how you would delete a message the instant it's created,
         // but apparently it can happen...
-        if (e.message.deleted) {return false;}
+        if (e.message.deleted) {
+            return false;
+        }
         // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate) {
             e.message.channel.sendMessage("private message responses not yet implemented");
@@ -280,13 +282,13 @@ class Bot {
         let guildData = Guilds.get(e.message.channel.guild_id);
         guildData.executeMayhem();
         guildData.updateEXP(e);
-		guildData.updateActivity(e);
+        guildData.updateActivity(e);
 
         // now we can start doing stuff
         let author = e.message.author;
         let text = e.message.content.toLowerCase();
         let first = text.split(" ")[0];
-        
+
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         if (cmdData) {
@@ -306,61 +308,79 @@ class Bot {
                 return true;
             }
         }
-        
+
         // ignore messages that mention anyone or anything
         if (e.message.mentions.length > 0 ||
-                e.message.mention_roles.length > 0 ||
-                e.message.mention_everyone
-            ) {
+            e.message.mention_roles.length > 0 ||
+            e.message.mention_everyone
+        ) {
             return false;
         }
-		
+
         // ignore hidden channels after this
         if (this.channelsHidden[e.message.channel_id]) {
             return false;
         }
-        
+
         // each of these will kick out of the function if it finds something,
         // so the most important ones should be at the top
-        if(!this.channelsCensorHidden[e.message.channel_id]){
+        if (!this.channelsCensorHidden[e.message.channel_id]) {
             this.censor(e);
         }
-        
+
         this.summons(e);
-        
+
         if (this.mentions(e, this.validESReferences)) {
-			this.returnSkyrim(e);
+            this.returnSkyrim(e);
             return true;
         }
-        
+
         if (this.mentions(e, this.validShantyReferences)) {
-			this.singShanty(e);
+            this.singShanty(e);
             return true;
         }
-        
+
+
         for (let word in this.keywords) {
-            if (!text.includes(word)) {
+
+            let partial = text;
+            let allComponentsMatch = true;
+            let components = word.split("*");
+            if(components.length===0) continue;
+            //make sure every component exists in sequence for matches with multiple parts.
+            for(let c in components){
+                let component = components[c];
+                if(partial.includes(component)){
+                    partial = partial.substring(partial.indexOf(component)+component.length);
+                }else{
+                    allComponentsMatch=false;
+                    break;
+                }
+            }
+
+            if (!allComponentsMatch) {
                 continue;
             }
-            
+
             let keyword = this.keywords[word];
             if (keyword.standalone && (!text.startsWith(word + " ") &&
-                    !text.endsWith(" " + word) &&
-                    !text.includes(" " + word + " "))
-                ) {
+                !text.endsWith(" " + word) &&
+                !text.includes(" " + word + " "))
+            ) {
                 continue;
             }
-            
+
             if (Math.random() > keyword.odds) {
                 continue;
             }
-            
+
             keyword.execute(this, e);
             return true;
         }
-        
+
+        //Skarm.spam("Parrot");
         this.parrot(e);
-        
+
         return false;
     }
 
@@ -371,25 +391,25 @@ class Bot {
             else if(n>0){
                 return setTimeout(()=>{proceed(n-1);},25);
             }
-            Skarm.spam("Failed to find defined previous name for User ID: "+e.user.id);
-            Skarm.spam("OnPresenceUpdate JSON object retrieved: "+JSON.stringify(Users.get(e.user.id)));
+            //Skarm.spam("Failed to find defined previous name for User ID: "+e.user.id);
+            //Skarm.spam("OnPresenceUpdate JSON object retrieved: "+JSON.stringify(Users.get(e.user.id)));
         };
         if(e.user.bot)return;
-        Skarm.spam("Presence Update detected for User : "+ (e.user.id));
+        //Skarm.spam("Presence Update detected for User : "+ (e.user.id));
         proceed(100);
     }
 
     OnPresenceMemberUpdate(e){
         if(e.old.username !== e.new.username){
             Users.get(e.new.id).previousName = e.old.username+"#"+e.old.discriminator;
-            Skarm.spam(`Username update set to user object:  ${Users.get(e.new.id).previousName} is now ${e.new.username}`);
-            Skarm.spam("OnPresenceMemberUpdate JSON object for user: "+JSON.stringify(Users.get(e.new.id)));
+            //Skarm.spam(`Username update set to user object:  ${Users.get(e.new.id).previousName} is now ${e.new.username}`);
+            //Skarm.spam("OnPresenceMemberUpdate JSON object for user: "+JSON.stringify(Users.get(e.new.id)));
             setTimeout(() =>{
                 Users.get(e.new.id).previousName = undefined;
-                Skarm.spam("Username update timeout");
+                //Skarm.spam("Username update timeout");
             },10000);
         }else{
-            Skarm.spam("No change detected: "+e.old.username+" -> "+ e.new.username);
+            //Skarm.spam("No change detected: "+e.old.username+" -> "+ e.new.username);
         }
     }
 
