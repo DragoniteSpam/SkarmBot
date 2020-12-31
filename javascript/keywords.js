@@ -49,9 +49,9 @@ module.exports = {
         },
     },
     Thanks: {
-        aliases: ["thanks skarm"],
+        aliases: ["thank*skarm"],
         standalone: false,
-        odds: 0.4,
+        odds: 0.9,
         
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "no problem, buddy");

@@ -20,7 +20,9 @@ class Skarm {
 	/**Mass data output stream which can be freely used for spam and during debugging.
     * @param message the message to be sent to the spam channel
     */
-	static spam(message) {
+	static spam(message) {this.spamBuffer(message);}
+
+    static spamNoBuffer(message) {
         if(message.length>0)
             return Constants.Channels.SPAM.sendMessage(message);
         return null;
@@ -36,7 +38,7 @@ class Skarm {
         if(Skarm.spamBufferString === undefined) {
             Skarm.spamBufferString = "";
             Skarm.spamBufferTimer = setInterval(function (){
-                Skarm.spam(Skarm.spamBufferString.substring(0,2000));
+                Skarm.spamNoBuffer(Skarm.spamBufferString.substring(0,2000));
                 Skarm.spamBufferString=Skarm.spamBufferString.substring(2000);
             },2000);
         }
@@ -236,6 +238,7 @@ class Skarm {
         for (let kwd in keywords) {
             for (let alias of keywords[kwd].aliases) {
                 mapping[alias] = keywords[kwd];
+                Skarm.spam(`Initialized ${alias} -> ${kwd}`);
             }
         }
         

@@ -63,13 +63,11 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 });
 
 client.Dispatcher.on(events.PRESENCE_UPDATE, e => {
-	Skarm.spam("event Presence update");
 	if(bot)
 		setTimeout(()=>{bot.OnPresenceUpdate(e);},20);
 });
 
 client.Dispatcher.on(events.PRESENCE_MEMBER_INFO_UPDATE, e => {
-	Skarm.spam("event Presence member info update");
 	if(bot)
 		bot.OnPresenceMemberUpdate(e);
 });
