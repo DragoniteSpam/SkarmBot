@@ -52,7 +52,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
     Constants.initialize(client);
     Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
-		console.log("Pulled in skarmData.\nGit revision count:"+code);
+		console.log("Pulled in skarmData.\nGit revision count: "+code);
 		Users.initialize(client);
 		Guilds.initialize(client);
 		bot = new SkarmBot(client,code);
@@ -62,6 +62,20 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	dataPuller.on("message",(message) => {console.log(message);});
 });
 
+client.Dispatcher.on(events.PRESENCE_UPDATE, e => {
+	if(bot)
+		setTimeout(()=>{bot.OnPresenceUpdate(e);},20);
+});
+
+client.Dispatcher.on(events.PRESENCE_MEMBER_INFO_UPDATE, e => {
+	if(bot)
+		bot.OnPresenceMemberUpdate(e);
+});
+
+client.Dispatcher.on(events.MESSAGE_CREATE, e => {
+	if(bot)
+		bot.OnMessageCreate(e);
+});
 
 client.Dispatcher.on(events.MESSAGE_DELETE, e => {
 	if(bot)
@@ -73,10 +87,6 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
 		bot.OnMessageReactionAdd(e);
 });
 
-client.Dispatcher.on(events.MESSAGE_CREATE, e => {
-	if(bot)
-		bot.OnMessageCreate(e);
-});
 
 client.Dispatcher.on(events.GUILD_MEMBER_ADD, e => {
 	if(bot)
@@ -87,6 +97,39 @@ client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
 	if(bot)
 		bot.OnMemberUpdate(e);
 });
+
+client.Dispatcher.on(events.GUILD_MEMBER_REMOVE, e => {
+	if(bot)
+		bot.OnMemberRemove(e);
+});
+
+
+client.Dispatcher.on(events.GUILD_BAN_ADD, e => {
+	if(bot)
+		bot.OnGuildBanAdd(e);
+});
+
+client.Dispatcher.on(events.GUILD_BAN_REMOVE, e => {
+	if(bot)
+		bot.OnGuildBanRemove(e);
+});
+
+
+//During a channel switch: Leave event will always be sent before the join event.
+// This delta time may be of as little as <1ms.
+// Because of this, these packets may be expected to arrive out of order.
+// 20ms async period suggested for any channel state switching.
+
+client.Dispatcher.on(events.VOICE_CHANNEL_JOIN, e => {
+	if(bot)
+		bot.OnVoiceChannelJoin(e);
+});
+
+client.Dispatcher.on(events.VOICE_CHANNEL_LEAVE, e => {
+	if(bot)
+		bot.OnVoiceChannelLeave(e);
+});
+
 
 client.Dispatcher.on(events.DISCONNECTED, e => {
 	console.error("Network Error: disconnected at " + (new Date()).toString());

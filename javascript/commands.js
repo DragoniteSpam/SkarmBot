@@ -68,24 +68,28 @@ module.exports = {
         
 		execute(bot, e) {
             let tokens = commandParamTokens(e.message.content);
-			if (tokens.length !== 2) return;
-            
-            let channel = null;
-            let kanal = tokens[0].substring(2, tokens[0].length - 1);
-            try {
-                channel = Guilds.client.Channels.get(kanal);
-            } catch(err) {
-                Skarm.sendMessageDelay(e.message.channel, kanal + " is not a valid channel ID");
-                return;
+
+            let channel,targetChannelID;
+			if (tokens.length === 0) {
+			    channel = e.message.channel;
+			    targetChannelID=channel.id;
+            } else {
+                channel = null;
+                targetChannelID = tokens[0].substring(2, tokens[0].length - 1);
+                try {
+                    channel = bot.client.Channels.get(targetChannelID);
+                } catch (err) {
+                    Skarm.sendMessageDelay(e.message.channel, targetChannelID + " is not a valid channel ID");
+                    return;
+                }
             }
             
-			if (channel == null) {
+			if (channel === null) {
 				return Skarm.sendMessageDelay(e.message.channel, "failed to find channel id");
 			}
             
 			channel.fetchPinned().then(ex => {
-                e.message.channel.sendMessage("<#" + channel.id + "> has " +
-				ex.messages.length + " pinned message" + ((ex.messages.length === 1) ? "" : "s"));
+                Skarm.sendMessageDelay(e.message.channel,"<#" + targetChannelID + "> has " + ex.messages.length + " pinned message" + ((ex.messages.length === 1) ? "" : "s"));
             });
 		},
 		
@@ -151,9 +155,57 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	
-	
-	/**
+    Activity: {
+        aliases: ["activity","activityTable"],
+        params: ["page"],
+        usageChar: "!",
+        helpText: "Prints out a table of guild activity from the past month.  Use the page option to access data outside of the top 10.",
+        ignoreHidden: true,
+        category: "general",
+
+        execute(bot, e) {
+            let tokens = commandParamTokens(e.message.content);
+            let page = 0;
+            if (tokens.length === 1)
+                page = tokens[0]-1;
+            if(isNaN(page)){
+                Skarm.sendMessageDelay(e.message.channel,"Expected page input as an integer. e.g.: `e!activity 2`");
+                return;
+            }
+            //Skarm.logError(page);
+            let guild = Guilds.get(e.message.guild.id);
+            let table = guild.sortActivityTable();
+            let messageObject = {
+                color: Skarm.generateRGB(),
+                description:"",
+                author: {name: e.message.author.nick},
+                title: "Server Activity",
+                timestamp: new Date(),
+                //fields: [],
+                footer: {text: `Page ${page+1}/${Math.ceil(table.length/10)}`},
+            };
+            //Skarm.logError("Table: "+JSON.stringify(table));
+            for(let i=0; i+page*10<table.length && i<10 && page>=0; i++){
+                let user = bot.client.Users.get(table[i+page*10].userID);
+                //Skarm.logError("Asserting that bot object properties are valid. Keys: "+JSON.stringify(Object.keys(bot)));
+                //Skarm.logError("Asserting that bot.client.Users collection exists: "+JSON.stringify(bot.client.Users));
+                messageObject.description+= `\`${table[i+page*10].totalWords}\`   \t${user.username}#${user.discriminator}\r\n`;
+            }
+            if(page*10 > table.length){
+                Skarm.sendMessageDelay(e.message.channel,"Requested page is outside of active member range.  Please try again.");
+                return;
+            }
+            Skarm.sendMessageDelete(e.message.channel," ",false,messageObject,1<<20,e.message.author,bot);
+            //Skarm.logError("Message sent to smd");
+        },
+
+        help(bot,e) {
+            Skarm.help(this, e);
+        },
+    },
+
+
+    /**
 	*	meta
 	*/
 	Actions: {
@@ -265,14 +317,12 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             }
 
             if (cmd === "?") {
-                let keys =[];// Object.keys(bot.mapping.unaliased);
                 let guildData = Guilds.get(e.message.channel.guild_id);
                 let userData = Users.get(e.message.author.id);
                 let categories = {};
 
                 for(let key in bot.mapping.unaliased){
                     if(bot.mapping.unaliased[key].usageChar === "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms)){
-                        keys.push(key);
                         let cat = bot.mapping.unaliased[key].category;
                         if(cat in categories){
                             categories[cat].push(key);
@@ -287,16 +337,6 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     categories[sets].sort();
                     alphabet.push({name: sets,value: categories[sets].join(", ")});
                 }
-
-                /** TO BE REPLACED
-                 for (let i = 0; i < keys.length; i++) {
-                    if (alphabet.length == 0 || alphabet[alphabet.length - 1].charAt(0) != keys[i].charAt(0)) {
-                        alphabet[alphabet.length] = keys[i];
-                    } else {
-                        alphabet[alphabet.length - 1] += ", " + keys[i];
-                    }
-                }
-                 */
                 let embedobj= {
                     color: Skarm.generateRGB(),
                     title: "Commands",
@@ -354,7 +394,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         category: "meta",
         
         execute(bot, e) {
-            var timeStart = Date.now();
+            let timeStart = Date.now();
             // don't use sendMessageDelay - you want this to be instantaneous
             e.message.channel.sendMessage("Testing response time...").then(e => {
                 e.edit("Response time: `" + (Date.now() - timeStart) + " ms`");
@@ -402,8 +442,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         category: "meta",
 		
         execute(bot, e) {
-			let shanty = Math.floor(bot.shanties.ivanhoe*bot.shanties.drinkCount()*100);
-			let skyrim=Math.floor((new Date).getDay()*bot.skyrimOddsModifier*100);
+            //shanty counter is intentionally wrong following shanties being buffered on a per-channel basis
+			let shanty = Math.floor(Math.random()*5000)/100;
+			let skyrim=Math.floor((new Date).getDay()*bot.skyrimOddsModifier*10000)/100;
             Skarm.sendMessageDelay(e.message.channel, "Current shanty forecast: **" +shanty+"%**\n"+
 			"The Elder Scrolls Forecast: **"+skyrim+"%**\n"+
 			"Something completely normal: **0%**\n"+
@@ -448,6 +489,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
 				"Host: "+os.hostname()+"\n"+
                 "vPID: "+bot.pid+"\n"+
+                "Version: "+bot.version+"\n"+
                 "Uptime (probably): " + uptimeString + "```"
             );
         },
@@ -773,18 +815,18 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this.",
         ignoreHidden: true,
         perms: Permissions.MOD,
-		category: "administrative",
-        
+        category: "administrative",
+
         execute(bot, e) {
             let userData = Users.get(e.message.author.id);
             let guildData = Guilds.get(e.message.guild.id);
-			let args = commandParamTokens(e.message.content);
-			
+            let args = commandParamTokens(e.message.content);
+
             if (args.length === 0) {
-				Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
-				return;
-			}
-			
+                Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
+                return;
+            }
+
             switch (args[0]) {
                 case "enable":
                     bot.addChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
@@ -794,30 +836,112 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     bot.removeChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
                     Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
                     break;
-			}
-            
-			let leave = true;
-			for (let mom in Constants.Moms) {
-				if (Constants.Moms[mom].id === e.message.author.id){
-					leave = false;
-				} 
-			}
-            
-			if (leave) return;
-            
-			// noinspection FallThroughInSwitchStatementJS
+            }
+
+            let leave = true;
+            for (let mom in Constants.Moms) {
+                if (Constants.Moms[mom].id === e.message.author.id){
+                    leave = false;
+                }
+            }
+
+            if (leave) return;
+
+            // noinspection FallThroughInSwitchStatementJS
             switch (args[0]) {
-				case "dump":
-					Skarm.log(JSON.stringify(bot.channelsWhoLikeXKCD));
-					break;
-				case "push":
-					bot.xkcd.sweep(true); //lack of break is intentional to log lock
-				case "lockcheck":
-					Skarm.log(bot.xkcd.lock);
-					break;
+                case "dump":
+                    Skarm.log(JSON.stringify(bot.channelsWhoLikeXKCD));
+                    break;
+                case "push":
+                    bot.xkcd.sweep(true); //lack of break is intentional to log lock
+                case "lockcheck":
+                    Skarm.log(bot.xkcd.lock);
+                    break;
             }
         },
-        
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Notify: {
+        aliases: ["notify"],
+        params: ["#"],
+        usageChar: "@",
+        helpText: "Toggles the notifications of various information for this channel.  Use without a number input to view current state of channel.",
+        ignoreHidden: true,
+        perms: Permissions.MOD,
+        category: "administrative",
+
+        execute(bot, e) {
+            let userData = Users.get(e.message.author.id);
+            let guildData = Guilds.get(e.message.guild.id);
+            let notifChannels = guildData.notificationChannels;
+            let args = commandParamTokens(e.message.content);
+
+            if (args.length === 0) {
+                Skarm.sendMessageDelay(e.message.channel, " ",false,{
+                    color: Constants.Colors.BLUE,
+                    author: {name: e.message.author.nick},
+                    description: `Configure notification settings for <#${e.message.channel.id}>:\r\n\r\n`+
+                        `1: **${(e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) ? "Disable":"Enable"}** member join/leave notifications\n`+
+                        `2: **${(e.message.channel.id in notifChannels.BAN) ? "Disable":"Enable"}** ban notifications\n`+
+                        `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE) ? "Disable":"Enable"}** name change notifications\n`+
+                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL) ? "Disable":"Enable"}** voice channel join/change/leave notifications`,
+                    timestamp: new Date(),
+                });
+                return;
+            }
+
+            switch (args[0]) {
+                case "e":
+                case "1":
+                    if (e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) {
+                        delete notifChannels.MEMBER_JOIN_LEAVE[e.message.channel.id];
+                        Skarm.sendMessageDelay(e.message.channel, "Member join/leave notifications will no longer be sent to **" + e.message.channel.name + "!**");
+                    }else{
+                        notifChannels.MEMBER_JOIN_LEAVE[e.message.channel.id] = Date.now();
+                        Skarm.sendMessageDelay(e.message.channel, "Member join/leave notifications will now be sent to **" + e.message.channel.name + "!**");
+                    }
+                    if(args[0]==="1")break;
+                case "2":
+                    if (e.message.channel.id in notifChannels.BAN) {
+                        delete notifChannels.BAN[e.message.channel.id];
+                        Skarm.sendMessageDelay(e.message.channel, "Member ban notifications will no longer be sent to **" + e.message.channel.name + "!**");
+                    }else{
+                        notifChannels.BAN[e.message.channel.id] = Date.now();
+                        Skarm.sendMessageDelay(e.message.channel, "Member ban notifications will now be sent to **" + e.message.channel.name + "!**");
+                    }
+                    if(args[0]==="2")break;
+                case "3":
+                    if (e.message.channel.id in notifChannels.NAME_CHANGE) {
+                        delete notifChannels.NAME_CHANGE[e.message.channel.id];
+                        Skarm.sendMessageDelay(e.message.channel, "Member name change notifications will no longer be sent to **" + e.message.channel.name + "!**");
+                    }else{
+                        notifChannels.NAME_CHANGE[e.message.channel.id] = Date.now();
+                        Skarm.sendMessageDelay(e.message.channel, "Member name change notifications will now be sent to **" + e.message.channel.name + "!**");
+                    }
+                    if(args[0]==="3")break;
+                case "4":
+                    if (e.message.channel.id in notifChannels.VOICE_CHANNEL) {
+                        delete notifChannels.VOICE_CHANNEL[e.message.channel.id];
+                        Skarm.sendMessageDelay(e.message.channel, "Voice channel activity notifications will no longer be sent to **" + e.message.channel.name + "!**");
+                    }else{
+                        notifChannels.VOICE_CHANNEL[e.message.channel.id] = Date.now();
+                        Skarm.sendMessageDelay(e.message.channel, "Voice channel activity notifications will now be sent to **" + e.message.channel.name + "!**");
+                    }
+                    break;
+                case "debug":
+                    Skarm.spam(JSON.stringify(notifChannels));
+                    /*
+            case "disable":
+                bot.removeChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
+                Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
+                break;
+                */
+            }
+        },
+
         help(bot, e) {
             Skarm.help(this, e);
         },
@@ -936,6 +1060,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
+
 	
 	/**
 	*	leveling
