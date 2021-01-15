@@ -44,7 +44,7 @@ class XKCD {
 			clearInterval(this.interval);
 		}
 		let tis = this;
-		this.interval = setInterval(function(){tis.sweep();}, 1000 * 60 * 60);
+		this.interval = setInterval(function(){tis.checkForNewXKCDs();}, 1000 * 60 * 30);
 	}
 
 	checkForNewXKCDs() {
