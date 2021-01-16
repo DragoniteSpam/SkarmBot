@@ -581,6 +581,7 @@ class Bot {
             process.exit(Constants.SaveCodes.NOSAVE);
         }
 
+        Skarm.log("\n\nBeginning save sequence...");
         Guilds.save();
         Users.save();
         this.xkcd.save();

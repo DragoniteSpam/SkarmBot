@@ -1495,9 +1495,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		category: "infrastructure",
         
         execute(bot, e) {
-            //save memory before a restart 
+            Skarm.log("Restarting by order of <@" + e.message.author.id + ">");
+            //save memory before a restart
 			bot.save(Constants.SaveCodes.REBOOT);
-			Skarm.log("Restarting by order of <@" + e.message.author.id + ">");
         },
         
         help(bot, e) {
