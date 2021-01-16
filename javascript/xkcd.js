@@ -1,9 +1,15 @@
 "use strict";
 const fs = require("fs");
+const request = require("request");
+
 const Skarm = require("./skarm.js");
 const Encrypt = require("./encryption.js");
+const Guild = require("./guild.js");
+const Constants = require("./constants.js");
+
 
 const xkcddb = "..\\skarmData\\xkcd.penguin";
+const xkcdlib = "..\\skarmData\\xkcd-log.penguin";
 
 class XKCD {
 	constructor(bot) {
@@ -12,19 +18,20 @@ class XKCD {
 		this.interval = null;
 		this.schedule();
 		this.lock = 0;
-		this.references = JSON.parse(fs.readFileSync(".\\fun\\xkcd-log.json").toString().toLowerCase());
+		this.references = JSON.parse(fs.readFileSync(xkcdlib).toString().toLowerCase());
 	}
 
 	save() {
 		Encrypt.write(xkcddb, JSON.stringify(this.bot.channelsWhoLikeXKCD));
+		fs.writeFileSync(xkcdlib,JSON.stringify(this.references));
 		console.log("Saved XKCD Data");
 	}
 
 	initialize() {
-		var tis = this;
+		let tis = this;
 		Encrypt.read(xkcddb, function (data, filename) {
 			tis.bot.channelsWhoLikeXKCD = JSON.parse(data);
-			console.log("Initialized " + Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels ");
+			console.log("Initialized " + Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels.");
 		});
 	}
 
@@ -37,7 +44,43 @@ class XKCD {
 			clearInterval(this.interval);
 		}
 		let tis = this;
-		this.interval = setInterval(function(){tis.sweep();}, 1000 * 60 * 60);
+		this.interval = setInterval(function(){tis.checkForNewXKCDs();}, 1000 * 60 * 30);
+	}
+
+	checkForNewXKCDs() {
+		let tis = this;
+		let newXkcdId = this.references.ordered.length;
+
+		let params={
+			timeout: 2000,
+			followAllRedirects: true,
+			uri: "https://xkcd.com/"+newXkcdId+"/ ",
+		};
+
+		Skarm.spam("Requesting: "+JSON.stringify(params));
+		request.get(params, function(error, response, body){
+			//Skarm.spam(JSON.stringify(response));return;
+			if(response.statusCode!==200) return;
+			if (!error){
+
+				//acquire title (src: /fun/xkcdSweeper.js)
+				let startTarget="<title>";
+				let arguo=body.indexOf(startTarget);
+				let title = body.substring(arguo+startTarget.length);
+				title = title.substring(0,title.indexOf("<"));
+				tis.references.ordered.push(title);
+				tis.references.alphabetized.push([title,newXkcdId]);
+				tis.references.alphabetized.sort(function(a, b) {
+					return (a[0] > b[0]) ? 1 : -1;
+				});
+				for(let guild in Guild.guilds){
+					Guild.guilds[guild].notify(tis.bot.client,Constants.Notifications.XKCD,params.uri);
+				}
+				tis.bot.save(Constants.SaveCodes.DONOTHING);
+				return tis.checkForNewXKCDs();
+			}
+			Skarm.spam("No further xkcd found at "+newXkcdId);
+		});
 	}
 
 	post(channel, id) {
@@ -93,6 +136,10 @@ class XKCD {
 		return;
 	}
 
+	/**
+	 * Broadcast XKCD's to all Munroe channels
+	 * @param n broadcast immediately override of Any truthy type
+	 */
 	sweep(n) {
 		var d = new Date(); // for now
 		var datetext = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();

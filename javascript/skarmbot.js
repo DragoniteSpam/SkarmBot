@@ -84,10 +84,25 @@ class Bot {
         this.shanties = new ShantyCollection();
         this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
         this.channelsWhoLikeXKCD = {};
+
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
         this.xkcd = new XKCD(this);
+        setTimeout(()=>{{
+            for(let channel in this.channelsWhoLikeXKCD){
+                let channelGuild;
+                try {
+                    channelGuild = Guilds.get(client.Channels.get(channel).guild.id);
+                }catch (e) {
+                    Skarm.logError("Failed to get guild for channel "+channel+"  -  "+JSON.stringify(e));
+                    continue;
+                }
+                //Skarm.logError(channelGuild.id);
+                //Skarm.logError(JSON.stringify(channelGuild.notificationChannels));
+                channelGuild.notificationChannels.XKCD[channel]=Date.now();
+            }
+        }},1000);
 
         /**
          * keeps a short lifespan cache of messages sent by skarm which are going to be deleted,

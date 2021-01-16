@@ -13,8 +13,10 @@ class Constants {
             MASTER: client.Users.get("162952008712716288"),
             ARGO: client.Users.get("263474950181093396"),
         }
+
         //the bot's own ID
 		Constants.ID = client.User.id;
+
 		//access to the client object
         Constants.client=client;
 

@@ -238,7 +238,7 @@ class Skarm {
         for (let kwd in keywords) {
             for (let alias of keywords[kwd].aliases) {
                 mapping[alias] = keywords[kwd];
-                Skarm.spam(`Initialized ${alias} -> ${kwd}`);
+                //Skarm.spam(`Initialized ${alias} -> ${kwd}`);
             }
         }
         
