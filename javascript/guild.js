@@ -37,8 +37,10 @@ const linkVariables = function(guild) {
 
         MEMBER_JOIN_LEAVE:  {},
         ASYNC_HANDLER:      {},
+        XKCD:               {},
     };
     if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
+    if (guild.notificationChannels.XKCD === undefined) guild.notificationChannels.XKCD = {};
     if (guild.activityTable === undefined) guild.activityTable = [ ];
 };
 
@@ -477,7 +479,7 @@ const linkFunctions = function(guild) {
             }
             return 0;
         }
-        if (notification === Constants.Notifications.NAME_CHANGE) {//TODO: MAY NOT BE FULLY OPERATIONAL
+        if (notification === Constants.Notifications.NAME_CHANGE) {
             let member = eventObject.member;
             let oldName= Users.get(eventObject.user.id).previousName;
             Skarm.logError(`Might be sending out name change notification out to guild: ${JSON.stringify(guild.id)}\n> ${JSON.stringify(guild.notificationChannels)}`);
@@ -496,6 +498,13 @@ const linkFunctions = function(guild) {
                     timestamp: new Date(),
                     footer: {text: "Username change"}
                 });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.XKCD) {//TODO: MAY NOT BE FULLY OPERATIONAL
+            for (let channelID in guild.notificationChannels.XKCD) {
+                Skarm.spam(`Sending XKCD message to <#${channelID}>`);
+                Skarm.sendMessageDelay(client.Channels.get(channelID), eventObject);
             }
             return 0;
         }
