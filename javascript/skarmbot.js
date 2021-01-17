@@ -587,7 +587,7 @@ class Bot {
         this.xkcd.save();
         let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
         savior.on('exit', (code) => {
-            console.log("Received code: " + code + " on saving data to GIT");
+            console.log("Received code: " + code + " on saving data.");
             if (saveCode === Constants.SaveCodes.DONOTHING)
                 return;
             if (saveCode === undefined)
