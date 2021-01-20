@@ -123,6 +123,7 @@ class SlapFight {
     };
     
     interpret(message) {
+        if (!this.running) return;
         let author = message.author.id;
         let content = message.content;
         if (!this.participants[author]) return;
