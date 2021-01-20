@@ -18,12 +18,29 @@ class SlapFight {
             health: STARTING_HEALTH,
         };
         
+        this.running = false;
+        this.bot = bot;
         this.channel = channel;
         
         Skarm.sendMessageDelay(channel, "Slapfight has started. Join by " +
             "using the same command! When ready, the fight organizer can " +
             "begin the battle with `e!slapfight begin`."
         );
+    };
+    
+    join(contestant) {
+        if (this.running) {
+            Skarm.sendMessageDelay(this.channel, "You can't join a slapfight " +
+                "that's already in progress! How unsporting! Better wait for " +
+                "the next one."
+            );
+        } else {
+            this.participants[contestant] = {
+                participant: this.bot.client.Users.get(contestant),
+                cooldown: 0,
+                health: STARTING_HEALTH,
+            };
+        }
     };
 }
 
