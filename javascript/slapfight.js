@@ -2,8 +2,8 @@
 const fs = require("fs");
 
 const Skarm = require("./skarm.js");
-const Guild = require("./guild.js");
-const User = require("./user.js");
+const Guilds = require("./guild.js");
+const Users = require("./user.js");
 
 const STARTING_HEALTH = 10;
 
@@ -56,7 +56,7 @@ class SlapFight {
     };
     
     begin(contestant) {
-        if (this.running) return false;
+        if (this.running) return;
         if (contestant === this.organizer.id) {
             if (Object.keys(this.participants).length === 1) {
                 Skarm.sendMessageDelay(this.channel, "There's no point in " +
@@ -76,10 +76,17 @@ class SlapFight {
     };
     
     end(contestant) {
-        Skarm.sendMessageDelay(this.channel, "The slap fight has been called " +
-            "of. Perhaps some other time!"
-        );
-        
+        if (!this.running) return;
+        if (contestant === this.organizer.id) {
+            Skarm.sendMessageDelay(this.channel, "The slap fight has been " +
+                "called off. Perhaps some other time!"
+            );
+            Guilds.get(this.channel.guild_id).slapfight = null;
+        } else {
+            Skarm.sendMessageDelay(this.channel, "Only the fight organizer " +
+                "a moderator may call off a slap fight!"
+            );
+        }
     };
     
     slap(contestant, victim) {
@@ -96,7 +103,13 @@ class SlapFight {
     };
     
     update(contestant, params) {
-        if (!this.running) {
+        if (this.running) {
+            if (params.length > 0 && params[0] === "end") {
+                this.end(contestant);
+            } else {
+                // todo
+            }
+        } else {
             if (params.length > 0 && params[0] === "begin") {
                 this.begin(contestant);
             } else {
