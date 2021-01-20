@@ -117,7 +117,7 @@ class Bot {
         this.keywords = Skarm.addKeywords(Keywords);
 
         this.games = ["e!help", this.getSpaghetti() + " lines of spaghetti"];
-        this.game=0;
+        this.game = 0;
 
         this.timer30min = setInterval(function() {
             this.save(Constants.SaveCodes.DONOTHING);
@@ -135,16 +135,16 @@ class Bot {
     // events
     OnMessageDelete(e) {
         var string = "";
-        if (e.message){
-            if (!e.message.author.bot){
-                if (!e.message){
+        if (e.message) {
+            if (!e.message.author.bot) {
+                if (!e.message) {
                     string = "<message not cached>"; 
                 } else {
                     string = e.message.content + " by " +
                         e.message.author.username;
                 }
                 fs.appendFile("../skarmData/deleted.txt", string + "\r\n", (err) => {
-                    if (err){
+                    if (err) {
                         Skarm.logError(err);
                     }
                 });
@@ -159,14 +159,11 @@ class Bot {
         const REQUIRED_UPVOTES = 3;
         const REDX = '\u274c';
 
-		if(!e)
-			return Skarm.log("encountered null event in OnMessageReactionAdd");
-		if(e.message==null)
-			return Skarm.log("encountered null message in onMessageReactionAdd");
-		if(!e.message.guild)
-			return Skarm.log("encountered null guild in OnMessageReactionAdd");
+		if (!e) return Skarm.log("encountered null event in OnMessageReactionAdd");
+		if (!e.message) return Skarm.log("encountered null message in onMessageReactionAdd");
+		if (!e.message.guild) return Skarm.log("encountered null guild in OnMessageReactionAdd");
 		
-		if(e.message.id in this.toBeDeletedCache) {
+		if (e.message.id in this.toBeDeletedCache) {
             for (let i in e.message.reactions) {
                 let reaction = e.message.reactions[i];
                 //Skarm.log(JSON.stringify(reaction));
@@ -281,7 +278,7 @@ class Bot {
             }
             return false;
         }
-
+        
         // i don't know how you would delete a message the instant it's created,
         // but apparently it can happen...
         if (e.message.deleted) {
@@ -292,18 +289,18 @@ class Bot {
             e.message.channel.sendMessage("private message responses not yet implemented");
             return false;
         }
-
+        
         let userData = Users.get(e.message.author.id);
         let guildData = Guilds.get(e.message.channel.guild_id);
         guildData.executeMayhem();
         guildData.updateEXP(e);
         guildData.updateActivity(e);
-
+        
         // now we can start doing stuff
         let author = e.message.author;
         let text = e.message.content.toLowerCase();
         let first = text.split(" ")[0];
-
+        
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         if (cmdData) {
@@ -323,7 +320,9 @@ class Bot {
                 return true;
             }
         }
-
+        
+        if (guildData.slapfight) guildData.slapfight.interpret(e.message);
+        
         // ignore messages that mention anyone or anything
         if (e.message.mentions.length > 0 ||
             e.message.mention_roles.length > 0 ||

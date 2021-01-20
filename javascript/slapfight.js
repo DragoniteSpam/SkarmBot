@@ -6,6 +6,9 @@ const Guilds = require("./guild.js");
 const Users = require("./user.js");
 
 const STARTING_HEALTH = 10;
+const SLAP_VERBS = [
+    "slap", "whack", "bonk", "bop",
+];
 
 class SlapFight {
     constructor(bot, organizer, channel) {
@@ -94,8 +97,9 @@ class SlapFight {
         if (!this.participants[contestant]) return;
         if (!this.participants[victim]) return;
         if (this.participants[contestant].cooldown > 0) {
-            Skarm.sendMessageDelay(channel, "**" + this.participants[contestant].username +
-                ",** you just slapped. Give someone else a chance!"
+            Skarm.sendMessageDelay(channel, "**" +
+                this.participants[contestant].username + ",** you just " +
+                "slapped. Give someone else a chance!"
             );
         } else {
             Skarm.sendMessageDelay(channel, "todo: the actual slapping");
@@ -119,11 +123,15 @@ class SlapFight {
     };
     
     interpret(message) {
-        let author = e.message.author.id;
-        let content = e.message.content;
+        let author = message.author.id;
+        let content = message.content;
         if (!this.participants[author]) return;
-        if (!content.includes("slaps")) return;
-        Skarm.sendMessageDelay(channel, "todo: the actual slapping");
+        let verb = null;
+        for (let i = 0; i < SLAP_VERBS.length; i++) {
+            if (content.includes(SLAP_VERBS[i])) verb = SLAP_VERBS[i];
+        }
+        if (!verb) return;
+        Skarm.sendMessageDelay(message.channel, "todo: the actual slapping");
     };
 }
 
