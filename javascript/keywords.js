@@ -34,15 +34,24 @@ module.exports = {
         aliases: ["perfectly balanced", "perfect balance"],
         standalone: false,
         odds: 0.5,
-        
+
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "as all things should be");
         },
     },
-    Thanks: {
-        aliases: ["thanks skarm"],
+    Time: {
+        aliases: ["what time"],
         standalone: false,
-        odds: 0.4,
+        odds: 0.75,
+
+        execute(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, new Date(Date.now()*2*Math.random()));
+        },
+    },
+    Thanks: {
+        aliases: ["thank*skarm"],
+        standalone: false,
+        odds: 0.9,
         
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "no problem, buddy");

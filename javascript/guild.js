@@ -5,9 +5,9 @@ const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
-const Platform = require("./platform.js");
+const Users = require("./user.js");
 
-const guilddb = Platform.guildFile;
+const guilddb = "..\\skarmData\\guilds.penguin";
 
 const MIN_LINES = 40;
 
@@ -19,7 +19,7 @@ let messageIsAction = function(message) {
     return false;
 };
 
-fs.readFile("data/default.birb", function(err, data) {
+fs.readFile("data\\default.birb", function(err, data) {
     defaultLines = data.toString().split("\n");
 });
 
@@ -29,6 +29,19 @@ const linkVariables = function(guild) {
     if (guild.lines === undefined) guild.lines = { };
     if (guild.actions === undefined) guild.actions = { };
     if (guild.mayhemRoles === undefined) guild.mayhemRoles = { };
+    if (guild.notificationChannels === undefined) guild.notificationChannels = {
+        NAME_CHANGE:        {},
+
+        BAN:                {},
+        VOICE_CHANNEL:      {},
+
+        MEMBER_JOIN_LEAVE:  {},
+        ASYNC_HANDLER:      {},
+        XKCD:               {},
+    };
+    if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
+    if (guild.notificationChannels.XKCD === undefined) guild.notificationChannels.XKCD = {};
+    if (guild.activityTable === undefined) guild.activityTable = [ ];
 };
 
 // since de/serialized objects don't keep their functions
@@ -43,7 +56,7 @@ const linkFunctions = function(guild) {
                         let output = Skarm.generateRGB();
                         roleData.commit(roleData.name, output, roleData.hoist, roleData.mentionable);
                     } catch (e) {
-                        console.log(e);
+                        console.error(e);
                         // if you dont have permission to mess with the role, don't i guess
                     }
                 }
@@ -157,10 +170,40 @@ const linkFunctions = function(guild) {
 	guild.getLineCount = function() {
         return Object.keys(this.lines).length;
     };
-    
+
+    guild.queueMessage = function(channel,message,tts,object){
+        //console.log("enqueueing...");
+        if(!this.channelBuffer){
+            this.channelBuffer = {};
+        }
+        if(channel.id in this.channelBuffer){
+            this.channelBuffer[channel.id].push({_1: message, _2:tts, _3: object});
+        }else{
+            this.channelBuffer[channel.id]=[{_1: message, _2:tts, _3: object}];
+        }
+        //console.log(`Enqueued message: '${JSON.stringify(this.channelBuffer[channel.id])}' for ${channel.id}`);
+        //console.log(`New buffer length: ${this.channelBuffer[channel.id].length}`);
+    };
+
 	guild.getRandomLine = function(e) {
         if (messageIsAction(e.message.content)) return this.getRandomAction(e);
-        
+
+        //handle the queue message buffer for e@5 and shanties
+        //console.log("checking the buffer...");
+        if(typeof(this.channelBuffer)==="undefined") {
+            //console.log(`redefining channel buffer: ${JSON.stringify(this.channelBuffer)}`);
+            this.channelBuffer = {};
+        }
+        if(e.message.channel.id in this.channelBuffer) {
+            if (this.channelBuffer[e.message.channel.id].length > 0) {
+                return this.channelBuffer[e.message.channel.id].shift()._1;
+            }else{
+                //console.log("no messages in buffer");
+            }
+        }else{
+            //console.log("channel has no buffer. Channel ID:"+e.message.channel.id+"\n guild channelBuffer object:"+JSON.stringify(this.channelBuffer));
+        }
+
         let keywords = e.message.content.toLowerCase().split(" ");
         let keys = Object.keys(this.lines);
         // if there are no stored messages, use the default log instead
@@ -303,6 +346,232 @@ const linkFunctions = function(guild) {
 			}
 		}
 	};
+
+    /**
+     * Handles distributing notifications to guilds
+     * @param client the discordie object to retrieve Channel objects to send messages to
+     * @param notification the notification ID from Constants.Notifications
+     * @param eventObject the relevant data which is unique on a per-notification basis, contained within the object wrapper.  The @notification must specify what its contents are.
+     * @return success state:
+     *      0 - all good,
+     *      1 - not yet implemented,
+     *      2 - event not acted upon due to concurrent thread trigger. Occurs on voice channel join and leave
+     *      3 - event thrown without proper cause
+     */
+	guild.notify = function(client, notification, eventObject) {
+	    if(guild===undefined)
+	        return Skarm.logError("Undefined guild");
+        if (notification === Constants.Notifications.MEMBER_LEAVE) {
+            let user = eventObject.user;
+            for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " " + JSON.stringify(eventObject.getCachedData()), false, {
+                    color: Constants.Colors.RED,
+                    description: `**${user.username}#${user.discriminator}** has left the server. (${user.id})`,
+                    timestamp: new Date(),
+                    footer: {text: "User Leave"}
+                });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.MEMBER_JOIN) {
+            let member = eventObject.member;
+            for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.GREEN,
+                    description: `**${member.username}#${member.discriminator}** has joined the server. (${member.id})`,
+                    timestamp: new Date(),
+                    footer: {text: "User Join"}
+                });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.BAN) {//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
+            let member = eventObject.user;
+            for (let channelID in guild.notificationChannels.BAN) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.RED,
+                    description: `**${member.username}#${member.discriminator}** has been banned from the server. (${member.id})`,
+                    timestamp: new Date(),
+                    footer: {text: "User Banned"}
+                });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.BAN_REMOVE) {//KICK EVENT NOT PROVIDED BY JS DISCORD API's.  SUCH AN EVENT ONLY EXISTS UNDER PYTHON LIBRARIES.
+            let member = eventObject.user;
+            for (let channelID in guild.notificationChannels.BAN) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.GREEN,
+                    description: `**${member.username}#${member.discriminator}** has been unbanned from the server. (${member.id})`,
+                    timestamp: new Date(),
+                    footer: {text: "Ban Removed"}
+                });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.VOICE_JOIN) {
+            let member = eventObject.user;
+            for (let channelID in guild.notificationChannels.VOICE_CHANNEL) {
+                //console.log("notify loop: " + JSON.stringify(eventObject));
+                let dsc = `**${member.username}#${member.discriminator}** has joined the voice channel. **${eventObject.channel.name}**`;
+                if(guild.notificationChannels.ASYNC_HANDLER[member.id]===eventObject.channelId){
+                    //console.log(`Previous state is equal to current state: ${guild.notificationChannels.ASYNC_HANDLER[member.id]}`);
+                    return 2;
+                }else {
+                    if (guild.notificationChannels.ASYNC_HANDLER[member.id] != null) {
+                        dsc = `**${member.username}#${member.discriminator}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.channelId).name}**`;
+                    }
+                    guild.notificationChannels.ASYNC_HANDLER[member.id] = eventObject.channelId;
+                }
+
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.GREEN,
+                    description: dsc,
+                    timestamp: new Date(),
+                    footer: {text: "Voice Channel Join"}
+                });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.VOICE_LEAVE) {
+            let member = eventObject.user;
+            for (let channelID in guild.notificationChannels.VOICE_CHANNEL) {
+                let dsc = `**${member.username}#${member.discriminator}** has left the voice channel. **${eventObject.channel.name}**`;
+
+                if (eventObject.newChannelId != null) {
+                    if(guild.notificationChannels.ASYNC_HANDLER[member.id]===eventObject.newChannelId){
+                        return 2;
+                    }else{
+                        if(!guild.notificationChannels.ASYNC_HANDLER[member.id]){
+                            Skarm.logError("User channel swap data was lost during downtime.");
+                        }else {
+                            dsc = `**${member.username}#${member.discriminator}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.newChannelId).name}**`;
+                            guild.notificationChannels.ASYNC_HANDLER[member.id] = eventObject.newChannelId;
+                        }
+                    }
+                } else {
+                    delete guild.notificationChannels.ASYNC_HANDLER[member.id];
+                }
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.RED,
+                    description: dsc,
+                    timestamp: new Date(),
+                    footer: {text: "Voice Channel Leave"}
+                });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.NICK_CHANGE) {
+            let member = eventObject.member;
+            let oldName="";
+            if(eventObject.previousNick){
+                oldName=eventObject.previousNick;
+            }else{
+                oldName=member.username;
+            }
+            for (let channelID in guild.notificationChannels.NAME_CHANGE) {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.BLUE,
+                    description: `User nickname update: **${oldName}** is now known as **${member.name}**!  (<@${member.id}>)`,
+                    timestamp: new Date(),
+                    footer: {text: "Nickname change"}
+                });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.NAME_CHANGE) {
+            let member = eventObject.member;
+            let oldName= Users.get(eventObject.user.id).previousName;
+            Skarm.logError(`Might be sending out name change notification out to guild: ${JSON.stringify(guild.id)}\n> ${JSON.stringify(guild.notificationChannels)}`);
+            Skarm.spam("Notification of name change: "+oldName +" -> " + JSON.stringify(eventObject.user));
+            if(oldName===undefined){// && !guild.hasPermissions(eventObject.user,Permissions.MOM)){
+                Skarm.logError(`scratch that. ${eventObject.user.name} was not detected to have changed names`);
+                return 3;
+            }
+            for (let channelID in guild.notificationChannels.NAME_CHANGE) {
+                let dsc = `**${oldName}** is now known as **${member.username}#${member.discriminator}**!  (<@${member.id}>)`;
+                Skarm.spam(`Sending message to <#${channelID}> regarding name change of ${oldName}:\n`);
+                Skarm.spam(dsc);
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
+                    color: Constants.Colors.BLUE,
+                    description: dsc,
+                    timestamp: new Date(),
+                    footer: {text: "Username change"}
+                });
+            }
+            return 0;
+        }
+        if (notification === Constants.Notifications.XKCD) {//TODO: MAY NOT BE FULLY OPERATIONAL
+            for (let channelID in guild.notificationChannels.XKCD) {
+                Skarm.spam(`Sending XKCD message to <#${channelID}>`);
+                Skarm.sendMessageDelay(client.Channels.get(channelID), eventObject);
+            }
+            return 0;
+        }
+
+    };
+
+	//TODO: make this into timsort if the runtime is bad
+	guild.sortActivityTable = function (){
+	    for(let i in guild.activityTable){
+	        guild.minSortActivityTable(i);
+        }
+	    return guild.activityTable.sort((a,b)=>{return b.totalWords-a.totalWords;});
+    };
+
+    //I'm throwing in -0 at the end of various things to make sure that any numbers stored as strings are cast properly
+
+    //aggregates and cleans up total words then performs a single swap if appropriate
+    guild.minSortActivityTable = function (i) {
+        //Skarm.spam("Partially sorting at index "+i);
+        i=i-0;
+        let updatedTotal=0;
+        for(let day in guild.activityTable[i].days){
+            if(((day-0) + 31*24*60*60*1000)<Date.now()){
+                delete guild.activityTable[i].days[day];
+            }else{
+                //Skarm.spam(guild.activityTable[i].da)
+                updatedTotal += guild.activityTable[i].days[day]-0;
+            }
+        }
+        //Skarm.spam("Updated total: "+updatedTotal);
+        guild.activityTable[i].totalWords=updatedTotal;
+        //Skarm.spam(`new total words for ${JSON.stringify(guild.activityTable[i])}`);
+
+        if(i===0)return;
+        //Skarm.spam(i);
+        //Skarm.spam(JSON.stringify(guild.activityTable));
+        if(guild.activityTable[i].totalWords > guild.activityTable[i-1].totalWords){
+            let temp = guild.activityTable[i];
+            guild.activityTable[i]=guild.activityTable[i-1];
+            guild.activityTable[i-1]=temp;
+        }
+    };
+
+	guild.updateActivity = function(e) {
+	    let day = Date.now();
+	    let wordCount = e.message.content.replaceAll("  "," ").replaceAll("\r\n","\n").replaceAll("\n\n","\n").replaceAll("\n"," ").split(" ").length;
+	    day -= day % (24* 60* 60* 1000);
+	    for(let i in guild.activityTable){
+	        let member = guild.activityTable[i];
+	        if(member.userID===e.message.author.id){
+	            if(day in member.days){
+	                member.days[day]+=wordCount;
+                }else{
+	                member.days[day]=wordCount;
+                }
+	            guild.minSortActivityTable(i);
+	            return;
+            }
+        }
+
+	    guild.activityTable.push({
+            userID:e.message.author.id,
+            days:{},
+            totalWords:0,
+	    });
+	    guild.activityTable[guild.activityTable.length-1].days[day]=wordCount;
+    };
 }
 
 class Guild {
@@ -326,7 +595,50 @@ class Guild {
 		this.boostTable = { };
 		this.moderators = { };
 		this.announcesLevels=false;
-		
+
+		//[{userID -> String, days -> {Date:Long -> wordCount:Int},totalWords -> Int}]
+		this.activityTable = [];
+
+		this.channelBuffer = { };
+        /**
+         * The collection of channels which have been opted by the moderators to receive various notifications:
+         * The contents of each inner object are of the form {channel:String -> timestamp:Float}
+         * timestamp correlates to when the value was added to the hashset.
+         * @type {{NAME_CHANGE: {}, KICK_BAN: {}, VOICE_CHANNEL: {}, MEMBER_LEAVE: {}, XKCD: {}}}
+         */
+		this.notificationChannels = {
+            /**
+             * set of channels which receive name change notifications in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            NAME_CHANGE:            {},
+
+            /**
+             * set of channels which receive ban notifications in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            BAN:                    {},
+
+            /**
+             * set of channels which receive voice channel activity notifications in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            VOICE_CHANNEL:          {},
+            ASYNC_HANDLER:          {},
+
+            /**
+             * set of channels which receive member join and leave notifications in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            MEMBER_JOIN_LEAVE:      {},
+
+            /**
+             * set of channels which receive xkcds in this guild.
+             * @type{channel:String -> timestamp:Float}
+             */
+            XKCD:                   {},
+        };
+
 		this.welcoming = true;
 		this.welcomes = { };
 		

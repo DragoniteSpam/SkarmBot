@@ -1,4 +1,5 @@
 "use strict";
+
 const fs = require("fs");
 const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
@@ -16,15 +17,41 @@ class Skarm {
 		Constants.Channels.TODO.sendMessage(message);
     }
 	
-	//Use for when debugging many steps at a time. 
-	//TODO: potentially build function spamBuffer for concatenating several spam calls into a single sent message to handle rate limits better
-	static spam(message) {
-		Constants.Channels.SPAM.sendMessage(message);
+	/**Mass data output stream which can be freely used for spam and during debugging.
+    * @param message the message to be sent to the spam channel
+    */
+	static spam(message) {this.spamBuffer(message);}
+
+    static spamNoBuffer(message) {
+        if(message.length>0)
+            return Constants.Channels.SPAM.sendMessage(message);
+        return null;
     }
-    
+
+    /**
+     * concatenating several spam calls into a single sent message to handle rate limits better,
+     // one message per 2 seconds will fly under the discord server timeout limit of 6 actions/6 seconds
+     // 2000: the count of milliseconds between messages sent and the max character count for a discord message
+     * @param message the message to be added to the spam buffer
+     */
+    static spamBuffer(message){
+        if(Skarm.spamBufferString === undefined) {
+            Skarm.spamBufferString = "";
+            Skarm.spamBufferTimer = setInterval(function (){
+                Skarm.spamNoBuffer(Skarm.spamBufferString.substring(0,2000));
+                Skarm.spamBufferString=Skarm.spamBufferString.substring(2000);
+            },2000);
+        }
+        Skarm.spamBufferString+=message+"\r\n";
+    }
+
+    /**
+     * standard error output stream which also sends a copy of errors to spam aka #stderr
+     * @param err the error object
+     */
     static logError(err) {
-        // you can do whatever you want i guess
-		console.error(err);
+        console.error(new Date +":\t"+err);
+        Skarm.spamBuffer(err);
     }
     
     static isWeekend() {
@@ -46,32 +73,81 @@ class Skarm {
             day === Constants.Days.TUESDAY
         );
     }
-    
+
     static sendMessageDelay(channel, text,tts,obj) {
-		if(channel==null){
-			console.log("null channel target with message: "+text);
-			return;
-		}
-		if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
-			this.log("Missing permission to read messages in " + channel.name);
-			return;
-		}
-		if(!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)){
-			this.log("Missing permission to send message in " + channel.name);
-			return;
-		}
-		
-		try{
-			channel.sendTyping();
-			setTimeout(function() {
-				channel.sendMessage(text,tts,obj);
-			}, Math.random() * 2000 + 1500);
-		} catch {
-			
-			console.log("failed to send message: "+text+" to channel "+channel.id);
-		}
+        if(channel==null){
+            console.log("null channel target with message: "+text);
+            return;
+        }
+        if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
+            this.log("Missing permission to read messages in " + channel.name);
+            return;
+        }
+        if(!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)){
+            this.log("Missing permission to send message in " + channel.name);
+            return;
+        }
+
+        try{
+            channel.sendTyping();
+            setTimeout(function() {
+                channel.sendMessage(text,tts,obj);
+            }, Math.random() * 2000 + 1500);
+        } catch {
+
+            console.log("failed to send message: "+text+" to channel "+channel.id);
+        }
     }
-    
+
+    /**
+     * Sends a message then deletes the message after a predefined time interval or upon reaction from the user who prompted the message or a moderator+.
+     * @param channel the guild channel where the message will be sent.
+     * @param text the content of the message
+     * @param tts virtually useless parameter. Pay no regard.
+     * @param obj Support for messages sent as embeds.
+     * @param timer the millisecond count between the time the message arrives in the discord server and when it is deleted.
+     * @param senderID The ID of the author of the message who will be able to delete the message prematurely if they so choose.
+     * @param skarmbotObject a reference to the skarmbot.js object in order to update the toBeDeletedCache mapping of MessageID to senderID which will be created for the duration of the message's existence.
+     */
+    static sendMessageDelete(channel, text,tts,obj,timer,senderID,skarmbotObject) {
+        if(channel==null){
+            console.log("null channel target with message: "+text);
+            return;
+        }
+        if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
+            this.log("Missing permission to read messages in " + channel.name);
+            return;
+        }
+        if(!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)){
+            this.log("Missing permission to send message in " + channel.name);
+            return;
+        }
+
+        try{
+            //Skarm.logError("Sending async message");
+            channel.sendMessage(text,tts,obj).then((message => {
+                //Skarm.logError("Async to be deleted message sent");
+                message.addReaction("\u274c");
+                var timeout = setTimeout(() => {
+                    delete skarmbotObject.toBeDeletedCache[message.id];
+                    try {
+                        message.delete();
+                    }catch (e) {
+                        //message was probably deleted by means of reaction.
+                        return Skarm.logError(JSON.stringify(e));
+                    }
+                },timer);
+                skarmbotObject.toBeDeletedCache[message.id]={senderID:senderID,self:false,timeout:timeout};
+            }));
+        } catch {
+            console.error("failed to send message: [REDACTED] to channel "+channel.id);
+        }
+    }
+
+    static queueMessage(Guilds,channel, message, tts, obj){
+        Guilds.get(channel.guild_id).queueMessage(channel,message,tts,obj);
+    }
+
     static help(cmd, e) {
         let helpString = "Documentation:\n```";
         let paramString = "";
@@ -162,6 +238,7 @@ class Skarm {
         for (let kwd in keywords) {
             for (let alias of keywords[kwd].aliases) {
                 mapping[alias] = keywords[kwd];
+                //Skarm.spam(`Initialized ${alias} -> ${kwd}`);
             }
         }
         

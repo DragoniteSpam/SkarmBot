@@ -10,6 +10,9 @@ const Commands = require("./commands.js");
 const Keywords = require("./keywords.js");
 const XKCD = require("./xkcd.js");
 const Skinner = require("./skinnerbox.js");
+const { spawn } = require("child_process");
+const Permissions = require("./permissions.js");
+
 
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
@@ -17,18 +20,18 @@ const Guilds = require("./guild.js");
 class Bot {
     /**
      * timer30min: tasks skarm will perform once every half hour. Write additional scheduled tasks here.
-     * instance: tracks how many times skarm has reconnected after disconnecting due to a network hiccup
-     * pid: a random number generated and bound to a given instance of the Bot class for the sake of being able to terminate a specific instance of skarm when multiple are running during testing or accidental forks
+     * version: the count of how many git commits skarm is currently sitting on.
+     * pid: a random number generated and bound to a given version of the Bot class for the sake of being able to terminate a specific instance of skarm when multiple are running during testing or accidental forks occur
      * client: pointer to Discordie object used to access all discord data not supplied by the event skarm has to handle
      *
      * Referneces: Skarm will speak if these are mentioned
      *
      *
      **/
-    constructor(client,instance) {
-        this.instance=instance;
+    constructor(client,version) {
+        this.version=version;
 
-        this.pid = Math.floor(Math.random()*1024)&(-32)+this.instance;
+        this.pid = Math.floor(Math.random()*1024)&(-32)+this.version;
         this.client = client;
 
         this.nick = "Skarm";
@@ -41,6 +44,8 @@ class Bot {
 			"something completely different":	1,
         };
 
+        this.skyrimOddsModifier = 1/20;
+        //words that will get skarm to talk skyrim
         this.validESReferences = {
             "balgruuf":     0.25,
             "ulfric":       0.25,
@@ -52,37 +57,60 @@ class Bot {
             "shor":         0.69,
         };
 
+        //words that will get skarm singing
         this.validShantyReferences = {
-			"johnny":       0.05,
-			"jonny":        0.05,
-			"jony":         0.05,
-			"johny":        0.05,
-			"drunk":        0.10,
-            "sing":         0.15,
-			"rum":          0.20,
-            "ship":         0.25,
-			"captain":      0.30,
-			"shanty":       0.35,
-			"shanties":     0.40,
-			"sea":          0.40,
-			"maui":         0.45,
-			"sailor":       0.50,
-			"stan":         0.55,
-			"dreadnought":  0.60,
-			//"shantest":   1.2,
+            "johnny":       0.01,
+            "jonny":        0.01,
+            "jony":         0.01,
+            "johny":        0.01,
+            "drunk":        0.02,
+            "sing":         0.03,
+            "rum":          0.04,
+            "ship":         0.05,
+            "captain":      0.06,
+            "sea":          0.08,
+            "maui":         0.09,
+            "sailor":       0.10,
+            "stan":         0.11,
+            "shanty":       0.35,
+            "shanties":     0.40,
+            "dreadnought":  0.50,
+			//"shantest":     1.2,
         };
+
 
         this.minimumMessageReplyLength = 3;
 
         this.shanties = new ShantyCollection();
-
         this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
-        this.skyrimOddsModifier = 1/20;
         this.channelsWhoLikeXKCD = {};
+
         this.channelsHidden = {};
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
-        this.xkcd = new XKCD(this,instance);
+        this.xkcd = new XKCD(this);
+        setTimeout(()=>{{
+            for(let channel in this.channelsWhoLikeXKCD){
+                let channelGuild;
+                try {
+                    channelGuild = Guilds.get(client.Channels.get(channel).guild.id);
+                }catch (e) {
+                    Skarm.logError("Failed to get guild for channel "+channel+"  -  "+JSON.stringify(e));
+                    continue;
+                }
+                //Skarm.logError(channelGuild.id);
+                //Skarm.logError(JSON.stringify(channelGuild.notificationChannels));
+                channelGuild.notificationChannels.XKCD[channel]=Date.now();
+            }
+        }},1000);
+
+        /**
+         * keeps a short lifespan cache of messages sent by skarm which are going to be deleted,
+         * and provides a fast lane for the author who triggered the message or a moderator to remove the message without waiting for the timer.
+         * This hashmap is modified by OnMessageReactionAdd and Skarm.sendMessageDelete
+         * @structure MessageID:String: -> {senderID:String,self:Boolean,timeout:JStimeout}
+         */
+        this.toBeDeletedCache = {};
 
         this.mapping = Skarm.addCommands(Commands);
 
@@ -94,7 +122,7 @@ class Bot {
         this.timer30min = setInterval(function() {
             this.save(Constants.SaveCodes.DONOTHING);
             this.xkcd.lock--;
-            console.log("XKCD Lock state: "+this.xkcd.lock+"\t|\tInstance: "+this.instance);
+            console.log("XKCD Lock state: "+this.xkcd.lock);
         }.bind(this), 30 * 60 * 1000);
 
         this.timer1min = setInterval(function() {
@@ -109,7 +137,7 @@ class Bot {
         var string = "";
         if (e.message){
             if (!e.message.author.bot){
-                if (e.message){
+                if (!e.message){
                     string = "<message not cached>"; 
                 } else {
                     string = e.message.content + " by " +
@@ -129,16 +157,33 @@ class Bot {
     OnMessageReactionAdd(e) {
         const UPVOTE = 0x2b06;
         const REQUIRED_UPVOTES = 3;
-        
+        const REDX = '\u274c';
+
 		if(!e)
-			return;
-		if(!e.message)
-			return Skarm.log("encountered null message in onMessageReactionAdd???");
+			return Skarm.log("encountered null event in OnMessageReactionAdd");
+		if(e.message==null)
+			return Skarm.log("encountered null message in onMessageReactionAdd");
 		if(!e.message.guild)
-			return;
+			return Skarm.log("encountered null guild in OnMessageReactionAdd");
 		
-		
-		
+		if(e.message.id in this.toBeDeletedCache) {
+            for (let i in e.message.reactions) {
+                let reaction = e.message.reactions[i];
+                //Skarm.log(JSON.stringify(reaction));
+                if (reaction.emoji.name === REDX) {
+                    if (this.toBeDeletedCache[e.message.id].self) {
+                        this.toBeDeletedCache[e.message.id].self = true;
+                    } else {
+                        if (this.toBeDeletedCache[e.message.id].senderID === e.user.id || Guilds.get(e.message.guild.id).hasPermissions(e.user, Permissions.MOD)) {
+                            clearTimeout(this.toBeDeletedCache[e.message.id].timeout);
+                            e.message.delete();
+                            delete this.toBeDeletedCache[e.message.id];
+                        }
+                    }
+                }
+            }
+        }
+
         if (e.message !== null && !e.message.pinned && Guilds.get(e.message.guild.id).channelsPinUpvotes[e.message.channel_id] /*!== undefined && === true */) {
             let upvotes = 0;
             for (let i in e.message.reactions) {
@@ -162,13 +207,14 @@ class Bot {
             };
 		}
 		guildData.roleCheck(e.member,guildData.expTable[e.member.id]);
+		guildData.notify(this.client,Constants.Notifications.MEMBER_JOIN,e);
 		if(guildData.welcoming){
 			for(let channel in guildData.welcomes){
 				let sms = guildData.welcomes[channel];
 				while(sms.indexOf("<newmember>")>-1){
 					sms=sms.replace("<newmember>","<@"+e.member.id+">");
 				}
-				this.client.Channels.get(channel).sendMessage(sms);
+				Skarm.sendMessageDelay(this.client.Channels.get(channel),sms);
 			}
 		}
     }
@@ -194,25 +240,48 @@ class Bot {
 			}
 			Skarm.log(changes);
 		}
-	}
-	
+		if(e.previousNick !== e.member.nick) Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.NICK_CHANGE, e);
+    }
+
+	OnMemberRemove(e) {
+        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.MEMBER_LEAVE,e);
+    }
+
+    OnGuildBanAdd(e) {
+        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.BAN, e);
+    }
+
+    OnGuildBanRemove(e) {
+        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.BAN_REMOVE, e);
+    }
+
+    OnVoiceChannelJoin(e){
+        //console.log("Voice join event: "+JSON.stringify(e));
+        Guilds.get(e.guildId).notify(this.client,Constants.Notifications.VOICE_JOIN, e);
+    }
+
+    OnVoiceChannelLeave(e) {
+        //timeout exists to test async condition in which join event arrives first.
+        // This will likely only ever arrive first under congested network traffic conditions
+        //setTimeout(() => {}, 20);
+        //console.log("Voice leave event: " + JSON.stringify(e));
+        Guilds.get(e.guildId).notify(this.client, Constants.Notifications.VOICE_LEAVE, e);
+
+    }
+
     OnMessageCreate(e) {
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {
-			if(e.message.author.id===Constants.ID){
-				if(e.message.content === "sorry..."){
-					setTimeout(function(){
-						e.message.delete();
-					}, 12000);
-				}
-			}
+            if (e.message.author.id === Constants.ID) {
+                if (e.message.content === "sorry...") {
+                    setTimeout(function () {
+                        e.message.delete();
+                    }, 12000);
+                }
+            }
             return false;
         }
-        
-        let userData = Users.get(e.message.author.id);
-        let guildData = Guilds.get(e.message.channel.guild_id);
-        guildData.executeMayhem();
-        
+
         // i don't know how you would delete a message the instant it's created,
         // but apparently it can happen...
         if (e.message.deleted) {
@@ -220,19 +289,21 @@ class Bot {
         }
         // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate) {
-            e.message.channel.sendMessage("private message responses not yet " +
-                "implemented"
-            );
+            e.message.channel.sendMessage("private message responses not yet implemented");
             return false;
         }
-        
+
+        let userData = Users.get(e.message.author.id);
+        let guildData = Guilds.get(e.message.channel.guild_id);
+        guildData.executeMayhem();
         guildData.updateEXP(e);
-		
+        guildData.updateActivity(e);
+
         // now we can start doing stuff
         let author = e.message.author;
         let text = e.message.content.toLowerCase();
         let first = text.split(" ")[0];
-        
+
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         if (cmdData) {
@@ -252,64 +323,111 @@ class Bot {
                 return true;
             }
         }
-        
+
         // ignore messages that mention anyone or anything
         if (e.message.mentions.length > 0 ||
-                e.message.mention_roles.length > 0 ||
-                e.message.mention_everyone
-            ) {
+            e.message.mention_roles.length > 0 ||
+            e.message.mention_everyone
+        ) {
             return false;
         }
-		
+
         // ignore hidden channels after this
         if (this.channelsHidden[e.message.channel_id]) {
             return false;
         }
-        
+
         // each of these will kick out of the function if it finds something,
         // so the most important ones should be at the top
-        if(!this.channelsCensorHidden[e.message.channel_id]){
+        if (!this.channelsCensorHidden[e.message.channel_id]) {
             this.censor(e);
         }
-        
+
         this.summons(e);
-        
+
         if (this.mentions(e, this.validESReferences)) {
-			this.returnSkyrim(e);
+            this.returnSkyrim(e);
             return true;
         }
-        
+
         if (this.mentions(e, this.validShantyReferences)) {
-			this.singShanty(e);
+            this.singShanty(e);
             return true;
         }
-        
+
+
         for (let word in this.keywords) {
-            if (!text.includes(word)) {
+
+            let partial = text;
+            let allComponentsMatch = true;
+            let components = word.split("*");
+            if(components.length===0) continue;
+            //make sure every component exists in sequence for matches with multiple parts.
+            for(let c in components){
+                let component = components[c];
+                if(partial.includes(component)){
+                    partial = partial.substring(partial.indexOf(component)+component.length);
+                }else{
+                    allComponentsMatch=false;
+                    break;
+                }
+            }
+
+            if (!allComponentsMatch) {
                 continue;
             }
-            
+
             let keyword = this.keywords[word];
             if (keyword.standalone && (!text.startsWith(word + " ") &&
-                    !text.endsWith(" " + word) &&
-                    !text.includes(" " + word + " "))
-                ) {
+                !text.endsWith(" " + word) &&
+                !text.includes(" " + word + " "))
+            ) {
                 continue;
             }
-            
+
             if (Math.random() > keyword.odds) {
                 continue;
             }
-            
+
             keyword.execute(this, e);
             return true;
         }
-        
+
+        //Skarm.spam("Parrot");
         this.parrot(e);
-        
+
         return false;
     }
-    
+
+    OnPresenceUpdate(e){
+        let proceed = (n)=>{
+            if(Users.get(e.user.id).previousName)
+                return Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.NAME_CHANGE, e);
+            else if(n>0){
+                return setTimeout(()=>{proceed(n-1);},25);
+            }
+            //Skarm.spam("Failed to find defined previous name for User ID: "+e.user.id);
+            //Skarm.spam("OnPresenceUpdate JSON object retrieved: "+JSON.stringify(Users.get(e.user.id)));
+        };
+        if(e.user.bot)return;
+        //Skarm.spam("Presence Update detected for User : "+ (e.user.id));
+        proceed(100);
+    }
+
+    OnPresenceMemberUpdate(e){
+        if(e.old.username !== e.new.username){
+            Users.get(e.new.id).previousName = e.old.username+"#"+e.old.discriminator;
+            //Skarm.spam(`Username update set to user object:  ${Users.get(e.new.id).previousName} is now ${e.new.username}`);
+            //Skarm.spam("OnPresenceMemberUpdate JSON object for user: "+JSON.stringify(Users.get(e.new.id)));
+            setTimeout(() =>{
+                Users.get(e.new.id).previousName = undefined;
+                //Skarm.spam("Username update timeout");
+            },10000);
+        }else{
+            //Skarm.spam("No change detected: "+e.old.username+" -> "+ e.new.username);
+        }
+    }
+
     /**
 	* Deletes anything that may not be picked up by garbage collection upon the termination of this object.
 	*/
@@ -320,6 +438,11 @@ class Bot {
 	}
 	
     // functionality
+
+
+
+
+    //does many things, and stuff and things...
     censor(e) {
     }
     
@@ -352,13 +475,6 @@ class Bot {
         if (this.mentions(e, this.validNickReferences)) {
 			//once skarm starts singing, he'd rather do that than talk
 			let seed = Math.random();
-			if (this.shanties.isSinging && seed<this.shanties.ivanhoe * this.shanties.drinkCount()) {
-				return this.singShanty(e);
-            }
-			//reset the seed weight
-			if(this.shanties.isSigning)
-				seed = (seed + this.shanties.ivanhoe * this.shanties.drinkCount())/(1+this.shanties.ivanhoe * this.shanties.drinkCount());
-			//roll for skyrim
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);
 			}
@@ -373,11 +489,25 @@ class Bot {
         
         this.attemptLearnLine(e);
     }
-	
+
+    //skarm will enqueue a shanty to be sung in just the one channel which triggered the song
 	singShanty(e) {
-		Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+	    //console.log("they've started singing");
+	    const guildData = Guilds.get(e.message.channel.guild_id);
+	    try {
+            if (guildData.channelBuffer[e.message.channel.id].length > 5)
+                return this.parrot(e);
+        }catch (e) {
+            Skarm.logError(JSON.stringify(e));
+        }
+	    guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
+	    while(this.shanties.isSinging)
+            guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
+		//Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+        this.parrot(e);
 	}
-	
+
+	//sends a random skyrim line to the channel which the event message originated from
 	returnSkyrim(e){
 		Skarm.sendMessageDelay(e.message.channel,this.skyrim[Math.floor(this.skyrim.length * Math.random())]);
 	}
@@ -385,7 +515,8 @@ class Bot {
     getRandomLine(e) {
         return Guilds.get(e.message.guild.id).getRandomLine(e);
     }
-    
+
+
     attemptLearnLine(e) {
         if (e.message.content.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/)) return;
         let hash = (this.messageHash(e) / 10) % 1;
@@ -408,7 +539,7 @@ class Bot {
         return hash;
     }
     
-    // summons
+    //checks if anyone's summons are triggered by the message and sends them out
     summons(e) {
         for (let user in Users.users) {
             let userData = Users.get(user);
@@ -422,6 +553,8 @@ class Bot {
     }
     
     // helpers
+
+
     mentions(e, references) {
         var text = e.message.content.toLowerCase();
         
@@ -437,28 +570,33 @@ class Bot {
         
         return false;
     }
-    
+
+    /**
+     * Gives skarm the order to save all guild, user, and xkcd data
+     * @param saveCode specifying the behavior of the save from Constants.SaveCodes
+     */
     save(saveCode) {
-	if (saveCode === Constants.SaveCodes.NOSAVE) {
-	    this.client.disconnect();
+        if (saveCode === Constants.SaveCodes.NOSAVE) {
+            this.client.disconnect();
             process.exit(Constants.SaveCodes.NOSAVE);
         }
-		
+
+        Skarm.log("\n\nBeginning save sequence...");
         Guilds.save();
         Users.save();
-		this.xkcd.save();
-		let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
-		savior.on('exit', (code) =>{
-			console.log("Recieved code: "+code+" on saving data to GIT");
-			if(saveCode===Constants.SaveCodes.DONOTHING)
-				return;
-			if(saveCode===undefined)
-				return;
-			setTimeout(() => {
-			    this.client.disconnect();
-			    process.exit(saveCode);
-			},2000);
-		});
+        this.xkcd.save();
+        let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
+        savior.on('exit', (code) => {
+            console.log("Received code: " + code + " on saving data.");
+            if (saveCode === Constants.SaveCodes.DONOTHING)
+                return;
+            if (saveCode === undefined)
+                return;
+            setTimeout(() => {
+                this.client.disconnect();
+                process.exit(saveCode);
+            }, 2000);
+        });
 
     }
     

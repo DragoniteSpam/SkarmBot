@@ -21,9 +21,9 @@ const Users = require("./javascript/user.js");
 const Guilds = require("./javascript/guild.js");
 
 // i'm in?
-var target = "../descrution.txt";
+var target = "..\\descrution.txt";
 if(process.argv.length>2 && process.argv[2]==="beta")
-	target="../token.txt";
+	target="..\\token.txt";
 const token = fs.readFileSync(target).toString();
 
 // javascript
@@ -36,7 +36,6 @@ client.connect({
 });
 
 let bot;
-var instance = 0;
 //last Connection, last Disconnect
 let uptimeController= [0,0];
 
@@ -44,27 +43,39 @@ let uptimeController= [0,0];
 // file clean
 client.Dispatcher.on(events.GATEWAY_READY, e => {
 	if(bot){
-		bot.poisonPill();
+		uptimeController[0]=Date.now();
+		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
+		return;
 	}
-/*
+
 	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
-*/
     Constants.initialize(client);
     Encrypt.initialize();
-/*	dataPuller.on('exit', (code) => {
-		console.log("Pulled in skarmData with code "+code);*/
+	dataPuller.on('exit', (code) => {
+		console.log("Pulled in skarmData.\nGit revision count: "+code);
 		Users.initialize(client);
 		Guilds.initialize(client);
-		bot = new SkarmBot(client,++instance);
+		bot = new SkarmBot(client,code);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
-/*	});
-*/
-	uptimeController[0]=Date.now();
-	if(uptimeController[1]>0){
-		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
-	}
+	});
+	dataPuller.on("error",(err)=>{console.error(err);});
+	dataPuller.on("message",(message) => {console.log(message);});
 });
 
+client.Dispatcher.on(events.PRESENCE_UPDATE, e => {
+	if(bot)
+		setTimeout(()=>{bot.OnPresenceUpdate(e);},20);
+});
+
+client.Dispatcher.on(events.PRESENCE_MEMBER_INFO_UPDATE, e => {
+	if(bot)
+		bot.OnPresenceMemberUpdate(e);
+});
+
+client.Dispatcher.on(events.MESSAGE_CREATE, e => {
+	if(bot)
+		bot.OnMessageCreate(e);
+});
 
 client.Dispatcher.on(events.MESSAGE_DELETE, e => {
 	if(bot)
@@ -76,10 +87,6 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
 		bot.OnMessageReactionAdd(e);
 });
 
-client.Dispatcher.on(events.MESSAGE_CREATE, e => {
-	if(bot)
-		bot.OnMessageCreate(e);
-});
 
 client.Dispatcher.on(events.GUILD_MEMBER_ADD, e => {
 	if(bot)
@@ -91,7 +98,40 @@ client.Dispatcher.on(events.GUILD_MEMBER_UPDATE, e => {
 		bot.OnMemberUpdate(e);
 });
 
+client.Dispatcher.on(events.GUILD_MEMBER_REMOVE, e => {
+	if(bot)
+		bot.OnMemberRemove(e);
+});
+
+
+client.Dispatcher.on(events.GUILD_BAN_ADD, e => {
+	if(bot)
+		bot.OnGuildBanAdd(e);
+});
+
+client.Dispatcher.on(events.GUILD_BAN_REMOVE, e => {
+	if(bot)
+		bot.OnGuildBanRemove(e);
+});
+
+
+//During a channel switch: Leave event will always be sent before the join event.
+// This delta time may be of as little as <1ms.
+// Because of this, these packets may be expected to arrive out of order.
+// 20ms async period suggested for any channel state switching.
+
+client.Dispatcher.on(events.VOICE_CHANNEL_JOIN, e => {
+	if(bot)
+		bot.OnVoiceChannelJoin(e);
+});
+
+client.Dispatcher.on(events.VOICE_CHANNEL_LEAVE, e => {
+	if(bot)
+		bot.OnVoiceChannelLeave(e);
+});
+
+
 client.Dispatcher.on(events.DISCONNECTED, e => {
-	console.log("Error: disconnected at " + (new Date()).toString());
+	console.error("Network Error: disconnected at " + (new Date()).toString());
 	uptimeController[1]=Date.now();
 });
