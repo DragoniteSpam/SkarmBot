@@ -107,7 +107,7 @@ class SlapFight {
             if (params.length > 0 && params[0] === "end") {
                 this.end(contestant);
             } else {
-                // todo
+                // probably nothing
             }
         } else {
             if (params.length > 0 && params[0] === "begin") {
@@ -116,6 +116,14 @@ class SlapFight {
                 this.join(contestant);
             }
         }
+    };
+    
+    interpret(message) {
+        let author = e.message.author.id;
+        let content = e.message.content;
+        if (!this.participants[author]) return;
+        if (!content.includes("slaps")) return;
+        Skarm.sendMessageDelay(channel, "todo: the actual slapping");
     };
 }
 
