@@ -56,7 +56,7 @@ class SlapFight {
     };
     
     begin(contestant) {
-        if (Object.keys(this.participants) == 1) {
+        if (Object.keys(this.participants).length === 1) {
             Skarm.sendMessageDelay(this.channel, "There's no point in " +
                 "starting the fight if nobody else has joined it yet!"
             );
