@@ -36,15 +36,22 @@ class SlapFight {
                 "wait for the next one."
             );
         } else {
-            this.participants[contestant] = {
-                participant: this.bot.client.Users.get(contestant),
-                cooldown: 0,
-                health: STARTING_HEALTH,
-            };
-            Skarm.sendMessageDelay(this.channel, "**" +
-                this.participants[contestant].participant.username + "** has " +
-                "joined in the slap fight!"
-            );
+            if (this.participants[contestant]) {
+                Skarm.sendMessageDelay(this.channel, "**" +
+                    this.participants[contestant].participant.username +
+                    ",** you are already part of the fight!"
+                );
+            } else {
+                this.participants[contestant] = {
+                    participant: this.bot.client.Users.get(contestant),
+                    cooldown: 0,
+                    health: STARTING_HEALTH,
+                };
+                Skarm.sendMessageDelay(this.channel, "**" +
+                    this.participants[contestant].participant.username +
+                    "** has joined in the slap fight!"
+                );
+            }
         }
     };
     
