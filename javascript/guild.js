@@ -583,6 +583,9 @@ class Guild {
             channel: null,
         };
         
+        // each guild may only have one fight going on at a time
+        this.slapfight = null;
+        
         this.mayhemRoles = { };
         
         this.lines = { };

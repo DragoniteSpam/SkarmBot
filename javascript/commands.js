@@ -108,7 +108,13 @@ module.exports = {
 		
         execute(bot, e) {
             let params = commandParamTokens(e.message.content.toLowerCase());
-            new SlapFight(bot, e.message.author.id, e.message.channel);
+            let guild = Guilds.get(e.message.channel.guild_id);
+            let contestant = e.message.author.id;
+            if (guild.slapfight) {
+                guild.slapfight.update(contestant, params);
+            } else {
+                guild.slapfight = new SlapFight(bot, contestant, e.message.channel);
+            }
         },
         help(bot, e) {
             Skarm.help(this, e);
