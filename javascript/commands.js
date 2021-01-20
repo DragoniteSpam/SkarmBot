@@ -8,6 +8,7 @@ const Users = require("./user.js");
 const Guilds = require("./guild.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
+const SlapFight = require("./slapfight.js");
 
 let commandParamTokens = function(message) {
     let tokens = message.trim().split(" ");
@@ -97,6 +98,24 @@ module.exports = {
 			Skarm.help(this, e);
 		},
 	},
+	SlapFight: {
+        aliases: ["slap", "slapfight"],
+        params: ["who"],
+        usageChar: "!",
+        helpText: "Did you ever want to 1v1 another server member? Fight whoever you want ad absurdum.",
+        ignoreHidden: true,
+        category: "general",
+		
+        execute(bot, e) {
+            let params = commandParamTokens(e.message.content.toLowerCase());
+            let userData = Users.get(e.message.author.id);
+            let opponent = params[0];
+            new SlapFight(userData, { name: opponent }, e.message.channel);
+        },
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
 	Summon: {
         aliases: ["summon", "summons"],
         params: ["add|remove|list", "term"],
