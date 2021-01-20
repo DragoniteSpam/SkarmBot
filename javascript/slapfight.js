@@ -56,14 +56,21 @@ class SlapFight {
     };
     
     begin(contestant) {
-        if (Object.keys(this.participants).length === 1) {
-            Skarm.sendMessageDelay(this.channel, "There's no point in " +
-                "starting the fight if nobody else has joined it yet!"
-            );
+        if (this.running) return false;
+        if (contestant === this.organizer.id) {
+            if (Object.keys(this.participants).length === 1) {
+                Skarm.sendMessageDelay(this.channel, "There's no point in " +
+                    "starting the fight if nobody else has joined it yet!"
+                );
+            } else {
+                this.running = true;
+                Skarm.sendMessageDelay(this.channel, "**The slap fight will now " +
+                    "begin.** Ready, set, go!"
+                );
+            }
         } else {
-            this.running = true;
-            Skarm.sendMessageDelay(this.channel, "**The slap fight will now " +
-                "begin.** Ready, set, go!"
+            Skarm.sendMessageDelay(this.channel, "The fight organizer must " +
+                "be the one to start the fight!"
             );
         }
     };
@@ -72,7 +79,7 @@ class SlapFight {
         Skarm.sendMessageDelay(this.channel, "The slap fight has been called " +
             "of. Perhaps some other time!"
         );
-        // todo
+        
     };
     
     slap(contestant, victim) {
