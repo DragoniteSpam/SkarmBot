@@ -22,17 +22,18 @@ class SlapFight {
         this.bot = bot;
         this.channel = channel;
         
-        Skarm.sendMessageDelay(channel, "Slapfight has started. Join by " +
-            "using the same command! When ready, the fight organizer can " +
-            "begin the battle with `e!slapfight begin`."
+        Skarm.sendMessageDelay(channel, "Slap fight has been started by **" +
+            this.organizer.username + ".** Join by using the same command! " +
+            "When ready, the fight organizer can begin the battle with " +
+            "`e!slapfight begin`."
         );
     };
     
     join(contestant) {
         if (this.running) {
-            Skarm.sendMessageDelay(this.channel, "You can't join a slapfight " +
-                "that's already in progress! How unsporting! Better wait for " +
-                "the next one."
+            Skarm.sendMessageDelay(this.channel, "You can't join a slap " +
+                "fight that's already in progress! How unsporting! Better " +
+                "wait for the next one."
             );
         } else {
             this.participants[contestant] = {
@@ -40,11 +41,18 @@ class SlapFight {
                 cooldown: 0,
                 health: STARTING_HEALTH,
             };
+            Skarm.sendMessageDelay(this.channel, "**" +
+                this.participants[contestant].participant.username + "** has " +
+                "joined in the slap fight!"
+            );
         }
     };
     
     begin(contestant) {
         this.running = true;
+        Skarm.sendMessageDelay(this.channel, "**The slap fight will now " +
+            "begin.** Ready, set, go!"
+        );
     };
     
     end(contestant) {
