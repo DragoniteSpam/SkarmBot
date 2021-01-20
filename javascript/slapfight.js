@@ -53,6 +53,19 @@ class SlapFight {
         );
         // todo
     };
+    
+    slap(contestant, victim) {
+        if (!this.running) return;
+        if (!this.participants[contestant]) return;
+        if (!this.participants[victim]) return;
+        if (this.participants[contestant].cooldown > 0) {
+            Skarm.sendMessageDelay(channel, "**" + this.participants[contestant].username +
+                ",** you just slapped. Give someone else a chance!"
+            );
+        } else {
+            Skarm.sendMessageDelay(channel, "todo: the actual slapping");
+        }
+    };
 }
 
 module.exports = SlapFight;
