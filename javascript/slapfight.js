@@ -42,6 +42,17 @@ class SlapFight {
             };
         }
     };
+    
+    begin(contestant) {
+        this.running = true;
+    };
+    
+    end(contestant) {
+        Skarm.sendMessageDelay(this.channel, "The slap fight has been called " +
+            "of. Perhaps some other time!"
+        );
+        // todo
+    };
 }
 
 module.exports = SlapFight;
