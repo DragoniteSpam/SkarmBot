@@ -80,6 +80,16 @@ class SlapFight {
             Skarm.sendMessageDelay(channel, "todo: the actual slapping");
         }
     };
+    
+    update(contestant, params) {
+        if (!this.running) {
+            if (params.length > 0 && params[0] === "begin") {
+                this.begin(contestant);
+            } else {
+                this.join(contestant);
+            }
+        }
+    };
 }
 
 module.exports = SlapFight;
