@@ -8,16 +8,22 @@ const User = require("./user.js");
 const STARTING_HEALTH = 10;
 
 class SlapFight {
-    constructor(challenger, opponent, channel) {
-        this.challenger = challenger;
-        this.opponent = opponent;
-        this.health = { };
-        this.health[challenger] = STARTING_HEALTH;
-        this.health[opponent] = STARTING_HEALTH;
-        this.currentTurn = null;
+    constructor(bot, organizer, channel) {
+        this.participants = { };
+        
+        this.organizer = bot.client.Users.get(organizer);
+        this.participants[organizer] = {
+            participant: this.organizer,
+            cooldown: 0,
+            health: STARTING_HEALTH,
+        };
+        
         this.channel = channel;
-        Skarm.sendMessageDelay(channel, "Battle started: **" + challenger.name +
-            "** vs. **" + opponent.name + "!**");
+        
+        Skarm.sendMessageDelay(channel, "Slapfight has started. Join by " +
+            "using the same command! When ready, the fight organizer can " +
+            "begin the battle with `e!slapfight begin`."
+        );
     };
 }
 

@@ -100,17 +100,15 @@ module.exports = {
 	},
 	SlapFight: {
         aliases: ["slap", "slapfight"],
-        params: ["who"],
+        params: ["<options>"],
         usageChar: "!",
-        helpText: "Did you ever want to 1v1 another server member? Fight whoever you want ad absurdum.",
+        helpText: "Did you ever want to 1v1 another server member? Fight whoever you want, ad absurdum. Anyone can join the fight by using the same command. The fight organizer can use `e!slapfight begin` to start the fight once people join, or `e!slapfight end` to end it prematurely. Participants take turns slapping each other until only one person remains.",
         ignoreHidden: true,
         category: "general",
 		
         execute(bot, e) {
             let params = commandParamTokens(e.message.content.toLowerCase());
-            let userData = Users.get(e.message.author.id);
-            let opponent = params[0];
-            new SlapFight(userData, { name: opponent }, e.message.channel);
+            new SlapFight(bot, e.message.author.id, e.message.channel);
         },
         help(bot, e) {
             Skarm.help(this, e);
