@@ -60,6 +60,7 @@ class XKCD {
 		Skarm.spam("Requesting: "+JSON.stringify(params));
 		request.get(params, function(error, response, body){
 			//Skarm.spam(JSON.stringify(response));return;
+			if(!response) return Skarm.spam("Failed to receive a response object when attempting to request "+JSON.stringify(params));
 			if(response.statusCode!==200) return;
 			if (!error){
 
