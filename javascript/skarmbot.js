@@ -101,7 +101,11 @@ class Bot {
                 //Skarm.logError(channelGuild.id);
                 //Skarm.logError(JSON.stringify(channelGuild.notificationChannels));
                 channelGuild.notificationChannels.XKCD[channel]=Date.now();
+                delete this.channelsWhoLikeXKCD[channel];
             }
+
+            Skarm.log(`Failed to initialize ${Object.keys(this.channelsWhoLikeXKCD).length} xkcd notification channels.`);
+            this.xkcd.save();
         }},1000);
 
         /**
