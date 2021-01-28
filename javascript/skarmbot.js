@@ -499,7 +499,7 @@ class Bot {
 	    //console.log("they've started singing");
 	    const guildData = Guilds.get(e.message.channel.guild_id);
 	    try {
-            if (guildData.channelBuffer[e.message.channel.id].length > 5)
+            if (guildData.channelBuffer[e.message.channel.id].length > 0)
                 return this.parrot(e);
         }catch (e) {
             Skarm.logError(JSON.stringify(e));
@@ -508,6 +508,10 @@ class Bot {
 	    while(this.shanties.isSinging)
             guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
 		//Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+
+        if(guildData.channelBuffer[e.message.channel.id].length > 10)
+            Skarm.spam(`Warning: Over 10 shanty lines may have been loaded in to be sent to <#${e.message.channel.id}>`);
+
         this.parrot(e);
 	}
 

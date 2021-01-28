@@ -88,12 +88,31 @@ module.exports = {
         aliases: ["droids", "wooki"],
         standalone: true,
         odds: 0.3,
-        
+
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "it is critical that we send an attack group there immediately. it is a system we cannot afford to lose.");
         },
     },
-	Faith: {
+    FightClub1: {
+        aliases: ["first*rule*fight*club"],
+        standalone: true,
+        odds: 0.9,
+
+        execute(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel,  "The first rule of Fight Club is: you do not talk about Fight Club.");
+        },
+    },
+    FightClub2: {
+        aliases: ["second*rule*fight*club"],
+        standalone: true,
+        odds: 0.9,
+
+        execute(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel,  "The second rule of Fight Club is: you DO NOT talk about Fight Club!");
+        },
+    },
+
+    Faith: {
         aliases: ["faithless imperial"],
         standalone: true,
         odds: 0.1,
