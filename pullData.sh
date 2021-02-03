@@ -1,6 +1,15 @@
-# @echo off
-# xcopy C:\Users\%USERNAME%\Box\skarmData\*.penguin  ..\skarmData\ /y
-# FOR /F "tokens=* USEBACKQ" %%F IN (`git rev-list --count master`) DO (
-#     SET var=%%F
-# )
-# exit /b %var%
+cd ..\skarmData
+
+# if %errorlevel% == 1 (
+#	cd ..
+#	cd ..\skarmData
+#	if %errorlevel% == 1 (
+#		exit /b %errorlevel%
+#	)
+#)
+
+#git add *.penguin
+#git commit -a -m "Periodic commit"
+#git push
+#cd ..\SkarmBot
+exit 0

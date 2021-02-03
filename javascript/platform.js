@@ -6,8 +6,10 @@ const Constants = require("./constants.js");
 switch (process.platform) {
 	case "win32":
 		module.exports = {
+			spawn: spawn,
+			Constants: Constants,
 			processSaveData: function() {
-				let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
+				let savior = spawn.exec('cmd.exe', ['/c', 'saveData.bat']);
 				savior.on('exit', (code) => {
 					console.log("Received code: " + code + " on saving data.");
 					if (saveCode === Constants.SaveCodes.DONOTHING)
@@ -21,22 +23,23 @@ switch (process.platform) {
 				});
 			},
 			pullData: function() {
-				return spawn('cmd.exe', ['/c', 'pullData.bat']);
+				return spawn.exec('cmd.exe', ['/c', 'pullData.bat']);
 			},
 		};
 		break;
 	case "linux":
 		module.exports = {
 			processSaveData: function() {
-				let script = spawn("sh", ["-c", "saveData.sh"]);
-				script.stdout.on("data", (data) => {
-					// eat the standard output
+				let script = spawn.exec("sh saveData.sh", (err, stdout, stderr) => {
+					// eat the output
 				});
 				return script;
 			},
 			pullData: function() {
-				// dont do anythingn for now
-				return undefined;
+				let script = spawn.exec("sh pullData.sh", (err, stdout, stderr) => {
+					// eat the output
+				});
+				return script;
 			},
 		};
 		break;

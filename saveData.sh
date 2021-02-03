@@ -4,7 +4,7 @@ cd ..\skarmData
 #	cd ..
 #	cd ..\skarmData
 #	if %errorlevel% == 1 (
-#		exit /b %errorlevel%
+#		exit %errorlevel%
 #	)
 #)
 
@@ -12,4 +12,5 @@ cd ..\skarmData
 #git commit -a -m "Periodic commit"
 #git push
 #cd ..\SkarmBot
-#exit /b %errorlevel%
+#exit %errorlevel%
+exit 0
