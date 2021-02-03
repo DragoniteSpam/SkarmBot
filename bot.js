@@ -52,15 +52,23 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	let dataPuller = Platform.pullData();
     Constants.initialize(client);
     Encrypt.initialize();
-	dataPuller.on('exit', (code) => {
-		console.log("Pulled in skarmData.\nGit revision count: "+code);
+    if (dataPuller) {
+		dataPuller.on('exit', (code) => {
+			console.log("Pulled in skarmData.\nGit revision count: "+code);
+			Users.initialize(client);
+			Guilds.initialize(client);
+			bot = new SkarmBot(client,code);
+			Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
+		});
+		dataPuller.on("error",(err)=>{console.error(err);});
+		dataPuller.on("message",(message) => {console.log(message);});
+	} else {
+		console.log("Unable to automatically pull skarmData.\nGit revision count: n/a");
 		Users.initialize(client);
 		Guilds.initialize(client);
-		bot = new SkarmBot(client,code);
+		bot = new SkarmBot(client, -1);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
-	});
-	dataPuller.on("error",(err)=>{console.error(err);});
-	dataPuller.on("message",(message) => {console.log(message);});
+	}
 });
 
 client.Dispatcher.on(events.PRESENCE_UPDATE, e => {
