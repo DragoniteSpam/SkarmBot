@@ -19,6 +19,7 @@ const Encrypt = require("./javascript/encryption.js");
 const Constants = require("./javascript/constants.js");
 const Users = require("./javascript/user.js");
 const Guilds = require("./javascript/guild.js");
+const Platform = require("./javascript/platform.js");
 
 // i'm in?
 var target = "../descrution.txt";
@@ -48,7 +49,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		return;
 	}
 
-	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
+	let dataPuller = Platform.pullData();
     Constants.initialize(client);
     Encrypt.initialize();
 	dataPuller.on('exit', (code) => {

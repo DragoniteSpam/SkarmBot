@@ -20,6 +20,9 @@ switch (process.platform) {
 					}, 2000);
 				});
 			},
+			pullData: function() {
+				return spawn('cmd.exe', ['/c', 'pullData.bat']);
+			},
 		};
 		break;
 	case "linux":
@@ -30,6 +33,10 @@ switch (process.platform) {
 					// eat the standard output
 				});
 				return script;
+			},
+			pullData: function() {
+				// dont do anythingn for now
+				return undefined;
 			},
 		};
 		break;
