@@ -1,12 +1,25 @@
 "use strict";
 const spawn = require("child_process");
 
+const Constants = require("./constants.js");
+
 switch (process.platform) {
 	case "win32":
 		module.exports = {
 			processSaveData: function() {
-				return spawn("cmd.exe", ["/c", "saveData.bat"]);
-			};
+				let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
+				savior.on('exit', (code) => {
+					console.log("Received code: " + code + " on saving data.");
+					if (saveCode === Constants.SaveCodes.DONOTHING)
+						return;
+					if (saveCode === undefined)
+						return;
+					setTimeout(() => {
+						this.client.disconnect();
+						process.exit(saveCode);
+					}, 2000);
+				});
+			},
 		};
 		break;
 	case "linux":
@@ -17,11 +30,11 @@ switch (process.platform) {
 					// eat the standard output
 				});
 				return script;
-			};
+			},
 		};
 		break;
 	case "darwin": /* OSX */
 	default:
-		throw "unsupported platform (currently)";
+		throw "unsupported platform (currently), unless you want to write code to deal with it";
 		break;
 }

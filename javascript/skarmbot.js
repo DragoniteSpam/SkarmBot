@@ -12,6 +12,7 @@ const XKCD = require("./xkcd.js");
 const Skinner = require("./skinnerbox.js");
 const { spawn } = require("child_process");
 const Permissions = require("./permissions.js");
+const Platform = require("./platform.js");
 
 
 const Users = require("./user.js");
@@ -586,19 +587,7 @@ class Bot {
         Guilds.save();
         Users.save();
         this.xkcd.save();
-        let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
-        savior.on('exit', (code) => {
-            console.log("Received code: " + code + " on saving data.");
-            if (saveCode === Constants.SaveCodes.DONOTHING)
-                return;
-            if (saveCode === undefined)
-                return;
-            setTimeout(() => {
-                this.client.disconnect();
-                process.exit(saveCode);
-            }, 2000);
-        });
-
+        platform.processSaveData();
     }
     
     saveDebug() {
