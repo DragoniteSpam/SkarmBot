@@ -7,7 +7,7 @@ const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 const Users = require("./user.js");
 
-const guilddb = "..\\skarmData\\guilds.penguin";
+const guilddb = "../skarmData/guilds.penguin";
 
 const MIN_LINES = 40;
 
@@ -19,7 +19,7 @@ let messageIsAction = function(message) {
     return false;
 };
 
-fs.readFile("data\\default.birb", function(err, data) {
+fs.readFile("data/default.birb", function(err, data) {
     defaultLines = data.toString().split("\n");
 });
 

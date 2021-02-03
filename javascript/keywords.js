@@ -1,6 +1,6 @@
 "use strict";
 const Skarm = require("./skarm.js");
-const Constants = require("./Constants.js");
+const Constants = require("./constants.js");
 
 module.exports = {
     Hug: {

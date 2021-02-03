@@ -21,9 +21,9 @@ const Users = require("./javascript/user.js");
 const Guilds = require("./javascript/guild.js");
 
 // i'm in?
-var target = "..\\descrution.txt";
+var target = "../descrution.txt";
 if(process.argv.length>2 && process.argv[2]==="beta")
-	target="..\\token.txt";
+	target="../token.txt";
 const token = fs.readFileSync(target).toString();
 
 // javascript
