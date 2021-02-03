@@ -8,8 +8,8 @@ const Guild = require("./guild.js");
 const Constants = require("./constants.js");
 
 
-const xkcddb = "..\\skarmData\\xkcd.penguin";
-const xkcdlib = "..\\skarmData\\xkcd-log.penguin";
+const xkcddb = "../skarmData/xkcd.penguin";
+const xkcdlib = "../skarmData/xkcd-log.penguin";
 
 class XKCD {
 	constructor(bot) {
