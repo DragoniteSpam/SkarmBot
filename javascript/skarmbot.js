@@ -343,7 +343,7 @@ class Bot {
 
         // each of these will kick out of the function if it finds something,
         // so the most important ones should be at the top
-        if (!guildData.channelsCensorHidden[e.message.channel_id]) {
+        if (!this.channelsCensorHidden[e.message.channel_id]) {
             this.censor(e);
         }
 
