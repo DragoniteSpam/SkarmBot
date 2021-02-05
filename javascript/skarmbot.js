@@ -85,7 +85,7 @@ class Bot {
         this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
         this.channelsWhoLikeXKCD = {};
 
-        this.channelsHidden = {};
+
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
         this.xkcd = new XKCD(this);
@@ -101,7 +101,11 @@ class Bot {
                 //Skarm.logError(channelGuild.id);
                 //Skarm.logError(JSON.stringify(channelGuild.notificationChannels));
                 channelGuild.notificationChannels.XKCD[channel]=Date.now();
+                delete this.channelsWhoLikeXKCD[channel];
             }
+
+            Skarm.log(`Failed to initialize ${Object.keys(this.channelsWhoLikeXKCD).length} xkcd notification channels.`);
+            this.xkcd.save();
         }},1000);
 
         /**
@@ -307,7 +311,7 @@ class Bot {
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         if (cmdData) {
-            if (!this.channelsHidden[e.message.channel_id] || !cmdData.ignoreHidden) {
+            if (!guildData.hiddenChannels[e.message.channel_id] || !cmdData.ignoreHidden) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and
@@ -333,13 +337,13 @@ class Bot {
         }
 
         // ignore hidden channels after this
-        if (this.channelsHidden[e.message.channel_id]) {
+        if (guildData.hiddenChannels[e.message.channel_id]) {
             return false;
         }
 
         // each of these will kick out of the function if it finds something,
         // so the most important ones should be at the top
-        if (!this.channelsCensorHidden[e.message.channel_id]) {
+        if (!guildData.channelsCensorHidden[e.message.channel_id]) {
             this.censor(e);
         }
 
@@ -495,7 +499,7 @@ class Bot {
 	    //console.log("they've started singing");
 	    const guildData = Guilds.get(e.message.channel.guild_id);
 	    try {
-            if (guildData.channelBuffer[e.message.channel.id].length > 5)
+            if (guildData.channelBuffer[e.message.channel.id].length > 0)
                 return this.parrot(e);
         }catch (e) {
             Skarm.logError(JSON.stringify(e));
@@ -504,6 +508,10 @@ class Bot {
 	    while(this.shanties.isSinging)
             guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
 		//Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
+
+        if(guildData.channelBuffer[e.message.channel.id].length > 10)
+            Skarm.spam(`Warning: Over 10 shanty lines may have been loaded in to be sent to <#${e.message.channel.id}>`);
+
         this.parrot(e);
 	}
 

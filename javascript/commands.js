@@ -186,10 +186,18 @@ module.exports = {
             };
             //Skarm.logError("Table: "+JSON.stringify(table));
             for(let i=0; i+page*10<table.length && i<10 && page>=0; i++){
-                let user = bot.client.Users.get(table[i+page*10].userID);
+                let idx = i+page*10;
+                let user = bot.client.Users.get(table[idx].userID);
                 //Skarm.logError("Asserting that bot object properties are valid. Keys: "+JSON.stringify(Object.keys(bot)));
                 //Skarm.logError("Asserting that bot.client.Users collection exists: "+JSON.stringify(bot.client.Users));
-                messageObject.description+= `\`${table[i+page*10].totalWords}\`   \t${user.username}#${user.discriminator}\r\n`;
+
+                let userMention;
+                try {
+                    userMention = `${user.username}#${user.discriminator}`;
+                }catch (e) {
+                    userMention = `<@${table[idx].userID}>`;
+                }
+                messageObject.description+= `\`${table[idx].totalWords}\`   \t${userMention}\r\n`;
             }
             if(page*10 > table.length){
                 Skarm.sendMessageDelay(e.message.channel,"Requested page is outside of active member range.  Please try again.");
@@ -727,7 +735,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
             
-            if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
+            if (guildData.toggleHiddenChannel(bot.channelsHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
             } else {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
@@ -812,7 +820,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         aliases: ["munroe"],
         params: ["cmd"],
         usageChar: "@",
-        helpText: "Toggles the periodic posting of new XKCD comics in the channel. This command is only usable by users with kicking boots. The Geneva Convention requires every guild is to have at least one channel dedicated to this.",
+        helpText: "This feature has been deprecated to now run through e@notify.  Please use that command instead.",
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
@@ -823,7 +831,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             let args = commandParamTokens(e.message.content);
 
             if (args.length === 0) {
-                Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
+                //Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
+                Skarm.sendMessageDelay(this.helpText);
                 return;
             }
 
@@ -878,7 +887,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             let userData = Users.get(e.message.author.id);
             let guildData = Guilds.get(e.message.guild.id);
             let notifChannels = guildData.notificationChannels;
-            let args = commandParamTokens(e.message.content);
+            let args = commandParamTokens(e.message.content.toLowerCase());
 
             if (args.length === 0) {
                 Skarm.sendMessageDelay(e.message.channel, " ",false,{
@@ -888,14 +897,16 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                         `1: **${(e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) ? "Disable":"Enable"}** member join/leave notifications\n`+
                         `2: **${(e.message.channel.id in notifChannels.BAN) ? "Disable":"Enable"}** ban notifications\n`+
                         `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE) ? "Disable":"Enable"}** name change notifications\n`+
-                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL) ? "Disable":"Enable"}** voice channel join/change/leave notifications`,
+                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL) ? "Disable":"Enable"}** voice channel join/change/leave notifications\n`+
+                        `5: **${(e.message.channel.id in notifChannels.XKCD) ? "Disable":"Enable"}** posting new XKCDs upon their release \n`,
                     timestamp: new Date(),
                 });
                 return;
             }
 
             switch (args[0]) {
-                case "e":
+                case "join":
+                case "leave":
                 case "1":
                     if (e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) {
                         delete notifChannels.MEMBER_JOIN_LEAVE[e.message.channel.id];
@@ -904,7 +915,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                         notifChannels.MEMBER_JOIN_LEAVE[e.message.channel.id] = Date.now();
                         Skarm.sendMessageDelay(e.message.channel, "Member join/leave notifications will now be sent to **" + e.message.channel.name + "!**");
                     }
-                    if(args[0]==="1")break;
+                    break;
+                case "ban":
                 case "2":
                     if (e.message.channel.id in notifChannels.BAN) {
                         delete notifChannels.BAN[e.message.channel.id];
@@ -913,7 +925,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                         notifChannels.BAN[e.message.channel.id] = Date.now();
                         Skarm.sendMessageDelay(e.message.channel, "Member ban notifications will now be sent to **" + e.message.channel.name + "!**");
                     }
-                    if(args[0]==="2")break;
+                    break;
+                case "name":
                 case "3":
                     if (e.message.channel.id in notifChannels.NAME_CHANGE) {
                         delete notifChannels.NAME_CHANGE[e.message.channel.id];
@@ -922,7 +935,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                         notifChannels.NAME_CHANGE[e.message.channel.id] = Date.now();
                         Skarm.sendMessageDelay(e.message.channel, "Member name change notifications will now be sent to **" + e.message.channel.name + "!**");
                     }
-                    if(args[0]==="3")break;
+                    break;
+                case "voice":
+                case "vox":
                 case "4":
                     if (e.message.channel.id in notifChannels.VOICE_CHANNEL) {
                         delete notifChannels.VOICE_CHANNEL[e.message.channel.id];
@@ -932,14 +947,19 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                         Skarm.sendMessageDelay(e.message.channel, "Voice channel activity notifications will now be sent to **" + e.message.channel.name + "!**");
                     }
                     break;
+                case "xkcd":
+                case "5":
+                    if (e.message.channel.id in notifChannels.XKCD) {
+                        delete notifChannels.XKCD[e.message.channel.id];
+                        Skarm.sendMessageDelay(e.message.channel, "New XKCDs will no longer be sent to **" + e.message.channel.name + "!**");
+                    }else{
+                        notifChannels.XKCD[e.message.channel.id] = Date.now();
+                        Skarm.sendMessageDelay(e.message.channel, "New XKCDs will now be sent to **" + e.message.channel.name + "!**");
+                    }
+                    break;
                 case "debug":
                     Skarm.spam(JSON.stringify(notifChannels));
-                    /*
-            case "disable":
-                bot.removeChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
-                Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
-                break;
-                */
+                    break;
             }
         },
 

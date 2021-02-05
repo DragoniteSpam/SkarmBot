@@ -42,6 +42,7 @@ const linkVariables = function(guild) {
     if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
     if (guild.notificationChannels.XKCD === undefined) guild.notificationChannels.XKCD = {};
     if (guild.activityTable === undefined) guild.activityTable = [ ];
+    if (guild.hiddenChannels === undefined) guild.hiddenChannels = { };
 };
 
 // since de/serialized objects don't keep their functions
@@ -572,6 +573,11 @@ const linkFunctions = function(guild) {
 	    });
 	    guild.activityTable[guild.activityTable.length-1].days[day]=wordCount;
     };
+
+	guild.toggleHiddenChannel = function (channelID) {
+        this.hiddenChannels[channelID] = !this.hiddenChannels[channelID];
+        return this.hiddenChannels[channelID];
+    };
 }
 
 class Guild {
@@ -588,6 +594,12 @@ class Guild {
         this.lines = { };
         this.actions = { };
         this.channelsPinUpvotes = { };
+
+        /**
+         * Channels which will be ignored by parrot and other later responses in the message creation reaction sequence
+         * @type {{channelID -> boolean}}
+         */
+        this.hiddenChannels = { };
         
 		this.rolesTable = { };
 		this.roleStack=false;	
