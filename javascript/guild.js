@@ -572,6 +572,10 @@ const linkFunctions = function(guild) {
 	    });
 	    guild.activityTable[guild.activityTable.length-1].days[day]=wordCount;
     };
+
+	guild.toggleHiddenChannel = function (channelID) {
+
+    };
 }
 
 class Guild {
@@ -588,6 +592,12 @@ class Guild {
         this.lines = { };
         this.actions = { };
         this.channelsPinUpvotes = { };
+
+        /**
+         * Channels which will be ignored by parrot and other later responses in the message creation reaction sequence
+         * @type {{channelID -> boolean}}
+         */
+        this.hiddenChannels = { };
         
 		this.rolesTable = { };
 		this.roleStack=false;	

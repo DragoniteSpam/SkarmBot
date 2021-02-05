@@ -186,10 +186,18 @@ module.exports = {
             };
             //Skarm.logError("Table: "+JSON.stringify(table));
             for(let i=0; i+page*10<table.length && i<10 && page>=0; i++){
-                let user = bot.client.Users.get(table[i+page*10].userID);
+                let idx = i+page*10;
+                let user = bot.client.Users.get(table[idx].userID);
                 //Skarm.logError("Asserting that bot object properties are valid. Keys: "+JSON.stringify(Object.keys(bot)));
                 //Skarm.logError("Asserting that bot.client.Users collection exists: "+JSON.stringify(bot.client.Users));
-                messageObject.description+= `\`${table[i+page*10].totalWords}\`   \t${user.username}#${user.discriminator}\r\n`;
+
+                let userMention;
+                try {
+                    userMention = `${user.username}#${user.discriminator}`;
+                }catch (e) {
+                    userMention = `<@${table[idx].userID}>`;
+                }
+                messageObject.description+= `\`${table[idx].totalWords}\`   \t${userMention}\r\n`;
             }
             if(page*10 > table.length){
                 Skarm.sendMessageDelay(e.message.channel,"Requested page is outside of active member range.  Please try again.");
