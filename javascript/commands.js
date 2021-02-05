@@ -735,7 +735,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             var userData = Users.get(e.message.author.id);
             var guildData = Guilds.get(e.message.guild.id);
             
-            if (bot.toggleChannel(bot.channelsHidden, e.message.channel_id)) {
+            if (guildData.toggleHiddenChannel(bot.channelsHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
             } else {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);

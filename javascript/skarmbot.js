@@ -85,7 +85,7 @@ class Bot {
         this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
         this.channelsWhoLikeXKCD = {};
 
-        this.channelsHidden = {};
+
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
         this.xkcd = new XKCD(this);
@@ -311,7 +311,7 @@ class Bot {
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         if (cmdData) {
-            if (!this.channelsHidden[e.message.channel_id] || !cmdData.ignoreHidden) {
+            if (!guildData.hiddenChannels[e.message.channel_id] || !cmdData.ignoreHidden) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and
@@ -337,13 +337,13 @@ class Bot {
         }
 
         // ignore hidden channels after this
-        if (this.channelsHidden[e.message.channel_id]) {
+        if (guildData.hiddenChannels[e.message.channel_id]) {
             return false;
         }
 
         // each of these will kick out of the function if it finds something,
         // so the most important ones should be at the top
-        if (!this.channelsCensorHidden[e.message.channel_id]) {
+        if (!guildData.channelsCensorHidden[e.message.channel_id]) {
             this.censor(e);
         }
 

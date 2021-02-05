@@ -42,6 +42,7 @@ const linkVariables = function(guild) {
     if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
     if (guild.notificationChannels.XKCD === undefined) guild.notificationChannels.XKCD = {};
     if (guild.activityTable === undefined) guild.activityTable = [ ];
+    if (guild.hiddenChannels === undefined) guild.hiddenChannels = { };
 };
 
 // since de/serialized objects don't keep their functions
@@ -574,7 +575,8 @@ const linkFunctions = function(guild) {
     };
 
 	guild.toggleHiddenChannel = function (channelID) {
-
+        this.hiddenChannels[channelID] = !this.hiddenChannels[channelID];
+        return this.hiddenChannels[channelID];
     };
 }
 
