@@ -111,7 +111,6 @@ module.exports = {
             Skarm.sendMessageDelay(e.message.channel,  "The second rule of Fight Club is: you DO NOT talk about Fight Club!");
         },
     },
-
     HelloThere: {
         aliases: ["hello there"],
         standalone: false,

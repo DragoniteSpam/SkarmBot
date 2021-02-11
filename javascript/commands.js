@@ -20,6 +20,30 @@ let commandParamString = function(message) {
     return tokens.join(" ");
 };
 
+let attemptNumParameterFetch = function (message, parameter) {
+    // "e!doAThing -parameter NNN -parameter q"
+    //  ^------------------------------------^
+    if(message.includes(parameter)){
+        // "e!doAThing -parameter NNN -parameter q"
+        //             ^-------------------------^
+        let dayTemp = message.substring(message.indexOf(parameter));
+        if(dayTemp.includes(" ")){
+            // "e!doAThing -parameter NNN -parameter q"
+            //                        ^--------------^
+            dayTemp = dayTemp.substring(dayTemp.indexOf(" ") + " ".length);
+            if(dayTemp.includes(" ")){
+                // "e!doAThing -parameter NNN -parameter q"
+                //                        ^-^
+                dayTemp = dayTemp.substring(0,dayTemp.indexOf(" "));
+                let resultant = dayTemp.trim()-0;
+                Skarm.spam(`Output for parameter ${parameter}: \`${resultant}\` or as a string: \`${dayTemp}\` `);
+                if(!isNaN(resultant)) return resultant;
+                Skarm.spam(`failed attempt to define parameter ${parameter}: ${dayTemp}\r\n from: ${message}`);
+            }
+        }
+    }
+}
+
 module.exports = {
     /** 
 	*	general
@@ -157,33 +181,62 @@ module.exports = {
     },
     Activity: {
         aliases: ["activity","activityTable"],
-        params: ["page"],
+        params: ["-days # -page #"],
         usageChar: "!",
-        helpText: "Prints out a table of guild activity from the past month.  Use the page option to access data outside of the top 10.",
+        helpText: "Prints out a table of guild activity from the past # days.  If not specified, default is 30 days.  Use the page option to access data outside of the top 10 members.",
         ignoreHidden: true,
         category: "general",
 
         execute(bot, e) {
+            let message = commandParamString(e.message.content).toLowerCase();
             let tokens = commandParamTokens(e.message.content);
-            let page = 0;
-            if (tokens.length === 1)
-                page = tokens[0]-1;
+            let days = attemptNumParameterFetch(message,"-d")||  30;
+            let page = attemptNumParameterFetch(message, "-p") || 0;
+
             if(isNaN(page)){
                 Skarm.sendMessageDelay(e.message.channel,"Expected page input as an integer. e.g.: `e!activity 2`");
                 return;
             }
             //Skarm.logError(page);
             let guild = Guilds.get(e.message.guild.id);
-            let table = guild.sortActivityTable();
+            let table = guild.flexActivityTable;
+
+
+            let usersList = [];
+            let cutoffDate = Date.now() - days*24*60*60*1000;
+            for(let userID in table){
+                //assemble user object for the report
+                let userTableObj = table[userID];
+                let userReportObj = {userID:userID,words:0,messages:0};
+                if(days <0 || days>365){
+                    userReportObj.words = userTableObj.totalWordCount;
+                    userReportObj.messages = userTableObj.totalMessageCount;
+                }else {
+                    for (let day in table[userID].days) {
+                        if (day < cutoffDate) break;
+                        userReportObj.words += userTableObj.days[day].wordCount;
+                        userReportObj.messages += userTableObj.days[day].messageCount;
+                    }
+                }
+                usersList.push(userReportObj);
+            }
+            usersList.sort((a,b)=> {return b.words - a.words});
+
+
+
+            table = usersList;
+
+
             let messageObject = {
                 color: Skarm.generateRGB(),
-                description:"",
+                description:"Member................Word Count..........Messages\r\n",
                 author: {name: e.message.author.nick},
                 title: "Server Activity",
                 timestamp: new Date(),
                 //fields: [],
                 footer: {text: `Page ${page+1}/${Math.ceil(table.length/10)}`},
             };
+
             //Skarm.logError("Table: "+JSON.stringify(table));
             for(let i=0; i+page*10<table.length && i<10 && page>=0; i++){
                 let idx = i+page*10;
@@ -197,7 +250,7 @@ module.exports = {
                 }catch (e) {
                     userMention = `<@${table[idx].userID}>`;
                 }
-                messageObject.description+= `\`${table[idx].totalWords}\`   \t${userMention}\r\n`;
+                messageObject.description+= `${userMention}............\`${table[idx].words}\`.................\`${table[idx].messages}\`\r\n`;
             }
             if(page*10 > table.length){
                 Skarm.sendMessageDelay(e.message.channel,"Requested page is outside of active member range.  Please try again.");
