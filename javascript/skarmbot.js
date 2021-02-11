@@ -381,6 +381,8 @@ class Bot {
                 continue;
             }
 
+            Skarm.spam(`hit on keyword: "${word}"`);
+
             let keyword = this.keywords[word];
             if (keyword.standalone && (!text.startsWith(word + " ") &&
                 !text.endsWith(" " + word) &&

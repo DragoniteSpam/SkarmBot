@@ -1411,11 +1411,12 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 
         execute(bot, e) {
             let tokens = commandParamTokens(e.message.content);
-            if (tokens.length < 3) return;
+            if (tokens.length < 2) return Skarm.spam(tokens.length);
 
             let destination = tokens.splice(0, 1)[0];
             let chan = bot.client.Channels.get(destination);
             if (chan) Skarm.sendMessageDelay(chan, tokens.join(" "));
+            else Skarm.spam(`<@${e.message.author.id}> hey, this message failed to send, probably because ${destination} resolved to null`);
         },
 
         help(bot, e) {
@@ -1433,11 +1434,17 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 
         execute(bot, e) {
             let tokens = commandParamTokens(e.message.content);
-            if (tokens.length < 3) return;
-
+            if (tokens.length < 1) return;
             let destination = tokens.splice(0, 1)[0];
             let chan = bot.client.Channels.get(destination);
-            if (chan) Skarm.queueMessage(Guilds,chan, tokens.join(" "));
+            if (chan) {
+                if (tokens.length < 1) return Skarm.spam(Guilds.get(chan.guild_id).channelBuffer);
+                if (tokens.join("") === "-") {
+                    Guilds.get(chan.guild_id).channelBuffer = { };
+                    return Skarm.sendMessageDelay(e.message.channel, "cleared");
+                }
+                Skarm.queueMessage(Guilds, chan, tokens.join(" "));
+            }
         },
 
         help(bot, e) {
