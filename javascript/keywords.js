@@ -112,28 +112,43 @@ module.exports = {
         },
     },
 
-    Faith: {
-        aliases: ["faithless imperial"],
-        standalone: true,
-        odds: 0.1,
+    HelloThere: {
+        aliases: ["hello there"],
+        standalone: false,
+        odds: 1,
         
         execute(bot, e) {
-			
-			function getRandSky(){
-				return bot.skyrim[Math.floor(Math.random()*bot.skyrim.length)];//TODO
+            let head = "<:skarmhead:422560671574523904>";
+            let blank = "<:background:448285187550347275>";
+
+			function randomLeft(){
+                let colors  = [
+                    "<:redlightsaberyx:455820731775844367>",
+                    "<:greenlightsaberyx:422559631030878209>",
+                    "<:bluelightsaberyx:422558517287845889>",
+                    "<:Purplelightsaberymx:455819615440732171>"
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
 			}
-			
-			var ret=[
-				"Faith is the denial of observation so that belief can be preserved.",
-				"We'll drive out the stormcloaks and restore what we own. Like Imperial soaps and towlettes. They used to make me feel so clean. I LOVE, **LOVE** moist towlettes.",
-			];
-			var rend="";
-			for(var i =0;i<40;i++){
-				while(Math.random()<(1 - (1/40)) && !rend.includes("stormcl"))
-					rend = getRandSky();
-				ret.push(rend);
-			}
-            Skarm.sendMessageDelay(e.message.channel, ret[Math.floor(Math.random()*ret.length)]);
+
+			function randomRight(){
+                let colors =[
+                    "<:redlightsaberyx:455820732228698122>",
+                    "<:greenlightsaberyx:422559630741340171>",
+                    "<:bluelightsaberyx:422558517589704704>",
+                    "<:Purplelightsaberyx:455819615071633422>"
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            if(e.message.author.username.toLowerCase().includes("master")){
+                Skarm.sendMessageDelay(e.message.channel,"MASTER JEDI" + "\nYou are a bold one.\n" +
+                    randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n" +
+                    randomLeft() + randomLeft() + head + randomRight() + randomRight() +"\n" +
+                    randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n");
+                return true;
+            }
+            Skarm.sendMessageDelay(e.message.channel,"GENERAL "+e.message.author.username.toUpperCase() + "\nYou are a bold one.\n" + randomLeft()+ randomLeft() + head + randomRight() + randomRight());
         },
     },
 }

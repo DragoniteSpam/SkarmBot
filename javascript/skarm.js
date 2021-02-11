@@ -35,6 +35,7 @@ class Skarm {
      * @param message the message to be added to the spam buffer
      */
     static spamBuffer(message){
+        if(typeof(message)==="object") message = JSON.stringify(message);
         if(Skarm.spamBufferString === undefined) {
             Skarm.spamBufferString = "";
             Skarm.spamBufferTimer = setInterval(function (){
@@ -75,10 +76,15 @@ class Skarm {
     }
 
     static sendMessageDelay(channel, text,tts,obj) {
-        if(channel==null){
+        if(channel===null){
             console.log("null channel target with message: "+text);
             return;
         }
+        if(typeof(channel) === "string"){
+            channel = Constants.client.Channels.get(channel);//clinet.channel/get channel
+
+        }
+
         if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
             this.log("Missing permission to read messages in " + channel.name);
             return;
