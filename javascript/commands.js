@@ -23,23 +23,29 @@ let commandParamString = function(message) {
 let attemptNumParameterFetch = function (message, parameter) {
     // "e!doAThing -parameter NNN -parameter q"
     //  ^------------------------------------^
-    if(message.includes(parameter)){
+    if (message.includes(parameter)) {
         // "e!doAThing -parameter NNN -parameter q"
         //             ^-------------------------^
         let dayTemp = message.substring(message.indexOf(parameter));
-        if(dayTemp.includes(" ")){
+        //Skarm.spam(`Locked onto parameter \`${parameter}\` as ${dayTemp}`);
+        if (dayTemp.includes(" ")) {
             // "e!doAThing -parameter NNN -parameter q"
             //                        ^--------------^
             dayTemp = dayTemp.substring(dayTemp.indexOf(" ") + " ".length);
-            if(dayTemp.includes(" ")){
+            //Skarm.spam(`Locked onto parameter \`${parameter}\` as ${dayTemp}`);
+            if (dayTemp.includes(" ")) {
                 // "e!doAThing -parameter NNN -parameter q"
                 //                        ^-^
-                dayTemp = dayTemp.substring(0,dayTemp.indexOf(" "));
-                let resultant = dayTemp.trim()-0;
-                Skarm.spam(`Output for parameter ${parameter}: \`${resultant}\` or as a string: \`${dayTemp}\` `);
-                if(!isNaN(resultant)) return resultant;
-                Skarm.spam(`failed attempt to define parameter ${parameter}: ${dayTemp}\r\n from: ${message}`);
+                dayTemp = dayTemp.substring(0, dayTemp.indexOf(" "));
+                //Skarm.spam(`Locked onto parameter \`${parameter}\` as ${dayTemp}`);
+            } else {
+                //Skarm.spam(`Tail space not found.\n\`${dayTemp}\` from \`${message}\``);
             }
+            let resultant = dayTemp.trim() - 0;
+            //Skarm.spam(`Output for parameter ${parameter}: \`${resultant}\` or as a string: \`${dayTemp}\` `);
+            if (!isNaN(resultant)) return resultant;
+            //Skarm.spam(`failed attempt to define parameter ${parameter}: ${dayTemp}\r\n from: ${message}`);
+
         }
     }
 }
@@ -190,8 +196,9 @@ module.exports = {
         execute(bot, e) {
             let message = commandParamString(e.message.content).toLowerCase();
             let tokens = commandParamTokens(e.message.content);
-            let days = attemptNumParameterFetch(message,"-d")||  30;
+            let days = attemptNumParameterFetch(message,"-d") ||  30;
             let page = attemptNumParameterFetch(message, "-p") || 0;
+            let dayImplemented = 1613001600000;//Date of implementation
 
             if(isNaN(page)){
                 Skarm.sendMessageDelay(e.message.channel,"Expected page input as an integer. e.g.: `e!activity 2`");
@@ -204,6 +211,11 @@ module.exports = {
 
             let usersList = [];
             let cutoffDate = Date.now() - days*24*60*60*1000;
+            if(cutoffDate < dayImplemented){
+                days = Math.ceil((Date.now() - dayImplemented) /(24*60*60*1000));
+                cutoffDate = dayImplemented;
+            }
+            Skarm.spam("Cutoff date: "+new Date(cutoffDate)+" | "+cutoffDate);
             for(let userID in table){
                 //assemble user object for the report
                 let userTableObj = table[userID];
@@ -213,7 +225,11 @@ module.exports = {
                     userReportObj.messages = userTableObj.totalMessageCount;
                 }else {
                     for (let day in table[userID].days) {
-                        if (day < cutoffDate) break;
+                        if (day < cutoffDate) continue; //we can't break here because data in hash table is not strictly ordered
+                        if(day < dayImplemented){  //Date of implementation
+                            delete table[userID].days[day];
+                            continue;
+                        }
                         userReportObj.words += userTableObj.days[day].wordCount;
                         userReportObj.messages += userTableObj.days[day].messageCount;
                     }
@@ -231,7 +247,7 @@ module.exports = {
                 color: Skarm.generateRGB(),
                 description:"Member................Word Count..........Messages\r\n",
                 author: {name: e.message.author.nick},
-                title: "Server Activity",
+                title: "Server Activity for the past "+days+" days",
                 timestamp: new Date(),
                 //fields: [],
                 footer: {text: `Page ${page+1}/${Math.ceil(table.length/10)}`},
@@ -258,6 +274,23 @@ module.exports = {
             }
             Skarm.sendMessageDelete(e.message.channel," ",false,messageObject,1<<20,e.message.author,bot);
             //Skarm.logError("Message sent to smd");
+        },
+
+        help(bot,e) {
+            Skarm.help(this, e);
+        },
+    },
+    UnixToDate: {
+        aliases: ["unixtodate", "utd","time"],
+        params: ["#"],
+        usageChar: "!",
+        helpText: "Converts a unix timestamp to a date",
+        ignoreHidden: true,
+        category: "general",
+
+        execute(bot, e) {
+            let timestamp = commandParamString(e.message.content);
+            Skarm.sendMessageDelay(e.message.channel,new Date(timestamp-0));
         },
 
         help(bot,e) {
@@ -1446,6 +1479,15 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 Skarm.spamBuffer("Well could I have her spam instead of the baked beans then?");
                 Skarm.spamBuffer("You mean spam spam spam spam spam spam... ");
                 Skarm.spamBuffer("**Spam spam spam spam. Lovely spam! Wonderful spam! Spam spa-a-a-a-a-am spam spa-a-a-a-a-am spam. Lovely spam! Lovely spam! Lovely spam! Lovely spam! Lovely spam! Spam spam spam spam!**");
+            }
+            if(tokens[0]==="param"){
+                let msg = commandParamString(e.message.content.toLowerCase());
+                Skarm.sendMessageDelay(e.message.channel,"Looking for -date");
+                let d = attemptNumParameterFetch(msg, "-d");
+                Skarm.sendMessageDelay(e.message.channel,`Found data: ${d}`); // of length ${d.length}
+            }
+            if(tokens[0]==="das"){
+                Skarm.spam(Guilds.get(e.message.channel.guild.id).flexActivityTable);
             }
         },
 
