@@ -1489,6 +1489,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             if(tokens[0]==="das"){
                 Skarm.spam(Guilds.get(e.message.channel.guild.id).flexActivityTable);
             }
+            if(tokens[0]==="constants"){
+                Skarm.spam(Constants.Lightsabers.Hilts);
+            }
         },
 
         help(bot, e) {
