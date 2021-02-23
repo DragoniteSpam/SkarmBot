@@ -274,6 +274,74 @@ class Skarm {
         // or RGB order, but in this case it doesn't actually matter
         return Math.floor(r | (g << 8) | (b << 16));
     }
+
+    static getRandomMapKey(map){
+        let keyArray = Object.keys(map);
+        return keyArray[Math.floor(Math.random()*keyArray.length)];
+    }
+    static getRandomMapVal(map){
+        let keyArray = Object.keys(map);
+        return map[keyArray[Math.floor(Math.random()*keyArray.length)]];
+    }
+
+    static lightsaber = {
+        /**
+         * Replaces a random left-leaning hilt with a left-leaning lightsaber.
+         * @param message
+         */
+        insertLeft:function(message,layers){
+            let indexes = [];
+            let temp = message.replaceAll(Constants.Lightsabers.Hilts.Left, "_");
+            for(let i = 0;i<temp.length;i++){
+                if(temp[i]==="_"){
+                    indexes.push(i);
+                }
+            }
+            if(indexes.length){
+                let modificationIndex = indexes[Math.floor(indexes.length*Math.random())];
+                temp = temp.substring(0,modificationIndex) +
+                    Skarm.getRandomMapVal(Constants.Lightsabers.Left) +
+                    temp.substring(modificationIndex+1);
+                temp = temp.replaceAll("_",Constants.Lightsabers.Hilts.Left);
+                if(indexes.length > 2 && layers){
+                    //Skarm.spam("More than 2 indexes of saber.  Recursing...");
+                    return Skarm.lightsaber.insertLeft(temp,--layers);
+                }
+                return temp;
+            }else{
+                return message;
+            }
+        },
+
+        /**
+         * Replaces a random left-leaning hilt with a left-leaning lightsaber.
+         * @param message
+         */
+        insertRight:function(message,layers){
+            let indexes = [];
+            let temp = message.replaceAll(Constants.Lightsabers.Hilts.Right, "_");
+            for(let i = 0;i<temp.length;i++){
+                if(temp[i]==="_"){
+                    indexes.push(i);
+                }
+            }
+
+            if(indexes.length){
+                let modificationIndex = indexes[Math.floor(indexes.length*Math.random())];
+                temp = temp.substring(0,modificationIndex) +
+                    Skarm.getRandomMapVal(Constants.Lightsabers.Right) +
+                    temp.substring(modificationIndex+1);
+                temp = temp.replaceAll("_",Constants.Lightsabers.Hilts.Right);
+                if(indexes.length>2 && layers){
+                    //Skarm.spam("More than 2 indexes of saber.  Recursing...");
+                    return Skarm.lightsaber.insertRight(temp,--layers);
+                }
+                return temp;
+            }else{
+                return message;
+            }
+        },
+    }
 }
 
 module.exports = Skarm;

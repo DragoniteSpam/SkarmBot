@@ -111,7 +111,6 @@ module.exports = {
             Skarm.sendMessageDelay(e.message.channel,  "The second rule of Fight Club is: you DO NOT talk about Fight Club!");
         },
     },
-
     HelloThere: {
         aliases: ["hello there"],
         standalone: false,
@@ -121,8 +120,15 @@ module.exports = {
             let head = "<:skarmhead:422560671574523904>";
             let blank = "<:background:448285187550347275>";
 
+            let sabers = e._constants.Lightsabers;
 			function randomLeft(){
-                let colors  = [
+			    try {
+                    if (1)
+                        return sabers.Hilts.Left;
+                } catch (e){
+			        Skarm.spam((sabers));
+                }
+			    let colors  = [
                     "<:redlightsaberyx:455820731775844367>",
                     "<:greenlightsaberyx:422559631030878209>",
                     "<:bluelightsaberyx:422558517287845889>",
@@ -132,6 +138,12 @@ module.exports = {
 			}
 
 			function randomRight(){
+                try {
+                    if (1)
+                        return sabers.Hilts.Right;
+                } catch (e){
+                    Skarm.spam((sabers));
+                }
                 let colors =[
                     "<:redlightsaberyx:455820732228698122>",
                     "<:greenlightsaberyx:422559630741340171>",
@@ -141,14 +153,27 @@ module.exports = {
                 return colors[Math.floor(Math.random() * colors.length)];
             }
 
+            function recursiveEdits(message,i){
+			    if(!message.content.toLowerCase().includes("hilt")) return;
+			    setTimeout(() => {
+                    if(i%2){//Left start
+                        message.edit(Skarm.lightsaber.insertLeft(message.content,2)).then((r) => recursiveEdits(r,i+1));
+                    }else{//Right start
+                        message.edit(Skarm.lightsaber.insertRight(message.content,2)).then((r) => recursiveEdits(r,i+1));
+                    }
+                },350);
+            }
+
+            let content = "GENERAL " + e.message.author.username.toUpperCase() + "\nYou are a bold one.\n" + randomLeft() + randomLeft() + head + randomRight() + randomRight();
             if(e.message.author.username.toLowerCase().includes("master")){
-                Skarm.sendMessageDelay(e.message.channel,"MASTER JEDI" + "\nYou are a bold one.\n" +
+                content = "MASTER JEDI" + "\nYou are a bold one.\n" +
                     randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n" +
                     randomLeft() + randomLeft() + head + randomRight() + randomRight() +"\n" +
-                    randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n");
-                return true;
+                    randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n"
             }
-            Skarm.sendMessageDelay(e.message.channel,"GENERAL "+e.message.author.username.toUpperCase() + "\nYou are a bold one.\n" + randomLeft()+ randomLeft() + head + randomRight() + randomRight());
+            e.message.channel.sendMessage(content).then(r  =>{
+                recursiveEdits(r,Math.floor(Math.random()*2));
+            });
         },
     },
 }

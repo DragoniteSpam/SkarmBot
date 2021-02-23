@@ -42,6 +42,23 @@ const linkVariables = function(guild) {
     if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
     if (guild.notificationChannels.XKCD === undefined) guild.notificationChannels.XKCD = {};
     if (guild.activityTable === undefined) guild.activityTable = [ ];
+    if (guild.flexActivityTable === undefined) {
+        guild.flexActivityTable = {};
+        for(let i in guild.activityTable){
+            let prevObj = guild.activityTable[i];
+            guild.flexActivityTable[prevObj.userID] = {
+                days: {},
+                totalWordCount:0,
+                totalMessageCount:1
+            };
+
+            for(let day in prevObj.days){
+                guild.flexActivityTable[prevObj.userID].totalWordCount += prevObj.days[day];
+                guild.flexActivityTable[prevObj.userID].days[day]= {wordCount:prevObj.days[day], messageCount: 1};
+            }
+
+        }
+    }
     if (guild.hiddenChannels === undefined) guild.hiddenChannels = { };
 };
 
@@ -528,7 +545,8 @@ const linkFunctions = function(guild) {
         i=i-0;
         let updatedTotal=0;
         for(let day in guild.activityTable[i].days){
-            if(((day-0) + 31*24*60*60*1000)<Date.now()){
+            if(((day-0) + 365*24*60*60*1000)<Date.now()){
+                //keep activity data for 1 year
                 delete guild.activityTable[i].days[day];
             }else{
                 //Skarm.spam(guild.activityTable[i].da)
@@ -553,25 +571,35 @@ const linkFunctions = function(guild) {
 	    let day = Date.now();
 	    let wordCount = e.message.content.replaceAll("  "," ").replaceAll("\r\n","\n").replaceAll("\n\n","\n").replaceAll("\n"," ").split(" ").length;
 	    day -= day % (24* 60* 60* 1000);
-	    for(let i in guild.activityTable){
-	        let member = guild.activityTable[i];
-	        if(member.userID===e.message.author.id){
-	            if(day in member.days){
-	                member.days[day]+=wordCount;
-                }else{
-	                member.days[day]=wordCount;
+	    if(e.message.author.id in guild.flexActivityTable) {
+            let memberActivityObject = guild.flexActivityTable[e.message.author.id];
+            if (day in memberActivityObject.days) {
+                memberActivityObject.days[day].wordCount += wordCount;
+                if(isNaN(memberActivityObject.days[day].wordCount)) {
+                    Skarm.spam(`Found a NaN day for ${e.message.author.id}, attempting automatic repair. Incoming message length: ${wordCount}`);
+                    memberActivityObject.days[day].wordCount = wordCount;
                 }
-	            guild.minSortActivityTable(i);
-	            return;
+                memberActivityObject.days[day].messageCount++;
+            } else {
+                memberActivityObject.days[day] = {wordCount: wordCount, messageCount: 1};
             }
+            memberActivityObject.totalWordCount += wordCount;
+            memberActivityObject.totalMessageCount++;
+            return;
         }
 
-	    guild.activityTable.push({
-            userID:e.message.author.id,
-            days:{},
-            totalWords:0,
-	    });
-	    guild.activityTable[guild.activityTable.length-1].days[day]=wordCount;
+
+	    guild.flexActivityTable[e.message.author.id] = {
+	        days: {
+	            day: {
+	                    wordsCount:wordCount,
+                        messageCount:1,
+                    }
+	        },
+            totalMessageCount:1,
+            totalWordCount:wordCount
+        };
+
     };
 
 	guild.toggleHiddenChannel = function (channelID) {
@@ -608,8 +636,25 @@ class Guild {
 		this.moderators = { };
 		this.announcesLevels=false;
 
-		//[{userID -> String, days -> {Date:Long -> wordCount:Int},totalWords -> Int}]
+		//[{userID: String -> {Date:Long -> wordCount:Int},totalWords -> Int}]
 		this.activityTable = [];
+        /**
+         *
+         *  All properties should update per-message.  All days older than a year should be purged from the days hashtable.
+         * {userID:String ->
+         *      // A collection of the count of how many words and messages were sent for a given day for a given user.
+         *      days:{
+         *          date:Long (floored to GMT day)-> {
+         *              wordCount:Int,
+         *              messageCount:Int
+         *          }
+         *      },
+         *      totalMessageCount:Int,
+         *      totalWordCount:Int
+         *  }
+         *
+         */
+		this.flexActivityTable = { };
 
 		this.channelBuffer = { };
         /**

@@ -77,6 +77,26 @@ class Constants {
             BLUE:   0x6666ff,
         };
 
+        //All lightsaber emotes pulled from the skarm server
+        Constants.Lightsabers = {
+            Left: {
+                red:    "<:redlightsaberyx:455820731775844367>",
+                green:  "<:greenlightsaberyx:422559631030878209>",
+                blue:   "<:bluelightsaberyx:422558517287845889>",
+                purple: "<:Purplelightsaberymx:455819615440732171>"
+            },
+            Right: {
+                red:    "<:redlightsaberyx:455820732228698122>",
+                green:  "<:greenlightsaberyx:422559630741340171>",
+                blue:   "<:bluelightsaberyx:422558517589704704>",
+                purple: "<:Purplelightsaberyx:455819615071633422>"
+            },
+            Hilts: {
+                Left:   "<:leftHilt:813564796049948712>",
+                Right:  "<:rightHilt:813564796044705822>"
+            },
+        }
+
         console.log("Initialized constants...");
     }
 }

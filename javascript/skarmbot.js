@@ -395,6 +395,15 @@ class Bot {
                 continue;
             }
 
+            /**
+             * This is a hacked together fix because as of 51/02/22, the module keywords.js is not properly reading the require(Constants) line at the head of its own file within functions
+             * As a consequence of this, the constants are injected as a property of the message creation event.
+             * This was done as a sub-property of the message creation event to avoid restructuring keyword.execute parameters for every command as hopefully a fix will quickly be found for this.
+             * @type {Constants}
+             * @private
+             */
+            e._constants = Constants;
+
             keyword.execute(this, e);
             return true;
         }
