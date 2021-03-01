@@ -121,6 +121,9 @@ module.exports = {
             let blank = "<:background:448285187550347275>";
 
             let sabers = e._constants.Lightsabers;
+
+            let refName = e._userData.getName(e);
+
 			function randomLeft(){
 			    try {
                     if (1)
@@ -164,7 +167,7 @@ module.exports = {
                 },350);
             }
 
-            let content = "GENERAL " + e.message.author.username.toUpperCase() + "\nYou are a bold one.\n" + randomLeft() + randomLeft() + head + randomRight() + randomRight();
+            let content = "GENERAL " + refName.toUpperCase() + "\nYou are a bold one.\n" + randomLeft() + randomLeft() + head + randomRight() + randomRight();
             if(e.message.author.username.toLowerCase().includes("master")){
                 content = "MASTER JEDI" + "\nYou are a bold one.\n" +
                     randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n" +

@@ -403,6 +403,7 @@ class Bot {
              * @private
              */
             e._constants = Constants;
+            e._userData = userData;
 
             keyword.execute(this, e);
             return true;

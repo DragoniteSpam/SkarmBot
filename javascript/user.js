@@ -74,6 +74,14 @@ const linkFunctions = function(user) {
 			return false;
         return !!User.client.Users.get(this.id).memberOf(User.client.Guilds.get(guild.id));
     };
+
+    /**
+     * assumes that e has properties as follows: e.message.member.name
+     * @param e
+     */
+    user.getName = function (e) {
+        return (user.nickName || e.message.member.name);
+    };
 }
 
 class User {
@@ -84,7 +92,13 @@ class User {
 
         this.summons = {};
         this.summonsLastTime = null;
-        
+
+        /**
+         * A string of up to 32 characters for what skarm will refer to a user has should they choose to set it.  Does not affect log outputs.
+         * @type String
+         */
+        this.nickName = undefined;
+
         User.add(this);
         
         linkFunctions(this);

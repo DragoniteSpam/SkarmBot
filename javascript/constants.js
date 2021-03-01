@@ -95,6 +95,8 @@ class Constants {
                 Left:   "<:leftHilt:813564796049948712>",
                 Right:  "<:rightHilt:813564796044705822>"
             },
+            Head: "<:skarmhead:422560671574523904>",
+            Blank: "<:background:448285187550347275>",
         }
 
         console.log("Initialized constants...");
