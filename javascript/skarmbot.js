@@ -405,7 +405,7 @@ class Bot {
             e._constants = Constants;
             e._userData = userData;
 
-            keyword.execute(this, e);
+            keyword.execute(this, e, userData, guildData);
             return true;
         }
 

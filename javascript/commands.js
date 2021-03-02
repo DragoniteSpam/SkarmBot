@@ -50,6 +50,7 @@ let attemptNumParameterFetch = function (message, parameter) {
     }
 }
 
+// noinspection JSUnusedLocalSymbols
 module.exports = {
     /** 
 	*	general
@@ -62,7 +63,7 @@ module.exports = {
         ignoreHidden: true,
 		category: "general",
 		
-        execute(bot, e) {
+        execute(bot, e, userData, guildData) {
             Skarm.sendMessageDelay(e.message.channel, "go play outside dragonite");
         },
         
@@ -77,8 +78,8 @@ module.exports = {
         helpText: "Hugs a target, or defaults to the summoner.",
         ignoreHidden: true,
 		category: "general",
-        
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
 			let target = commandParamTokens(e.message.content)[0];
 			if(target == null) target = e.message.author.username;
             Skarm.sendMessageDelay(e.message.channel, "_hugs " + target + "_");
@@ -95,8 +96,8 @@ module.exports = {
 		helpText: "First shalt thou take out the Holy Pin. Then shalt thou count to three, no more, no less. Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in My sight, shall snuff it.",
 		ignoreHidden: true,
         category: "general",
-        
-		execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             let tokens = commandParamTokens(e.message.content);
 
             let channel,targetChannelID;
@@ -135,10 +136,9 @@ module.exports = {
             "\nMessages that skarm sends containing your summons will be deleted after 15 seconds (30 seconds for e!summons list) or immediately by clicking \u274c.",
         ignoreHidden: true,
         category: "general",
-		
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             let params = commandParamTokens(e.message.content.toLowerCase());
-            let userData = Users.get(e.message.author.id);
             let action = params[0];
             let term;
             if(params.length){
@@ -193,7 +193,7 @@ module.exports = {
         ignoreHidden: true,
         category: "general",
 
-        execute(bot, e) {
+        execute(bot, e, userData, guildData) {
             let message = commandParamString(e.message.content).toLowerCase();
             let tokens = commandParamTokens(e.message.content);
             let days = attemptNumParameterFetch(message,"-d") ||  30;
@@ -205,7 +205,7 @@ module.exports = {
                 return;
             }
             //Skarm.logError(page);
-            let guild = Guilds.get(e.message.guild.id);
+            let guild = guildData;
             let table = guild.flexActivityTable;
 
 
@@ -309,8 +309,8 @@ module.exports = {
         helpText: "Returns the number of actions in Skarm's log for the current server.",
         ignoreHidden: true,
         category: "meta",
-		
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             let guild = e.message.guild;
             Skarm.sendMessageDelay(e.message.channel, "Actions known for **" +
                 guild.name + "**: " + Guilds.get(guild.id).getActionCount());
@@ -327,8 +327,8 @@ module.exports = {
         helpText: "It's literally just the credits. Why do you need help with this?",
         ignoreHidden: true,
 		category: "meta",
-        
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             let version = Math.floor(Math.random() * 0xffffffff);
             Skarm.sendMessageDelay(e.message.channel,
 `**Skarm Bot 2**\n
@@ -389,8 +389,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Provides an encyclopedia entry for the specified command. Or alternatively, the bot as a whole.",
         ignoreHidden: true,
 		category: "meta",
-        
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             let cmd = commandParamTokens(e.message.content)[0];
             if(e.message.content==="e!?")
                 cmd = "?";
@@ -468,8 +468,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Returns the number of messages in Skarm's log for the current server.",
         ignoreHidden: true,
         category: "meta",
-		
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             let guild = e.message.guild;
             Skarm.sendMessageDelay(e.message.channel, "Lines known for **" +
                 guild.name + "**: " + Guilds.get(guild.id).getLineCount());
@@ -487,8 +487,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         category: "meta",
 
-        execute(bot, e) {
-            let userData = Users.get(e.message.author.id);
+        execute(bot, e, userData, guildData) {
             let newNick = commandParamString(e.message.content);
             if(!newNick.length) {
                 Skarm.sendMessageDelay(e.message.channel,`Your current nickname is: ${userData.nickName}`);
@@ -514,8 +513,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Sends a test message to the channel, and then attempts to edit it. Useful for testing the bot's response time.",
         ignoreHidden: true,
         category: "meta",
-        
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             let timeStart = Date.now();
             // don't use sendMessageDelay - you want this to be instantaneous
             e.message.channel.sendMessage("Testing response time...").then(e => {
@@ -534,8 +533,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Prints a list of the shanties skarm knows and is thus likely to sing while under the influence",
         ignoreHidden: true,
         category: "meta",
-        
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
 			let target = commandParamString(e.message.content);
 			let names = bot.shanties.names;
             let shanties = "";
@@ -562,8 +561,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Provides a nanosecondly forecast of what the odds are that skarm will say something stupid (100%) and more importantly: what stupid thing Skarm'll say.",
         ignoreHidden: true,
         category: "meta",
-		
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             //shanty counter is intentionally wrong following shanties being buffered on a per-channel basis
 			let shanty = Math.floor(Math.random()*5000)/100;
 			let skyrim=Math.floor((new Date).getDay()*bot.skyrimOddsModifier*10000)/100;
@@ -585,8 +584,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Displays some stats about the bot.",
         ignoreHidden: true,
         category: "meta",
-        
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             let uptime = process.uptime();
             let uptimeDays = Math.floor(uptime / 86400);
             let uptimeHours = Math.floor((uptime / 3600) % 24);
@@ -627,8 +626,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Provides a list to the Github Issues page, where you may complain to your heart's content.",
         ignoreHidden: true,
         category: "meta",
-		
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             Skarm.sendMessageDelay(e.message.channel, "You may submit your questions and complaints here: https://github.com/DragoniteSpam/SkarmBot/issues");
         },
         
@@ -648,8 +647,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Returns the results of a web search of the specified query. The `cosia` alias is an acceptable usage of punning.",
         ignoreHidden: true,
         category: "web",
-		
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             Web.google(bot, e, commandParamString(e.message.content));
         },
         
@@ -664,8 +663,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Returns a Stackoverflow search for the given query",
         ignoreHidden: true,
         category: "web",
-		
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             Web.stackOverflow(bot, e, commandParamString(e.message.content));
         },
         
@@ -681,7 +680,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
 		category: "web",
 
-        execute(bot, e) {
+        execute(bot, e, userData, guildData) {
             Web.wolfy(bot, e, commandParamString(e.message.content));
         },
         
@@ -696,8 +695,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Returns the XKCD with the specified ID; if no ID is specified, it will return the latest strip instead. ID may be an index or a strip name.",
         ignoreHidden: true,
 		category: "web",
-		
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             bot.xkcd.post(e.message.channel, commandParamTokens(e.message.content).join(" "));
         },
         
@@ -718,9 +717,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.ADMIN,
         category: "administrative",
-		
-        execute(bot, e) {
-            let guildData = Guilds.get(e.message.guild.id);
+
+        execute(bot, e, userData, guildData) {
 			let words=commandParamTokens(e.message.content);
 			if(!guildData.moderators)
 				guildData.moderators={ };
@@ -772,11 +770,10 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Shows the user's access level (pleb, moderator, admin, Mom, etc).",
         ignoreHidden: true,
         category: "administrative",
-		
-        execute(bot, e) {
-            let guildData = Guilds.get(e.message.guild.id);
+
+        execute(bot, e, userData, guildData) {
 			let words=commandParamTokens(e.message.content);
-			let userData = Users.get(e.message.author.id);
+
             
 			
 			let member;
@@ -820,10 +817,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
+
+        execute(bot, e, userData, guildData) {
             
             if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
@@ -844,10 +839,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: false,
         perms: Permissions.ADMIN,
 		category: "administrative",
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
+
+        execute(bot, e, userData, guildData) {
             
             if (guildData.toggleHiddenChannel(bot.channelsHidden, e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
@@ -868,10 +861,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
-        
-        execute(bot, e) {
-            let userData = Users.get(e.message.author.id);
-            let guildData = Guilds.get(e.message.guild.id);
+
+        execute(bot, e, userData, guildData) {
 			let args = commandParamTokens(e.message.content);
 			
             if (args.length === 0) {
@@ -939,9 +930,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         perms: Permissions.MOD,
         category: "administrative",
 
-        execute(bot, e) {
-            let userData = Users.get(e.message.author.id);
-            let guildData = Guilds.get(e.message.guild.id);
+        execute(bot, e, userData, guildData) {
             let args = commandParamTokens(e.message.content);
 
             if (args.length === 0) {
@@ -997,9 +986,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         perms: Permissions.MOD,
         category: "administrative",
 
-        execute(bot, e) {
-            let userData = Users.get(e.message.author.id);
-            let guildData = Guilds.get(e.message.guild.id);
+        execute(bot, e, userData, guildData) {
             let notifChannels = guildData.notificationChannels;
             let args = commandParamTokens(e.message.content.toLowerCase());
 
@@ -1089,10 +1076,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
+
+        execute(bot, e, userData, guildData) {
             
             let guild = Guilds.get(e.message.guild.id);
             
@@ -1118,10 +1103,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
+
+        execute(bot, e, userData, guildData) {
 			if(guildData.welcoming===undefined)
 				guildData.welcoming=true;
 			if(guildData.welcomes===undefined){
@@ -1185,9 +1168,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
-		
-        execute(bot, e) {
-            Guilds.get(e.message.guild.id).soap();
+
+        execute(bot, e, userData, guildData) {
+            guildData.soap();
 			Skarm.sendMessageDelay(e.message.channel,"sorry...");
         },
         
@@ -1207,9 +1190,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "returns how much exp you have in the guild",
         ignoreHidden: true,
 		category: "leveling",
-        
-        execute(bot, e) {
-			let guildData =Guilds.get(e.message.channel.guild_id);
+
+        execute(bot, e, userData, guildData) {
 			let target = e.message.author.id;
 			let tok =commandParamTokens(e.message.content);
 			if(tok.length===1){
@@ -1241,13 +1223,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
-		
-        execute(bot, e) {
-			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)) {
+
+        execute(bot, e, userData, guildData) {
+			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
 				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			let user = Guilds.get(e.message.channel.guild_id).expTable[e.message.author.id];
+			let user = guildData.expTable[e.message.author.id];
 			user.exp = commandParamTokens(e.message.content)[0] - 0;
 			user.level = Skinner.getLevel(user.exp);
 			user.nextLevelEXP = Skinner.getMinEXP(user.level);
@@ -1266,14 +1248,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
-		
-        
-        execute(bot, e) {
-			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)) {
+
+
+        execute(bot, e, userData, guildData) {
+			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
 				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			let guildData = Guilds.get(e.message.channel.guild_id);
 			let tokens = commandParamTokens(e.message.content);
 			if(tokens.length===0){
 				Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+((guildData.roleStack)?" currently rewards":" doesn't currently reward")+" stacked roles");
@@ -1303,9 +1284,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		helpText: "Displays roles rewarded for leveling up",
 		ignoreHidden:true,
 		category: "leveling",
-		
-		execute(bot,e){
-			let roles = Guilds.get(e.message.guild.id).rolesTable;
+
+        execute(bot, e, userData, guildData) {
+			let roles = guildData.rolesTable;
 			if(Object.keys(roles).length===0){
 				Skarm.sendMessageDelay(e.message.channel,"No roles configured to be rewarded from leveling up in "+e.message.guild.name);
 				return;
@@ -1328,8 +1309,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		ignoreHidden:true,
 		category: "leveling",
         perms: Permissions.MOD,
-		
-		execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
 			if(e.message.guild==null){
 				Skarm.sendMessageDelay(e.message.channel, "Error: guild not found.");
 				return;
@@ -1377,14 +1358,14 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
-		
-        execute(bot, e) {
-			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)) {
+
+        execute(bot, e, userData, guildData) {
+			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
 				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			Guilds.get(e.message.channel.guild_id).announcesLevels= !Guilds.get(e.message.channel.guild_id).announcesLevels;
-			if(Guilds.get(e.message.channel.guild_id).announcesLevels){
+			guildData.announcesLevels= !guildData.announcesLevels;
+			if(guildData.announcesLevels){
 				Skarm.sendMessageDelay(e.message.channel,"Level ups will now be announced in this guild");
 				return;
 			}
@@ -1403,9 +1384,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
 		category: "leveling",
 
-        execute(bot, e) {
-			let guile = Guilds.get(e.message.channel.guild_id);
-			guile.roleCheck(e.message.member,guile.expTable[e.message.author.id]);
+        execute(bot, e, userData, guildData) {
+		    guildData.roleCheck(e.message.member,guildData.expTable[e.message.author.id]);
 			Skarm.sendMessageDelay(e.message.channel,"Refreshed your roles!");
         },
         
@@ -1431,7 +1411,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         perms: Permissions.MOM,
         category: "infrastructure",
 
-        execute(bot, e) {
+        execute(bot, e, userData, guildData) {
             Skarm.todo(commandParamString(e.message.content));
         },
 
@@ -1448,7 +1428,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         perms: Permissions.MOM,
         category: "infrastructure",
 
-        execute(bot, e) {
+        execute(bot, e, userData, guildData) {
             let tokens =commandParamTokens(e.message.content);
             if(tokens.length===0) {
                 e.message.channel.sendMessage("running test...", false, {
@@ -1535,7 +1515,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         perms: Permissions.MOM,
         category: "infrastructure",
 
-        execute(bot, e) {
+        execute(bot, e, userData, guildData) {
             let tokens = commandParamTokens(e.message.content);
             if (tokens.length < 2) return Skarm.spam(tokens.length);
 
@@ -1558,7 +1538,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         perms: Permissions.MOM,
         category: "infrastructure",
 
-        execute(bot, e) {
+        execute(bot, e, userData, guildData) {
             let tokens = commandParamTokens(e.message.content);
             if (tokens.length < 1) return;
             let destination = tokens.splice(0, 1)[0];
@@ -1586,7 +1566,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         perms: Permissions.MOM,
 		category: "infrastructure",
 
-        execute(bot, e) {
+        execute(bot, e, userData, guildData) {
             let cps = commandParamString(e.message.content);
             if(cps===undefined ||cps===null || cps.length<1 || cps==="cycle") {
                 bot.game = 0;
@@ -1615,9 +1595,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
-        
-        
-        execute(bot, e) {
+
+
+        execute(bot, e, userData, guildData) {
             let savecode = Constants.SaveCodes.EXIT;
             //save data before a shutdown
 			let tok = commandParamTokens(e.message.content.toLowerCase());
@@ -1646,8 +1626,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
-        
-        execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
             Skarm.log("Restarting by order of <@" + e.message.author.id + ">");
             //save memory before a restart
 			bot.save(Constants.SaveCodes.REBOOT);
@@ -1665,8 +1645,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
-		
-		execute(bot, e) {
+
+        execute(bot, e, userData, guildData) {
 			bot.save(Constants.SaveCodes.DONOTHING);
 			Skarm.sendMessageDelay(e.message.channel, "Data has been saved.");
 		},
@@ -1683,11 +1663,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
-        
-        execute(bot, e) {
-            var userData = Users.get(e.message.author.id);
-            var guildData = Guilds.get(e.message.guild.id);
-            
+
+        execute(bot, e, userData, guildData) {
             bot.saveDebug();
             
             Skarm.sendMessageDelay(e.message.channel, "Saved the debug things!");
