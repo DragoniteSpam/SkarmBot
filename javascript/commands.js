@@ -709,7 +709,64 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	/**
 	*administrative
 	*/
-	Knight: {
+    Alias: {
+        aliases: ["alias"],
+        params: ["add, remove, list <alias>"],
+        usageChar: "@",
+        helpText: "Manage additional names that skarm will respond to.  All names are case insensitive.  Usage:\r\n `e@alias add scramble`, `e@alias list`, `e@alias remove scramble`",
+        ignoreHidden: false,
+        perms: Permissions.MOD,
+        category: "administrative",
+
+        execute(bot, e, userData, guildData) {
+            let words=commandParamTokens(e.message.content.toLowerCase());
+            if(!guildData.aliases) guildData.aliases={ };
+            if(words.length===0) {Skarm.help(this, e);return;}
+            let action = words.shift();
+            switch(action){
+                case "list":
+                case "l":
+                    let guildAliases = Object.keys(guildData.aliases);
+                    if(guildAliases.length)
+                        Skarm.sendMessageDelay(e.message.channel,`Skarm currently responds to the following aliases in this guild: ${guildAliases.join(", ")}`);
+                    else
+                        Skarm.sendMessageDelay(e.message.channel,`Skarm currently has no special aliases in this guild.`);
+                    break;
+
+                case "add":
+                case "a":
+                    if(words.length === 0){
+                        Skarm.sendMessageDelay(e.message.channel, "Error: expected alias to add");
+                    }else{
+                        guildData.aliases[words.join(" ")]=1;
+                        Skarm.sendMessageDelay(e.message.channel,`Added alias ${words.join(" ")}`);
+                        if(words.join(" ").length < 3)
+                            Skarm.sendMessageDelay(e.message.channel,`Warning: the added alias is short and may potentially cause a massive quantity of responses.  Please verify that the change you just made is indeed desired.`);
+                    }
+                    break;
+
+                case "remove":
+                case "delete":
+                case "r":
+                case "d":
+                    if(words.length === 0){
+                        Skarm.sendMessageDelay(e.message.channel, "Error: expected alias to remove");
+                    }else{
+                        guildData.aliases[words.join(" ")]=undefined;
+                        Skarm.sendMessageDelay(e.message.channel,`Removed alias ${words.join(" ")}`);
+                    }
+                    break;
+
+                default:
+                    Skarm.help(this, e);
+            }
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Knight: {
         aliases: ["mod", "knight"],
         params: ["member | clear"],
         usageChar: "@",

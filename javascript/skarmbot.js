@@ -317,7 +317,7 @@ class Bot {
                 // functions called in this way in the object's own scope and
                 // you don't otherwise have a way to reference it
                 if (guildData.hasPermissions(userData, cmdData.perms)) {
-                    cmdData.execute(this, e);
+                    cmdData.execute(this, e,userData,guildData);
                 } else {
                     Skarm.sendMessageDelay(e.message.channel, "**" + author.username +
                         "** was not found in the sudoers file. This incident will" +
@@ -409,8 +409,8 @@ class Bot {
             return true;
         }
 
-        //Skarm.spam("Parrot");
-        this.parrot(e);
+
+        this.parrot(e,guildData.aliases);
 
         return false;
     }
@@ -485,10 +485,14 @@ class Bot {
         map[channel.guild_id] = channel.id;
         return true;
     }
-    
-    // learning and reciting lines
-    parrot(e) {
-        if (this.mentions(e, this.validNickReferences)) {
+
+    /**
+     * Learning and reciting lines
+     * @param e
+     * @param additionalAliases optional additional aliases to check against
+     */
+    parrot(e, additionalAliases) {
+        if (this.mentions(e, this.validNickReferences) || (additionalAliases && this.mentions(e, additionalAliases))) {
 			//once skarm starts singing, he'd rather do that than talk
 			let seed = Math.random();
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
