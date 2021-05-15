@@ -723,6 +723,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             if(!guildData.aliases) guildData.aliases={ };
             if(words.length===0) {Skarm.help(this, e);return;}
             let action = words.shift();
+            let alias = words.join(" ");
             switch(action){
                 case "list":
                 case "l":
@@ -739,7 +740,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                         Skarm.sendMessageDelay(e.message.channel, "Error: expected alias to add");
                     }else{
                         guildData.aliases[words.join(" ")]=1;
-                        Skarm.sendMessageDelay(e.message.channel,`Added alias ${words.join(" ")}`);
+                        Skarm.sendMessageDelay(e.message.channel,`Added alias ${alias}`);
                         if(words.join(" ").length < 3)
                             Skarm.sendMessageDelay(e.message.channel,`Warning: the added alias is short and may potentially cause a massive quantity of responses.  Please verify that the change you just made is indeed desired.`);
                     }
@@ -751,9 +752,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 case "d":
                     if(words.length === 0){
                         Skarm.sendMessageDelay(e.message.channel, "Error: expected alias to remove");
-                    }else{
-                        guildData.aliases[words.join(" ")]=undefined;
-                        Skarm.sendMessageDelay(e.message.channel,`Removed alias ${words.join(" ")}`);
+                    }else {
+                        if (alias in guildData.aliases) {
+                            delete guildData.aliases[alias];
+                            Skarm.sendMessageDelay(e.message.channel, `Removed alias ${alias}`);
+                        }else{
+                            Skarm.sendMessageDelay(e.message.channel, `Alias ${alias} did not exist for this guild.`);
+                        }
                     }
                     break;
 
