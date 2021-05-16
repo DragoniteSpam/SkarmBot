@@ -711,9 +711,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	*/
     Alias: {
         aliases: ["alias"],
-        params: ["add, remove, list <alias>"],
+        params: ["add, remove, list, clear"],
         usageChar: "@",
-        helpText: "Manage additional names that skarm will respond to.  All names are case insensitive.  Usage:\r\n `e@alias add scramble`, `e@alias list`, `e@alias remove scramble`",
+        helpText: "Manage additional names that skarm will respond to.  The scope of these aliases is within the guild in which they are configured.  All names are case insensitive.\r\nAdd registers new aliases, Remove or delete get rid of existing aliases.  List provides a complete list of guild-specific aliases.  Clear **purges all** guild-specific aliases.   \r\nUsage:  `e@alias add scramble`, `e@alias list`, `e@alias remove scramble`, `e@alias delete *`, `e@alias clear`",
         ignoreHidden: false,
         perms: Permissions.MOD,
         category: "administrative",
@@ -724,10 +724,17 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             if(words.length===0) {Skarm.help(this, e);return;}
             let action = words.shift();
             let alias = words.join(" ");
+            let guildAliases = Object.keys(guildData.aliases).map(str => "`"+str+"`");
+            //expunges all existing guild-specific aliases
+            function clear(){
+                Skarm.sendMessageDelay(e.message.channel, `Purging all existing aliases.  Removed aliases: ${Object.keys(guildData.aliases).join(", ")}`);
+                guildData.aliases = { };
+            }
+
             switch(action){
                 case "list":
+                case "ls":
                 case "l":
-                    let guildAliases = Object.keys(guildData.aliases);
                     if(guildAliases.length)
                         Skarm.sendMessageDelay(e.message.channel,`Skarm currently responds to the following aliases in this guild: ${guildAliases.join(", ")}`);
                     else
@@ -747,12 +754,17 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     break;
 
                 case "remove":
-                case "delete":
+                case "rem":
                 case "r":
+                case "delete":
+                case "del":
                 case "d":
                     if(words.length === 0){
                         Skarm.sendMessageDelay(e.message.channel, "Error: expected alias to remove");
                     }else {
+                        if(alias === "*"){
+                            return clear();
+                        }
                         if (alias in guildData.aliases) {
                             delete guildData.aliases[alias];
                             Skarm.sendMessageDelay(e.message.channel, `Removed alias ${alias}`);
@@ -762,6 +774,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     }
                     break;
 
+                case "clear":
+                    clear()
+                    break;
                 default:
                     Skarm.help(this, e);
             }
