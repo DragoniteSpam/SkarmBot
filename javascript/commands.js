@@ -697,7 +697,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		category: "web",
 
         execute(bot, e, userData, guildData) {
-            bot.xkcd.post(e.message.channel, commandParamTokens(e.message.content).join(" "));
+            bot.xkcd.post(e.message.channel, commandParamString(e.message.content));
         },
         
         help(bot, e) {

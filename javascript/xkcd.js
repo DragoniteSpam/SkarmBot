@@ -69,6 +69,7 @@ class XKCD {
 				let arguo=body.indexOf(startTarget);
 				let title = body.substring(arguo+startTarget.length);
 				title = title.substring(0,title.indexOf("<"));
+				title = title.replace("xkcd: ","");
 				tis.references.ordered.push(title);
 				tis.references.alphabetized.push([title,newXkcdId]);
 				tis.references.alphabetized.sort(function(a, b) {
@@ -104,6 +105,8 @@ class XKCD {
 				break;
 			}
 			// is a missal of silos?
+			//console.log(`Searching for ${id} in ${data[0]}`);
+			if(data[0].includes("xkcd: "))data[0]=data[0].replace("xkcd: ","");	//correct any artifacts that were imported in the form "xkcd: title"
 			if (data[0].includes(id)) {
 				results.push([data[0], "https://xkcd.com/" + data[1] + "/"]);
 			}
@@ -114,7 +117,7 @@ class XKCD {
 			return;
 		}
 
-		if (results.length === 1 && results[0][0] === id) {
+		if (results.length === 1) {
 			Skarm.sendMessageDelay(channel, results[0][1]);
 			return;
 		}
