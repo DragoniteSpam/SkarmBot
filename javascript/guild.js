@@ -636,6 +636,8 @@ class Guild {
 		this.moderators = { };
 		this.announcesLevels=false;
 
+		this.aliases = { };  //Other names that skarm will respond to, changed through the Alias command
+
 		//[{userID: String -> {Date:Long -> wordCount:Int},totalWords -> Int}]
 		this.activityTable = [];
         /**
