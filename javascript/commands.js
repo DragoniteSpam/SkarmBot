@@ -672,23 +672,25 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
-    Wolfy: {
-        aliases: ["wolfram", "wolfy"],
-        params: ["query..."],
-        usageChar: "!",
-        helpText: "Returns a Wolfram|Alpha API request for the given query.",
-        ignoreHidden: true,
-		category: "web",
+    //Unsecure
+    // Wolfy: {
+    //     aliases: ["wolfram", "wolfy"],
+    //     params: ["query..."],
+    //     usageChar: "!",
+    //     helpText: "Returns a Wolfram|Alpha API request for the given query.",
+    //     ignoreHidden: true,
+	// 	category: "web",
+    //
+    //     execute(bot, e, userData, guildData) {
+    //         Web.wolfy(bot, e, commandParamString(e.message.content));
+    //     },
+    //
+    //     help(bot, e) {
+    //         Skarm.help(this, e);
+    //     },
+    // },
 
-        execute(bot, e, userData, guildData) {
-            Web.wolfy(bot, e, commandParamString(e.message.content));
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
-	XKCD: {
+    XKCD: {
         aliases: ["xkcd"],
         params: ["[id]"],
         usageChar: "!",
