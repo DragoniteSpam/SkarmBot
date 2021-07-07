@@ -1,4 +1,4 @@
-cd ..\skarmData
+cd ../skarmData
 
 # if %errorlevel% == 1 (
 #	cd ..

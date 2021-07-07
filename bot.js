@@ -47,11 +47,11 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
 		return;
 	}
-
-	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
+    
+    let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
     Constants.initialize(client);
     Encrypt.initialize();
-	dataPuller.on('exit', (code) => {
+    dataPuller.on('exit', (code) => {
 		console.log("Pulled in skarmData.\nGit revision count: "+code);
 		Users.initialize(client);
 		Guilds.initialize(client);
