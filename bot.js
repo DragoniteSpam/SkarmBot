@@ -64,6 +64,8 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		dataPuller.on("message",(message) => {console.log(message);});
 	} else {
 		console.log("Unable to pull in skarmData at the current moment.");
+		Constants.initialize(client);
+		Encrypt.initialize();
 		Users.initialize(client);
 		Guilds.initialize(client);
 		bot = new SkarmBot(client, -1);
