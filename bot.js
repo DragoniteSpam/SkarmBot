@@ -12,6 +12,7 @@ const client = new discordie({autoReconnect:true});
 const events = discordie.Events;
 
 // we made these
+const Platform = require("./javascript/platform.js");
 const Skarm = require("./javascript/skarm.js");
 const SkarmBot = require("./javascript/skarmbot.js");
 const XKCD = require("./javascript/xkcd.js");
@@ -47,19 +48,27 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
 		return;
 	}
-    
-    let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
-    Constants.initialize(client);
-    Encrypt.initialize();
-    dataPuller.on('exit', (code) => {
-		console.log("Pulled in skarmData.\nGit revision count: "+code);
+	
+	if (Platform.WINDOWS) {
+		let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
+		Constants.initialize(client);
+		Encrypt.initialize();
+		dataPuller.on('exit', (code) => {
+			console.log("Pulled in skarmData.\nGit revision count: "+code);
+			Users.initialize(client);
+			Guilds.initialize(client);
+			bot = new SkarmBot(client,code);
+			Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
+		});
+		dataPuller.on("error",(err)=>{console.error(err);});
+		dataPuller.on("message",(message) => {console.log(message);});
+	} else {
+		console.log("Unable to pull in skarmData at the current moment.");
 		Users.initialize(client);
 		Guilds.initialize(client);
-		bot = new SkarmBot(client,code);
+		bot = new SkarmBot(client, -1);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
-	});
-	dataPuller.on("error",(err)=>{console.error(err);});
-	dataPuller.on("message",(message) => {console.log(message);});
+	}
 });
 
 client.Dispatcher.on(events.PRESENCE_UPDATE, e => {
