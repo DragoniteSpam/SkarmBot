@@ -145,13 +145,13 @@ class XKCD {
 	 * @param n broadcast immediately override of Any truthy type
 	 */
 	sweep(n) {
-		var d = new Date(); // for now
-		var datetext = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+		let d = new Date(); // for now
+		let datetext = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
 		console.log("Running xkcd.sweep function.\tCurrent time: " + datetext);
 		let now = new Date();
 		if (this.lock < 1 && (n || now.getHours() === 22 && (now.getDay() & 1))) {
 			this.lock = 3 + (n ? 10 : 0);
-			for (var channel in this.bot.channelsWhoLikeXKCD) {
+			for (let channel in this.bot.channelsWhoLikeXKCD) {
 				this.post(this.bot.client.Channels.get(channel));
 			}
 			console.log("pushed out xkcds");

@@ -21,6 +21,7 @@ class Skarm {
     * @param message the message to be sent to the spam channel
     */
 	static spam(message) {this.spamBuffer(message);}
+	static STDERR(data) {this.spamBuffer(data);  console.error(data);}
 
     static spamNoBuffer(message) {
         if(message.length>0)
