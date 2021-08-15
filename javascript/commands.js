@@ -280,6 +280,48 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+    Roll: {
+        aliases: ["roll","diceroll"],
+        params: ["d#"],
+        usageChar: "!",
+        helpText: "Roll a die.",
+        ignoreHidden: true,
+        category: "general",
+
+        execute(bot, e, userData, guildData) {
+            let message = commandParamString(e.message.content.toLowerCase());
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+
+            if (!tokens.length) {
+                this.help(bot,e);
+                return;
+            }
+
+            let dPointIndex = tokens[0].indexOf("d");
+
+            let dieMagnitude = tokens[0].substring(dPointIndex + 1) - 0;
+            let dieCount = 1;
+
+            if(dPointIndex > 0){
+                dieCount = tokens[0].substring(0,dPointIndex) - 0;
+            }
+
+            dieCount = Math.min(0x1000, dieCount);             //prevent user-end exploits
+            dieMagnitude = Math.min(0x1000, dieMagnitude);     //prevent user-end exploits
+
+            let rollAccumulator = 0;
+
+            for(let i=0; i<dieCount; i++){
+                rollAccumulator += 1 + Math.floor(dieMagnitude * Math.random());
+            }
+
+            Skarm.sendMessageDelay(e.message.channel, rollAccumulator);
+        },
+
+        help(bot,e) {
+            Skarm.help(this, e);
+        },
+    },
     UnixToDate: {
         aliases: ["unixtodate", "utd","time"],
         params: ["#"],
@@ -395,12 +437,12 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             if(e.message.content==="e!?")
                 cmd = "?";
 
-            if (!cmd) {
+            if (cmd === "?") {
                 Skarm.sendMessageDelay(e.message.channel, " ",false,{
                     color: Skarm.generateRGB(),
                     description: "Skarm is a Discord bot made by "+Constants.Moms.DRAGO.mention+" and "+Constants.Moms.MASTER.mention+".\n"+
                         "Use the help command with a command name to see the documentation for it!\n"+
-                        "Type either `e!help [command-name]` to get help on a specific command, or `e!help ?` to see a list of all available commands.\n",
+                        "Type either `e!help [command-name]` to get help on a specific command, or `e!help` to see a list of all available commands.\n",
                         /*  title: "github",
                             url: "http://github.com/DragoniteSpam/Skarmbot",
                         */
@@ -410,7 +452,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 return;
             }
 
-            if (cmd === "?") {
+            if (!cmd) {
                 let guildData = Guilds.get(e.message.channel.guild_id);
                 let userData = Users.get(e.message.author.id);
                 let categories = {};
