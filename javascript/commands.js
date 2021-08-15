@@ -281,16 +281,17 @@ module.exports = {
         },
     },
     Roll: {
-        aliases: ["roll","diceroll"],
-        params: ["d#"],
+        aliases: ["roll"],
+        params: ["#d# + #"],
         usageChar: "!",
-        helpText: "Roll a die.",
+        helpText: "Roll some dice!",
         ignoreHidden: true,
         category: "general",
 
         execute(bot, e, userData, guildData) {
             let message = commandParamString(e.message.content.toLowerCase());
-            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            if (message.includes("+")) message = message.replace("+", " + ").replaceAll("  "," ");
+            let tokens = message.split(" ");
 
             if (!tokens.length) {
                 this.help(bot,e);
@@ -302,6 +303,8 @@ module.exports = {
             let dieMagnitude = tokens[0].substring(dPointIndex + 1) - 0;
             let dieCount = 1;
 
+            //Skarm.spam(`tokens: ${tokens}`);
+
             if(dPointIndex > 0){
                 dieCount = tokens[0].substring(0,dPointIndex) - 0;
             }
@@ -309,7 +312,22 @@ module.exports = {
             dieCount = Math.min(0x1000, dieCount);             //prevent user-end exploits
             dieMagnitude = Math.min(0x1000, dieMagnitude);     //prevent user-end exploits
 
+            //Skarm.spam(`dieCount: ${dieCount}, dieMag: ${dieMagnitude}`);
+
             let rollAccumulator = 0;
+            if(tokens.length > 1 && message.includes("+")){
+                let i = 1;
+                while(i < tokens.length){
+                    if(tokens[i++].includes("+")){
+                        //Skarm.spam(`Found + at token ${i} of ${tokens.length}: ${tokens[i-1]}`);
+                        break;
+                    }
+                }
+                rollAccumulator = (i < tokens.length) ? tokens[i] - 0 : 0;
+                //Skarm.spam(`Roll Accumulator: ${rollAccumulator}`);
+            }
+
+
 
             for(let i=0; i<dieCount; i++){
                 rollAccumulator += 1 + Math.floor(dieMagnitude * Math.random());
