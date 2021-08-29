@@ -284,7 +284,7 @@ module.exports = {
         aliases: ["roll"],
         params: ["#d# + #"],
         usageChar: "!",
-        helpText: "Roll some dice!",
+        helpText: "Roll up to 64 dice with a max value of up to 1000 per die!",
         ignoreHidden: true,
         category: "general",
 
@@ -309,11 +309,12 @@ module.exports = {
                 dieCount = tokens[0].substring(0,dPointIndex) - 0;
             }
 
-            dieCount = Math.min(0x1000, dieCount);             //prevent user-end exploits
-            dieMagnitude = Math.min(0x1000, dieMagnitude);     //prevent user-end exploits
+            dieCount = Math.min(0x40, dieCount);             //prevent user-end exploits
+            dieMagnitude = Math.min(1000, dieMagnitude);     //prevent user-end exploits
 
             //Skarm.spam(`dieCount: ${dieCount}, dieMag: ${dieMagnitude}`);
 
+            let rollValues = [];
             let rollAccumulator = 0;
             if(tokens.length > 1 && message.includes("+")){
                 let i = 1;
@@ -327,13 +328,19 @@ module.exports = {
                 //Skarm.spam(`Roll Accumulator: ${rollAccumulator}`);
             }
 
-
+            let baseValue = rollAccumulator;
 
             for(let i=0; i<dieCount; i++){
-                rollAccumulator += 1 + Math.floor(dieMagnitude * Math.random());
+                let rollValue =  1 +Math.floor(dieMagnitude * Math.random());
+                rollAccumulator += rollValue;
+                rollValues.push(rollValue);
             }
 
-            Skarm.sendMessageDelay(e.message.channel, rollAccumulator);
+            if(baseValue > 0){              //append base value to end of addition array
+                rollValues.push(baseValue);
+            }
+
+            Skarm.sendMessageDelay(e.message.channel, `${rollValues.join(" + ")} = **${rollAccumulator}**`);
         },
 
         help(bot,e) {
