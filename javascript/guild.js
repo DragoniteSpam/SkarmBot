@@ -60,10 +60,14 @@ const linkVariables = function(guild) {
         }
     }
     if (guild.hiddenChannels === undefined) guild.hiddenChannels = { };
+    if (guild.zipfMap === undefined){guild.zipfMap = {};}
 };
 
 // since de/serialized objects don't keep their functions
 const linkFunctions = function(guild) {
+
+    //functions executed after every message
+
     guild.executeMayhem = function() {
         let guildData = Guild.getData(this.id);
         for (let roleID in this.mayhemRoles) {
@@ -159,7 +163,43 @@ const linkFunctions = function(guild) {
 
     };
 
-    //functions corresponding to configuration configuration
+    guild.appendZipfData = function (content) {
+        //Skarm.spam(`Received content: ${content}`);
+        //filter sentence structure
+        content = content.toLowerCase();
+
+        let replaceWithSpaceChars = [".", ",", "/", "\r", ":", "\n", "  ", "(", ")"];
+        for(let i in replaceWithSpaceChars){
+            let repl = replaceWithSpaceChars[i];
+            while(content.includes(repl)){
+                content = content.replace(repl," ");
+            }
+        }
+
+        let words = content.split(" ");
+
+        //Skarm.spam(`Generated array: ${words}`);
+
+        for(let i in words){
+            let word = words[i];
+
+
+
+            //filter word structure
+            if(word.includes("http"))   continue;
+            if(word.includes("="))      continue;
+            if(word[0] === "-")         continue;
+            if(word[0] === "!")         continue;
+            if(word.length > 1 && word[1] === "!")         continue;
+
+            if(!(word in guild.zipfMap))
+                guild.zipfMap[word] = 0;
+            guild.zipfMap[word]++;
+        }
+        //Skarm.spam(JSON.stringify(guild.zipfMap));
+    };
+
+    //functions corresponding to commands
 
     guild.soap = function () {
         if(this.lastSendLine) delete this.lines[this.lastSendLine];
@@ -181,6 +221,28 @@ const linkFunctions = function(guild) {
     guild.getLineCount = function() {
         return Object.keys(this.lines).length;
     };
+
+    guild.getZipfSubset = function (startIndex){
+        if(!isFinite(startIndex)){
+            return `Inappropriate input parameter: ${startIndex}`;
+        }else{
+            startIndex = startIndex-0;
+        }
+
+        //convert hashmap to array
+        let zipfArray = [];
+        for(let word in guild.zipfMap){
+            zipfArray.push({word:word, occurrences:guild.zipfMap[word]});
+        }
+        zipfArray.sort((a,b) => {return b.occurrences - a.occurrences});
+
+        let printData = ["Frequency of values starting at " + startIndex];
+        for(let i = -1; i<9 && startIndex+i < zipfArray.length; i++){
+            let wordObj = zipfArray[startIndex+i];
+            printData.push((1+startIndex+i) + ": " + wordObj.word + "  -  " + wordObj.occurrences);
+        }
+        return printData.join("\r\n");
+    }
 
     //functions that are subroutines of parrot
 
@@ -579,7 +641,6 @@ const linkFunctions = function(guild) {
     };
 
     //I'm throwing in -0 at the end of various things to make sure that any numbers stored as strings are cast properly
-
     //aggregates and cleans up total words then performs a single swap if appropriate
     guild.minSortActivityTable = function (i) {
         //Skarm.spam("Partially sorting at index "+i);
@@ -703,6 +764,12 @@ class Guild {
              */
             XKCD:                   {},
         };
+
+        /**
+         * A hash map of words that have been observed to occur in the server.  Maps a word string to a
+         * @type [string]word -> [int]instances
+         */
+		this.zipfMap = { };
 
 		this.welcoming = true;
 		this.welcomes = { };

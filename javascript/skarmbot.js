@@ -304,6 +304,7 @@ class Bot {
         guildData.executeMayhem();
         guildData.updateEXP(e);
         guildData.updateActivity(e);
+        guildData.appendZipfData(e.message.content);
 
         // now we can start doing stuff
         let author = e.message.author;

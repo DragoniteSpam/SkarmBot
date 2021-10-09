@@ -686,7 +686,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
-	Suggest: {
+    Suggest: {
         aliases: ["suggest", "suggestion"],
         params: [""],
         usageChar: "!",
@@ -697,14 +697,32 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         execute(bot, e, userData, guildData) {
             Skarm.sendMessageDelay(e.message.channel, "You may submit your questions and complaints here: https://github.com/DragoniteSpam/SkarmBot/issues");
         },
-        
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Zipf: {
+        aliases: ["zipf"],
+        params: ["<startIndex>"],
+        usageChar: "!",
+        helpText: "Queries a list of words sent in the server by their relative frequencies. Optional integer parameter for offsetting the 10 displayed words.",
+        ignoreHidden: true,
+        category: "meta",
+
+        execute(bot, e, userData, guildData) {
+            let args = commandParamString(e.message.content);
+            if(!args || args.length < 1) args = 1;
+            Skarm.sendMessageDelay(e.message.channel, guildData.getZipfSubset(args));
+        },
+
         help(bot, e) {
             Skarm.help(this, e);
         },
     },
 
 
-	/**
+    /**
 	*	web
 	*/
 	Google: {
