@@ -168,13 +168,20 @@ const linkFunctions = function(guild) {
         //filter sentence structure
         content = content.toLowerCase();
 
-        let replaceWithSpaceChars = [".", ",", "/", "\r", ":", "\n", "  ", "(", ")"];
+
+        //purge special characters
+        let replaceWithSpaceChars  = '.,/\r\n:()<>@"`#$%^&*_+={}[]\\|?!;';
         for(let i in replaceWithSpaceChars){
             let repl = replaceWithSpaceChars[i];
             while(content.includes(repl)){
                 content = content.replace(repl," ");
             }
         }
+
+        while(content.includes("  ")){
+            content = content.replace("  "," ");
+        }
+
 
         let words = content.split(" ");
 
@@ -223,14 +230,15 @@ const linkFunctions = function(guild) {
     };
 
     guild.getZipfSubset = function (startIndex){
+        let uniqueWordCount = Object.keys(guild.zipfMap).length;
         if(!isFinite(startIndex)){
-            return `Inappropriate input parameter: ${startIndex}`;
+            return `Inappropriate input parameter: \`${startIndex}\`. Expected a number 1 - ${uniqueWordCount}`;
         }else{
             startIndex = startIndex-0;
         }
 
         //convert hashmap to array
-        let zipfArray = [];
+        let zipfArray = [ ];
         for(let word in guild.zipfMap){
             zipfArray.push({word:word, occurrences:guild.zipfMap[word]});
         }
