@@ -82,69 +82,70 @@ const linkFunctions = function(guild) {
         }
     };
     
+    //functions corresponding to configuration configuration
+
+    guild.soap = function () {
+        if(this.lastSendLine) delete this.lines[this.lastSendLine];
+        this.lastSendLine = undefined;
+    }
+
     guild.toggleMayhem = function(id) {
         this.mayhemRoles[id] = this.mayhemRoles[id] ? undefined : id;
         return !!this.mayhemRoles[id];
     };
-    
-	guild.soap = function () {
-		if(this.lastSendLine) delete this.lines[this.lastSendLine];
-		this.lastSendLine = undefined;
-	}
-	
+
     guild.sendWoeMessage = function() {
         // for best results, the woe message should be formatted something like:
         // "Yo, {user.username}! If you can see this, it means you've been
         // restricted from using the server."
         Skarm.sendMessageDelay(this.woe.channel, this.woe.message);
     };
-    
-    guild.learnAction = function(e) {
-        let message = e.message.content;
-        message = message.substring(1, message.length - 1).toLowerCase();
-        this.actions[message] = true;
-        this.pruneActions();
+
+    guild.getLineCount = function() {
+        return Object.keys(this.lines).length;
     };
-    
+
+    //functions that are subroutines of parrot
+
     guild.pruneActions = function() {
         let keys = Object.keys(this.actions);
         if (keys.length <= Constants.Vars.LOG_CAPACITY) {
             return;
         }
-        
+
         for (let i = 0; i < keys.length; i++) {
             delete this.actions[keys[i]];
         }
     };
-    
+
     guild.getActionCount = function() {
         return Object.keys(this.actions).length;
     };
-    
+
 	guild.getRandomAction = function(e) {
         let message = e.message.content;
         message = message.substring(1, message.length - 1).toLowerCase();
         let keywords = message.split(" ");
-        
+
         let keys = Object.keys(this.lines);
         // if there are no stored messages, use the default log instead
         if (keys.length < MIN_LINES) {
             keys = defaultLines;
         }
-        
+
         let sort = function(array) {
             array.sort(function(a, b) {
                 return b.length - a.length;
             });
         }
-        
+
         sort(keywords);
-        
+
         let currentMessage = "";
         let currentMessageScore = -1;
         let testWords = Math.min(Constants.Vars.SIMILAR_MESSAGE_KEYWORDS,
             keywords.length);
-        
+
         // try a given number of messages
         for (let i = 0; i < Constants.Vars.SIMILAR_MESSAGE_ATTEMPTS; i++) {
             let message = keys[Math.floor(Math.random() * keys.length)];
@@ -161,10 +162,10 @@ const linkFunctions = function(guild) {
                 currentMessage = message;
             }
         }
-        
+
         return "_" + currentMessage + "_";
     };
-    
+
 	guild.learnLine = function(e) {
         if (messageIsAction(e.message.content)) {
             guild.learnAction(e);
@@ -173,20 +174,23 @@ const linkFunctions = function(guild) {
         this.lines[e.message.content.toLowerCase()] = true;
         this.pruneLines();
     };
-    
+
+    guild.learnAction = function(e) {
+        let message = e.message.content;
+        message = message.substring(1, message.length - 1).toLowerCase();
+        this.actions[message] = true;
+        this.pruneActions();
+    };
+
 	guild.pruneLines = function() {
         let keys = Object.keys(this.lines);
         if (keys.length <= Constants.Vars.LOG_CAPACITY) {
             return;
         }
-        
+
         for (let i = 0; i < keys.length; i++) {
             delete this.lines[keys[i]];
         }
-    };
-    
-	guild.getLineCount = function() {
-        return Object.keys(this.lines).length;
     };
 
     guild.queueMessage = function(channel,message,tts,object){
@@ -202,6 +206,8 @@ const linkFunctions = function(guild) {
         //console.log(`Enqueued message: '${JSON.stringify(this.channelBuffer[channel.id])}' for ${channel.id}`);
         //console.log(`New buffer length: ${this.channelBuffer[channel.id].length}`);
     };
+
+    //utilities
 
 	guild.getRandomLine = function(e) {
         if (messageIsAction(e.message.content)) return this.getRandomAction(e);
