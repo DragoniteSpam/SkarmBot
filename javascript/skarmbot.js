@@ -299,6 +299,8 @@ class Bot {
 
         let userData = Users.get(e.message.author.id);
         let guildData = Guilds.get(e.message.channel.guild_id);
+
+        //always run these per-guild functions
         guildData.executeMayhem();
         guildData.updateEXP(e);
         guildData.updateActivity(e);

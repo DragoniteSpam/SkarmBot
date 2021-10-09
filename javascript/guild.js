@@ -81,7 +81,84 @@ const linkFunctions = function(guild) {
             }
         }
     };
-    
+
+    guild.updateEXP = function(e) {
+        if (!this.expTable) {
+            this.expTable = { };
+        }
+
+        let author = e.message.author;
+
+        if(author.id in this.expTable) {
+            if (this.expTable[author.id].lastMessage + 6000 >= Date.now()) return;
+        }else {
+            this.expTable[author.id] = {
+                exp: Skinner.getMinEXP(0),
+                level: 0,
+                nextLevelEXP: Skinner.getMinEXP(1),
+                lastMessage: undefined,
+            };
+        }
+
+        let userEXPData = this.expTable[author.id];
+
+        userEXPData.exp += 15 + Math.floor(10 * Math.random());
+        userEXPData.lastMessage = Date.now();
+
+        // level up?
+        let oldLevel=userEXPData.level;
+        userEXPData.level = Skinner.getLevel(userEXPData.exp);
+        if(userEXPData.exp >= userEXPData.nextLevelEXP || isNaN(userEXPData.nextLevelEXP) || oldLevel!=userEXPData.level) {
+            userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level);
+
+            //set to >1 in case of level 0 role or for a hidden "point of trust" level
+            if(this.announcesLevels)
+                e.message.channel.sendMessage("Level up! " + e.message.member.nickMention+ " is now **Level " + userEXPData.level + ".**");
+
+            //assign level up roles if appropriate
+            if (!this.rolesTable) {
+                this.rolesTable = { };
+            }
+
+            this.roleCheck(e.message.member,userEXPData);
+        }
+    };
+
+    guild.updateActivity = function(e) {
+        let day = Date.now();
+        let wordCount = e.message.content.replaceAll("  "," ").replaceAll("\r\n","\n").replaceAll("\n\n","\n").replaceAll("\n"," ").split(" ").length;
+        day -= day % (24* 60* 60* 1000);
+        if(e.message.author.id in guild.flexActivityTable) {
+            let memberActivityObject = guild.flexActivityTable[e.message.author.id];
+            if (day in memberActivityObject.days) {
+                memberActivityObject.days[day].wordCount += wordCount;
+                if(isNaN(memberActivityObject.days[day].wordCount)) {
+                    Skarm.spam(`Found a NaN day for ${e.message.author.id}, attempting automatic repair. Incoming message length: ${wordCount}`);
+                    memberActivityObject.days[day].wordCount = wordCount;
+                }
+                memberActivityObject.days[day].messageCount++;
+            } else {
+                memberActivityObject.days[day] = {wordCount: wordCount, messageCount: 1};
+            }
+            memberActivityObject.totalWordCount += wordCount;
+            memberActivityObject.totalMessageCount++;
+            return;
+        }
+
+
+        guild.flexActivityTable[e.message.author.id] = {
+            days: {
+                day: {
+                    wordsCount:wordCount,
+                    messageCount:1,
+                }
+            },
+            totalMessageCount:1,
+            totalWordCount:wordCount
+        };
+
+    };
+
     //functions corresponding to configuration configuration
 
     guild.soap = function () {
@@ -234,20 +311,20 @@ const linkFunctions = function(guild) {
         if (keys.length < MIN_LINES) {
             keys = defaultLines;
         }
-        
+
         let sort = function(array) {
             array.sort(function(a, b) {
                 return b.length - a.length;
             });
         }
-        
+
         sort(keywords);
-        
+
         let currentMessage = "";
         let currentMessageScore = -1;
         let testWords = Math.min(Constants.Vars.SIMILAR_MESSAGE_KEYWORDS,
             keywords.length);
-        
+
         // try a given number of messages
         for (let i = 0; i < Constants.Vars.SIMILAR_MESSAGE_ATTEMPTS; i++) {
             let message = keys[Math.floor(Math.random() * keys.length)];
@@ -264,16 +341,16 @@ const linkFunctions = function(guild) {
                 currentMessage = message;
             }
         }
-        
+
         return currentMessage;
     };
-    
+
 	guild.getPermissions = function(user) {
         for (let mom in Constants.Moms) {
             if (Constants.Moms[mom].id == user.id) return Permissions.SUDO;
         }
         if (!user.memberOf(this)) return Permissions.NOT_IN_GUILD;
-        
+
 		let server = Guild.client.Guilds.get(this.id);
 		let members = server.members;
 		for (let i in members) {
@@ -284,69 +361,27 @@ const linkFunctions = function(guild) {
 				break;
 			}
 		}
-		
+
 		if(this.moderators===undefined){
 			this.moderators={};
 		}
-		
+
 		if(user.id in this.moderators)
 			return Permissions.MOD;
-		
+
         return Permissions.BASE;
     };
-    
+
 	guild.hasPermissions = function(user, perm) {
         return (this.getPermissions(user) >= perm);
     };
-    
+
 	guild.togglePinnedChannel = function(channel) {
         if (!this.channelsPinUpvotes) this.channelsPinUpvotes = { };
         this.channelsPinUpvotes[channel] = !this.channelsPinUpvotes[channel];
         return this.channelsPinUpvotes[channel];
     };
-    
-	guild.updateEXP = function(e) {
-		if (!this.expTable) {
-			this.expTable = { };
-		}
-        
-        let author = e.message.author;
-        
-		if(author.id in this.expTable) {
-			if (this.expTable[author.id].lastMessage + 6000 >= Date.now()) return;
-		}else {
-			this.expTable[author.id] = {
-                exp: Skinner.getMinEXP(0),
-                level: 0,
-                nextLevelEXP: Skinner.getMinEXP(1),
-                lastMessage: undefined,
-            };
-		}
-        
-        let userEXPData = this.expTable[author.id];
-        
-        userEXPData.exp += 15 + Math.floor(10 * Math.random());
-        userEXPData.lastMessage = Date.now();
-        
-        // level up?
-		let oldLevel=userEXPData.level;
-		userEXPData.level = Skinner.getLevel(userEXPData.exp);
-        if(userEXPData.exp >= userEXPData.nextLevelEXP || isNaN(userEXPData.nextLevelEXP) || oldLevel!=userEXPData.level) {
-            userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level);
-            
-			//set to >1 in case of level 0 role or for a hidden "point of trust" level
-			if(this.announcesLevels)
-				e.message.channel.sendMessage("Level up! " + e.message.member.nickMention+ " is now **Level " + userEXPData.level + ".**");
-            
-            //assign level up roles if appropriate
-            if (!this.rolesTable) {
-                this.rolesTable = { };
-            }
-            
-			this.roleCheck(e.message.member,userEXPData);
-        }
-    };
-	
+
 	guild.roleCheck = function(member, userEXPData) {
 		if(Object.keys(guild.rolesTable).length==0)
 			return;
@@ -571,41 +606,6 @@ const linkFunctions = function(guild) {
             guild.activityTable[i]=guild.activityTable[i-1];
             guild.activityTable[i-1]=temp;
         }
-    };
-
-	guild.updateActivity = function(e) {
-	    let day = Date.now();
-	    let wordCount = e.message.content.replaceAll("  "," ").replaceAll("\r\n","\n").replaceAll("\n\n","\n").replaceAll("\n"," ").split(" ").length;
-	    day -= day % (24* 60* 60* 1000);
-	    if(e.message.author.id in guild.flexActivityTable) {
-            let memberActivityObject = guild.flexActivityTable[e.message.author.id];
-            if (day in memberActivityObject.days) {
-                memberActivityObject.days[day].wordCount += wordCount;
-                if(isNaN(memberActivityObject.days[day].wordCount)) {
-                    Skarm.spam(`Found a NaN day for ${e.message.author.id}, attempting automatic repair. Incoming message length: ${wordCount}`);
-                    memberActivityObject.days[day].wordCount = wordCount;
-                }
-                memberActivityObject.days[day].messageCount++;
-            } else {
-                memberActivityObject.days[day] = {wordCount: wordCount, messageCount: 1};
-            }
-            memberActivityObject.totalWordCount += wordCount;
-            memberActivityObject.totalMessageCount++;
-            return;
-        }
-
-
-	    guild.flexActivityTable[e.message.author.id] = {
-	        days: {
-	            day: {
-	                    wordsCount:wordCount,
-                        messageCount:1,
-                    }
-	        },
-            totalMessageCount:1,
-            totalWordCount:wordCount
-        };
-
     };
 
 	guild.toggleHiddenChannel = function (channelID) {
