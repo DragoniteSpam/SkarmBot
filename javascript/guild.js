@@ -203,7 +203,12 @@ const linkFunctions = function(guild) {
                 guild.zipfMap[word] = 0;
             guild.zipfMap[word]++;
         }
-        //Skarm.spam(JSON.stringify(guild.zipfMap));
+
+        if ("" in guild.zipfMap){
+            delete guild.zipfMap[""];
+        }
+
+
     };
 
     //functions corresponding to commands
