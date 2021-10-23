@@ -249,11 +249,51 @@ const linkFunctions = function(guild) {
         }
         zipfArray.sort((a,b) => {return b.occurrences - a.occurrences});
 
-        let printData = ["Frequency of values starting at " + startIndex];
+        let maxZipfWordLen = 0;
+        let maxZipfIdxLen = 0;
+
+        let idxAlignFlag = "%iaf";
+        let freqAlignFlag = "%faf";
+        let includedWords = [];
+
+        let printData = ["Frequency of values starting at " + startIndex + "```"];
         for(let i = -1; i<9 && startIndex+i < zipfArray.length; i++){
             let wordObj = zipfArray[startIndex+i];
-            printData.push((1+startIndex+i) + ": " + wordObj.word + "  -  " + wordObj.occurrences);
+            includedWords.push(wordObj);
+            maxZipfWordLen = Math.max(maxZipfWordLen, wordObj.word.length);
+            let pushString = ""+(1+startIndex+i) + ":" + idxAlignFlag + wordObj.word + freqAlignFlag+" - " + wordObj.occurrences + "";
+            printData.push(pushString);
+            maxZipfIdxLen = Math.max(maxZipfIdxLen, pushString.indexOf(":"));
         }
+
+        //Skarm.spam(`maxZipfWordLen: ${maxZipfWordLen}`);
+
+        for(let i in printData){
+            let lineText = printData[i];
+            if(lineText.includes(freqAlignFlag)){
+                let replacementString = "";
+                let spaceBufferWidth = 2 + maxZipfWordLen -  includedWords[i-1].word.length;
+                //Skarm.spam(`Assigning ${spaceBufferWidth} spaces for ${lineText}`);
+                for(let j=0; j<spaceBufferWidth; j++){
+                    replacementString+= " ";
+                }
+                while(replacementString.includes("    "))
+                    replacementString = replacementString.replace("    ","\t");
+                lineText = lineText.replace(freqAlignFlag,replacementString)
+            }
+
+            let indexEndFlag = ":";
+            let idxAlignText = "  ";
+            if(lineText.includes(indexEndFlag)){
+                if(lineText.indexOf(":") < maxZipfIdxLen)
+                    idxAlignText+= " ";
+                lineText = lineText.replace(idxAlignFlag, idxAlignText);
+            }
+
+            printData[i] = lineText;
+        }
+
+        printData.push("```");
         return printData.join("\r\n");
     }
 
