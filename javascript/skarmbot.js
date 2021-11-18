@@ -244,7 +244,14 @@ class Bot {
 			}
 			Skarm.log(changes);
 		}
-		if(e.previousNick !== e.member.nick) Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.NICK_CHANGE, e);
+		if(e.member){
+		    if(e.previousNick !== e.member.nick) {
+                Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.NICK_CHANGE, e);
+            }
+        }else{
+		    Skarm.spam(Constants.Moms.MASTER.mention);
+		    Skarm.spam(JSON.stringify(e));
+        }
     }
 
 	OnMemberRemove(e) {
