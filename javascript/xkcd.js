@@ -23,14 +23,9 @@ class XKCD {
 			this.references = JSON.parse(fs.readFileSync(xkcdlib).toString().toLowerCase());
 		} catch (e) {
 			this.enabled = false;
+			this.references = { };
 			console.log("Could not initialize the XKCD log.");
 		}
-	}
-
-	save() {
-		Encrypt.write(xkcddb, JSON.stringify(this.bot.channelsWhoLikeXKCD));
-		fs.writeFileSync(xkcdlib,JSON.stringify(this.references));
-		console.log("Saved XKCD Data");
 	}
 
 	initialize() {
@@ -46,11 +41,19 @@ class XKCD {
 		}
 	}
 
+	save() {
+		if (!this.enabled) return;
+		Encrypt.write(xkcddb, JSON.stringify(this.bot.channelsWhoLikeXKCD));
+		fs.writeFileSync(xkcdlib,JSON.stringify(this.references));
+		console.log("Saved XKCD Data");
+	}
+
 	poisonPill() {
 		clearInterval(this.interval);
 	}
 
 	schedule() {
+		if (!this.enabled) return;
 		if (!this.interval) {
 			clearInterval(this.interval);
 		}
@@ -59,6 +62,7 @@ class XKCD {
 	}
 
 	checkForNewXKCDs() {
+		if (!this.enabled) return;
 		let tis = this;
 		let newXkcdId = this.references.ordered.length;
 
@@ -97,6 +101,7 @@ class XKCD {
 	}
 
 	post(channel, id) {
+		if (!this.enabled) return;
 		id = (id || "").toLowerCase();
 		if (id.match(/^\d+$/)) {
 			Skarm.sendMessageDelay(channel, "https://xkcd.com/" + id + "/");
@@ -156,6 +161,7 @@ class XKCD {
 	 * @param n broadcast immediately override of Any truthy type
 	 */
 	sweep(n) {
+		if (!this.enabled) return;
 		let d = new Date(); // for now
 		let datetext = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
 		console.log("Running xkcd.sweep function.\tCurrent time: " + datetext);
