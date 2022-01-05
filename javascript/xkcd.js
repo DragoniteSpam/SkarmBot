@@ -18,7 +18,13 @@ class XKCD {
 		this.interval = null;
 		this.schedule();
 		this.lock = 0;
-		this.references = JSON.parse(fs.readFileSync(xkcdlib).toString().toLowerCase());
+		this.enabled = true;
+		try {
+			this.references = JSON.parse(fs.readFileSync(xkcdlib).toString().toLowerCase());
+		} catch (e) {
+			this.enabled = false;
+			console.log("Could not initialize the XKCD log.");
+		}
 	}
 
 	save() {
@@ -28,11 +34,16 @@ class XKCD {
 	}
 
 	initialize() {
-		let tis = this;
-		Encrypt.read(xkcddb, function (data, filename) {
-			tis.bot.channelsWhoLikeXKCD = JSON.parse(data);
-			console.log("Initialized " + Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels.");
-		});
+		try {
+			let tis = this;
+			Encrypt.read(xkcddb, function (data, filename) {
+				tis.bot.channelsWhoLikeXKCD = JSON.parse(data);
+				console.log("Initialized " + Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels.");
+			});
+		} catch (e) {
+			this.enabled = false;
+			console.log("Could not initialize the XKCD log.");
+		}
 	}
 
 	poisonPill() {
