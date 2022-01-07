@@ -285,6 +285,36 @@ class Skarm {
         return map[keyArray[Math.floor(Math.random()*keyArray.length)]];
     }
 
+    /**
+     * Expected data format: A single coma-separated string with '\n' newline characters
+     * Handling of quotation marks: purge all quotation marks
+     * @param data
+     *
+     * @return array of objects
+     */
+    static parseCSV(data){
+        while(data.includes('"')){
+            data = data.replaceAll('"', '');
+            data = data.replaceAll('\r', '');
+        }
+        let lines = data.split('\n');
+
+        let parsedData = [];
+
+        //form structure
+        let fields = lines[0].split(',');
+
+        for(let i = 1; i<lines.length; i++){
+            let datum = {};
+            let dataValues = lines[i].split(',');
+            for(let j in fields){
+                datum[fields[j]] = dataValues[j];
+            }
+            parsedData.push(datum);
+        }
+        return parsedData;
+    }
+
     static lightsaber = {
         /**
          * Replaces a random left-leaning hilt with a left-leaning lightsaber.
