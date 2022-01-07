@@ -1370,9 +1370,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			let exp = user.exp;
 			let lvl = user.level;//Skinner.getLevel(exp);
 			let toNextLvl = user.nextLevelEXP-exp;
-            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " +
-                exp + "\nEXP required to go for next level: " +
-                toNextLvl + "\nCurrent level: " + lvl);
+            e.message.channel.sendMessage(" ", false, {
+                color: Skarm.generateRGB(),
+                author: {name: e.message.author.nick},
+                timestamp: new Date(),
+                fields: [
+                    {name: "Total EXP", value: exp, inline: true},
+                    {name: "Level", value: lvl, inline: true},
+                    {name: "Rank", value: "Coming Soon!", inline: true},
+                    {name: "EXP to get to next level", value: toNextLvl, inline: true}
+                ],
+                footer: {
+                    text: userData.nickName,
+                    icon_url: e.message.author.staticAvatarURL
+                },
+                // image: {
+                //     url: 'https://i.imgur.com/AfFp7pu.png'
+                // }
+            });
+
+			// Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " +
+            //     exp + "\nEXP required to go for next level: " +
+            //     toNextLvl + "\nCurrent level: " + lvl);
         },
         
         help(bot, e) {
