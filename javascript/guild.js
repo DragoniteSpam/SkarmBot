@@ -112,7 +112,7 @@ const linkFunctions = function(guild) {
         // level up?
         let oldLevel=userEXPData.level;
         userEXPData.level = Skinner.getLevel(userEXPData.exp);
-        if(userEXPData.exp >= userEXPData.nextLevelEXP || isNaN(userEXPData.nextLevelEXP) || oldLevel!=userEXPData.level) {
+        if(userEXPData.exp >= userEXPData.nextLevelEXP || isNaN(userEXPData.nextLevelEXP) || oldLevel !== userEXPData.level) {
             userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level);
 
             //set to >1 in case of level 0 role or for a hidden "point of trust" level
@@ -750,7 +750,7 @@ class Guild {
         this.hiddenChannels = { };
         
 		this.rolesTable = { };
-		this.roleStack=false;	
+		this.roleStack = false;
 		this.expTable = { };
 		this.boostTable = { };
 		this.moderators = { };

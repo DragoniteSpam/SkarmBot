@@ -1560,19 +1560,19 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
 	},
-	RoleRefresh: {
-		aliases: ["role","refresh","rolerefresh"],
+    RoleRefresh: {
+        aliases: ["role","refresh","rolerefresh"],
         params: [],
         usageChar: "!",
         helpText: "Refreshes level up role assignments (Role rewards need to be configured for this to do anything useful)",
         ignoreHidden: true,
-		category: "leveling",
+        category: "leveling",
 
         execute(bot, e, userData, guildData) {
-		    guildData.roleCheck(e.message.member,guildData.expTable[e.message.author.id]);
-			Skarm.sendMessageDelay(e.message.channel,"Refreshed your roles!");
+            guildData.roleCheck(e.message.member,guildData.expTable[e.message.author.id]);
+            Skarm.sendMessageDelay(e.message.channel,"Refreshed your roles!");
         },
-        
+
         help(bot, e) {
             Skarm.help(this, e);
         },
