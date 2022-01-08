@@ -86,6 +86,21 @@ const linkFunctions = function(guild) {
         }
     };
 
+    /**
+     *
+     * @param userId: the ID of the user to compare against the guild
+     * @return Number: the amount of users that have equal or more EXP in the guild than the input user ID
+     */
+    guild.getUserRank = function(userId){
+        let rank = 0;
+        let referenceExp = this.expTable[userId].exp;
+        for(let id in this.expTable){
+            let user = this.expTable[id];
+            if(user.exp >= referenceExp) rank++;
+        }
+        return rank;
+    };
+
     guild.updateEXP = function(e) {
         if (!this.expTable) {
             this.expTable = { };
