@@ -1524,7 +1524,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			let pars = commandParamTokens(e.message.content);
 			if(pars.length!==2){
 				if(pars.length===0){
-				    module.exports.ViewRoleReward.execute(bot,e);
+				    module.exports.ViewRoleReward.execute(bot,e,userData,guildData);
 					return;
 				}
 				Skarm.help(this,e);
