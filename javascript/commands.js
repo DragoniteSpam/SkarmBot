@@ -1401,7 +1401,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	},
 	SRank: {
 		aliases: ["srank","slevel"],
-        params: ["exp"],
+        params: ["<@targetID>, exp"],
         usageChar: "@",
         helpText: "sets how much exp you have in the guild",
         ignoreHidden: true,
@@ -1409,12 +1409,17 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
+		    console.log(param);
+            if(param.length === 2) {
+                target = param.shift().replace("<@","").replace(">","").replace("!","");
+                Skarm.sendMessageDelay(e.message.channel, `Updating EXP value for <@${target}>`);
+            }
 			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
 				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			let user = guildData.expTable[e.message.author.id];
-			user.exp = commandParamTokens(e.message.content)[0] - 0;
+			let user = guildData.expTable[target || e.message.author.id];
+			user.exp = param[0] - 0;
 			user.level = Skinner.getLevel(user.exp);
 			user.nextLevelEXP = Skinner.getMinEXP(user.level);
             Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " + user.exp + "\nEXP required to go for next level: " + (user.nextLevelEXP - user.exp) + "\nCurrent level: " + user.level);
