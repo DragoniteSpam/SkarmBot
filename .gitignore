@@ -3,3 +3,4 @@ wolfram.txt
 *.penguin
 *.butt
 .idea*
+node_modules/*
