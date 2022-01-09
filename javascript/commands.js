@@ -1462,7 +1462,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         },
 	},
 	ViewRoleReward: {
-		aliases: ["rolerewards"],
+		aliases: ["rolerewards","rr"],
 		params: [],
 		usageChar: "!",
 		helpText: "Displays roles rewarded for leveling up",
@@ -1475,11 +1475,22 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 				Skarm.sendMessageDelay(e.message.channel,"No roles configured to be rewarded from leveling up in "+e.message.guild.name);
 				return;
 			}
-			let msg = "\n>>> ";
+
+			let fields = [];
 			for(let i in roles){
-				msg+=i+"=>\t<@&"+roles[i]+">";
+				fields.push({name: "Level " + i, value: "<@&"+roles[i]+">", inline: true});
 			}
-			Skarm.sendMessageDelay(e.message.channel,"Roles rewarded from leveling up in "+e.message.guild.name+msg);
+
+            e.message.channel.sendMessage(" ", false, {
+                color: Skarm.generateRGB(),
+                timestamp: new Date(),
+                title: "Roles rewarded from leveling up in "+e.message.guild.name,
+                fields: fields,
+                footer: {
+                    text: e.message.guild.name,
+                },
+            });
+
 		},
 		help(bot, e) {
             Skarm.help(this, e);
