@@ -1392,14 +1392,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     text: Users.get(target).nickName,
                     icon_url: ((targetEntity) ? targetEntity.staticAvatarURL :"https://i.imgur.com/ICK2lr1.jpeg")
                 },
-                // image: {
-                //     url: 'https://i.imgur.com/AfFp7pu.png'
-                // }
             });
-
-			// Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " +
-            //     exp + "\nEXP required to go for next level: " +
-            //     toNextLvl + "\nCurrent level: " + lvl);
         },
         
         help(bot, e) {
@@ -1645,7 +1638,10 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     for(let member of guildMembers){
                         for(let newUserDatum of newUserData){
                             if(member.username === newUserDatum.username){
-                                if(!(member.id in guildData.expTable)){ Skarm.spam(`Failed to find user ${member.username} ID: ${member.id} in the guild database.`); continue;}
+                                if(!(member.id in guildData.expTable)){
+                                    Skarm.spam(`Failed to find user ${member.username} ID: ${member.id} in the guild database.`);
+                                    continue;
+                                }
                                 Skarm.spam(`Setting user \`${member.username}\`'s EXP to \`${newUserDatum.exp}\`.  Previous EXP: ${guildData.expTable[member.id].exp}`);
                                 guildData.expTable[member.id].exp = newUserDatum.exp-0;
                             }
