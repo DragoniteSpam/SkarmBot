@@ -1369,21 +1369,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			}
 			let user = guildData.expTable[target];
 			let exp = user.exp;
-			let lvl = user.level;//Skinner.getLevel(exp);
+			let lvl = user.level;
 			let toNextLvl = user.nextLevelEXP-exp;
+			let targetEntity = bot.client.Users.get(target);
+			let guildMembers = e.message.guild.members;
+			let targetNick;
+			for(let member of guildMembers){
+			    if(member.id === target) targetNick = member.nick;
+            }
+
             e.message.channel.sendMessage(" ", false, {
                 color: Skarm.generateRGB(),
-                author: {name: e.message.author.nick},
+                author: {name: Users.get(target).nickName || targetNick || targetEntity.username || target},
                 timestamp: new Date(),
                 fields: [
                     {name: "Total EXP", value: exp, inline: true},
                     {name: "Level", value: lvl, inline: true},
-                    {name: "Rank", value: "Coming Soon!", inline: true},
+                    {name: "Rank", value: guildData.getUserRank(target), inline: true},
                     {name: "EXP to get to next level", value: toNextLvl, inline: true}
                 ],
                 footer: {
-                    text: userData.nickName,
-                    icon_url: e.message.author.staticAvatarURL
+                    text: Users.get(target).nickName,
+                    icon_url: ((targetEntity) ? targetEntity.staticAvatarURL :"https://i.imgur.com/ICK2lr1.jpeg")
                 },
                 // image: {
                 //     url: 'https://i.imgur.com/AfFp7pu.png'
@@ -1409,6 +1416,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
+            let param = commandParamTokens(e.message.content);
+		    let target;
 		    console.log(param);
             if(param.length === 2) {
                 target = param.shift().replace("<@","").replace(">","").replace("!","");
