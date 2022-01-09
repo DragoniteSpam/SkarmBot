@@ -1542,7 +1542,8 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			pars[1]=pars[1].replace("<","").replace("@","").replace("&","").replace(">","");
 			if(pars[1]>0){
 				Guilds.get(e.message.guild.id).rolesTable[pars[0]-0]=pars[1];
-				Skarm.sendMessageDelay(e.message.channel,"Set level "+pars[0]+" to reward <@&"+pars[1]+">");
+				module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
+				//Skarm.sendMessageDelay(e.message.channel,"Set level "+pars[0]+" to reward <@&"+pars[1]+">");
 				return;
 			}
 			Skarm.help(bot,e);
