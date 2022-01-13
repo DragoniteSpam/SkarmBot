@@ -76,33 +76,35 @@ class Skarm {
         );
     }
 
-    static sendMessageDelay(channel, text,tts,obj) {
-        if(channel===null){
+    static sendMessageDelay(channel, text, tts, obj) {
+        if (channel === null) {
             console.log("null channel target with message: "+text);
             return;
         }
-        if(typeof(channel) === "string"){
-            channel = Constants.client.Channels.get(channel);//clinet.channel/get channel
 
+        if (typeof(channel) === "string") {
+            channel = Constants.client.Channels.get(channel);
         }
 
-        if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
-            this.log("Missing permission to read messages in " + channel.name);
-            return;
-        }
-        if(!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)){
-            this.log("Missing permission to send message in " + channel.name);
-            return;
+        if (!channel.isPrivate) {
+            if (!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)) {
+                this.log("Missing permission to read messages in " + channel.name);
+                return;
+            }
+
+            if (!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)) {
+                this.log("Missing permission to send message in " + channel.name);
+                return;
+            }
         }
 
-        try{
+        try {
             channel.sendTyping();
             setTimeout(function() {
-                channel.sendMessage(text,tts,obj);
+                channel.sendMessage(text, tts, obj);
             }, Math.random() * 2000 + 1500);
         } catch {
-
-            console.log("failed to send message: "+text+" to channel "+channel.id);
+            console.log("failed to send message: " + text + " to channel " + channel.id);
         }
     }
 
