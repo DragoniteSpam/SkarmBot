@@ -9,12 +9,13 @@
     The following actions will be performed by the script in order to prepare the execution environment
     1. Make sure that the latest version of node.js is installed
     2. Make sure that all required NPM modules are installed
-    3. (TBD) Make sure that the skarmData directories are connected
-    4. (TBD) Make sure that all required secret tokens exist at the expected path
-    5. (TBD) Make sure that Box Drive is present on the system to access the cloud-stored databases
+    3. Make sure that the skarmData local and Box directories are connected
+    4. Make sure that all required secret tokens exist at the expected path
 #>
 
 
+
+### Setup
 Param(
     [switch]$Force = $false
 )
@@ -35,9 +36,10 @@ cd $PSScriptRoot
 
 if($Force){
     Write-Host "Purging $npmRoot"
-    Remove-Item -Recurse -Force $npmRoot
+    Remove-Item -Recurse -Force $npmRoot -ErrorAction Stop
 }
 
+### 1. node.js is installed
 #initialize webclient and temp directory (not checked into git)
 $webClient = New-Object System.Net.WebClient
 $webPageFilePath = "$PSScriptRoot/temp/site.html"
@@ -93,6 +95,7 @@ if(!$nodeProducts -or ($nodeProducts.DisplayVersion -ne $nodejsVersion)){
 
 
 
+### 2. NPM modules
 $PackageList = @("child_process", "discordie", "request", "node-wolfram", "crypto-js")
 
 $PackageList | foreach {
@@ -119,6 +122,62 @@ $PackageList | foreach {
         reportWarn("Failed to find package: $npmRoot\$item")
         reportWarn("Please run 'npm install $_'")
     }
+}
+
+
+### 3. local/Box skarm data
+$skarmDataPath = "$PSScriptRoot/../skarmData"
+$skarmDataBox = "~/Box/skarmData"
+
+if(-not(Test-Path $skarmDataPath)){
+    $skarmDataDir = mkdir $skarmDataPath
+}
+
+$skarmDataFiles = @(
+    "deleted.penguin",
+    "guilds.penguin",
+    "users.penguin",
+    "xkcd-log.penguin",
+    "xkcd.penguin",
+    "xkcdtime.penguin"
+)
+
+
+
+$missingFiles = $false
+$skarmDataFiles | foreach {
+    if(-not (Test-Path "$skarmDataPath/$_") -and -not (Test-Path "$skarmDataBox/$_")){
+        reportWarn "$_ is missing from skarmData on both Box and locally"
+        $missingFiles = $true
+    }
+    if(     (Test-Path "$skarmDataPath/$_") -and -not (Test-Path "$skarmDataBox/$_")){
+        reportWarn "$_ is missing from skarmData on Box"
+        $missingFiles = $true
+    }
+}
+if(-not $missingFiles){
+    reportGood "All data files present"
+}
+
+### 4. all required tokens exist
+$privateTokens = @{}
+$privateTokens["aes.txt"] = "This token must be given to you by an admin.  Please contact Drago or Argo for a copy."
+$privateTokens["descrution.txt"] = "This token is used when testing the bot outside of the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
+$privateTokens["token.txt"] = "This token is used to connect the bot to the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
+$privateTokens["wolfram.txt"] = "Acquire a Wolfram Alpha API key here: https://products.wolframalpha.com/api/"
+
+
+$missingTokens = $false
+$privateTokens.Keys | foreach {
+    $tokenPath = "$PSScriptRoot/../$_"
+    if(-not (Test-Path $tokenPath)){
+        reportWarn "The following token is missing: $tokenPath"
+        $privateTokens[$_]
+        $missingTokens = $true
+    }
+}
+if(-not $missingTokens){
+    reportGood "All required tokens present"
 }
 
 Pop-Location
