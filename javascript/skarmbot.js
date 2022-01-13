@@ -299,7 +299,7 @@ class Bot {
             return false;
         }
         // don't respond to private messages (yet) //TODO
-        if (e.message.isPrivate) {
+        if (/*!guildData*/ e.message.isPrivate) {
             e.message.channel.sendMessage("private message responses not yet implemented");
             return false;
         }
@@ -307,11 +307,15 @@ class Bot {
         let userData = Users.get(e.message.author.id);
         let guildData = Guilds.get(e.message.channel.guild_id);
 
-        //always run these per-guild functions
-        guildData.executeMayhem(this.client.User);
-        guildData.updateEXP(e);
-        guildData.updateActivity(e);
-        guildData.appendZipfData(e.message.content);
+        // in the event that we eventually add PM responses, it would probably
+        // be a bad idea to try to execute the mayhem colors on it
+        if (!guildData) {
+            //always run these per-guild functions
+            guildData.executeMayhem(this.client.User);
+            guildData.updateEXP(e);
+            guildData.updateActivity(e);
+            guildData.appendZipfData(e.message.content);
+        }
 
         // now we can start doing stuff
         let author = e.message.author;
@@ -321,13 +325,13 @@ class Bot {
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         if (cmdData) {
-            if (!guildData.hiddenChannels[e.message.channel_id] || !cmdData.ignoreHidden) {
+            if (!guildData || (!guildData.hiddenChannels[e.message.channel_id] || !cmdData.ignoreHidden)) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and
                 // you don't otherwise have a way to reference it
-                if (guildData.hasPermissions(userData, cmdData.perms)) {
-                    cmdData.execute(this, e,userData,guildData);
+                if (!guildData || guildData.hasPermissions(userData, cmdData.perms)) {
+                    cmdData.execute(this, e, userData, guildData);
                 } else {
                     Skarm.sendMessageDelay(e.message.channel, "**" + author.username +
                         "** was not found in the sudoers file. This incident will" +
@@ -347,7 +351,7 @@ class Bot {
         }
 
         // ignore hidden channels after this
-        if (guildData.hiddenChannels[e.message.channel_id]) {
+        if (guildData && guildData.hiddenChannels[e.message.channel_id]) {
             return false;
         }
 
@@ -415,12 +419,13 @@ class Bot {
             e._constants = Constants;
             e._userData = userData;
 
-            keyword.execute(this, e, userData, guildData);
+            keyword.execute(this, e, userData);
             return true;
         }
 
-
-        this.parrot(e,guildData.aliases);
+        if (guildData) {
+            this.parrot(e, guildData.aliases);
+        }
 
         return false;
     }
