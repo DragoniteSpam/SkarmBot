@@ -68,11 +68,21 @@ const linkFunctions = function(guild) {
 
     //functions executed after every message
 
-    guild.executeMayhem = function() {
+    guild.executeMayhem = function(botAccount) {
         let guildData = Guild.getData(this.id);
+        
+        let skarmRank = 0
+        for (let role of botAccount.memberOf(guildData.id).roles) {
+            skarmRank = Math.max(skarmRank, role.position);
+        }
+
         for (let roleID in this.mayhemRoles) {
             for (let i = 0; i < guildData.roles.length; i++) {
                 let roleData = guildData.roles[i];
+                if (skarmRank <= roleData.position) {
+                    // the mayhem role outranks me for some reason (the server admins should probably change that)
+                    continue;
+                }
                 if (roleData.id === roleID) {
                     try {
                         let output = Skarm.generateRGB();
