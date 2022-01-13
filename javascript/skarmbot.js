@@ -307,8 +307,12 @@ class Bot {
         let userData = Users.get(e.message.author.id);
         let guildData = Guilds.get(e.message.channel.guild_id);
 
+        // in the event that we eventually add PM responses, it would probably
+        // be a bad idea to try to execute the mayhem colors on it
+        if (e.message.isPrivate) {
+            guildData.executeMayhem(this.client.User);
+        }
         //always run these per-guild functions
-        guildData.executeMayhem(this.client.User);
         guildData.updateEXP(e);
         guildData.updateActivity(e);
         guildData.appendZipfData(e.message.content);
