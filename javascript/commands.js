@@ -196,6 +196,7 @@ module.exports = {
         helpText: "Prints out a table of guild activity from the past # days.  If not specified, default is 30 days.  Use the page option to access data outside of the top 10 members.",
         ignoreHidden: true,
         category: "general",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             let message = commandParamString(e.message.content).toLowerCase();
@@ -208,10 +209,8 @@ module.exports = {
                 Skarm.sendMessageDelay(e.message.channel,"Expected page input as an integer. e.g.: `e!activity 2`");
                 return;
             }
-            //Skarm.logError(page);
-            let guild = guildData;
-            let table = guild.flexActivityTable;
-
+            
+            let table = guildData.flexActivityTable;
 
             let usersList = [];
             let cutoffDate = Date.now() - days*24*60*60*1000;
@@ -359,7 +358,7 @@ module.exports = {
         ignoreHidden: true,
         category: "general",
 
-        execute(bot, e) {
+        execute(bot, e, guildData) {
             let timestamp = commandParamString(e.message.content);
             Skarm.sendMessageDelay(e.message.channel,new Date(timestamp-0));
         },
@@ -460,6 +459,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Provides an encyclopedia entry for the specified command. Or alternatively, the bot as a whole.",
         ignoreHidden: true,
 		category: "meta",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             let cmd = commandParamTokens(e.message.content)[0];
@@ -482,7 +482,6 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             }
 
             if (!cmd) {
-                let guildData = Guilds.get(e.message.channel.guild_id);
                 let userData = Users.get(e.message.author.id);
                 let categories = {};
 
@@ -713,6 +712,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Queries a list of words sent in the server by their relative frequencies. Optional integer parameter for offsetting the 10 displayed words.",
         ignoreHidden: true,
         category: "meta",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             let args = commandParamString(e.message.content);
@@ -808,6 +808,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: false,
         perms: Permissions.MOD,
         category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             let words=commandParamTokens(e.message.content.toLowerCase());
@@ -885,6 +886,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.ADMIN,
         category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			let words=commandParamTokens(e.message.content);
@@ -938,6 +940,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "Shows the user's access level (pleb, moderator, admin, Mom, etc).",
         ignoreHidden: true,
         category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			let words=commandParamTokens(e.message.content);
@@ -985,6 +988,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             
@@ -1007,6 +1011,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: false,
         perms: Permissions.ADMIN,
 		category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             
@@ -1029,6 +1034,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			let args = commandParamTokens(e.message.content);
@@ -1097,6 +1103,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             let args = commandParamTokens(e.message.content);
@@ -1153,6 +1160,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             let notifChannels = guildData.notificationChannels;
@@ -1244,6 +1252,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             
@@ -1271,6 +1280,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			if(guildData.welcoming===undefined)
@@ -1336,6 +1346,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
             guildData.soap();
@@ -1346,7 +1357,6 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
-
 	
 	/**
 	*	leveling
@@ -1358,6 +1368,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         helpText: "returns how much exp you have in the guild",
         ignoreHidden: true,
 		category: "leveling",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			let target = e.message.author.id;
@@ -1391,6 +1402,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
@@ -1416,7 +1428,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
-
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
@@ -1452,6 +1464,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		helpText: "Displays roles rewarded for leveling up",
 		ignoreHidden:true,
 		category: "leveling",
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			let roles = guildData.rolesTable;
@@ -1477,6 +1490,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		ignoreHidden:true,
 		category: "leveling",
         perms: Permissions.MOD,
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			if(e.message.guild==null){
@@ -1526,6 +1540,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
@@ -1550,7 +1565,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         usageChar: "!",
         helpText: "Refreshes level up role assignments (Role rewards need to be configured for this to do anything useful)",
         ignoreHidden: true,
-		category: "leveling",
+        category: "leveling",
+        guildOnly: true,
+
+        execute(bot, e, userData, guildData) {
+            guildData.roleCheck(e.message.member,guildData.expTable[e.message.author.id]);
+            Skarm.sendMessageDelay(e.message.channel,"Refreshed your roles!");
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    ImportRankData: {
+        aliases: ["importrankdata", "ird"],
+        params: [],
+        usageChar: "@",
+        helpText: "This command takes a single input csv attachment and sets the experience values of all usernames in the guild that appear in the csv file to the exp values on the csv file." +
+            "  Expected CSV format of header: " + `"username","level","exp","msgs"`,
+        ignoreHidden: true,
+        category: "leveling",
+        perms: Permissions.MOD,
+        guildOnly: true,
 
         execute(bot, e, userData, guildData) {
 		    guildData.roleCheck(e.message.member,guildData.expTable[e.message.author.id]);
@@ -1560,10 +1596,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         help(bot, e) {
             Skarm.help(this, e);
         },
-	},
-	
-	
-	/**
+    },
+
+    /**
 	*	infrastructure
 	*/
 
