@@ -25,7 +25,7 @@ Function reportGood($value){
 }
 
 Function reportWarn($value){
-    Write-Host -Object $value -ForegroundColor Yellow -BackgroundColor Red
+    Write-Host -Object $value -ForegroundColor Red -BackgroundColor Black
 }
 
 $npmRoot = "$PSScriptRoot\node_modules"
