@@ -281,6 +281,8 @@ class Bot {
     }
 
     OnMessageCreate(e) {
+        const IS_PM = e.message.isPrivate;
+
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {
             if (e.message.author.id === Constants.ID) {
@@ -299,9 +301,9 @@ class Bot {
             return false;
         }
         // don't respond to private messages (yet) //TODO
-        if (/*!guildData*/ e.message.isPrivate) {
+        if (IS_PM) {
             e.message.channel.sendMessage("private message responses not yet implemented");
-            return false;
+            //return false;
         }
 
         let userData = Users.get(e.message.author.id);
@@ -309,7 +311,7 @@ class Bot {
 
         // in the event that we eventually add PM responses, it would probably
         // be a bad idea to try to execute the mayhem colors on it
-        if (!guildData) {
+        if (!IS_PM) {
             //always run these per-guild functions
             guildData.executeMayhem(this.client.User);
             guildData.updateEXP(e);
@@ -325,12 +327,16 @@ class Bot {
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         if (cmdData) {
-            if (!guildData || (!guildData.hiddenChannels[e.message.channel_id] || !cmdData.ignoreHidden)) {
+            if (cmdData.guildOnly && IS_PM) {
+                Skarm.sendMessageDelay(e.message.channel, "Command **" + first + "** only works in servers (for now)!");
+                return false;
+            }
+            if (IS_PM || (!guildData.hiddenChannels[e.message.channel_id] || !cmdData.ignoreHidden)) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and
                 // you don't otherwise have a way to reference it
-                if (!guildData || guildData.hasPermissions(userData, cmdData.perms)) {
+                if (IS_PM || guildData.hasPermissions(userData, cmdData.perms)) {
                     cmdData.execute(this, e, userData, guildData);
                 } else {
                     Skarm.sendMessageDelay(e.message.channel, "**" + author.username +
@@ -351,7 +357,7 @@ class Bot {
         }
 
         // ignore hidden channels after this
-        if (guildData && guildData.hiddenChannels[e.message.channel_id]) {
+        if (!IS_PM && guildData.hiddenChannels[e.message.channel_id]) {
             return false;
         }
 
@@ -423,7 +429,7 @@ class Bot {
             return true;
         }
 
-        if (guildData) {
+        if (!IS_PM) {
             this.parrot(e, guildData.aliases);
         }
 
