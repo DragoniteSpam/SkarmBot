@@ -70,9 +70,17 @@ const linkFunctions = function(guild) {
 
     guild.executeMayhem = function(botAccount) {
         let guildData = Guild.getData(this.id);
+
+        let guildBotMember = botAccount.memberOf(guildData);
+        let guildPermissions = guildBotMember.permissionsFor(guildData);
+
+        if (!guildPermissions.General.MANAGE_ROLES) {
+            // no permissions for editing roles here
+            return;
+        }
         
         let skarmRank = 0
-        for (let role of botAccount.memberOf(guildData.id).roles) {
+        for (let role of guildBotMember.roles) {
             skarmRank = Math.max(skarmRank, role.position);
         }
 
