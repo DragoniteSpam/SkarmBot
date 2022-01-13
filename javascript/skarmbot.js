@@ -28,7 +28,7 @@ class Bot {
      *
      *
      **/
-    constructor(client,version) {
+    constructor(client, version) {
         this.version=version;
 
         this.pid = Math.floor(Math.random()*1024)&(-32)+this.version;
@@ -308,7 +308,7 @@ class Bot {
         let guildData = Guilds.get(e.message.channel.guild_id);
 
         //always run these per-guild functions
-        guildData.executeMayhem();
+        guildData.executeMayhem(this.client.User);
         guildData.updateEXP(e);
         guildData.updateActivity(e);
         guildData.appendZipfData(e.message.content);

@@ -169,6 +169,12 @@ class Skarm {
         // lastly, the actual help text
         helpString = helpString.trim() + "```\n" + cmd.helpText;
         
+        if (cmd.helpExamples) {
+            for (let example of cmd.helpExamples) {
+                helpString += example + "\n";
+            }
+        }
+        
         Skarm.sendMessageDelay(e.message.channel, helpString);
     }
     

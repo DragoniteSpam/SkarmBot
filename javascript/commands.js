@@ -77,6 +77,10 @@ module.exports = {
         params: ["<victim>"],
         usageChar: "!",
         helpText: "Hugs a target, or defaults to the summoner.",
+        helpExamples: [
+            "e!hug Dragonite#7992\nWill cause Skarm to hug the user named Dragonite#7992.", 
+            "e!hug\nWill cause Skarm to hug whoever invoked the command."
+        ],
         ignoreHidden: true,
 		category: "general",
 
