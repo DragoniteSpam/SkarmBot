@@ -1,4 +1,21 @@
-﻿Param(
+﻿<#
+.SYNOPSIS
+    This script initializes all (WIP) dependencies required to run SkarmBot
+
+.DESCRIPTION
+    Last Modified:      52/01/12
+    Emergency Contact:  github.com/argothenaut
+
+    The following actions will be performed by the script in order to prepare the execution environment
+    1. Make sure that the latest version of node.js is installed
+    2. Make sure that all required NPM modules are installed
+    3. (TBD) Make sure that the skarmData directories are connected
+    4. (TBD) Make sure that all required secret tokens exist at the expected path
+    5. (TBD) Make sure that Box Drive is present on the system to access the cloud-stored databases
+#>
+
+
+Param(
     [switch]$Force = $false
 )
 
