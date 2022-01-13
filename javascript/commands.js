@@ -1382,6 +1382,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			    if(member.id === target) targetNick = member.nick;
             }
 
+			//https://discordjs.guide/popular-topics/embeds.html#embed-preview
             e.message.channel.sendMessage(" ", false, {
                 color: Skarm.generateRGB(),
                 author: {name: Users.get(target).nickName || targetNick || targetEntity.username || target},
