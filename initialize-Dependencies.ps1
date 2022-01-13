@@ -90,7 +90,7 @@ if(!$nodeProducts -or ($nodeProducts.DisplayVersion -ne $nodejsVersion)){
         }
     }
 }else{
-    reportGood "the latest version of node is already installed $nodejsVersion"
+    reportGood "the latest version of node is installed $nodejsVersion"
 }
 
 
@@ -98,6 +98,7 @@ if(!$nodeProducts -or ($nodeProducts.DisplayVersion -ne $nodejsVersion)){
 ### 2. NPM modules
 $PackageList = @("child_process", "discordie", "request", "node-wolfram", "crypto-js")
 
+$allPackagesInsatlled = $true
 $PackageList | foreach {
     $item = $_
     
@@ -108,7 +109,6 @@ $PackageList | foreach {
     
     
     if(Test-Path $npmRoot\$item){
-        reportGood("Initialized $item package")
         return;
     }else{
         reportWarn("installing package: $_")
@@ -119,9 +119,13 @@ $PackageList | foreach {
     if(Test-Path $npmRoot\$item){
         reportGood("Initialized $item package")
     }else{
+        $allPackagesInsatlled = $false
         reportWarn("Failed to find package: $npmRoot\$item")
         reportWarn("Please run 'npm install $_'")
     }
+}
+if($allPackagesInsatlled){
+    reportGood "All NPM packages are installed"
 }
 
 
