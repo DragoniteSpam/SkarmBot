@@ -31,35 +31,43 @@ String.prototype.replaceAll = function(search, replacement) {
     return this.replace(new RegExp(search, "g"), replacement);
 };
 
-client.connect({
-	token: token
-});
+client.connect({token: token});
+
+let uptimeController = {
+	connectTime:     0,
+	disconnectTime:  0
+};
 
 let bot;
-//last Connection, last Disconnect
-let uptimeController= [0,0];
 
 // try to put all of the actual event code in skarmbot.js to keep this main
 // file clean
 client.Dispatcher.on(events.GATEWAY_READY, e => {
-	if(bot){
-		uptimeController[0]=Date.now();
-		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
+	if (bot) {
+		uptimeController.connectTime = Date.now();
+		Skarm.log("Came back online after " + (uptimeController.connectTime - uptimeController.disconnectTime) / 1000 + " seconds down");
 		return;
 	}
+	Constants.initialize(client, process);
 
-	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
-    Constants.initialize(client);
-    Encrypt.initialize();
+	let dataPuller = spawn('powershell.exe', [Constants.skarmRootPath + "pullData.ps1"]);
+	Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
-		console.log("Pulled in skarmData.\nGit revision count: "+code);
+		console.log("Pulled in skarmData.\nGit revision count: " + code);
 		Users.initialize(client);
 		Guilds.initialize(client);
-		bot = new SkarmBot(client,code);
+		bot = new SkarmBot(client, code);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
 	});
-	dataPuller.on("error",(err)=>{console.error(err);});
-	dataPuller.on("message",(message) => {console.log(message);});
+	dataPuller.stderr.on("data", (err) => {
+		console.error(err.toString());
+	});
+	dataPuller.stdout.on("data", (message) => {
+		message = message.toString();
+		if (message.length > 1) {	//if this minimum isn't included, extra new lines get added between each printed line
+			console.log(message.replaceAll("\n", "").replaceAll("\r", ""));
+		}
+	});
 });
 
 client.Dispatcher.on(events.PRESENCE_UPDATE, e => {
@@ -133,5 +141,5 @@ client.Dispatcher.on(events.VOICE_CHANNEL_LEAVE, e => {
 
 client.Dispatcher.on(events.DISCONNECTED, e => {
 	console.error("Network Error: disconnected at " + (new Date()).toString());
-	uptimeController[1]=Date.now();
+	uptimeController.disconnectTime = Date.now();
 });
