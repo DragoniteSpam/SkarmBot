@@ -31,20 +31,21 @@ String.prototype.replaceAll = function(search, replacement) {
     return this.replace(new RegExp(search, "g"), replacement);
 };
 
-client.connect({
-	token: token
-});
+client.connect({token: token});
+
+let uptimeController = {
+	connectTime:     0,
+	disconnectTime:  0
+};
 
 let bot;
-//last Connection, last Disconnect
-let uptimeController= [0,0];
 
 // try to put all of the actual event code in skarmbot.js to keep this main
 // file clean
 client.Dispatcher.on(events.GATEWAY_READY, e => {
 	if (bot) {
-		uptimeController[0] = Date.now();
-		Skarm.log("Came back online after " + (uptimeController[0] - uptimeController[1]) / 1000 + " seconds down");
+		uptimeController.connectTime = Date.now();
+		Skarm.log("Came back online after " + (uptimeController.connectTime - uptimeController.disconnectTime) / 1000 + " seconds down");
 		return;
 	}
 	Constants.initialize(client, process);
@@ -140,5 +141,5 @@ client.Dispatcher.on(events.VOICE_CHANNEL_LEAVE, e => {
 
 client.Dispatcher.on(events.DISCONNECTED, e => {
 	console.error("Network Error: disconnected at " + (new Date()).toString());
-	uptimeController[1]=Date.now();
+	uptimeController.disconnectTime = Date.now();
 });
