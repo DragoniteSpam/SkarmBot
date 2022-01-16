@@ -79,7 +79,7 @@ const linkFunctions = function(guild) {
             return;
         }
         
-        let skarmRank = 0
+        let skarmRank = 0;
         for (let role of guildBotMember.roles) {
             skarmRank = Math.max(skarmRank, role.position);
         }
