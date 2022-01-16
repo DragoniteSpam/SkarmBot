@@ -5,7 +5,6 @@
 #>
 
 
-#*.penguin
 $dataSource = "~\Box\skarmData\*.penguin"
 $dataDestination = "$PSScriptRoot\..\skarmData\"
 
