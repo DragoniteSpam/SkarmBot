@@ -1,11 +1,14 @@
 # SkarmBot
 
-A starting-from-scratch rewrite of the glorious Skarm Bot. The goals of this rewrite are:
+## Getting Started
 
- - the entire code base shouldn't be crap
- - the entire code base shouldn't all be in one impossible-to-read file
- - the entire code base shouldn't be reminiscent of [this](https://xkcd.com/1513/)
- - the entire code base shouldn't be impossible to add new things to
- - if my co-authors could pretend to have some idea of what "code style" is that'd be a plus too
- 
+### Add the bot to your server
  [Ask your Server Administrators to add Skarm to your favorite server today!](https://discordapp.com/oauth2/authorize?client_id=319291086570913806&scope=bot)
+
+### Running the code
+1. Clone the repository locally by running `git clone https://github.com/DragoniteSpam/SkarmBot.git`
+2. Install Box Drive and log in with credentials that have access to the database repository `skarmData`
+3. Run the powershell script `initialize-Dependencies.ps1` to install node.js and all required packages to execute skarmbot
+4. Resolve any errors identified by the initialization script so that another run of it confirms that all node packages are installed, all data files are present, and all tokens are present
+5. Run the powershell script `.\launcher.ps1 -operationMode live` to host the live instance of SkarmBot
+6. Run the powershell script `.\launcher.ps1 -operationMode test` to host the test instance of SkarmBot
