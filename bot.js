@@ -42,20 +42,20 @@ let uptimeController= [0,0];
 // try to put all of the actual event code in skarmbot.js to keep this main
 // file clean
 client.Dispatcher.on(events.GATEWAY_READY, e => {
-	if(bot){
-		uptimeController[0]=Date.now();
-		Skarm.log("Came back online after "+(uptimeController[0]-uptimeController[1])/1000 +" seconds down");
+	if (bot) {
+		uptimeController[0] = Date.now();
+		Skarm.log("Came back online after " + (uptimeController[0] - uptimeController[1]) / 1000 + " seconds down");
 		return;
 	}
 
 	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
     Constants.initialize(client);
-    Encrypt.initialize();
+	Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
-		console.log("Pulled in skarmData.\nGit revision count: "+code);
+		console.log("Pulled in skarmData.\nGit revision count: " + code);
 		Users.initialize(client);
 		Guilds.initialize(client);
-		bot = new SkarmBot(client,code);
+		bot = new SkarmBot(client, code);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
 	});
 	dataPuller.on("error",(err)=>{console.error(err);});
