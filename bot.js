@@ -47,9 +47,9 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		Skarm.log("Came back online after " + (uptimeController[0] - uptimeController[1]) / 1000 + " seconds down");
 		return;
 	}
-
-	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
 	Constants.initialize(client, process);
+
+	let dataPuller = spawn('powershell.exe', [Constants.skarmRootPath + "pullData.ps1"]);
 	Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
 		console.log("Pulled in skarmData.\nGit revision count: " + code);
@@ -58,8 +58,15 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		bot = new SkarmBot(client, code);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
 	});
-	dataPuller.on("error",(err)=>{console.error(err);});
-	dataPuller.on("message",(message) => {console.log(message);});
+	dataPuller.stderr.on("data", (err) => {
+		console.error(err.toString());
+	});
+	dataPuller.stdout.on("data", (message) => {
+		message = message.toString();
+		if (message.length > 1) {	//if this minimum isn't included, extra new lines get added between each printed line
+			console.log(message.replaceAll("\n", "").replaceAll("\r", ""));
+		}
+	});
 });
 
 client.Dispatcher.on(events.PRESENCE_UPDATE, e => {
