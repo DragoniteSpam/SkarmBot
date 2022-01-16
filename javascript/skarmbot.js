@@ -624,9 +624,20 @@ class Bot {
         Guilds.save();
         Users.save();
         this.xkcd.save();
-        let savior = spawn('cmd.exe', ['/c', 'saveData.bat']);
-        savior.stdout.on("data",(data) => {Skarm.STDERR(data.toString())});
-        savior.stderr.on("data",(data) => {Skarm.STDERR(data.toString())});
+
+        Skarm.STDERR("Beginning push to cloud storage...");
+
+        let savior = spawn('powershell.exe', [Constants.skarmRootPath + 'saveData.ps1']);
+        savior.stdout.on("data", (data) => {
+            data = data.toString().replaceAll("\r","").replaceAll("\n","");
+            if(data.length > 1)
+                Skarm.STDERR(data);
+        });
+        savior.stderr.on("data", (data) => {
+            data = data.toString().replaceAll("\r","").replaceAll("\n","");
+            if(data.length > 1)
+                Skarm.STDERR(data);
+        });
         savior.on('exit', (code) => {
             console.log("Received code: " + code + " on saving data.");
             if (saveCode === Constants.SaveCodes.DONOTHING)
