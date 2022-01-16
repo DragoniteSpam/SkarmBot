@@ -75,7 +75,7 @@ const linkFunctions = function(guild) {
         let guildPermissions = guildBotMember.permissionsFor(guildData);
 
         if (!guildPermissions.General.MANAGE_ROLES) {
-            // no permissions for editing roles here
+            Skarm.spam(`I don't have permission to manage roles in ${this.id}. (mayhem)`);
             return;
         }
         
@@ -88,7 +88,7 @@ const linkFunctions = function(guild) {
             for (let i = 0; i < guildData.roles.length; i++) {
                 let roleData = guildData.roles[i];
                 if (skarmRank <= roleData.position) {
-                    // the mayhem role outranks me for some reason (the server admins should probably change that)
+                    Skarm.spam(`the mayhem role ${roleData.name} outranks me for some reason (the server admins of ${this.id} should probably change that)`);
                     continue;
                 }
                 if (roleData.id === roleID) {
