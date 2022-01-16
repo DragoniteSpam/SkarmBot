@@ -49,7 +49,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	}
 
 	let dataPuller = spawn('cmd.exe', ['/c', 'pullData.bat']);
-    Constants.initialize(client);
+	Constants.initialize(client, process);
 	Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
 		console.log("Pulled in skarmData.\nGit revision count: " + code);

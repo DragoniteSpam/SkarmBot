@@ -5,7 +5,7 @@
 // I'm going to come to your house and whack you with a spoon.
 class Constants {
     // assume we are connected
-    static initialize(client) {
+    static initialize(client, p) {
         //the dev team user objects
         Constants.Moms = {
             DRAGO: client.Users.get("137336478291329024"),
@@ -98,6 +98,10 @@ class Constants {
             Head: "<:skarmhead:422560671574523904>",
             Blank: "<:background:448285187550347275>",
         }
+
+        //the absolute path of the repository, formatted like "C:\Users\argo\Documents\GitHub\SkarmBot"
+        Constants.skarmRootPath = p.argv[1].substring(0,process.argv[1].lastIndexOf("\\"));
+        console.log("Initialized root path to: ", Constants.skarmRootPath);
 
         console.log("Initialized constants...");
     }
