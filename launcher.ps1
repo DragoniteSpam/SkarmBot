@@ -9,14 +9,18 @@ Start-Process -Wait powershell.exe -ArgumentList @("$PSScriptRoot\initialize-Dep
 if($operationMode -eq "live"){
     do{
         node $PSScriptRoot\bot.js beta
-    }while($LASTEXITCODE -ne 69)
+        $LEC = $LASTEXITCODE
+        Write-Host "Process exited with code $LEC"
+    }while($LEC -ne 0 -and $LEC -ne 42)
 }
 
 
 if($operationMode -eq "test"){
     do{
         node $PSScriptRoot\bot.js
-    }while($LASTEXITCODE -ne 69)
+        $LEC = $LASTEXITCODE
+        Write-Host "Process exited with code $LEC"
+    }while($LEC -ne 0 -and $LEC -ne 42)
 }
 
 Pop-Location
