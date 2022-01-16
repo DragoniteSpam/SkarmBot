@@ -185,3 +185,5 @@ if(-not $missingTokens){
 }
 
 Pop-Location
+
+Start-Sleep 1
