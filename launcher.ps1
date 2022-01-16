@@ -3,7 +3,7 @@
 )
 Push-Location
 cd $PSScriptRoot
-Start-Process -Wait powershell.exe -ArgumentList @("$PSScriptRoot\initialize-Dependencies.ps1") -Verb RunAs
+Start-Process -Wait powershell.exe -ArgumentList @("$PSScriptRoot\initialize-Dependencies.ps1")
 
 
 if($operationMode -eq "live"){
