@@ -191,7 +191,7 @@ module.exports = {
         },
     },
     Activity: {
-        aliases: ["activity","activityTable"],
+        aliases: ["activity","activitytable"],
         params: ["-days # -page #"],
         usageChar: "!",
         helpText: "Prints out a table of guild activity from the past # days.  If not specified, default is 30 days.  Use the page option to access data outside of the top 10 members.",
@@ -279,6 +279,68 @@ module.exports = {
             }
             Skarm.sendMessageDelete(e.message.channel," ",false,messageObject,1<<20,e.message.author,bot);
             //Skarm.logError("Message sent to smd");
+        },
+
+        help(bot,e) {
+            Skarm.help(this, e);
+        },
+    },
+    RoleFrequency: {
+        aliases: ["rolefrequency","rf"],
+        params: ["count"],
+        usageChar: "!",
+        helpText: "Prints out a table of the most frequently appearing roles in the server.  Use parameter count, to specify the amount of roles to include in the table.",
+        ignoreHidden: true,
+        category: "general",
+        //todo: specify only works in guilds
+        execute(bot, e, userData, guildData) {
+            let param = commandParamTokens(e.message.content);
+            let tableUpperBound = Infinity;
+            if(param.length){
+                tableUpperBound = Number(param[0]);
+            }
+            let guild = e.message.guild;
+
+            //harvest counts from member list
+            let members = guild.members;
+            let roleFreq = { };
+            for(let member of members){
+                for(let role of member.roles){
+                    if(!(role.id in roleFreq)){
+                        roleFreq[role.id] = 0;
+                    }
+                    roleFreq[role.id]++;
+                }
+            }
+
+            let roleFreqArray = [ ];
+            //convert to array and sort by frequency
+            for(let roleID of Object.keys(roleFreq)){
+                roleFreqArray.push({
+                    id: roleID,
+                    freq: roleFreq[roleID],
+                });
+            }
+
+            roleFreqArray.sort((a,b) => {return b.freq - a.freq});
+
+            //print results
+            let printFields = [ ];
+            tableUpperBound = Math.min(tableUpperBound, roleFreqArray.length);
+            for(let i = 0; i < tableUpperBound; i++){
+                printFields.push({name: roleFreqArray[i].freq, value: " <@&"+roleFreqArray[i].id+">", inline: true});
+            }
+
+            e.message.channel.sendMessage(" ", false, {
+                color: Skarm.generateRGB(),
+                timestamp: new Date(),
+                title: "Most frequent roles in "+e.message.guild.name,
+                fields: printFields,
+                footer: {
+                    text: e.message.guild.name+ " top " + tableUpperBound,
+                },
+            });
+
         },
 
         help(bot,e) {
@@ -1353,7 +1415,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	*	leveling
 	*/
 	Rank: {
-		aliases: ["rank","level"],
+		aliases: ["level","rank"],
         params: ["<optionally mention a guild member>"],
         usageChar: "!",
         helpText: "returns how much exp you have in the guild",
@@ -1559,7 +1621,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         },
 	},
 	GuildAnnouncementSwitch: {
-		aliases: ["announce","levelannounce"],
+		aliases: ["levelannounce","announce"],
         params: [],
         usageChar: "@",
         helpText: "Toggles the state of announcing when a user levels up in the guild",
@@ -1585,7 +1647,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         },
 	},
     RoleRefresh: {
-        aliases: ["role","refresh","rolerefresh"],
+        aliases: ["rolerefresh","role","refresh"],
         params: [],
         usageChar: "!",
         helpText: "Refreshes level up role assignments (Role rewards need to be configured for this to do anything useful)",
