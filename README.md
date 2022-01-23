@@ -1,8 +1,6 @@
 # SkarmBot
 
-## Getting Started
-
-### Features
+## Features
 
  - Maintains an XKCD database and notifies subscribed channels about new releases
  - Notify users when someone says their name (or nickname, or otherwise brings up a topic of interest)
@@ -10,6 +8,8 @@
  - Hold conversations with users; "learns" based on chat history ([hilarity ensures](https://twitter.com/DragoniteSpam/status/1483687506923118593))
  - Sing songs, participate in Skyrim LARPs, and quote Douglas Adams with the best of them
  - Keep chat colorful by randomizing the appearance of selected roles periodically
+
+## Getting Started
 
 ### Adding Skarmbot to a Server
 Skarmbot is hosted by the developers and can simply be added to a discord server with the link below.  
