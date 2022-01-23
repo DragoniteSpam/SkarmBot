@@ -3,11 +3,13 @@
 ## Features
 
  - Maintains an XKCD database and notifies subscribed channels about new releases
- - Notify users when someone says their name (or nickname, or otherwise brings up a topic of interest)
- - Keep track of server activity, and present the data for those interested in tidbits such as "the most common words that people say"
- - Hold conversations with users; "learns" based on chat history ([hilarity ensures](https://twitter.com/DragoniteSpam/status/1483687506923118593))
- - Sing songs, participate in Skyrim LARPs, and quote Douglas Adams with the best of them
- - Keep chat colorful by randomizing the appearance of selected roles periodically
+ - Notifies users when someone says their name (or nickname, or otherwise brings up a topic of interest)
+ - Notifies channels of events including members joining and leaving, bans, and username/nickname changes
+ - Keeps track of server activity, and present the data for those interested in tidbits such as "the most common words that people say"
+ - Holds conversations with users; "learns" based on chat history ([hilarity ensures](https://twitter.com/DragoniteSpam/status/1483687506923118593))
+ - Sings songs, participate in Skyrim LARPs, and quote Douglas Adams with the best of them
+ - Keeps chat colorful by randomizing the appearance of selected roles periodically
+ - Rewards server members with roles based on activity in a server (as configured by server moderators)
 
 ## Getting Started
 
