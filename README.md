@@ -4,7 +4,7 @@
 
 ### Features
 
- - XKCD database
+ - Maintains an XKCD database and notifies subscribed channels about new releases
  - Notify users when someone says their name (or nickname, or otherwise brings up a topic of interest)
  - Keep track of server activity, and present the data for those interested in tidbits such as "the most common words that people say"
  - Hold conversations with users; "learns" based on chat history ([hilarity ensures](https://twitter.com/DragoniteSpam/status/1483687506923118593))
