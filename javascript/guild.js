@@ -419,17 +419,14 @@ const linkFunctions = function(guild) {
     };
 
     guild.queueMessage = function(channel,message,tts,object){
-        //console.log("enqueueing...");
         if(!this.channelBuffer){
-            this.channelBuffer = {};
+            this.channelBuffer = { };
         }
         if(channel.id in this.channelBuffer){
             this.channelBuffer[channel.id].push({_1: message, _2:tts, _3: object});
         }else{
             this.channelBuffer[channel.id]=[{_1: message, _2:tts, _3: object}];
         }
-        //console.log(`Enqueued message: '${JSON.stringify(this.channelBuffer[channel.id])}' for ${channel.id}`);
-        //console.log(`New buffer length: ${this.channelBuffer[channel.id].length}`);
     };
 
     //utilities
@@ -441,8 +438,10 @@ const linkFunctions = function(guild) {
         //console.log("checking the buffer...");
         if(typeof(this.channelBuffer)==="undefined") {
             //console.log(`redefining channel buffer: ${JSON.stringify(this.channelBuffer)}`);
-            this.channelBuffer = {};
+            this.channelBuffer = { };
         }
+
+        //check channel buffer for any enqueued messages first
         if(e.message.channel.id in this.channelBuffer) {
             if (this.channelBuffer[e.message.channel.id].length > 0) {
                 return this.channelBuffer[e.message.channel.id].shift()._1;

@@ -1839,9 +1839,14 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             let tokens = commandParamTokens(e.message.content);
             if (tokens.length < 1) return;
             let destination = tokens.splice(0, 1)[0];
+            let srcChannel = e.message.channel;
             let chan = bot.client.Channels.get(destination);
             if (chan) {
-                if (tokens.length < 1) return Skarm.spam(Guilds.get(chan.guild_id).channelBuffer);
+
+                if (tokens.length < 1) {
+                    Skarm.sendMessageDelay(srcChannel, JSON.stringify(Guilds.get(chan.guild_id).channelBuffer[chan.id]));
+                    return;
+                }
                 if (tokens.join("") === "-") {
                     Guilds.get(chan.guild_id).channelBuffer = { };
                     return Skarm.sendMessageDelay(e.message.channel, "cleared");
