@@ -34,6 +34,7 @@ class XKCD {
 			Encrypt.read(xkcddb, function (data, filename) {
 				tis.bot.channelsWhoLikeXKCD = JSON.parse(data);
 				console.log("Initialized " + Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels.");
+				tis.enabled = true;
 			});
 		} catch (e) {
 			this.enabled = false;
@@ -94,7 +95,6 @@ class XKCD {
 					Guild.guilds[guild].notify(tis.bot.client,Constants.Notifications.XKCD,params.uri);
 				}
 				tis.bot.save(Constants.SaveCodes.DONOTHING);
-				return tis.checkForNewXKCDs();
 			}
 			Skarm.spam("No further xkcd found at "+newXkcdId);
 		});
