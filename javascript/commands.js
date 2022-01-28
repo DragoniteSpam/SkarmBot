@@ -1478,7 +1478,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         execute(bot, e, userData, guildData) {
             let param = commandParamTokens(e.message.content);
 		    let target;
-		    console.log(param);
+
+		    //dont mess up the data if no input params are given
+		    if(param.length === 0){
+                Skarm.help(this,e);
+		        return;
+            }
+
             if(param.length === 2) {
                 target = param.shift().replace("<@","").replace(">","").replace("!","");
                 Skarm.sendMessageDelay(e.message.channel, `Updating EXP value for <@${target}>`);
