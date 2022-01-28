@@ -96,7 +96,6 @@ class XKCD {
 				}
 				tis.bot.save(Constants.SaveCodes.DONOTHING);
 			}
-			Skarm.spam("No further xkcd found at "+newXkcdId);
 		});
 	}
 
