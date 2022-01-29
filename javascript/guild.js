@@ -130,20 +130,23 @@ const linkFunctions = function(guild) {
             if (this.expTable[author.id].lastMessage + 6000 >= Date.now()) return;
         }else {
             this.expTable[author.id] = {
-                exp: Skinner.getMinEXP(0),
-                level: 0,
-                nextLevelEXP: Skinner.getMinEXP(1),
-                lastMessage: undefined,
+                exp: Skinner.getMinEXP(0),           //num: current exp
+                level: 0,                                 //num: level
+                nextLevelEXP: Skinner.getMinEXP(1),  //num: exp needed to level up
+                lastMessage: undefined,                   //num: timestamp
             };
         }
 
         let userEXPData = this.expTable[author.id];
 
-        userEXPData.exp += 15 + Math.floor(10 * Math.random());
+        //catch the bug that you don't expect to exist
+        if(isNaN(userEXPData.exp)) userEXPData.exp = 0;
+
+        userEXPData.exp += 15 + Math.floor(11 * Math.random());
         userEXPData.lastMessage = Date.now();
 
         // level up?
-        let oldLevel=userEXPData.level;
+        let oldLevel = userEXPData.level;
         userEXPData.level = Skinner.getLevel(userEXPData.exp);
         if(userEXPData.exp >= userEXPData.nextLevelEXP || isNaN(userEXPData.nextLevelEXP) || oldLevel !== userEXPData.level) {
             userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level);
@@ -157,7 +160,7 @@ const linkFunctions = function(guild) {
                 this.rolesTable = { };
             }
 
-            this.roleCheck(e.message.member,userEXPData);
+            this.roleCheck(e.message.member, userEXPData);
         }
     };
 

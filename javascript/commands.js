@@ -1661,7 +1661,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         category: "leveling",
 
         execute(bot, e, userData, guildData) {
-            guildData.roleCheck(e.message.member,guildData.expTable[e.message.author.id]);
+            guildData.roleCheck(e.message.member, guildData.expTable[e.message.author.id]);
             Skarm.sendMessageDelay(e.message.channel,"Refreshed your roles!");
         },
 

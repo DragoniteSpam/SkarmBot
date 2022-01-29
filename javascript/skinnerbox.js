@@ -29,7 +29,7 @@ const EXPREQ = [
 module.exports = {
     getLevel: function(exp) {
 		let lvl = 0;
-		while(EXPREQ[lvl++] < exp) { }
+		while(EXPREQ[lvl++] < exp);
         return --lvl;
     },
     
