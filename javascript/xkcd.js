@@ -16,11 +16,11 @@ class XKCD {
 		this.bot = bot;
 		this.initialize();
 		this.interval = null;
-		this.schedule();
 		this.lock = 0;
 		this.enabled = true;
 		try {
 			this.references = JSON.parse(fs.readFileSync(xkcdlib).toString().toLowerCase());
+			this.schedule();
 		} catch (e) {
 			this.enabled = false;
 			this.references = { };
@@ -55,9 +55,7 @@ class XKCD {
 
 	schedule() {
 		if (!this.enabled) return;
-		if (!this.interval) {
-			clearInterval(this.interval);
-		}
+		if (this.interval) {clearInterval(this.interval);}
 		let tis = this;
 		this.interval = setInterval(function(){tis.checkForNewXKCDs();}, 1000 * 60 * 30);
 	}
