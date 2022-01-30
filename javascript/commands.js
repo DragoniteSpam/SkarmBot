@@ -1439,7 +1439,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 				target = tok;
 			}
 			let user = guildData.expTable[target];
-			let exp = user.exp;
+			let exp = user.exp - 0;
 			let lvl = user.level;
 			let toNextLvl = user.nextLevelEXP-exp;
 			let targetEntity = bot.client.Users.get(target);
@@ -1764,14 +1764,18 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         },
     },
     ConfigBuffRole:{
-	    aliases: ["configurebuffrole","configbuff","buffconfig", "buffconf","cbr"],
+	    aliases: ["configurebuffrole", "configbuff", "buffconfig", "buffconf", "cbr"],
         params: ["[action (get,set,remove)]", "[role(ping or id)]", "[stat(base,bonus,cooldown,luck)]", "[modifier(num 0 - 1000)]"],
         usageChar: "@",
         helpText: "This command configures a role to give buffs for leveling up in the server.\r\n" +
             "Example 1: `e@cbr set @admin basebuff 2` users with the `@admin` role will receive 2 more base exp per message. \r\n" +
             "Example 2: `e@cbr get @admin` reports the current buffs affecting the `@admin` role. \r\n" +
-            "Example 2: `e@cbr get` reports the list of roles who have buffs of any kind. \r\n" +
-            "Example 3: `e@cbr remove @admin` removes all buffs currently assigned to the `@admin` role.",
+            "Example 3: `e@cbr get` reports the list of roles who have buffs of any kind. \r\n" +
+            "Example 4: `e@cbr remove @admin` removes all buffs currently assigned to the `@admin` role.\r\n\r\n" +
+            "Base: modifies the minimum exp gained when a qualifying message is sent. Default server value: 15\r\n" +
+            "Bonus: modifies the random bonus exp gained above the maximum when a qualifying message is sent.  Default server value: 10\r\n" +
+            "Cooldown: reduces the wait time between qualifying messages.  Scaling is linearized. Default server value: 100. Default server cooldown: 60s.  Granting 100 cooldown reduction will cause the effective cooldown to be 60s/(100 (base) + 100 (bonus)) = 30s\r\n" +
+            "Luck: modifies the probability that a message will get close to the full bonus exp. Default server value: 100.",
         ignoreHidden: true,
         category: "leveling",
         perms: Permissions.MOD,
