@@ -1812,7 +1812,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 
 	        if(tokens.length === 0){
 	            if(action === "get"){
-                    //todo: return list of roles that exist in the guild buff list
+                    // return list of roles that exist in the guild buff list
 	                let buffedRoles = Object.keys(guildData.expBuffRoles);
                     let roles = [ ];
 			        for(let i in buffedRoles){

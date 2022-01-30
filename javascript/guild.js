@@ -197,9 +197,7 @@ const linkFunctions = function(guild) {
         action = action.toLowerCase().trim();
         if(action === "get"){
             if(role in guild.expBuffRoles){
-                //todo: convert to embedded message with each stat key/value pair
                 guild.reportExpBuffRole(channel, role);
-                //Skarm.sendMessageDelay(channel, `Current buffs for ${role}: ${JSON.stringify(guild.expBuffRoles[role])}`);
             }else{
                 Skarm.sendMessageDelay(channel, `No buffs configured for the role ${role}`);
             }
