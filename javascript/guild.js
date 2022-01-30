@@ -218,7 +218,7 @@ const linkFunctions = function(guild) {
             if(role in guild.expBuffRoles){
                 guild.reportExpBuffRole(channel, role);
             }else{
-                Skarm.sendMessageDelay(channel, `No buffs configured for the role ${role}`);
+                Skarm.sendMessageDelay(channel, `No buffs configured for this role.`);
             }
             return;
         }
