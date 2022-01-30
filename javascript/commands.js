@@ -12,6 +12,11 @@ const Skinner = require("./skinnerbox.js");
 
 let commandParamTokens = function(message) {
     let tokens = message.trim().split(" ");
+    for(let i = 0; i < tokens.length; i++){
+        if(tokens[i].length === 0){
+            tokens.splice(i--,1);
+        }
+    }
     tokens.shift();
     return tokens;
 };
@@ -1752,6 +1757,128 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             }else{
                 Skarm.sendMessageDelay(channel, "Error: expected exactly 1 attached file.  Found: " + e.message.attachments.length);
             }
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    ConfigBuffRole:{
+	    aliases: ["configurebuffrole","configbuff","buffconfig", "buffconf","cbr"],
+        params: ["[action (get,set,remove)]", "[role(ping or id)]", "[stat(base,bonus,cooldown,luck)]", "[modifier(num 0 - 1000)]"],
+        usageChar: "@",
+        helpText: "This command configures a role to give buffs for leveling up in the server.\r\n" +
+            "Example 1: `e@cbr set @admin basebuff 2` users with the `@admin` role will receive 2 more base exp per message. \r\n" +
+            "Example 2: `e@cbr get @admin` reports the current buffs affecting the `@admin` role. \r\n" +
+            "Example 2: `e@cbr get` reports the list of roles who have buffs of any kind. \r\n" +
+            "Example 3: `e@cbr remove @admin` removes all buffs currently assigned to the `@admin` role.",
+        ignoreHidden: true,
+        category: "leveling",
+        perms: Permissions.MOD,
+
+        execute(bot, e, userData, guildData){
+            let statAliases = {         //map alias to its definition
+                baseBuff: "baseBuff",
+                base:     "baseBuff",
+                bonus:     "bonusBuff",
+                bonusBuff: "bonusBuff",
+                cooldownBuff: "cooldownBuff",
+                cooldown:     "cooldownBuff",
+                cd:           "cooldownBuff",
+                luckBuff: "luckBuff",
+                luck:     "luckBuff",
+                lb:       "luckBuff"
+            };
+            let actionWords = ["get", "set", "remove"];
+	        let content = e.message.content.toLowerCase();
+	        let tokens = commandParamTokens(content);
+	        let channel = e.message.channel;
+
+	        //at least one parameter required for the role to work properly
+	        if(tokens.length < 1) return this.help(bot, e);
+
+	        let action, role, stat, modifier;
+
+	        //determine action
+	        for(let actionWord of actionWords){
+	            for(let t in tokens){
+	                if(tokens[t].includes(actionWord)){
+	                    action = actionWord;
+	                    tokens.splice(t,1); //remove the token from the array
+                        break;
+                    }
+                }
+            }
+
+	        if(tokens.length === 0){
+	            if(action === "get"){
+                    //todo: return list of roles that exist in the guild buff list
+	                let buffedRoles = Object.keys(guildData.expBuffRoles);
+                    let roles = [ ];
+			        for(let i in buffedRoles){
+			        	roles.push("<@&"+buffedRoles[i]+">");
+			        }
+                    if(roles.length) {
+                        e.message.channel.sendMessage(" ", false, {
+                            color: Skarm.generateRGB(),
+                            timestamp: new Date(),
+                            //title: ,
+                            fields: [
+                                {name: "Roles with buffs", value: roles.join("\r\n")}
+                            ],
+                            footer: {
+                                text: e.message.guild.name,
+                            },
+                        });
+                    }else{
+                        Skarm.sendMessageDelay(channel, "No roles in the server have been configured with buffs");
+                    }
+                    return;
+                }else {
+                    return this.help(bot, e);           //not enough arguments
+                }
+            }
+
+            //acquire role
+	        let roles = e.message.guild.roles;
+	        for(let t = 0; t < tokens.length; t++){
+	            for(let guildRole of roles){
+	                if(tokens[t].includes(guildRole.id)){   //must be ping or ID of role for this to work
+	                    role = guildRole.id;
+	                    tokens.splice(t,1);     //remove token from array
+                        t = tokens.length;                //break out of both loops
+                        break;
+                    }
+                }
+            }
+
+
+	        //acquire stat and modifier if they must be set
+	        if(action === "set"){
+	            // acquire stat
+                for(let t = 0; t < tokens.length; t++){
+                    if(tokens[t] in statAliases){
+                        stat = statAliases[tokens[t]];
+                        tokens.splice(t,1);
+                        break;
+                    }
+                }
+
+                // acquire modifier
+                for(let t = 0; t < tokens.length; t++){
+                    if(tokens[t] > -1){
+                        modifier = tokens[t];
+                        tokens.splice(t,1);
+                        break;
+                    }
+                }
+            }
+
+	        if(role === undefined) {
+	            Skarm.sendMessageDelay(channel, "Error: failed to find the role to apply action to.");
+	            return;
+            }
+	        guildData.modifyExpBuffRoles(channel, action, role, stat, modifier);
         },
 
         help(bot, e) {

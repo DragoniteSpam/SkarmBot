@@ -59,8 +59,9 @@ const linkVariables = function(guild) {
 
         }
     }
-    if (guild.hiddenChannels === undefined) guild.hiddenChannels = { };
-    if (guild.zipfMap === undefined){guild.zipfMap = {};}
+    if (guild.hiddenChannels === undefined) {guild.hiddenChannels = {};}
+    if (guild.zipfMap === undefined){guild.zipfMap = { };}
+    if (guild.expBuffRoles === undefined){guild.expBuffRoles = { };}
 };
 
 // since de/serialized objects don't keep their functions
@@ -168,6 +169,104 @@ const linkFunctions = function(guild) {
             this.roleCheck(e.message.member, userEXPData);
         }
     };
+
+    /**
+     * Modify a property of an exp buffing role or delete a role from the list.
+     *  @Param0 channel: where status feedback should be reported
+     *
+     *  @Param1 Action list: GET, SET, REMOVE
+     *
+     *  Get - returns the current value.  Modifier is ignored.
+     *  Set - overrides the current value or adds the role to the table.
+     *  Remove - removes the entire role from the table, leaving no recoverable record.
+     *
+     *  @Param2 Role: ID
+     *  The ID of the role in the guild. Validation that the role ID is valid is left to the function caller.
+     *
+     *  @Param3 Stat list: baseBuff, bonusBuff, cooldownBuff, luckBuff
+     *  The four keys associated with any role in the table that can be modified
+     *
+     *  @Param4 modifier: Number >= 0
+     *  The strength of the modifier.  Must be a non-negative number between 0 and 1,000
+     *
+     */
+    guild.modifyExpBuffRoles = function(channel, action, role, stat, modifier) {
+        let UPPER_MODIFIER_LIMIT = 1000;
+        let LOWER_MODIFIER_LIMIT = 0;
+
+        action = action.toLowerCase().trim();
+        if(action === "get"){
+            if(role in guild.expBuffRoles){
+                //todo: convert to embedded message with each stat key/value pair
+                guild.reportExpBuffRole(channel, role);
+                //Skarm.sendMessageDelay(channel, `Current buffs for ${role}: ${JSON.stringify(guild.expBuffRoles[role])}`);
+            }else{
+                Skarm.sendMessageDelay(channel, `No buffs configured for the role ${role}`);
+            }
+            return;
+        }
+
+        if(action === "set"){
+            if(stat === undefined){
+                Skarm.sendMessageDelay(channel, "Error: The status to be modified was not properly acquired.");
+                return;
+            }
+            if(isNaN(modifier) || modifier < LOWER_MODIFIER_LIMIT || modifier > UPPER_MODIFIER_LIMIT){
+                Skarm.sendMessageDelay(channel, `Error: expected a number between ${LOWER_MODIFIER_LIMIT} and ${UPPER_MODIFIER_LIMIT}. Found: ${modifier}`);
+                return;
+            }
+
+            if(!(role in guild.expBuffRoles)){  //create the role entry if it isn't present
+                guild.expBuffRoles[role] = {
+                    baseBuff:     0,
+                    bonusBuff:    0,
+                    cooldownBuff: 0,
+                    luckBuff:     0
+                };
+            }
+            guild.expBuffRoles[role][stat] = modifier;
+            let allZero = (modifier === 0);                         //check if role should be removed from table
+            for(let key of Object.keys(guild.expBuffRoles[role])){
+                if(guild.expBuffRoles[role][key] > 0){
+                    allZero = false;
+                    break;
+                }
+            }
+            if(allZero){
+                action = "remove";
+            }else{
+                guild.reportExpBuffRole(channel, role);
+                return;
+            }
+        }
+
+        if(action === "remove"){
+            delete guild.expBuffRoles[role];
+            Skarm.sendMessageDelay(channel, "Role buffs removed.");
+            return;
+        }
+
+        Skarm.sendMessageDelay(channel, `Error: invalid action: ${action}`);
+    };
+
+    /**
+     * Sends an embedded message detailing the current buffs applied by a given role
+     */
+    guild.reportExpBuffRole = function(channel, roleID){
+        let buffs = guild.expBuffRoles[roleID];
+        let fields = [{name: `Buffed role`, value: `<@&${roleID}>`, inline: false}];
+        for(let b of Object.keys(buffs)){
+            fields.push({name: b, value: buffs[b], inline:true});
+        }
+
+        channel.sendMessage(" ", false, {
+            color: Skarm.generateRGB(),
+            timestamp: new Date(),
+            fields: fields,
+            footer: {
+            },
+        });
+    }
 
     guild.updateActivity = function(e) {
         let day = Date.now();
@@ -817,6 +916,19 @@ class Guild {
          *
          */
 		this.flexActivityTable = { };
+
+        /**
+         * Experience gain buffing roles
+         * @Key: guild role by ID
+         * Value: {
+         * @Value1:    baseBuff        (exp / message base)
+         * @Value2:    bonusBuff       (exp / message potential bonus at random)
+         * @Value3:    cooldownBuff    (time interval between messages being eligible for EXP)
+         * @Value4:    luckBuff        (probability of getting a roll closer to 1 than 0)
+         * }
+         *
+         */
+        this.expBuffRoles = { };
 
 		this.channelBuffer = { };
         /**
