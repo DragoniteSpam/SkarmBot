@@ -1455,10 +1455,10 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 author: {name: Users.get(target).nickName || targetNick || targetEntity.username || target},
                 timestamp: new Date(),
                 fields: [
-                    {name: "Total EXP", value: exp, inline: true},
-                    {name: "Level", value: lvl, inline: true},
-                    {name: "Rank", value: guildData.getUserRank(target), inline: true},
-                    {name: "EXP to get to next level", value: toNextLvl, inline: true}
+                    {name: "Total EXP",         value: exp,                           inline: true},
+                    {name: "Level",             value: lvl,                           inline: true},
+                    {name: "Rank",              value: guildData.getUserRank(target), inline: true},
+                    {name: "EXP to next level", value: toNextLvl,                     inline: true}
                 ],
                 footer: {
                     text: Users.get(target).nickName,
