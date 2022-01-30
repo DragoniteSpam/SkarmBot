@@ -1854,7 +1854,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     return;
                 }
                 if (tokens.join("") === "-") {
-                    Guilds.get(chan.guild_id).channelBuffer = { };
+                    Guilds.get(chan.guild_id).channelBuffer[chan.id] = { };
                     return Skarm.sendMessageDelay(e.message.channel, "cleared");
                 }
                 Skarm.queueMessage(Guilds, chan, tokens.join(" "));
