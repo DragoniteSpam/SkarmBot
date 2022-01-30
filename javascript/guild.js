@@ -126,8 +126,12 @@ const linkFunctions = function(guild) {
 
         let author = e.message.author;
 
+        let baseExpGain = 15;
+        let maxBonusExp = 10;
+        let cooldownTime = 60 * 1000;
+
         if(author.id in this.expTable) {
-            if (this.expTable[author.id].lastMessage + 6000 >= Date.now()) return;
+            if (this.expTable[author.id].lastMessage + cooldownTime >= Date.now()) return;
         }else {
             this.expTable[author.id] = {
                 exp: Skinner.getMinEXP(0),           //num: current exp
@@ -142,7 +146,8 @@ const linkFunctions = function(guild) {
         //catch the bug that you don't expect to exist
         if(isNaN(userEXPData.exp)) userEXPData.exp = 0;
 
-        userEXPData.exp += 15 + Math.floor(11 * Math.random());
+        //+1 due to the value being rounded down.  Math.random() will never generate 1.0 so 0-10 are equally likely at 1/11 odds each
+        userEXPData.exp += baseExpGain + Math.floor((maxBonusExp + 1) * Math.random());
         userEXPData.lastMessage = Date.now();
 
         // level up?
