@@ -129,7 +129,23 @@ const linkFunctions = function(guild) {
 
         let baseExpGain = 15;
         let maxBonusExp = 10;
-        let cooldownTime = 60 * 1000;
+        let cooldownReduction = 100;
+        let cooldownTime = 60 * 1000 * cooldownReduction;
+        let baseLuck = 100;
+        let luck = baseLuck;
+
+        //factor in buffs after base stats
+        let roles = e.message.member.roles;
+        for(let role of roles){
+            if(role.id in guild.expBuffRoles){
+                baseExpGain  += guild.expBuffRoles[role.id].baseBuff - 0;
+                maxBonusExp  += guild.expBuffRoles[role.id].bonusBuff - 0;
+                cooldownReduction += guild.expBuffRoles[role.id].cooldownBuff - 0;
+                luck         += guild.expBuffRoles[role.id].luckBuff - 0;
+            }
+        }
+
+        cooldownTime = cooldownTime / cooldownReduction;
 
         if(author.id in this.expTable) {
             if (this.expTable[author.id].lastMessage + cooldownTime >= Date.now()) return;
@@ -147,8 +163,11 @@ const linkFunctions = function(guild) {
         //catch the bug that you don't expect to exist
         if(isNaN(userEXPData.exp)) userEXPData.exp = 0;
 
+        let bonusStrengthMod = Math.pow(Math.random(), baseLuck/luck);   // sqrt(x) where x<1 increases the value of x. baseLuck <= luck -> minor probability buff that is never completely trivial
+
         //+1 due to the value being rounded down.  Math.random() will never generate 1.0 so 0-10 are equally likely at 1/11 odds each
-        userEXPData.exp += baseExpGain + Math.floor((maxBonusExp + 1) * Math.random());
+        userEXPData.exp -= 0;   //cast to Number
+        userEXPData.exp += baseExpGain + Math.floor((maxBonusExp + 1) * bonusStrengthMod);
         userEXPData.lastMessage = Date.now();
 
         // level up?
