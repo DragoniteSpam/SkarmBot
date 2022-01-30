@@ -1477,27 +1477,51 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 
         execute(bot, e, userData, guildData) {
             let param = commandParamTokens(e.message.content);
+            let targetTerms = ["<@", ">", "!"];
 		    let target;
+		    let newExp;
 
-		    //dont mess up the data if no input params are given
-		    if(param.length === 0){
+		    //dont mess up the data if no input params are given or too many are given
+		    if(param.length === 0 || param.length > 2){
                 Skarm.help(this,e);
 		        return;
             }
 
-            if(param.length === 2) {
-                target = param.shift().replace("<@","").replace(">","").replace("!","");
-                Skarm.sendMessageDelay(e.message.channel, `Updating EXP value for <@${target}>`);
+		    if(param.length === 1){
+                newExp = param[0];
             }
-			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
+
+            if(param.length === 2) {
+                let p0 = param.shift();
+                if(p0.includes(targetTerms[0])){    //target first
+                    target = p0;
+                    newExp = param[0];
+                }else{                              //exp first
+                    newExp = p0;
+                    target = param[0];
+                }
+                for(let tt of targetTerms){
+                    target = target.replace(tt,"");
+                }
+            }
+
+            if (!guildData.hasPermissions(userData, Permissions.MOD)) {
 				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			let user = guildData.expTable[target || e.message.author.id];
-			user.exp = param[0] - 0;
-			user.level = Skinner.getLevel(user.exp);
-			user.nextLevelEXP = Skinner.getMinEXP(user.level);
-            Skarm.sendMessageDelay(e.message.channel, "Current total EXP: " + user.exp + "\nEXP required to go for next level: " + (user.nextLevelEXP - user.exp) + "\nCurrent level: " + user.level);
+
+			//if no target is specified, assume self-targetted
+			target = target || e.message.author.id;
+			let user = guildData.expTable[target];
+			if(user) {
+			    if(!isNaN(newExp - 0))
+                    user.exp = newExp;
+                user.level = Skinner.getLevel(user.exp);
+                user.nextLevelEXP = Skinner.getMinEXP(user.level);
+                Skarm.sendMessageDelay(e.message.channel, "New rank data for <@"+ (target)+">\n>>> New total EXP: " + user.exp + "\nEXP required to go for next level: " + (user.nextLevelEXP - user.exp) + "\nCurrent level: " + user.level);
+            }else{
+			    Skarm.sendMessageDelay(e.message.channel, `Failed to find guild record for user with ID ${target}`);
+            }
         },
         
         help(bot, e) {
