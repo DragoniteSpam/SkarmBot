@@ -86,9 +86,7 @@ class XKCD {
 				title = title.replace("xkcd: ","");
 				tis.references.ordered.push(title);
 				tis.references.alphabetized.push([title,newXkcdId]);
-				tis.references.alphabetized.sort(function(a, b) {
-					return (a[0] > b[0]) ? 1 : -1;
-				});
+				tis.references.alphabetized.sort((a, b) => {return (a[0] > b[0]) ? 1 : -1;});
 				for(let guild in Guild.guilds){
 					Guild.guilds[guild].notify(tis.bot.client,Constants.Notifications.XKCD,params.uri);
 				}
