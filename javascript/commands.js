@@ -1524,6 +1524,12 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 user.level = Skinner.getLevel(user.exp);
                 user.nextLevelEXP = Skinner.getMinEXP(user.level);
                 Skarm.sendMessageDelay(e.message.channel, "New rank data for <@"+ (target)+">\n>>> New total EXP: " + user.exp + "\nEXP required to go for next level: " + (user.nextLevelEXP - user.exp) + "\nCurrent level: " + user.level);
+                let guildMembers = e.message.guild.members;
+                for(let member of guildMembers){
+                    if(member.id === target){
+                        guildData.roleCheck(member, user);
+                    }
+                }
             }else{
 			    Skarm.sendMessageDelay(e.message.channel, `Failed to find guild record for user with ID ${target}`);
             }

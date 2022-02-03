@@ -654,23 +654,24 @@ const linkFunctions = function(guild) {
     };
 
 	guild.roleCheck = function(member, userEXPData) {
-		if(Object.keys(guild.rolesTable).length==0)
-			return;
+		if(Object.keys(guild.rolesTable).length === 0) return;
 		//give users the role achieved at their level or the next one available bellow it
-            let i = userEXPData.level;
-		for (i; i >= 0; i--) {
-			if (i in this.rolesTable) {
-				member.assignRole(this.rolesTable[i]);
-				if (!this.roleStack) {
-					let n=i;
-					for (i--; i >= 0; i--) {
-						if(i in this.rolesTable){
-							if(this.rolesTable[i] != this.rolesTable[n]){
-								member.unassignRole(this.rolesTable[i]);
-							}
-						}
-					}
-					//logically unnecessary, but prevents anything goofy in case of revision
+        let i = userEXPData.level;
+		for (i; i >= 0; i--) {              //move down the roles table until you hit a level with an associated role
+			if (i in this.rolesTable) {     //hit the first rewarded role
+				member.assignRole(this.rolesTable[i]);      //assign the role for that level
+                if (!this.roleStack) {                      //if the guild is configured to only keep the highest level reward, drop the lower level roles
+                    setTimeout(() => {
+                        let keepRoleLevel = i--;
+                        for (i; i >= 0; i--) {                  //move down the list and purge any other lower-level roles
+                            if(i in this.rolesTable){
+                                if(this.rolesTable[i] !== this.rolesTable[keepRoleLevel]){
+                                    member.unassignRole(this.rolesTable[i]);
+                                }
+                            }
+                        }
+                    }, 500);
+
 					break;
 				}
 			}
