@@ -151,9 +151,9 @@ const linkFunctions = function(guild) {
             if (this.expTable[author.id].lastMessage + cooldownTime >= Date.now()) return;
         }else {
             this.expTable[author.id] = {
-                exp: Skinner.getMinEXP(0),           //num: current exp
+                exp: 0,                                   //num: current exp
                 level: 0,                                 //num: level
-                nextLevelEXP: Skinner.getMinEXP(1),  //num: exp needed to level up
+                nextLevelEXP: Skinner.getMinEXP(0),  //num: exp needed to level up
                 lastMessage: undefined,                   //num: timestamp
             };
         }
