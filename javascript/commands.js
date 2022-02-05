@@ -536,6 +536,7 @@ module.exports = {
         params: [],
         usageChar: "!",
         helpText: "Returns the number of actions in Skarm's log for the current server.",
+        examples: [{command: "e!action", effect: "Reports the amount of action lines recorded for this server."}],
         ignoreHidden: true,
         category: "meta",
 
