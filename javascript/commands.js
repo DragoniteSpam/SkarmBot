@@ -425,6 +425,14 @@ module.exports = {
         params: ["#d# + #"],
         usageChar: "!",
         helpText: "Roll up to 64 dice with a max value of up to 1000 per die!",
+        examples: [
+            {command: "e!roll 20", effect: "Will cause Skarm to roll `1d20` and report the outcome."},
+            {command: "e!roll d20", effect: "Will cause Skarm to roll `1d20` and report the outcome."},
+            {command: "e!roll 4d20", effect: "Will cause Skarm to roll `4d20` and report the outcome."},
+            {command: "e!roll 20 + 1", effect: "Will cause Skarm to roll `1d20 + 1` and report the outcome."},
+            {command: "e!roll d20 + 1", effect: "Will cause Skarm to roll `1d20 + 1` and report the outcome."},
+            {command: "e!roll 3d20 + 9", effect: "Will cause Skarm to roll `3d20 + 9` and report the outcome."},
+        ],
         ignoreHidden: true,
         category: "general",
 
@@ -433,7 +441,7 @@ module.exports = {
             if (message.includes("+")) message = message.replace("+", " + ").replaceAll("  "," ");
             let tokens = message.split(" ");
 
-            if (!tokens.length) {
+            if (tokens.length < 1 || tokens.join("").length === 0) {
                 this.help(bot,e);
                 return;
             }
@@ -442,8 +450,6 @@ module.exports = {
 
             let dieMagnitude = tokens[0].substring(dPointIndex + 1) - 0;
             let dieCount = 1;
-
-            //Skarm.spam(`tokens: ${tokens}`);
 
             if(dPointIndex > 0){
                 dieCount = tokens[0].substring(0,dPointIndex) - 0;
