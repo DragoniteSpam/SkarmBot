@@ -499,8 +499,14 @@ module.exports = {
         usageChar: "!",
         helpText: "Converts a unix timestamp to a date",
         examples: [
-            {command: "e!time", effect: "Prints the current unix timestamp."},
-            {command: "e!utd 1640000000000",effect: "Prints the human-readable time described by the unix timestamp given in the command."}
+            {
+                command: "e!time",
+                effect: "Prints the current unix timestamp."
+            },
+            {
+                command: "e!utd 1640000000000",
+                effect: "Prints the human-readable time described by the unix timestamp given in the command."
+            }
         ],
         ignoreHidden: true,
         category: "general",
