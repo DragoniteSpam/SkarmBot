@@ -555,6 +555,7 @@ module.exports = {
         params: [""],
         usageChar: "!",
         helpText: "It's literally just the credits. Why do you need help with this?",
+        examples: [{command: "e!credits", effect: "Shows the credits."}],
         ignoreHidden: true,
 		category: "meta",
 
