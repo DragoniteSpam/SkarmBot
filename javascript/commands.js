@@ -438,11 +438,11 @@ module.exports = {
 
         execute(bot, e, userData, guildData) {
             let message = commandParamString(e.message.content.toLowerCase());
-            if (message.includes("+")) message = message.replace("+", " + ").replaceAll("  "," ");
+            if (message.includes("+")) message = message.replace("+", " + ").replaceAll("  ", " ");
             let tokens = message.split(" ");
 
             if (tokens.length < 1 || tokens.join("").length === 0) {
-                this.help(bot,e);
+                this.help(bot, e);
                 return;
             }
 
@@ -451,8 +451,8 @@ module.exports = {
             let dieMagnitude = tokens[0].substring(dPointIndex + 1) - 0;
             let dieCount = 1;
 
-            if(dPointIndex > 0){
-                dieCount = tokens[0].substring(0,dPointIndex) - 0;
+            if (dPointIndex > 0) {
+                dieCount = tokens[0].substring(0, dPointIndex) - 0;
             }
 
             dieCount = Math.min(0x40, dieCount);             //prevent user-end exploits
@@ -462,10 +462,10 @@ module.exports = {
 
             let rollValues = [];
             let rollAccumulator = 0;
-            if(tokens.length > 1 && message.includes("+")){
+            if (tokens.length > 1 && message.includes("+")) {
                 let i = 1;
-                while(i < tokens.length){
-                    if(tokens[i++].includes("+")){
+                while (i < tokens.length) {
+                    if (tokens[i++].includes("+")) {
                         //Skarm.spam(`Found + at token ${i} of ${tokens.length}: ${tokens[i-1]}`);
                         break;
                     }
@@ -476,20 +476,20 @@ module.exports = {
 
             let baseValue = rollAccumulator;
 
-            for(let i=0; i<dieCount; i++){
-                let rollValue =  1 +Math.floor(dieMagnitude * Math.random());
+            for (let i = 0; i < dieCount; i++) {
+                let rollValue = 1 + Math.floor(dieMagnitude * Math.random());
                 rollAccumulator += rollValue;
                 rollValues.push(rollValue);
             }
 
-            if(baseValue > 0){              //append base value to end of addition array
+            if (baseValue > 0) {              //append base value to end of addition array
                 rollValues.push(baseValue);
             }
 
             Skarm.sendMessageDelay(e.message.channel, `${rollValues.join(" + ")} = **${rollAccumulator}**`);
         },
 
-        help(bot,e) {
+        help(bot, e) {
             Skarm.help(this, e);
         },
     },
