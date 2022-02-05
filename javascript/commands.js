@@ -225,6 +225,12 @@ module.exports = {
         params: ["-days # -page #"],
         usageChar: "!",
         helpText: "Prints out a table of guild activity from the past # days.  If not specified, default is 30 days.  Use the page option to access data outside of the top 10 members.",
+        examples: [
+            {command: "e!activity", effect: "Will cause Skarm to report the word and message counts of the top 10 members over the past 30 days."},
+            {command: "e!activity -days 45", effect: "Will cause Skarm to report the word and message counts of the top 10 members over the past 45 days."},
+            {command: "e!activity -page 2", effect: "Will cause Skarm to report the word and message counts of the 11th-20th most active members over the past 30 days."},
+            {command: "e!activity -days 45 -page 2", effect: "Will cause Skarm to report the word and message counts of the 11th-20th most active members over the past 45 days."}
+        ],
         ignoreHidden: true,
         category: "general",
 
