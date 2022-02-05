@@ -237,12 +237,12 @@ module.exports = {
         execute(bot, e, userData, guildData) {
             let message = commandParamString(e.message.content).toLowerCase();
             let tokens = commandParamTokens(e.message.content);
-            let days = attemptNumParameterFetch(message,"-d") ||  30;
+            let days = attemptNumParameterFetch(message, "-d") || 30;
             let page = attemptNumParameterFetch(message, "-p") - 1 || 0;    //convert page to array index
             let dayImplemented = 1613001600000;                                      //Date of implementation
 
-            if(isNaN(page)){
-                Skarm.sendMessageDelay(e.message.channel,"Expected page input as an integer. e.g.: `e!activity 2`");
+            if (isNaN(page)) {
+                Skarm.sendMessageDelay(e.message.channel, "Expected page input as an integer. e.g.: `e!activity 2`");
                 return;
             }
             //Skarm.logError(page);
@@ -250,26 +250,26 @@ module.exports = {
             let table = guild.flexActivityTable;
 
 
-            let cutoffDate = Date.now() - days*24*60*60*1000;
-            if(cutoffDate < dayImplemented){
-                days = Math.ceil((Date.now() - dayImplemented) /(24*60*60*1000));
+            let cutoffDate = Date.now() - days * 24 * 60 * 60 * 1000;
+            if (cutoffDate < dayImplemented) {
+                days = Math.ceil((Date.now() - dayImplemented) / (24 * 60 * 60 * 1000));
                 cutoffDate = dayImplemented;
             }
-            Skarm.spam("Cutoff date: "+new Date(cutoffDate)+" | raw: "+cutoffDate);
+            Skarm.spam("Cutoff date: " + new Date(cutoffDate) + " | raw: " + cutoffDate);
 
 
             //assemble user object table for the report
             let usersList = [];
-            for(let userID in table){
+            for (let userID in table) {
                 let userTableObj = table[userID];
-                let userReportObj = {userID:userID,words:0, messages:0};
-                if(days <0 || days>365){
+                let userReportObj = {userID: userID, words: 0, messages: 0};
+                if (days < 0 || days > 365) {
                     userReportObj.words = userTableObj.totalWordCount;
                     userReportObj.messages = userTableObj.totalMessageCount;
-                }else {
+                } else {
                     for (let day in table[userID].days) {
                         if (day < cutoffDate) continue; //we can't break here because data in hash table is not strictly ordered
-                        if(day < dayImplemented){  //hard cutoff for data at the date of implementation
+                        if (day < dayImplemented) {  //hard cutoff for data at the date of implementation
                             delete table[userID].days[day];
                             continue;
                         }
@@ -279,39 +279,44 @@ module.exports = {
                 }
                 usersList.push(userReportObj);
             }
-            usersList.sort((a,b)=> {return b.words - a.words});
+            usersList.sort((a, b) => {
+                return b.words - a.words
+            });
 
             table = usersList;
-            let spacer = "\t";      // "|-|-_-|-|";
-            let description = ["```", "Member"+spacer+"Words "+spacer+"Messages"];
+            let spacer = "\t";
+            let description = ["```", "Member" + spacer + "Words " + spacer + "Messages"];
 
-            let fields = [ ];
-            //Skarm.logError("Table: "+JSON.stringify(table));
-            for(let i=0; i+page*10<table.length && i<10 && page>=0; i++){
-                let idx = i+page*10;
+            let fields = [];
+            for (let i = 0; i + page * 10 < table.length && i < 10 && page >= 0; i++) {
+                let idx = i + page * 10;
                 let user = bot.client.Users.get(table[idx].userID);
 
                 let userMention;
                 try {
-                    userMention = `${user.username.replaceAll("`","'")}#${user.discriminator}`;
-                }catch (e) {
+                    userMention = `${user.username.replaceAll("`", "'")}#${user.discriminator}`;
+                } catch (e) {
                     userMention = `<@${table[idx].userID}>`;
                 }
                 description.push(`${userMention}${spacer}${table[idx].words}${spacer}${table[idx].messages}`);
-                fields.push({name: userMention, value: "words: " +table[idx].words+ ", 💬:"+table[idx].messages,inline: true});
+                fields.push({
+                    name: userMention,
+                    value: "words: " + table[idx].words + ", 💬:" + table[idx].messages,
+                    inline: true
+                });
             }
             description.push("```");
-            if(page*10 > table.length){
-                Skarm.sendMessageDelay(e.message.channel,"Requested page is outside of active member range.  Please try again.");
+            if (page * 10 > table.length) {
+                Skarm.sendMessageDelay(e.message.channel, "Requested page is outside of active member range.  Please try again.");
                 return;
             }
 
             //format description to look nice
-            while(description.join("").includes(spacer)){
+            while (description.join("").includes(spacer)) {
                 let maxSpace = 0;                           //maximum distance between start of line and spacer
 
                 //evaluate max distance to spacer
-                for(let d in description) {
+                for (let d in description) {
                     let line = description[d];
                     if (line.includes("```")) continue;        //ignore upper and lower bounds
                     let firstComponentDist = line.split(spacer)[0].length;
@@ -319,12 +324,12 @@ module.exports = {
                 }
 
                 //add space to each sector in place of the spacer
-                for(let d in description) {
+                for (let d in description) {
                     let line = description[d];
                     if (line.includes("```")) continue;        //ignore upper and lower bounds
                     let firstComponentDist = line.split(spacer)[0].length;
                     let newSpacer = " ";                        //always provide a minimum padding of 1 space
-                    for(let i = firstComponentDist; i<maxSpace; i++){
+                    for (let i = firstComponentDist; i < maxSpace; i++) {
                         newSpacer += " ";
                     }
                     description[d] = line.replace(spacer, newSpacer);
@@ -336,14 +341,13 @@ module.exports = {
                 color: Skarm.generateRGB(),
                 description: description.join("\r\n"),
                 author: {name: e.message.author.nick},
-                title: "Server Activity for the past "+days+" days",
+                title: "Server Activity for the past " + days + " days",
                 timestamp: new Date(),
                 // fields: fields,
-                footer: {text: `Page ${page+1}/${Math.ceil(table.length/10)}`},
+                footer: {text: `Page ${page + 1}/${Math.ceil(table.length / 10)}`},
             };
 
-            Skarm.sendMessageDelete(e.message.channel," ",false,messageObject,1<<20,e.message.author,bot);
-            //Skarm.logError("Message sent to smd");
+            Skarm.sendMessageDelete(e.message.channel, " ", false, messageObject, 1 << 20, e.message.author, bot);
         },
 
         help(bot,e) {
