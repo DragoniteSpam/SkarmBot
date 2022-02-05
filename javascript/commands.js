@@ -617,7 +617,15 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         aliases: ["help", "man","?"],
         params: ["[term]"],
         usageChar: "!",
-        helpText: "Provides an encyclopedia entry for the specified command. Or alternatively, the bot as a whole.",
+        helpText: "Skarm is a Discord bot made by <@137336478291329024> and <@162952008712716288>.\r\n" +   /*unfortunately, "Constants.Moms.Drago.mention" could not be used due to not being initialized yet*/
+            "Use the help command with a command name to see the documentation for it!\r\n" +
+            "Type either `e!help [command-name]` to get help on a specific command, or `e!help` to see a list of all available commands.\r\n",
+        examples: [
+            {command: "e!help",         effect: "Shows all available commands to run"},
+            {command: "e!help help",    effect: "Shows the documentation for usage of `e!help` (hey, this is it!)"},
+            {command: "e!?",            effect: "Shows the documentation for usage of `e!help` (hey, this is it!)"},
+            {command: "e!man activity", effect: "Shows the documentation for usage of `e!activity`"}
+        ],
         ignoreHidden: true,
 		category: "meta",
 
@@ -627,17 +635,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 cmd = "?";
 
             if (cmd === "?") {
-                Skarm.sendMessageDelay(e.message.channel, " ",false,{
-                    color: Skarm.generateRGB(),
-                    description: "Skarm is a Discord bot made by "+Constants.Moms.DRAGO.mention+" and "+Constants.Moms.MASTER.mention+".\n"+
-                        "Use the help command with a command name to see the documentation for it!\n"+
-                        "Type either `e!help [command-name]` to get help on a specific command, or `e!help` to see a list of all available commands.\n",
-                        /*  title: "github",
-                            url: "http://github.com/DragoniteSpam/Skarmbot",
-                        */
-                        timestamp: new Date(),
-                        footer: {text: e.message.author.nick}
-                });
+                Skarm.help(this,e);
                 return;
             }
 
@@ -683,7 +681,6 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 bot.mapping.cmd[cmd].help(bot, e);
                 return;
             }
-            
 
             Skarm.sendMessageDelay(e.message.channel, "Command not found: " + cmd + ". Use the help command followed by the name of the command you wish to look up.");
         },
