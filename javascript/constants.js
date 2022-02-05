@@ -14,11 +14,10 @@ class Constants {
             ARGO: client.Users.get("263474950181093396"),
         }
 
-        //the bot's own ID
-		Constants.ID = client.User.id;
+        Constants.client = client;            //access to the client object
+        Constants.self = client.User;         //the bot's user object
+        Constants.ID = client.User.id;        //the bot's own ID
 
-		//access to the client object
-        Constants.client=client;
 
         //Weekdays with sunday at 0 and working up from there
         Constants.Days = {
