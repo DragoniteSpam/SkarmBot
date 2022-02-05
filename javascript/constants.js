@@ -5,13 +5,13 @@
 // I'm going to come to your house and whack you with a spoon.
 class Constants {
     // assume we are connected
-    static initialize(client, p) {
+    static initialize(client, p) {      //p = process
         //the dev team user objects
         Constants.Moms = {
-            DRAGO: client.Users.get("137336478291329024"),
+            DRAGO:   client.Users.get("137336478291329024"),
             TIBERIA: client.Users.get("425428688830726144"),
-            MASTER: client.Users.get("162952008712716288"),
-            ARGO: client.Users.get("263474950181093396"),
+            MASTER:  client.Users.get("162952008712716288"),
+            ARGO:    client.Users.get("263474950181093396"),
         }
 
         Constants.client = client;            //access to the client object
