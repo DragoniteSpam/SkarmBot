@@ -494,19 +494,29 @@ module.exports = {
         },
     },
     UnixToDate: {
-        aliases: ["unixtodate", "utd","time"],
+        aliases: ["unixtodate", "utd", "time"],
         params: ["#"],
         usageChar: "!",
         helpText: "Converts a unix timestamp to a date",
+        examples: [
+            {command: "e!time", effect: "Prints the current unix timestamp."},
+            {command: "e!utd 1640000000000",effect: "Prints the human-readable time described by the unix timestamp given in the command."}
+        ],
         ignoreHidden: true,
         category: "general",
 
         execute(bot, e) {
-            let timestamp = commandParamString(e.message.content);
-            Skarm.sendMessageDelay(e.message.channel,new Date(timestamp-0));
+            let tokens = commandParamTokens(e.message.content);
+
+            //no input -> you get the current time
+            if (tokens.join("").length === 0) {
+                Skarm.sendMessageDelay(e.message.channel, Date.now());
+                return;
+            }
+            Skarm.sendMessageDelay(e.message.channel, new Date(tokens[0] - 0));
         },
 
-        help(bot,e) {
+        help(bot, e) {
             Skarm.help(this, e);
         },
     },
