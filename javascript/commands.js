@@ -359,6 +359,10 @@ module.exports = {
         params: ["count"],
         usageChar: "!",
         helpText: "Prints out a table of the most frequently appearing roles in the server.  Use parameter count, to specify the amount of roles to include in the table.",
+        examples: [
+            {command: "e!rolefrequency", effect: "Will cause Skarm to report the most frequent roles in the guild."},
+            {command: "e!rf 3", effect: "Will cause Skarm to report the top 3 most frequent roels in the guild."}
+        ],
         ignoreHidden: true,
         category: "general",
         //todo: specify only works in guilds
