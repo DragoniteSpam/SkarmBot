@@ -66,6 +66,9 @@ module.exports = {
         params: [],
         usageChar: "!",
         helpText: "reminds the bot author to get some sunshine once in a while",
+        examples: [
+            {command: "e!drago", effect: "Instructs the lead spaghetti chef to acquire vitamin D."}
+        ],
         ignoreHidden: true,
 		category: "general",
 		
@@ -82,9 +85,9 @@ module.exports = {
         params: ["<victim>"],
         usageChar: "!",
         helpText: "Hugs a target, or defaults to the summoner.",
-        helpExamples: [
-            "e!hug Dragonite#7992\nWill cause Skarm to hug the user named Dragonite#7992.", 
-            "e!hug\nWill cause Skarm to hug whoever invoked the command."
+        examples: [
+            {command: "e!hug", effect: "Will cause Skarm to hug whoever invoked the command."},
+            {command: "e!hug Dragonite#7992", effect: "Will cause Skarm to hug the user named Dragonite#7992."}
         ],
         ignoreHidden: true,
 		category: "general",
@@ -104,7 +107,10 @@ module.exports = {
 		params: ["#channel"],
 		usageChar: "!",
 		helpText: "First shalt thou take out the Holy Pin. Then shalt thou count to three, no more, no less. Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in My sight, shall snuff it.",
-		ignoreHidden: true,
+        examples: [
+            {command: "e!pinned", effect: "Will cause Skarm to report the amount of pinned messages in the channel that it is run in."},
+            {command: "e!fetchpinned #general", effect: "Will cause Skarm to report the amount of pinned messages in the channel #general."}
+        ],		ignoreHidden: true,
         category: "general",
 
         execute(bot, e, userData, guildData) {
