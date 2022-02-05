@@ -2117,7 +2117,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
     },
 	Save: {
 		aliases: ["save","quicksave","s","f5"],
-		params: ["-nosave"],
+		params: [],
 		usageChar: "@",
 		helpText: "Save skarm's data in memory to storage. Saving data will automatically run during a restart or shutdown command",
 		ignoreHidden: false,
