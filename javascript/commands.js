@@ -697,6 +697,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: [],
         usageChar: "!",
         helpText: "Returns the number of messages in Skarm's log for the current server.",
+        examples: [{command: "e!lines", effect: "Reports the amount of general message lines recorded for parroting in this server."}],
         ignoreHidden: true,
         category: "meta",
 
