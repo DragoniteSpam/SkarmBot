@@ -1299,62 +1299,6 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             Skarm.help(this, e);
         },
     },
-    Munroe: {
-        aliases: ["munroe"],
-        params: ["cmd"],
-        usageChar: "@",
-        helpText: "This feature has been deprecated to now run through e@notify.  Please use that command instead.",
-        ignoreHidden: true,
-        perms: Permissions.MOD,
-        category: "administrative",
-
-        execute(bot, e, userData, guildData) {
-            let args = commandParamTokens(e.message.content);
-
-            if (args.length === 0) {
-                //Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
-                Skarm.sendMessageDelay(this.helpText);
-                return;
-            }
-
-            switch (args[0]) {
-                case "enable":
-                    bot.addChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
-                    Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
-                    break;
-                case "disable":
-                    bot.removeChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
-                    Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
-                    break;
-            }
-
-            let leave = true;
-            for (let mom in Constants.Moms) {
-                if (Constants.Moms[mom].id === e.message.author.id){
-                    leave = false;
-                }
-            }
-
-            if (leave) return;
-
-            // noinspection FallThroughInSwitchStatementJS
-            switch (args[0]) {
-                case "dump":
-                    Skarm.log(JSON.stringify(bot.channelsWhoLikeXKCD));
-                    break;
-                case "push":
-                    bot.xkcd.checkForNewXKCDs();
-                    break;
-                case "lockcheck":
-                    Skarm.log(bot.xkcd.lock);
-                    break;
-            }
-        },
-
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
     Notify: {
         aliases: ["notify"],
         params: ["#"],
@@ -1374,10 +1318,10 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                     author: {name: e.message.author.nick},
                     description: `Configure notification settings for <#${e.message.channel.id}>:\r\n\r\n`+
                         `1: **${(e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) ? "Disable":"Enable"}** member join/leave notifications\n`+
-                        `2: **${(e.message.channel.id in notifChannels.BAN) ? "Disable":"Enable"}** ban notifications\n`+
-                        `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE) ? "Disable":"Enable"}** name change notifications\n`+
-                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL) ? "Disable":"Enable"}** voice channel join/change/leave notifications\n`+
-                        `5: **${(e.message.channel.id in notifChannels.XKCD) ? "Disable":"Enable"}** posting new XKCDs upon their release \n`,
+                        `2: **${(e.message.channel.id in notifChannels.BAN)               ? "Disable":"Enable"}** ban notifications\n`+
+                        `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE)       ? "Disable":"Enable"}** name change notifications\n`+
+                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL)     ? "Disable":"Enable"}** voice channel join/change/leave notifications\n`+
+                        `5: **${(e.message.channel.id in notifChannels.XKCD)              ? "Disable":"Enable"}** posting new XKCDs upon their release \n`,
                     timestamp: new Date(),
                 });
                 return;
@@ -2290,6 +2234,48 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             Skarm.sendMessageDelay(e.message.channel, "Saved the debug things!");
         },
         
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Munroe: {
+        aliases: ["munroe"],
+        params: ["push | lockcheck"],
+        usageChar: "@",
+        helpText: "This feature has been deprecated to now run through e@notify.  Please use that command instead.",
+        ignoreHidden: true,
+        perms: Permissions.MOM,
+        category: "infrastructure",
+
+        execute(bot, e, userData, guildData) {
+            let args = commandParamTokens(e.message.content);
+
+            if (args.length === 0) {
+                //Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
+                Skarm.sendMessageDelay(this.helpText);
+                return;
+            }
+
+            let leave = true;
+            for (let mom in Constants.Moms) {
+                if (Constants.Moms[mom].id === e.message.author.id){
+                    leave = false;
+                }
+            }
+
+            if (leave) return;
+
+            // noinspection FallThroughInSwitchStatementJS
+            switch (args[0]) {
+                case "push":
+                    bot.xkcd.checkForNewXKCDs();
+                    break;
+                case "lockcheck":
+                    Skarm.spam("XKCD lock state: " + bot.xkcd.lock);
+                    break;
+            }
+        },
+
         help(bot, e) {
             Skarm.help(this, e);
         },
