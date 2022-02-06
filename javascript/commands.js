@@ -864,10 +864,11 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         },
     },
     Suggest: {
-        aliases: ["suggest", "suggestion"],
+        aliases: ["suggest", "suggestion", "issue", "complain", "bug", "bugreport"],
         params: [""],
         usageChar: "!",
         helpText: "Provides a list to the Github Issues page, where you may complain to your heart's content.",
+        examples: [{command: "e!suggest", effect: "Provides the link to the submission page."}],
         ignoreHidden: true,
         category: "meta",
 
