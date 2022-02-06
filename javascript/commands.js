@@ -1088,45 +1088,45 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-			let words=commandParamTokens(e.message.content);
-			if(!guildData.moderators)
-				guildData.moderators={ };
-			if(words.length===0){
-				let list = Object.keys(guildData.moderators);
-				if(list.length===0){
-					Skarm.sendMessageDelay(e.message.channel,"The administrators have not approved of any mods at this time. Use `e@mod @member` to add someone to the mod list.");
-					return;
-				}
-				
-				let mods = "";
-				for(let i in list){
-					var mod =Guilds.client.Users.get(list[i]);
-					if(mod!=null)
-						mods+= mod.username+", ";
-				}
-				Skarm.sendMessageDelay(e.message.channel,"The current moderators in this guild are: "+mods.substring(0,mods.length-2));
-				return;
-			}
-			
-			if(words[0]==="clear" || words[0]==="c"){
-				guildData.moderators={};
-				Skarm.sendMessageDelay(e.message.channel,"Removed everyone from the moderators list.");
-				return;
-			}
-			
-			//mention => toggle
-            let member = words[0].replace("<","").replace("@","").replace("!","").replace(">","");
-			
-			Skarm.log("Toggling state of: "+member);
-			
-			if(member in guildData.moderators){
-				delete guildData.moderators[member];
-				Skarm.sendMessageDelay(e.message.channel,"Removed <@"+member+"> from the moderators list.");
-				
-			}else{
-				guildData.moderators[member]=Date.now();
-				Skarm.sendMessageDelay(e.message.channel,"Added <@"+member+"> to the moderators list.");
-			}
+            let words = commandParamTokens(e.message.content);
+            if (!guildData.moderators)
+                guildData.moderators = {};
+            if (words.length === 0) {
+                let list = Object.keys(guildData.moderators);
+                if (list.length === 0) {
+                    Skarm.sendMessageDelay(e.message.channel, "The administrators have not approved of any mods at this time. Use `e@mod @member` to add someone to the mod list.");
+                    return;
+                }
+
+                let mods = "";
+                for (let i in list) {
+                    var mod = Guilds.client.Users.get(list[i]);
+                    if (mod != null)
+                        mods += mod.username + ", ";
+                }
+                Skarm.sendMessageDelay(e.message.channel, "The current moderators in this guild are: " + mods.substring(0, mods.length - 2));
+                return;
+            }
+
+            if (words[0] === "clear" || words[0] === "c") {
+                guildData.moderators = {};
+                Skarm.sendMessageDelay(e.message.channel, "Removed everyone from the moderators list.");
+                return;
+            }
+
+            //mention => toggle
+            let member = words[0].replace("<", "").replace("@", "").replace("!", "").replace(">", "");
+
+            Skarm.log("Toggling state of: " + member);
+
+            if (member in guildData.moderators) {
+                delete guildData.moderators[member];
+                Skarm.sendMessageDelay(e.message.channel, "Removed <@" + member + "> from the moderators list.");
+
+            } else {
+                guildData.moderators[member] = Date.now();
+                Skarm.sendMessageDelay(e.message.channel, "Added <@" + member + "> to the moderators list.");
+            }
         },
         
         help(bot, e) {
