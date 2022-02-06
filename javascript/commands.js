@@ -990,10 +990,17 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 	*administrative
 	*/
     Alias: {
-        aliases: ["alias"],
-        params: ["add, remove, list, clear"],
+        aliases: ["alias", "trigger"],
+        params: ["add | remove | list | clear"],
         usageChar: "@",
-        helpText: "Manage additional names that skarm will respond to.  The scope of these aliases is within the guild in which they are configured.  All names are case insensitive.\r\nAdd registers new aliases, Remove or delete get rid of existing aliases.  List provides a complete list of guild-specific aliases.  Clear **purges all** guild-specific aliases.   \r\nUsage:  `e@alias add scramble`, `e@alias list`, `e@alias remove scramble`, `e@alias delete *`, `e@alias clear`",
+        helpText: "Manage additional names that skarm will respond to.  The scope of these aliases is within the guild in which they are configured.  All aliases are case insensitive.\r\nAdd registers new aliases, Remove or delete get rid of existing aliases.  List provides a complete list of guild-specific aliases.  Clear deletes **ALL** guild-specific aliases.",
+        examples: [
+            {command: "e@alias add scramble",    effect: "Adds `scramble` as an alias that skarm will respond to."},
+            {command: "e@alias list",            effect: "Lists all of the guild-specific aliases that skarm will respond to."},
+            {command: "e@alias remove scramble", effect: "Removes `scramble` as an alias that skarm will respond to."},
+            {command: "e@alias delete *",        effect: "Removes **ALL** guild-specific aliases that skarm will respond to."},
+            {command: "e@alias clear",           effect: "Removes **ALL** guild-specific aliases that skarm will respond to."}
+        ],
         ignoreHidden: false,
         perms: Permissions.MOD,
         category: "administrative",
