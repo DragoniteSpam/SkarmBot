@@ -1535,9 +1535,13 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 	*/
 	Rank: {
 		aliases: ["level","rank"],
-        params: ["<optionally mention a guild member>"],
+        params: ["[<@guild member>]"],
         usageChar: "!",
-        helpText: "returns how much exp you have in the guild",
+        helpText: "Reports how much exp a member has with the guild, what level that equates to, how much exp is needed to get to the next level, and the member's position on the guild leaderboard.",
+        examples: [
+            {command: "e!rank", effect: "Will report how much experience you have."},
+            {command: "e!rank @Dragonite", effect: "Will report how much experience `@Dragonite` has."},
+        ],
         ignoreHidden: true,
 		category: "leveling",
 
