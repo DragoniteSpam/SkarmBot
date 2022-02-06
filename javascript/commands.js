@@ -1677,7 +1677,6 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@rolestack",                 effect: "Reports whether or not skarm currently stacks leveled role rewards."},
             {command: "e@rolestack enable",          effect: "Configures skarm to reward the entire stack of level rewards for the server."},
             {command: "e@rolestack disable",         effect: "Configures skarm to reward only the highest level role reward for the server."},
-            {command: "e@srank @Dragonite#7992 -",   effect: "Removes dragonite's record from the exp table.  Future message by dragonite will re-add him to the table."},
         ],
 
         ignoreHidden: true,
