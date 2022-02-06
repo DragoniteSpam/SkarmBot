@@ -931,6 +931,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: ["query..."],
         usageChar: "!",
         helpText: "Returns a Stackoverflow search for the given query",
+        examples: [
+            {command: "e!stackoverflow how to center a div inside of a div", effect: "Provides a link to the stack overflow search results for `how to center a div inside of a div`"}
+        ],
         ignoreHidden: true,
         category: "web",
 
