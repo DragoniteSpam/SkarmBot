@@ -836,7 +836,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             let uptimeMinutes = Math.floor((uptime / 60) % 60);
             let uptimeSeconds = Math.floor(uptime % 60);
             let uptimeString = "";
-            
+
             if (uptimeDays > 0) {
                 uptimeString = uptimeDays + ((uptimeDays > 1) ? " days, " : " day, ");
             }
@@ -847,18 +847,18 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                 uptimeString += uptimeMinutes + ((uptimeMinutes > 1) ? " minutes, " : " minute, ");
             }
             uptimeString += uptimeSeconds + ((uptimeSeconds > 1) ? " seconds" : " second");
-            
+
             Skarm.sendMessageDelay(e.message.channel,
                 "***Bot stats, and stuff:***\n```" +
                 "Users (probably): " + Object.keys(Users.users).length + "\n" +
                 "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
-				"Host: "+os.hostname()+"\n"+
-                "vPID: "+bot.pid+"\n"+
-                "Version: "+bot.version+"\n"+
+                "Host: " + os.hostname() + "\n" +
+                "vPID: " + bot.pid + "\n" +
+                "Version: " + bot.version + "\n" +
                 "Uptime (probably): " + uptimeString + "```"
             );
         },
-        
+
         help(bot, e) {
             Skarm.help(this, e);
         },
