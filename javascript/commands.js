@@ -712,10 +712,15 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         },
     },
     Nick: {
-        aliases: ["nick","nickname","name","setname"],
+        aliases: ["nick","nickname","setname"],
         params: ["newName"],
         usageChar: "!",
         helpText: "Set what you want skarm to call you across all servers.\r\nIf no nickname is given, skarm will default to your server nickname. \r\nUse `e!nick -` to remove",
+        examples: [
+            {command: "e!nick", effect: "Skarm will tell you what your current nickname is set to."},
+            {command: "e!nick 27", effect: "Skarm will set your nickname to `27`."},
+            {command: "e!setname -", effect: "Skarm will remove your nickname from his records and default to server nickname where possible."}
+        ],
         ignoreHidden: true,
         category: "meta",
 
