@@ -1440,10 +1440,13 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         aliases: ["welcome"],
         params: ["enable", "disable", "set <message>"],
         usageChar: "@",
-        helpText: "Configure welcome messages for the guild\n"+
-		"Usage:\n`e@welcome enable`\n"+
-		"`e@welcome set Welcome <newmember>! Please don't be evil!`\n"+
-		"`e@welcome set -` removes welcome message from that channel",
+        helpText: "Configure welcome messages for the guild",
+        examples: [
+            {command: "e@welcome enable", effect: "Will enable welcome messages being sent when users join."},
+            {command: "e@welcome disable", effect: "Will disable welcome messages from being sent when users join."},
+            {command: "e@welcome set -", effect: "Will remove the welcome message configured for the channel in which the command is run."},
+            {command: "e@welcome set Welcome <newmember>! Please don't be evil!", effect: "Will set the welcome message in the channel to `Welcome @theNewKid! Please don't be evil!`"}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
