@@ -30,6 +30,12 @@ class Constants {
             SATURDAY: 6,
         };
 
+        //Currently playing game states
+        Constants.GameState = {
+            AUTOMATIC: 0,
+            MANUAL:   -1,
+        };
+
         //channel objects for skarm's base server which are accessible to all skarm tokens
         Constants.Channels = {
             LOG:            client.Channels.get("430545618314985504"), // #stdout
