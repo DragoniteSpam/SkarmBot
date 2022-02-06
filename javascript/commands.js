@@ -564,7 +564,7 @@ module.exports = {
             Skarm.sendMessageDelay(e.message.channel,
 `**Skarm Bot 2**\n
 Lead spaghetti chef: Dragonite#7992
-Seondary spaghetti chef: ArgoTheNaut#8957
+Seondary spaghetti chef: ArgoTheNaut#9716
 Version: ${version}
 
 Library: Discordie (JavaScript):
@@ -575,16 +575,16 @@ Dragonite:
 <https://github.com/DragoniteSpam/SkarmBot>
 
 Argo:
-<https://github.com/Master9000>
+<https://github.com/ArgoTheNaut>
 
-Extra ideas came from SuperDragonite2172, willofd2011, Cadance and probably other people.
+Extra ideas came from SuperDragonite2172, willofd2011, and probably other people.
 
-Thanks to basically everyone on the Kingdom of Zeal server for testing this bot thing, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
+Thanks to basically everyone on the Kingdom of Zeal server for testing this bot, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
 
 Wolfram-Alpha is awesome:
 <https://www.npmjs.com/package/node-wolfram>
 
-Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
+Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Carlin, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
             );
         },
         
