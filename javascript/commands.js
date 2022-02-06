@@ -1138,14 +1138,15 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: ["mention"],
         usageChar: "!",
         helpText: "Shows the user's access level (pleb, moderator, admin, Mom, etc).",
+        examples: [
+            {command: "e!sudo", effect: "Reports what your current access level is."},
+            {command: "e!sudo @GuildMember", effect: "Reports the current access level held by `@GuildMember`."}
+        ],
         ignoreHidden: true,
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
 			let words=commandParamTokens(e.message.content);
-
-            
-			
 			let member;
 			if(words.length===1){
 				let id=words[0].replace("<","").replace("@","").replace("!","").replace(">","");
@@ -1166,7 +1167,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             if (permissions & Permissions.BASE) permNames.push("BASE");
             if (permissions & Permissions.MOD) permNames.push("MOD");
             if (permissions & Permissions.ADMIN) permNames.push("ADMIN");
-            if (permissions === Permissions.SUDO) permNames.push("MOM");
+            if (permissions === Permissions.SUDO) permNames.push("DEVELOPER");
             
 			
             Skarm.sendMessageDelay(e.message.channel, "Current permissions of **" +
