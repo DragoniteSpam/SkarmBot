@@ -1593,11 +1593,13 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 		aliases: ["srank","slevel"],
         params: ["<@targetID>, exp"],
         usageChar: "@",
-        helpText: "Sets how much exp you have in the guild\r\n" +
-            "Example 0: `e@srank 256` sets your own experience points to 256.  Enough to achieve level 2!\r\n" +
-            "Example 1: `e@srank @magikarp#1234 0` sets the experience points of the user @magikarp#1234 to 0\r\n" +
-            "Example 2: `e@srank @Dragonite#7992 100` sets the experience points of the user `@Dragonite#7992` to 100.  Enough to achieve level 1!\r\n" +
-            "Example 3: `e@srank @Dragonite#7992 -` removes dragonite's record from the exp table.  Future message by dragonite will re-add him to the table.",
+        helpText: "Sets how much exp you have in the guild\r\n",
+        examples: [
+            {command: "e@srank 256",                 effect: "Sets your own experience points to 256.  Enough to achieve level 2!"},
+            {command: "e@srank @magikarp#1234 0",    effect: "Sets the experience points of the user @magikarp#1234 to 0"},
+            {command: "e@srank @Dragonite#7992 100", effect: "Sets the experience points of the user `@Dragonite#7992` to 100.  Enough to achieve level 1!"},
+            {command: "e@srank @Dragonite#7992 -",   effect: "Removes dragonite's record from the exp table.  Future message by dragonite will re-add him to the table."},
+        ],
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
