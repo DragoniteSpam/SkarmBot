@@ -825,6 +825,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: [""],
         usageChar: "!",
         helpText: "Displays some stats about the bot.",
+        examples: [{command: "e!bot", effect: "Provides the stats."}],
         ignoreHidden: true,
         category: "meta",
 
