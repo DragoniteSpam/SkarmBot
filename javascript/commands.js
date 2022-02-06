@@ -807,15 +807,15 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
         execute(bot, e, userData, guildData) {
             //shanty counter is intentionally wrong following shanties being buffered on a per-channel basis
-			let shanty = Math.floor(Math.random()*5000)/100;
-			let skyrim=Math.floor((new Date).getDay()*bot.skyrimOddsModifier*10000)/100;
-            Skarm.sendMessageDelay(e.message.channel, "Current shanty forecast: **" +shanty+"%**\n"+
-			"The Elder Scrolls Forecast: **"+skyrim+"%**\n"+
-			"Something completely normal: **0%**\n"+
-			"Something completely different: **"+(100-shanty-skyrim)+"%**."
+            let shanty = Math.floor(Math.random() * 5000) / 100;
+            let skyrim = Math.floor((new Date).getDay() * bot.skyrimOddsModifier * 10000) / 100;
+            Skarm.sendMessageDelay(e.message.channel, "Current shanty forecast: **" + shanty + "%**\n" +
+                "The Elder Scrolls Forecast: **" + skyrim + "%**\n" +
+                "Something completely normal: **0%**\n" +
+                "Something completely different: **" + (100 - shanty - skyrim) + "%**."
             );
         },
-        
+
         help(bot, e) {
             Skarm.help(this, e);
         },
