@@ -141,8 +141,10 @@ class Bot {
     
     OnMessageReactionAdd(e) {
         const UPVOTE = 0x2b06;
-        const REQUIRED_UPVOTES = 3;
         const REDX = '\u274c';
+
+        let guildData = Guilds.get(e.message.guild.id);
+        const REQUIRED_UPVOTES = guildData.channelsPinUpvotes[e.message.channel.id];
 
 		if(!e)
 			return Skarm.log("encountered null event in OnMessageReactionAdd");
@@ -159,7 +161,7 @@ class Bot {
                     if (this.toBeDeletedCache[e.message.id].self) {
                         this.toBeDeletedCache[e.message.id].self = true;
                     } else {
-                        if (this.toBeDeletedCache[e.message.id].senderID === e.user.id || Guilds.get(e.message.guild.id).hasPermissions(e.user, Permissions.MOD)) {
+                        if (this.toBeDeletedCache[e.message.id].senderID === e.user.id || guildData.hasPermissions(e.user, Permissions.MOD)) {
                             clearTimeout(this.toBeDeletedCache[e.message.id].timeout);
                             e.message.delete();
                             delete this.toBeDeletedCache[e.message.id];
@@ -169,7 +171,7 @@ class Bot {
             }
         }
 
-        if (e.message !== null && !e.message.pinned && Guilds.get(e.message.guild.id).channelsPinUpvotes[e.message.channel_id] /*!== undefined && === true */) {
+        if (e.message !== null && !e.message.pinned && REQUIRED_UPVOTES) {
             let upvotes = 0;
             for (let i in e.message.reactions) {
                 let reaction = e.message.reactions[i];

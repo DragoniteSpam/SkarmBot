@@ -648,10 +648,15 @@ const linkFunctions = function(guild) {
         return (this.getPermissions(user) >= perm);
     };
 
-	guild.togglePinnedChannel = function(channel) {
+
+	guild.getPinnedChannelState = function (channelID){
+	    return this.channelsPinUpvotes[channelID];
+    };
+
+	guild.setPinnedChannel = function(channelID, threshold) {
         if (!this.channelsPinUpvotes) this.channelsPinUpvotes = { };
-        this.channelsPinUpvotes[channel] = !this.channelsPinUpvotes[channel];
-        return this.channelsPinUpvotes[channel];
+        this.channelsPinUpvotes[channelID] = threshold;
+        return this.channelsPinUpvotes[channelID];
     };
 
 	guild.roleCheck = function(member, userEXPData) {
