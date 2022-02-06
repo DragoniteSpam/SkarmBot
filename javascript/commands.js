@@ -1942,15 +1942,18 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 	    aliases: ["configurebuffrole", "configbuff", "buffconfig", "buffconf", "cbr"],
         params: ["[action (get,set,remove)]", "[role(ping or id)]", "[stat(base,bonus,cooldown,luck)]", "[modifier(num 0 - 1000)]"],
         usageChar: "@",
-        helpText: "This command configures a role to give buffs for leveling up in the server.\r\n" +
-            "Example 1: `e@cbr set @admin basebuff 2` users with the `@admin` role will receive 2 more base exp per message. \r\n" +
-            "Example 2: `e@cbr get @admin` reports the current buffs affecting the `@admin` role. \r\n" +
-            "Example 3: `e@cbr get` reports the list of roles who have buffs of any kind. \r\n" +
-            "Example 4: `e@cbr remove @admin` removes all buffs currently assigned to the `@admin` role.\r\n\r\n" +
-            "Base: modifies the minimum exp gained when a qualifying message is sent. Default server value: 15\r\n" +
-            "Bonus: modifies the random bonus exp gained above the maximum when a qualifying message is sent.  Default server value: 10\r\n" +
-            "Cooldown: reduces the wait time between qualifying messages.  Scaling is linearized. Default server value: 100. Default server cooldown: 60s.  Granting 100 cooldown reduction will cause the effective cooldown to be 60s/(100 (base) + 100 (bonus)) = 30s\r\n" +
-            "Luck: modifies the probability that a message will get close to the full bonus exp. Default server value: 100.",
+        helpText: "This command configures a role to give buffs for leveling up in the server.",
+        examples: [
+            {command: "e@cbr set @admin basebuff 2", effect: "Users with the `@admin` role will receive 2 more base exp per message from this role."},
+            {command: "e@cbr set @admin bonus 10",   effect: "Users with the `@admin` role will receive up to 10 more bonus exp per message from this role."},
+            {command: "e@configurebuffrole get",     effect: "Reports the list of roles with buffs of any kind."},
+            {command: "e@cbr get @admin",            effect: "Reports the current buffs affecting the `@admin` role."},
+            {command: "e@cbr remove @admin",         effect: "Removes all buffs currently assigned to the `@admin` role."},
+            {command: "Base",     effect: "Modifies the minimum exp gained when a qualifying message is sent. Default server value: 15"},
+            {command: "Bonus",    effect: "Modifies the random bonus exp gained above the maximum when a qualifying message is sent.  Default server value: 10."},
+            {command: "Cooldown", effect: "Reduces the wait time between qualifying messages.  Scaling is linearized. Default server value: 100. Default server cooldown: 60s.  Granting 100 cooldown reduction will cause the effective cooldown to be 60s/(100 (base) + 100 (bonus)) = 30s"},
+            {command: "Luck",     effect: "Modifies the probability that a message will get close to the full bonus exp. Default server value: 100. For more info: https://github.com/DragoniteSpam/SkarmBot/blob/master/data/doc/Skarm%20leveling%20luck%20probability.pdf"},
+        ],
         ignoreHidden: true,
         category: "leveling",
         perms: Permissions.MOD,
