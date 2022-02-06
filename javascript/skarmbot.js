@@ -307,6 +307,8 @@ class Bot {
         let userData = Users.get(e.message.author.id);
         let guildData = Guilds.get(e.message.channel.guild_id);
 
+        this.summons(e);
+
         // in the event that we eventually add PM responses, it would probably
         // be a bad idea to try to execute the mayhem colors on it
         if (!e.message.isPrivate) {
@@ -351,7 +353,7 @@ class Bot {
         }
 
         // ignore hidden channels after this
-        if (guildData.hiddenChannels[e.message.channel_id]) {
+        if (guildData.hiddenChannels[e.message.channel.id]) {
             return false;
         }
 
@@ -360,8 +362,6 @@ class Bot {
         if (!this.channelsCensorHidden[e.message.channel_id]) {
             this.censor(e);
         }
-
-        this.summons(e);
 
         if (this.mentions(e, this.validESReferences)) {
             this.returnSkyrim(e);
