@@ -1876,6 +1876,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         usageChar: "@",
         helpText: "This command takes a single input csv attachment and sets the experience values of all usernames in the guild that appear in the csv file to the exp values on the csv file." +
             "  Expected CSV format of header: " + `"username","level","exp","msgs"`,
+        examples: [
+            {command: "e@ird", effect: "Takes the csv file attached to the message and assigns each user in the csv file their associated experience."}
+        ],
         ignoreHidden: true,
         category: "leveling",
         perms: Permissions.MOD,
