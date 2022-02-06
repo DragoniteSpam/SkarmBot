@@ -1304,6 +1304,10 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: ["#"],
         usageChar: "@",
         helpText: "Toggles the notifications of various information for this channel.  Use without a number input to view current state of channel.",
+        examples: [
+            {command: "e@notify", effect: "Will cause Skarm to list all available notification settings to toggle."},
+            {command: "e@notify 4", effect: "Will cause Skarm to toggle announcing all voice channel join and leave activity in the guild to the channel in which the command was sent."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
@@ -2239,6 +2243,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         },
     },
     Munroe: {
+	    //TODO: double check what isn't useless here
         aliases: ["munroe"],
         params: ["push | lockcheck"],
         usageChar: "@",
