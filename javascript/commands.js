@@ -1074,10 +1074,15 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         },
     },
     Knight: {
-        aliases: ["mod", "knight"],
+        aliases: ["mod", "knight","mods"],
         params: ["member | clear"],
         usageChar: "@",
-        helpText: "Administrator command for appointing and removing moderators. Use `e@mod clear` to remove all moderators (caution is advised).",
+        helpText: "Administrator command for appointing and removing moderators.  Moderators can use certain administrative commands. Use `e@mod clear` to remove all moderators (caution is advised).",
+        examples: [
+            {command: "e@mod",    effect: "Lists all members who have been granted moderator-level access to Skarmbot in this guild."},
+            {command: "e@mod @TrustedMember",    effect: "Adds or removes `@TrustedMember` to the moderators list for the guild.  If they are currently on the list, they will be removed.  Otherwise, they will be added."},
+            {command: "e@mod clear",    effect: "Removes all moderators from the guild."},
+        ],
         ignoreHidden: true,
         perms: Permissions.ADMIN,
         category: "administrative",
@@ -1106,6 +1111,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 			if(words[0]==="clear" || words[0]==="c"){
 				guildData.moderators={};
 				Skarm.sendMessageDelay(e.message.channel,"Removed everyone from the moderators list.");
+				return;
 			}
 			
 			//mention => toggle
