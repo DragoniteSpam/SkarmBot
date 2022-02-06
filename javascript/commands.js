@@ -1180,6 +1180,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             Skarm.help(this, e);
         },
     },
+    /*
 	Censor: {
         aliases: ["censor"],
         params: [],
@@ -1201,7 +1202,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         help(bot, e) {
             Skarm.help(this, e);
         },
-    },
+    },*/
 	Hide: {
         aliases: ["hide"],
         params: [],

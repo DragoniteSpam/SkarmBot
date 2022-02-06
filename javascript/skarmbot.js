@@ -474,6 +474,7 @@ class Bot {
 
     //does many things, and stuff and things...
     censor(e) {
+	    //TODO
     }
     
     toggleChannel(map, channel) {
