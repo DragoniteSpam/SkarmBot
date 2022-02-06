@@ -1809,25 +1809,41 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         },
 	},
 	GuildAnnouncementSwitch: {
-		aliases: ["levelannounce","announce"],
-        params: [],
+		aliases: ["levelannounce", "announce"],
+        params: ["enable | disable"],
         usageChar: "@",
         helpText: "Toggles the state of announcing when a user levels up in the guild",
+        examples: [
+            {command: "e@announce",         effect: "Reports whether or not skarm announces level-ups in this guild."},
+            {command: "e@announce enable",  effect: "Configures skarm to announce level-ups in this guild."},
+            {command: "e@announce disable", effect: "Configures skarm to not announce level-ups in this guild."},
+        ],
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
 			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
-				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+				Skarm.spam("Unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			guildData.announcesLevels= !guildData.announcesLevels;
+
+			let tokens = commandParamTokens(e.message.content.toLowerCase());
+			for(let token of tokens){
+                if(token[0] === "e"){
+                    guildData.announcesLevels = true;
+                }
+
+                if(token[0] === "d"){
+                    guildData.announcesLevels = false;
+                }
+            }
+
 			if(guildData.announcesLevels){
-				Skarm.sendMessageDelay(e.message.channel,"Level ups will now be announced in this guild");
+				Skarm.sendMessageDelay(e.message.channel,"Level ups will be announced in this guild");
 				return;
 			}
-			Skarm.sendMessageDelay(e.message.channel,"Level ups will no longer be announced in this guild");
+			Skarm.sendMessageDelay(e.message.channel,"Level ups will not be announced in this guild");
         },
         
         help(bot, e) {
