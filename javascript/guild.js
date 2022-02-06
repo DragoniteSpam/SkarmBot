@@ -70,10 +70,10 @@ const linkFunctions = function(guild) {
     //functions executed after every message
 
     guild.executeMayhem = function(botAccount) {
-        let guildData = Guild.getData(this.id);
+        let apiGuildData = Guild.getData(this.id);
 
-        let guildBotMember = botAccount.memberOf(guildData);
-        let guildPermissions = guildBotMember.permissionsFor(guildData);
+        let guildBotMember = botAccount.memberOf(apiGuildData);
+        let guildPermissions = guildBotMember.permissionsFor(apiGuildData);
 
         if (!guildPermissions.General.MANAGE_ROLES) {
             Skarm.spam(`I don't have permission to manage roles in ${this.id}. (mayhem)`);
@@ -87,10 +87,11 @@ const linkFunctions = function(guild) {
 
         for (let roleID in this.mayhemRoles) {
             if(!this.mayhemRoles[roleID]) continue;             //double check to not toggle disabled mayhem roles
-            for (let i = 0; i < guildData.roles.length; i++) {
-                let roleData = guildData.roles[i];
+            for (let i = 0; i < apiGuildData.roles.length; i++) {
+                let roleData = apiGuildData.roles[i];
                 if (skarmRank <= roleData.position) {
-                    Skarm.spam(`the mayhem role ${roleData.name} outranks me for some reason (the server admins of ${this.id} should probably change that)`);
+                    if(roleData.id === roleID)
+                        Skarm.spam(`the mayhem role ${roleData.name} outranks me for some reason (the server admins of ${this.id} should probably change that)`);
                     continue;
                 }
                 if (roleData.id === roleID) {
