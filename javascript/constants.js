@@ -52,6 +52,9 @@ class Constants {
 			REBOOT:			69,
 		};
 
+		Constants.processIdMax      = 0x400;
+		Constants.versionOffsetBits = 0x006;
+
 		//Various subtle modifiers for the behavior of parrot
         Constants.Vars = {
             LEARN_MESSAGE_ODDS: 0.3,

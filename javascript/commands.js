@@ -2081,6 +2081,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: ["create the todo command"],
         usageChar: "@",
         helpText: "Logs to the todo list for the dev team",
+        examples: [
+            {command: "e@todo task", effect: "Records task to the todo channel"}
+        ],
         ignoreHidden: false,
         perms: Permissions.MOM,
         category: "infrastructure",
@@ -2098,6 +2101,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: ["<test>"],
         usageChar: "@",
         helpText: "Hey, what are you doing here?!",
+        examples: [
+            {command: "e@test", effect: "the test."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOM,
         category: "infrastructure",
@@ -2147,6 +2153,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: ["id", "t..."],
         usageChar: "@",
         helpText: "Hey, what are you doing here?!",
+        examples: [
+            {command: "e@5 429537000408875008 Instance 4 protocol", effect: "Q"}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOM,
         category: "infrastructure",
@@ -2157,7 +2166,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
             let destination = tokens.splice(0, 1)[0];
             let chan = bot.client.Channels.get(destination);
-            if (chan) Skarm.sendMessageDelay(chan, tokens.join(" "));
+            if (chan && tokens.join(" ").length > 1) Skarm.sendMessageDelay(chan, tokens.join(" "));
             else Skarm.spam(`<@${e.message.author.id}> hey, this message failed to send, probably because ${destination} resolved to null`);
         },
 
@@ -2170,6 +2179,11 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: ["id", "t..."],
         usageChar: "@",
         helpText: "Hey, what are you doing here?!",
+        examples: [
+            {command: "e@5 429537000408875008 Instance 5 protocol", effect: "Q"},
+            {command: "e@5 429537000408875008", effect: "ls"},
+            {command: "e@5 429537000408875008 -", effect: "purge"}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOM,
         category: "infrastructure",
@@ -2237,21 +2251,28 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: ["-nosave", "vPID"],
         usageChar: "@",
         helpText: "Terminates the process running the bot safely. Use this to ensure that data is saved before restarting for maintainance or any other reasons. Use the extension -nosave to prevent commiting to skarmData.",
+        examples: [
+            {command: "e@exit", effect: "Save and shut down."},
+            {command: "e@exit -nosave", effect: "Shut down without saving."},
+            {command: "e@exit 37120",   effect: "Save and shut down the instance of Skarmbot with process ID 37120."},
+            {command: "e@exit 37120 -nosave",   effect: "Shut down the instance of Skarmbot with process ID 37120 without saving."},
+        ],
         ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
 
-
         execute(bot, e, userData, guildData) {
             let savecode = Constants.SaveCodes.EXIT;
             //save data before a shutdown
-			let tok = commandParamTokens(e.message.content.toLowerCase());
-			for(let i in tok){
-                if(tok[i] === "-nosave" || tok[i]=== "-ns"){
+			let tokens = commandParamTokens(e.message.content.toLowerCase());
+			for(let token of tokens){
+                if(token === "-nosave" || token === "-ns"){
                     //Skarm.log("Shutting down without saving by order of <@" + e.message.author.id + ">");
                     savecode=(Constants.SaveCodes.NOSAVE);
                 }
-                if(tok[i]-0 <1040 && tok[i]-0 !== bot.pid){
+
+                //if a process ID number is specified, abort shutdown unless this is your process ID
+                if(token < (Constants.processIdMax << Constants.versionOffsetBits) && tokens[i] != bot.pid){
                     return;
                 }
             }
@@ -2268,7 +2289,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: [],
         usageChar: "@",
         helpText: "Terminates the process running the bot safely, but with the exit code to restart operation. Use this to ensure that data is saved before restarting for updates. Note that this will only work if the bot is started from `launcher.bat`, which it always should be.",
-        ignoreHidden: false,
+        examples: [
+            {command: "e@reboot", effect: "Save and reboot."}
+        ],ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
 
@@ -2287,7 +2310,10 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 		params: [],
 		usageChar: "@",
 		helpText: "Save skarm's data in memory to storage. Saving data will automatically run during a restart or shutdown command",
-		ignoreHidden: false,
+        examples: [
+            {command: "e@save", effect: "Saves data."}
+        ],
+        ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
 
@@ -2305,6 +2331,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: [],
         usageChar: "@",
         helpText: "Debug command to write the user and guild data to files, unencrypted.",
+        examples: [
+            {command: "e@write", effect: "Saves data to `./debug/`."}
+        ],
         ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
@@ -2325,6 +2354,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: ["push | lockcheck"],
         usageChar: "@",
         helpText: "This feature has been deprecated to now run through e@notify.  Please use that command instead.",
+        examples: [
+            {command: "e@munroe push", effect: "Forces a check for the latest xkcd release."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOM,
         category: "infrastructure",

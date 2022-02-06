@@ -31,7 +31,8 @@ class Bot {
     constructor(client, version) {
         this.version=version;
 
-        this.pid = Math.floor(Math.random()*1024)&(-32)+this.version;
+        //upper bits: randomly generated.  Lower bits: mod of version number
+        this.pid = Math.floor(Math.random()*Constants.processIdMax)<<Constants.versionOffsetBits + this.version%Constants.versionOffsetBits;
         this.client = client;
 
         this.nick = "Skarm";
@@ -111,7 +112,7 @@ class Bot {
         }.bind(this), 30 * 60 * 1000);
 
         this.timer1min = setInterval(function() {
-            if(this.game > -1) {
+            if(this.game > Constants.GameState.MANUAL) {
                 this.client.User.setGame({name: this.games[(++this.game) % this.games.length], type: 0});
             }
         }.bind(this),60*1000);
