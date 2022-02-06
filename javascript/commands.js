@@ -801,6 +801,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: [],
         usageChar: "!",
         helpText: "Provides a nanosecondly forecast of what the odds are that skarm will say something stupid (100%) and more importantly: what stupid thing Skarm'll say.",
+        examples: [{command: "e!skarm", effect: "Provides the latest forecast."}],
         ignoreHidden: true,
         category: "meta",
 
