@@ -1823,27 +1823,27 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
-			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
-				Skarm.spam("Unauthorized edit detected. Due to finite storage, this incident will not be reported.");
-				return;
-			}
+            if (!guildData.hasPermissions(userData, Permissions.MOD)) {
+                Skarm.spam("Unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+                return;
+            }
 
-			let tokens = commandParamTokens(e.message.content.toLowerCase());
-			for(let token of tokens){
-                if(token[0] === "e"){
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            for (let token of tokens) {
+                if (token[0] === "e") {
                     guildData.announcesLevels = true;
                 }
 
-                if(token[0] === "d"){
+                if (token[0] === "d") {
                     guildData.announcesLevels = false;
                 }
             }
 
-			if(guildData.announcesLevels){
-				Skarm.sendMessageDelay(e.message.channel,"Level ups will be announced in this guild");
-				return;
-			}
-			Skarm.sendMessageDelay(e.message.channel,"Level ups will not be announced in this guild");
+            if (guildData.announcesLevels) {
+                Skarm.sendMessageDelay(e.message.channel, "Level ups will be announced in this guild");
+                return;
+            }
+            Skarm.sendMessageDelay(e.message.channel, "Level ups will not be announced in this guild");
         },
         
         help(bot, e) {
