@@ -1512,6 +1512,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: [],
         usageChar: "@",
         helpText: "Wash skarm's mouth out with soap if he picked up potty language from chat.",
+        examples: [
+            {command: "e@soap", effect: "Will remove the last thing that skarm parroted to chat from his quote archives."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
