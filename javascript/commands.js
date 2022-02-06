@@ -1201,9 +1201,13 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
     },
     Mayhem: {
         aliases: ["mayhem", "chaos"],
-        params: ["[role]"],
+        params: ["[roleID]"],
         usageChar: "@",
         helpText: "Toggles a role to function as a mayhem color. Please use the role ID as to avoid tagging people unnecessarily. If no parameter is specified, a list of the mayhem roles will be printed instead.",
+        examples: [
+            {command: "e@mayhem", effect: "Will cause Skarm to list all mayhem roles."},
+            {command: "e@chaos 412002840815599617", effect: "Will cause skarm to add the role with the ID `412002840815599617` to the mayhem list."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
@@ -1227,11 +1231,10 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                         roles[i] = undefined;
                     }
                 }
-                // if any invalid roles are in the mayhem list (deleted roles,
-                // etc) remove them
+                // if any invalid roles are in the mayhem list (deleted roles, etc) remove them
                 for (let i = 0; i < roles.length; i++) {
                     if (roles[i] === undefined) {
-                        roles.splice(i, 1);
+                        roles.splice(i--, 1);
                     }
                 }
                 roles.sort();

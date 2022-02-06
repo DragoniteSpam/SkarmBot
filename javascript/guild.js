@@ -86,6 +86,7 @@ const linkFunctions = function(guild) {
         }
 
         for (let roleID in this.mayhemRoles) {
+            if(!this.mayhemRoles[roleID]) continue;             //double check to not toggle disabled mayhem roles
             for (let i = 0; i < guildData.roles.length; i++) {
                 let roleData = guildData.roles[i];
                 if (skarmRank <= roleData.position) {
