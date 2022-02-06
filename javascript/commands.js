@@ -1678,7 +1678,6 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@rolestack enable",          effect: "Configures skarm to reward the entire stack of level rewards for the server."},
             {command: "e@rolestack disable",         effect: "Configures skarm to reward only the highest level role reward for the server."},
         ],
-
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
@@ -1715,7 +1714,10 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 		aliases: ["rolerewards","rr"],
 		params: [],
 		usageChar: "!",
-		helpText: "Displays roles rewarded for leveling up",
+		helpText: "Displays roles rewarded for leveling up.",
+        examples: [
+            {command: "e!rolerewards", effect: "Reports the roles that are rewarded for leveling up in this guild."},
+        ],
 		ignoreHidden:true,
 		category: "leveling",
 
