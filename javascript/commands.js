@@ -1855,6 +1855,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         params: [],
         usageChar: "!",
         helpText: "Refreshes level up role assignments (Role rewards need to be configured for this to do anything useful)",
+        examples: [
+            {command: "e!refresh", effect: "Forces a refresh of your leveled roles."}
+        ],
         ignoreHidden: true,
         category: "leveling",
 
