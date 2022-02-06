@@ -1753,12 +1753,17 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 		params: ["level","@role | unbind"],
 		usageChar:"@",
 		helpText: "Configures a role reward for reaching a certain level. Only one role can be assigned to be granted at any given level. Current maximum level is: "+Skinner.EXPREQ.length,
-		ignoreHidden:true,
+        examples: [
+            {command: "e@slr",                    effect: "Reports the roles that are rewarded for leveling up in this guild"},
+            {command: "e@setlevelreward 2 @lvl2", effect: "Configures skarm to reward the role `@lvl2` for achieving level 2."},
+            {command: "e@setlevelreward 2 -",     effect: "Configures skarm to not reward any role for achieving level 2."}
+        ],
+		ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
-			if(e.message.guild==null){
+			if(e.message.guild === null){
 				Skarm.sendMessageDelay(e.message.channel, "Error: guild not found.");
 				return;
 			}
@@ -1775,22 +1780,27 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 				Skarm.help(this,e);
 				return;
 			}
-			if(!((pars[0]-0)<Skinner.EXPREQ.length && (pars[0]-0)>=0)){
+
+			let level = pars[0]-0;
+			if(!(level<Skinner.EXPREQ.length && level>=0 && Math.floor(level)===level)){
 				Skarm.help(this,e);
 				return;
 			}
-			if(pars[1]==="unbind"){
+			if(pars[1]==="unbind" || pars[1]==="-"){
 				delete Guilds.get(e.message.guild.id).rolesTable[pars[0]-0];
-				Skarm.sendMessageDelay(e.message.channel,"Unbound role attached to level "+pars[0]);
+                module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
 				return;
 			}
 			pars[1] = pars[1].replace("<","").replace("@","").replace("&","").replace(">","");
-			if(pars[1] > 0){
-				Guilds.get(e.message.guild.id).rolesTable[pars[0]-0]=pars[1];
-				module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
-				//Skarm.sendMessageDelay(e.message.channel,"Set level "+pars[0]+" to reward <@&"+pars[1]+">");
-				return;
-			}
+            let allGuildRoles = Guilds.getData(guildData.id).roles;
+            for(let role of allGuildRoles){
+                if(role.id === pars[1]){
+                    Guilds.get(e.message.guild.id).rolesTable[pars[0]-0]=pars[1];
+                    module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
+                    return;
+                }
+            }
+
 			Skarm.help(bot,e);
         },
         
