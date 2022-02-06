@@ -28,19 +28,7 @@ class XKCD {
 		}
 	}
 
-	initialize() {
-		try {
-			let tis = this;
-			Encrypt.read(xkcddb, function (data, filename) {
-				tis.bot.channelsWhoLikeXKCD = JSON.parse(data);
-				console.log("Initialized " + Object.keys(tis.bot.channelsWhoLikeXKCD).length + " XKCD channels.");
-				tis.enabled = true;
-			});
-		} catch (e) {
-			this.enabled = false;
-			console.log("Could not initialize the XKCD log.");
-		}
-	}
+	initialize() {this.enabled = true;}
 
 	save() {
 		if (!this.enabled) return;
@@ -87,8 +75,8 @@ class XKCD {
 				tis.references.ordered.push(title);
 				tis.references.alphabetized.push([title,newXkcdId]);
 				tis.references.alphabetized.sort((a, b) => {return (a[0] > b[0]) ? 1 : -1;});
-				for(let guild in Guild.guilds){
-					Guild.guilds[guild].notify(tis.bot.client,Constants.Notifications.XKCD,params.uri);
+				for(let guild in Guild.guilds) {
+					Guild.guilds[guild].notify(tis.bot.client, Constants.Notifications.XKCD, params.uri);
 				}
 				tis.bot.save(Constants.SaveCodes.DONOTHING);
 			}
@@ -153,16 +141,20 @@ class XKCD {
 
 	/**
 	 * Broadcast XKCD's to all Munroe channels
-	 * @param n broadcast immediately override of Any truthy type
+	 * @param force broadcast immediately override of Any truthy type
 	 */
-	sweep(n) {
+	// I don't think this does anything in the current implementation.
+	//TODO: Please delete this function and make sure that it doesn't break anything at a later date.
+	// I'm not doing this now because I'm making a bunch of other changes in the current commit.
+	// Argo 52/02/05
+	sweep(force) {
 		if (!this.enabled) return;
 		let d = new Date(); // for now
 		let datetext = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
 		console.log("Running xkcd.sweep function.\tCurrent time: " + datetext);
 		let now = new Date();
-		if (this.lock < 1 && (n || now.getHours() === 22 && (now.getDay() & 1))) {
-			this.lock = 3 + (n ? 10 : 0);
+		if (this.lock < 1 && (force || now.getHours() === 22 && (now.getDay() & 1))) {
+			this.lock = 3 + (force ? 10 : 0);
 			for (let channel in this.bot.channelsWhoLikeXKCD) {
 				this.post(this.bot.client.Channels.get(channel));
 			}
