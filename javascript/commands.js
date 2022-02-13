@@ -2154,7 +2154,8 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         usageChar: "@",
         helpText: "Hey, what are you doing here?!",
         examples: [
-            {command: "e@5 429537000408875008 Instance 4 protocol", effect: "Q"}
+            {command: "e@4 429537000408875008 Instance 4 protocol", effect: "Q"},
+            {command: "e@4 429537000408875008", effect: "push an instance of parrot"}
         ],
         ignoreHidden: true,
         perms: Permissions.MOM,
@@ -2162,7 +2163,14 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
         execute(bot, e, userData, guildData) {
             let tokens = commandParamTokens(e.message.content);
-            if (tokens.length < 2) return Skarm.spam(tokens.length);
+            if (tokens.length < 1) return Skarm.spam(tokens.length);
+            if (tokens.length === 1) {
+                //assign the first character of the message to be a valid alias to bypass the parrot requirement for a valid alias to proceed parroting
+                let additionalAliases = { };
+                additionalAliases[e.message.content[0].toLowerCase()] = 1;
+                bot.parrot(e, additionalAliases, bot.client.Channels.get(tokens[0]));       //override the parrot function with the target channel
+                return;
+            }
 
             let destination = tokens.splice(0, 1)[0];
             let chan = bot.client.Channels.get(destination);
@@ -2181,8 +2189,8 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         helpText: "Hey, what are you doing here?!",
         examples: [
             {command: "e@5 429537000408875008 Instance 5 protocol", effect: "Q"},
-            {command: "e@5 429537000408875008", effect: "ls"},
-            {command: "e@5 429537000408875008 -", effect: "purge"}
+            {command: "e@5 429537000408875008",                     effect: "ls"},
+            {command: "e@5 429537000408875008 -",                   effect: "purge"}
         ],
         ignoreHidden: true,
         perms: Permissions.MOM,

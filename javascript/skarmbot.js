@@ -347,12 +347,12 @@ class Bot {
             this.censor(e);
         }
 
-        if (this.mentions(e, this.validESReferences)) {
+        if (this.mentions(e, this.validESReferences) && this.isValidResponse(e)) {
             this.returnSkyrim(e);
             return true;
         }
 
-        if (this.mentions(e, this.validShantyReferences)) {
+        if (this.mentions(e, this.validShantyReferences) && this.isValidResponse(e)) {
             this.singShanty(e);
             return true;
         }
@@ -408,7 +408,9 @@ class Bot {
         }
 
 
-        this.parrot(e,guildData.aliases);
+        if(this.isValidResponse(e)){
+            this.parrot(e, guildData.aliases);
+        }
 
         return false;
     }
@@ -489,23 +491,26 @@ class Bot {
      * Learning and reciting lines
      * @param e
      * @param additionalAliases optional additional aliases to check against
+     * @param channel an override target channel if you don't want to use e.message.channel
      */
-    parrot(e, additionalAliases) {
+    parrot(e, additionalAliases, channel) {
+        channel = channel || e.message.channel;
+        let guildId = (channel && channel.guild.id) || e.message.guild.id;
         if (this.mentions(e, this.validNickReferences) || (additionalAliases && this.mentions(e, additionalAliases))) {
 			//once skarm starts singing, he'd rather do that than talk
 			let seed = Math.random();
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);
 			}
-			let guild = Guilds.get(e.message.guild.id);
+			let guild = Guilds.get(guildId);
             let line = guild.getRandomLine(e);
             if (line !== undefined) {
-                Skarm.sendMessageDelay(e.message.channel, line);
+                Skarm.sendMessageDelay(channel, line);
 				guild.lastSendLine=line;
             }
             return;
         }
-        
+
         this.attemptLearnLine(e);
     }
 
@@ -578,14 +583,16 @@ class Bot {
     // helpers
 
 
+    isValidResponse(e) {
+        let text = e.message.content.toLowerCase();
+        return !(text.split(" ").length < this.minimumMessageReplyLength);
+    }
+
     mentions(e, references) {
-        var text = e.message.content.toLowerCase();
+        let text = e.message.content.toLowerCase();
+
         
-        if (text.split(" ").length < this.minimumMessageReplyLength) {
-            return false;
-        }
-        
-        for (let keyword in references) {
+        for (let keyword of Object.keys(references)) {
             if (text.includes(keyword)) {
                 return (Math.random() < references[keyword]);
             }
