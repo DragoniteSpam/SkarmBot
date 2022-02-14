@@ -31,7 +31,8 @@ class Bot {
     constructor(client, version) {
         this.version=version;
 
-        this.pid = Math.floor(Math.random()*1024)&(-32)+this.version;
+        //upper bits: randomly generated.  Lower bits: mod of version number
+        this.pid = Math.floor(Math.random()*Constants.processIdMax)<<Constants.versionOffsetBits + this.version%Constants.versionOffsetBits;
         this.client = client;
 
         this.nick = "Skarm";
@@ -83,30 +84,11 @@ class Bot {
 
         this.shanties = new ShantyCollection();
         this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
-        this.channelsWhoLikeXKCD = {};
-
 
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
         this.xkcd = new XKCD(this);
-        setTimeout(()=>{{
-            for(let channel in this.channelsWhoLikeXKCD){
-                let channelGuild;
-                try {
-                    channelGuild = Guilds.get(client.Channels.get(channel).guild.id);
-                }catch (e) {
-                    Skarm.logError("Failed to get guild for channel "+channel+"  -  "+JSON.stringify(e));
-                    continue;
-                }
-                //Skarm.logError(channelGuild.id);
-                //Skarm.logError(JSON.stringify(channelGuild.notificationChannels));
-                channelGuild.notificationChannels.XKCD[channel]=Date.now();
-                delete this.channelsWhoLikeXKCD[channel];
-            }
 
-            Skarm.log(`Failed to initialize ${Object.keys(this.channelsWhoLikeXKCD).length} xkcd notification channels.`);
-            this.xkcd.save();
-        }},1000);
 
         /**
          * keeps a short lifespan cache of messages sent by skarm which are going to be deleted,
@@ -130,7 +112,7 @@ class Bot {
         }.bind(this), 30 * 60 * 1000);
 
         this.timer1min = setInterval(function() {
-            if(this.game > -1) {
+            if(this.game > Constants.GameState.MANUAL) {
                 this.client.User.setGame({name: this.games[(++this.game) % this.games.length], type: 0});
             }
         }.bind(this),60*1000);
@@ -160,8 +142,10 @@ class Bot {
     
     OnMessageReactionAdd(e) {
         const UPVOTE = 0x2b06;
-        const REQUIRED_UPVOTES = 3;
         const REDX = '\u274c';
+
+        let guildData = Guilds.get(e.message.guild.id);
+        const REQUIRED_UPVOTES = guildData.channelsPinUpvotes[e.message.channel.id];
 
 		if(!e)
 			return Skarm.log("encountered null event in OnMessageReactionAdd");
@@ -178,7 +162,7 @@ class Bot {
                     if (this.toBeDeletedCache[e.message.id].self) {
                         this.toBeDeletedCache[e.message.id].self = true;
                     } else {
-                        if (this.toBeDeletedCache[e.message.id].senderID === e.user.id || Guilds.get(e.message.guild.id).hasPermissions(e.user, Permissions.MOD)) {
+                        if (this.toBeDeletedCache[e.message.id].senderID === e.user.id || guildData.hasPermissions(e.user, Permissions.MOD)) {
                             clearTimeout(this.toBeDeletedCache[e.message.id].timeout);
                             e.message.delete();
                             delete this.toBeDeletedCache[e.message.id];
@@ -188,7 +172,7 @@ class Bot {
             }
         }
 
-        if (e.message !== null && !e.message.pinned && Guilds.get(e.message.guild.id).channelsPinUpvotes[e.message.channel_id] /*!== undefined && === true */) {
+        if (e.message !== null && !e.message.pinned && REQUIRED_UPVOTES) {
             let upvotes = 0;
             for (let i in e.message.reactions) {
                 let reaction = e.message.reactions[i];
@@ -307,6 +291,8 @@ class Bot {
         let userData = Users.get(e.message.author.id);
         let guildData = Guilds.get(e.message.channel.guild_id);
 
+        this.summons(e);
+
         // in the event that we eventually add PM responses, it would probably
         // be a bad idea to try to execute the mayhem colors on it
         if (!e.message.isPrivate) {
@@ -351,7 +337,7 @@ class Bot {
         }
 
         // ignore hidden channels after this
-        if (guildData.hiddenChannels[e.message.channel_id]) {
+        if (guildData.hiddenChannels[e.message.channel.id]) {
             return false;
         }
 
@@ -361,14 +347,12 @@ class Bot {
             this.censor(e);
         }
 
-        this.summons(e);
-
-        if (this.mentions(e, this.validESReferences)) {
+        if (this.mentions(e, this.validESReferences) && this.isValidResponse(e)) {
             this.returnSkyrim(e);
             return true;
         }
 
-        if (this.mentions(e, this.validShantyReferences)) {
+        if (this.mentions(e, this.validShantyReferences) && this.isValidResponse(e)) {
             this.singShanty(e);
             return true;
         }
@@ -424,7 +408,9 @@ class Bot {
         }
 
 
-        this.parrot(e,guildData.aliases);
+        if(this.isValidResponse(e)){
+            this.parrot(e, guildData.aliases);
+        }
 
         return false;
     }
@@ -474,6 +460,7 @@ class Bot {
 
     //does many things, and stuff and things...
     censor(e) {
+	    //TODO
     }
     
     toggleChannel(map, channel) {
@@ -504,23 +491,26 @@ class Bot {
      * Learning and reciting lines
      * @param e
      * @param additionalAliases optional additional aliases to check against
+     * @param channel an override target channel if you don't want to use e.message.channel
      */
-    parrot(e, additionalAliases) {
+    parrot(e, additionalAliases, channel) {
+        channel = channel || e.message.channel;
+        let guildId = (channel && channel.guild.id) || e.message.guild.id;
         if (this.mentions(e, this.validNickReferences) || (additionalAliases && this.mentions(e, additionalAliases))) {
 			//once skarm starts singing, he'd rather do that than talk
 			let seed = Math.random();
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);
 			}
-			let guild = Guilds.get(e.message.guild.id);
+			let guild = Guilds.get(guildId);
             let line = guild.getRandomLine(e);
             if (line !== undefined) {
-                Skarm.sendMessageDelay(e.message.channel, line);
+                Skarm.sendMessageDelay(channel, line);
 				guild.lastSendLine=line;
             }
             return;
         }
-        
+
         this.attemptLearnLine(e);
     }
 
@@ -593,14 +583,16 @@ class Bot {
     // helpers
 
 
+    isValidResponse(e) {
+        let text = e.message.content.toLowerCase();
+        return !(text.split(" ").length < this.minimumMessageReplyLength);
+    }
+
     mentions(e, references) {
-        var text = e.message.content.toLowerCase();
+        let text = e.message.content.toLowerCase();
+
         
-        if (text.split(" ").length < this.minimumMessageReplyLength) {
-            return false;
-        }
-        
-        for (let keyword in references) {
+        for (let keyword of Object.keys(references)) {
             if (text.includes(keyword)) {
                 return (Math.random() < references[keyword]);
             }

@@ -5,20 +5,19 @@
 // I'm going to come to your house and whack you with a spoon.
 class Constants {
     // assume we are connected
-    static initialize(client, p) {
+    static initialize(client, p) {      //p = process
         //the dev team user objects
         Constants.Moms = {
-            DRAGO: client.Users.get("137336478291329024"),
+            DRAGO:   client.Users.get("137336478291329024"),
             TIBERIA: client.Users.get("425428688830726144"),
-            MASTER: client.Users.get("162952008712716288"),
-            ARGO: client.Users.get("263474950181093396"),
+            MASTER:  client.Users.get("162952008712716288"),
+            ARGO:    client.Users.get("263474950181093396"),
         }
 
-        //the bot's own ID
-		Constants.ID = client.User.id;
+        Constants.client = client;            //access to the client object
+        Constants.self = client.User;         //the bot's user object
+        Constants.ID = client.User.id;        //the bot's own ID
 
-		//access to the client object
-        Constants.client=client;
 
         //Weekdays with sunday at 0 and working up from there
         Constants.Days = {
@@ -29,6 +28,12 @@ class Constants {
             THURSDAY: 4,
             FRIDAY: 5,
             SATURDAY: 6,
+        };
+
+        //Currently playing game states
+        Constants.GameState = {
+            AUTOMATIC: 0,
+            MANUAL:   -1,
         };
 
         //channel objects for skarm's base server which are accessible to all skarm tokens
@@ -46,6 +51,9 @@ class Constants {
 			EXIT:			0,
 			REBOOT:			69,
 		};
+
+		Constants.processIdMax      = 0x400;
+		Constants.versionOffsetBits = 0x006;
 
 		//Various subtle modifiers for the behavior of parrot
         Constants.Vars = {

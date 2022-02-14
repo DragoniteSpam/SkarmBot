@@ -66,6 +66,9 @@ module.exports = {
         params: [],
         usageChar: "!",
         helpText: "reminds the bot author to get some sunshine once in a while",
+        examples: [
+            {command: "e!drago", effect: "Instructs the lead spaghetti chef to acquire vitamin D."}
+        ],
         ignoreHidden: true,
 		category: "general",
 		
@@ -82,9 +85,9 @@ module.exports = {
         params: ["<victim>"],
         usageChar: "!",
         helpText: "Hugs a target, or defaults to the summoner.",
-        helpExamples: [
-            "e!hug Dragonite#7992\nWill cause Skarm to hug the user named Dragonite#7992.", 
-            "e!hug\nWill cause Skarm to hug whoever invoked the command."
+        examples: [
+            {command: "e!hug", effect: "Will cause Skarm to hug whoever invoked the command."},
+            {command: "e!hug Dragonite#7992", effect: "Will cause Skarm to hug the user named Dragonite#7992."}
         ],
         ignoreHidden: true,
 		category: "general",
@@ -104,7 +107,11 @@ module.exports = {
 		params: ["#channel"],
 		usageChar: "!",
 		helpText: "First shalt thou take out the Holy Pin. Then shalt thou count to three, no more, no less. Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in My sight, shall snuff it.",
-		ignoreHidden: true,
+        examples: [
+            {command: "e!pinned", effect: "Will cause Skarm to report the amount of pinned messages in the channel that it is run in."},
+            {command: "e!fetchpinned #general", effect: "Will cause Skarm to report the amount of pinned messages in the channel #general."}
+        ],
+        ignoreHidden: true,
         category: "general",
 
         execute(bot, e, userData, guildData) {
@@ -144,6 +151,24 @@ module.exports = {
         usageChar: "!",
         helpText: "Skarm can be asked to send you notifications for messages with certain keywords (often your username, or other topics you like to know about - for example, \"Wooloo\" or \"programming\"). You can add, remove, or list your summons." +
             "\nMessages that skarm sends containing your summons will be deleted after 15 seconds (30 seconds for e!summons list) or immediately by clicking \u274c.",
+        examples: [
+            {
+                command: "e!summons add jeff",
+                effect: "Will cause Skarm to notify you whenever `jeff` appears in a message."
+            },
+            {
+                command: "e!summons add skarmory skarmbot skram skarm",
+                effect: "Will cause Skarm to notify you if any of the four terms listed appear in a messasge."
+            },
+            {
+                command: "e!summons remove jeff",
+                effect: "Will stop Skarm from notifying you whenever `jeff` appears in a message."
+            },
+            {
+                command: "e!summon list",
+                effect: "Will cause Skarm to report the list of terms that you will be notified about."
+            }
+        ],
         ignoreHidden: true,
         category: "general",
 
@@ -151,42 +176,42 @@ module.exports = {
             let params = commandParamTokens(e.message.content.toLowerCase());
             let action = params[0];
             let term;
-            if(params.length){
-				term = params[1];
-			}else{
-				term = "";
-			}
-			let retina = "";
+            if (params.length) {
+                term = params[1];
+            } else {
+                term = "";
+            }
+            let returnString = "";
             if (action === "add") {
-				for(let i=1;i<params.length;i++){
-					if (userData.addSummon(params[i].replace(",",""))) {
-						retina+= "**" + params[i] + "** is now a summon for " + e.message.author.username + "!\n";
-					} else {
-						retina+= "Could not add the term " + params[i] + " as a summon. (Has it already been added?)\n";
-					}
-				}
-				Skarm.sendMessageDelete(e.message.channel,retina,false,null,15000,e.message.author.id,bot);
+                for (let i = 1; i < params.length; i++) {
+                    if (userData.addSummon(params[i].replace(",", ""))) {
+                        returnString += "**" + params[i] + "** is now a summon for " + e.message.author.username + "!\n";
+                    } else {
+                        returnString += "Could not add the term " + params[i] + " as a summon. (Has it already been added?)\n";
+                    }
+                }
+                Skarm.sendMessageDelete(e.message.channel, returnString, false, null, 15000, e.message.author.id, bot);
                 return;
             }
             if (action === "remove") {
-				for(let i=1;i<params.length;i++){
-					if (userData.removeSummon(params[i].replace(",",""))) {
-						retina+= "**" + params[i] + "** is no longer a summon for " + e.message.author.username + "!\n";
-					} else {
-						retina+= "Could not remove the term " + params[i] + " as a summon. (Does it exist in the summon list?)\n";
-					}
-				}
-				Skarm.sendMessageDelete(e.message.channel,retina,false,null,15000,e.message.author.id,bot);
+                for (let i = 1; i < params.length; i++) {
+                    if (userData.removeSummon(params[i].replace(",", ""))) {
+                        returnString += "**" + params[i] + "** is no longer a summon for " + e.message.author.username + "!\n";
+                    } else {
+                        returnString += "Could not remove the term " + params[i] + " as a summon. (Does it exist in the summon list?)\n";
+                    }
+                }
+                Skarm.sendMessageDelete(e.message.channel, returnString, false, null, 15000, e.message.author.id, bot);
                 return;
             }
             if (action === "list") {
                 let summonString = userData.listSummons(term);
                 if (summonString.length === 0) {
-					retina+="**" + e.message.author.username + "**, you currently have no summons!";
+                    returnString += "**" + e.message.author.username + "**, you currently have no summons!";
                 } else {
-                    retina+= "**" + e.message.author.username + "**, your current summons are:\n```" + summonString + "```";
+                    returnString += "**" + e.message.author.username + "**, your current summons are:\n```" + summonString + "```";
                 }
-				Skarm.sendMessageDelete(e.message.channel,retina,false,null,30000,e.message.author.id,bot);
+                Skarm.sendMessageDelete(e.message.channel, returnString, false, null, 30000, e.message.author.id, bot);
                 return;
             }
             Skarm.erroneousCommandHelpPlease(e.message.channel, this);
@@ -200,18 +225,24 @@ module.exports = {
         params: ["-days # -page #"],
         usageChar: "!",
         helpText: "Prints out a table of guild activity from the past # days.  If not specified, default is 30 days.  Use the page option to access data outside of the top 10 members.",
+        examples: [
+            {command: "e!activity", effect: "Will cause Skarm to report the word and message counts of the top 10 members over the past 30 days."},
+            {command: "e!activity -days 45", effect: "Will cause Skarm to report the word and message counts of the top 10 members over the past 45 days."},
+            {command: "e!activity -page 2", effect: "Will cause Skarm to report the word and message counts of the 11th-20th most active members over the past 30 days."},
+            {command: "e!activity -days 45 -page 2", effect: "Will cause Skarm to report the word and message counts of the 11th-20th most active members over the past 45 days."}
+        ],
         ignoreHidden: true,
         category: "general",
 
         execute(bot, e, userData, guildData) {
             let message = commandParamString(e.message.content).toLowerCase();
             let tokens = commandParamTokens(e.message.content);
-            let days = attemptNumParameterFetch(message,"-d") ||  30;
-            let page = attemptNumParameterFetch(message, "-p") || 0;
-            let dayImplemented = 1613001600000;//Date of implementation
+            let days = attemptNumParameterFetch(message, "-d") || 30;
+            let page = attemptNumParameterFetch(message, "-p") - 1 || 0;    //convert page to array index
+            let dayImplemented = 1613001600000;                                      //Date of implementation
 
-            if(isNaN(page)){
-                Skarm.sendMessageDelay(e.message.channel,"Expected page input as an integer. e.g.: `e!activity 2`");
+            if (isNaN(page)) {
+                Skarm.sendMessageDelay(e.message.channel, "Expected page input as an integer. e.g.: `e!activity 2`");
                 return;
             }
             //Skarm.logError(page);
@@ -219,24 +250,26 @@ module.exports = {
             let table = guild.flexActivityTable;
 
 
-            let usersList = [];
-            let cutoffDate = Date.now() - days*24*60*60*1000;
-            if(cutoffDate < dayImplemented){
-                days = Math.ceil((Date.now() - dayImplemented) /(24*60*60*1000));
+            let cutoffDate = Date.now() - days * 24 * 60 * 60 * 1000;
+            if (cutoffDate < dayImplemented) {
+                days = Math.ceil((Date.now() - dayImplemented) / (24 * 60 * 60 * 1000));
                 cutoffDate = dayImplemented;
             }
-            Skarm.spam("Cutoff date: "+new Date(cutoffDate)+" | "+cutoffDate);
-            for(let userID in table){
-                //assemble user object for the report
+            Skarm.spam("Cutoff date: " + new Date(cutoffDate) + " | raw: " + cutoffDate);
+
+
+            //assemble user object table for the report
+            let usersList = [];
+            for (let userID in table) {
                 let userTableObj = table[userID];
-                let userReportObj = {userID:userID,words:0,messages:0};
-                if(days <0 || days>365){
+                let userReportObj = {userID: userID, words: 0, messages: 0};
+                if (days < 0 || days > 365) {
                     userReportObj.words = userTableObj.totalWordCount;
                     userReportObj.messages = userTableObj.totalMessageCount;
-                }else {
+                } else {
                     for (let day in table[userID].days) {
                         if (day < cutoffDate) continue; //we can't break here because data in hash table is not strictly ordered
-                        if(day < dayImplemented){  //Date of implementation
+                        if (day < dayImplemented) {  //hard cutoff for data at the date of implementation
                             delete table[userID].days[day];
                             continue;
                         }
@@ -246,44 +279,75 @@ module.exports = {
                 }
                 usersList.push(userReportObj);
             }
-            usersList.sort((a,b)=> {return b.words - a.words});
-
-
+            usersList.sort((a, b) => {
+                return b.words - a.words
+            });
 
             table = usersList;
+            let spacer = "\t";
+            let description = ["```", "Member" + spacer + "Words " + spacer + "Messages"];
 
-
-            let messageObject = {
-                color: Skarm.generateRGB(),
-                description:"Member................Word Count..........Messages\r\n",
-                author: {name: e.message.author.nick},
-                title: "Server Activity for the past "+days+" days",
-                timestamp: new Date(),
-                //fields: [],
-                footer: {text: `Page ${page+1}/${Math.ceil(table.length/10)}`},
-            };
-
-            //Skarm.logError("Table: "+JSON.stringify(table));
-            for(let i=0; i+page*10<table.length && i<10 && page>=0; i++){
-                let idx = i+page*10;
+            let fields = [];
+            for (let i = 0; i + page * 10 < table.length && i < 10 && page >= 0; i++) {
+                let idx = i + page * 10;
                 let user = bot.client.Users.get(table[idx].userID);
-                //Skarm.logError("Asserting that bot object properties are valid. Keys: "+JSON.stringify(Object.keys(bot)));
-                //Skarm.logError("Asserting that bot.client.Users collection exists: "+JSON.stringify(bot.client.Users));
 
                 let userMention;
                 try {
-                    userMention = `${user.username}#${user.discriminator}`;
-                }catch (e) {
+                    userMention = `${user.username.replaceAll("`", "'")}#${user.discriminator}`;
+                } catch (e) {
                     userMention = `<@${table[idx].userID}>`;
                 }
-                messageObject.description+= `${userMention}............\`${table[idx].words}\`.................\`${table[idx].messages}\`\r\n`;
+                description.push(`${userMention}${spacer}${table[idx].words}${spacer}${table[idx].messages}`);
+                fields.push({
+                    name: userMention,
+                    value: "words: " + table[idx].words + ", 💬:" + table[idx].messages,
+                    inline: true
+                });
             }
-            if(page*10 > table.length){
-                Skarm.sendMessageDelay(e.message.channel,"Requested page is outside of active member range.  Please try again.");
+            description.push("```");
+            if (page * 10 > table.length) {
+                Skarm.sendMessageDelay(e.message.channel, "Requested page is outside of active member range.  Please try again.");
                 return;
             }
-            Skarm.sendMessageDelete(e.message.channel," ",false,messageObject,1<<20,e.message.author,bot);
-            //Skarm.logError("Message sent to smd");
+
+            //format description to look nice
+            while (description.join("").includes(spacer)) {
+                let maxSpace = 0;                           //maximum distance between start of line and spacer
+
+                //evaluate max distance to spacer
+                for (let d in description) {
+                    let line = description[d];
+                    if (line.includes("```")) continue;        //ignore upper and lower bounds
+                    let firstComponentDist = line.split(spacer)[0].length;
+                    maxSpace = Math.max(maxSpace, firstComponentDist);
+                }
+
+                //add space to each sector in place of the spacer
+                for (let d in description) {
+                    let line = description[d];
+                    if (line.includes("```")) continue;        //ignore upper and lower bounds
+                    let firstComponentDist = line.split(spacer)[0].length;
+                    let newSpacer = " ";                        //always provide a minimum padding of 1 space
+                    for (let i = firstComponentDist; i < maxSpace; i++) {
+                        newSpacer += " ";
+                    }
+                    description[d] = line.replace(spacer, newSpacer);
+                }
+
+            }
+
+            let messageObject = {
+                color: Skarm.generateRGB(),
+                description: description.join("\r\n"),
+                author: {name: e.message.author.nick},
+                title: "Server Activity for the past " + days + " days",
+                timestamp: new Date(),
+                // fields: fields,
+                footer: {text: `Page ${page + 1}/${Math.ceil(table.length / 10)}`},
+            };
+
+            Skarm.sendMessageDelete(e.message.channel, " ", false, messageObject, 1 << 20, e.message.author, bot);
         },
 
         help(bot,e) {
@@ -295,6 +359,10 @@ module.exports = {
         params: ["count"],
         usageChar: "!",
         helpText: "Prints out a table of the most frequently appearing roles in the server.  Use parameter count, to specify the amount of roles to include in the table.",
+        examples: [
+            {command: "e!rolefrequency", effect: "Will cause Skarm to report the most frequent roles in the guild."},
+            {command: "e!rf 3", effect: "Will cause Skarm to report the top 3 most frequent roels in the guild."}
+        ],
         ignoreHidden: true,
         category: "general",
         //todo: specify only works in guilds
@@ -357,16 +425,24 @@ module.exports = {
         params: ["#d# + #"],
         usageChar: "!",
         helpText: "Roll up to 64 dice with a max value of up to 1000 per die!",
+        examples: [
+            {command: "e!roll 20", effect: "Will cause Skarm to roll `1d20` and report the outcome."},
+            {command: "e!roll d20", effect: "Will cause Skarm to roll `1d20` and report the outcome."},
+            {command: "e!roll 4d20", effect: "Will cause Skarm to roll `4d20` and report the outcome."},
+            {command: "e!roll 20 + 1", effect: "Will cause Skarm to roll `1d20 + 1` and report the outcome."},
+            {command: "e!roll d20 + 1", effect: "Will cause Skarm to roll `1d20 + 1` and report the outcome."},
+            {command: "e!roll 3d20 + 9", effect: "Will cause Skarm to roll `3d20 + 9` and report the outcome."},
+        ],
         ignoreHidden: true,
         category: "general",
 
         execute(bot, e, userData, guildData) {
             let message = commandParamString(e.message.content.toLowerCase());
-            if (message.includes("+")) message = message.replace("+", " + ").replaceAll("  "," ");
+            if (message.includes("+")) message = message.replace("+", " + ").replaceAll("  ", " ");
             let tokens = message.split(" ");
 
-            if (!tokens.length) {
-                this.help(bot,e);
+            if (tokens.length < 1 || tokens.join("").length === 0) {
+                this.help(bot, e);
                 return;
             }
 
@@ -375,10 +451,8 @@ module.exports = {
             let dieMagnitude = tokens[0].substring(dPointIndex + 1) - 0;
             let dieCount = 1;
 
-            //Skarm.spam(`tokens: ${tokens}`);
-
-            if(dPointIndex > 0){
-                dieCount = tokens[0].substring(0,dPointIndex) - 0;
+            if (dPointIndex > 0) {
+                dieCount = tokens[0].substring(0, dPointIndex) - 0;
             }
 
             dieCount = Math.min(0x40, dieCount);             //prevent user-end exploits
@@ -388,10 +462,10 @@ module.exports = {
 
             let rollValues = [];
             let rollAccumulator = 0;
-            if(tokens.length > 1 && message.includes("+")){
+            if (tokens.length > 1 && message.includes("+")) {
                 let i = 1;
-                while(i < tokens.length){
-                    if(tokens[i++].includes("+")){
+                while (i < tokens.length) {
+                    if (tokens[i++].includes("+")) {
                         //Skarm.spam(`Found + at token ${i} of ${tokens.length}: ${tokens[i-1]}`);
                         break;
                     }
@@ -402,37 +476,53 @@ module.exports = {
 
             let baseValue = rollAccumulator;
 
-            for(let i=0; i<dieCount; i++){
-                let rollValue =  1 +Math.floor(dieMagnitude * Math.random());
+            for (let i = 0; i < dieCount; i++) {
+                let rollValue = 1 + Math.floor(dieMagnitude * Math.random());
                 rollAccumulator += rollValue;
                 rollValues.push(rollValue);
             }
 
-            if(baseValue > 0){              //append base value to end of addition array
+            if (baseValue > 0) {              //append base value to end of addition array
                 rollValues.push(baseValue);
             }
 
             Skarm.sendMessageDelay(e.message.channel, `${rollValues.join(" + ")} = **${rollAccumulator}**`);
         },
 
-        help(bot,e) {
+        help(bot, e) {
             Skarm.help(this, e);
         },
     },
     UnixToDate: {
-        aliases: ["unixtodate", "utd","time"],
+        aliases: ["unixtodate", "utd", "time"],
         params: ["#"],
         usageChar: "!",
         helpText: "Converts a unix timestamp to a date",
+        examples: [
+            {
+                command: "e!time",
+                effect: "Prints the current unix timestamp."
+            },
+            {
+                command: "e!utd 1640000000000",
+                effect: "Prints the human-readable time described by the unix timestamp given in the command."
+            }
+        ],
         ignoreHidden: true,
         category: "general",
 
         execute(bot, e) {
-            let timestamp = commandParamString(e.message.content);
-            Skarm.sendMessageDelay(e.message.channel,new Date(timestamp-0));
+            let tokens = commandParamTokens(e.message.content);
+
+            //no input -> you get the current time
+            if (tokens.join("").length === 0) {
+                Skarm.sendMessageDelay(e.message.channel, Date.now());
+                return;
+            }
+            Skarm.sendMessageDelay(e.message.channel, new Date(tokens[0] - 0));
         },
 
-        help(bot,e) {
+        help(bot, e) {
             Skarm.help(this, e);
         },
     },
@@ -446,6 +536,7 @@ module.exports = {
         params: [],
         usageChar: "!",
         helpText: "Returns the number of actions in Skarm's log for the current server.",
+        examples: [{command: "e!action", effect: "Reports the amount of action lines recorded for this server."}],
         ignoreHidden: true,
         category: "meta",
 
@@ -464,6 +555,7 @@ module.exports = {
         params: [""],
         usageChar: "!",
         helpText: "It's literally just the credits. Why do you need help with this?",
+        examples: [{command: "e!credits", effect: "Shows the credits."}],
         ignoreHidden: true,
 		category: "meta",
 
@@ -472,7 +564,7 @@ module.exports = {
             Skarm.sendMessageDelay(e.message.channel,
 `**Skarm Bot 2**\n
 Lead spaghetti chef: Dragonite#7992
-Seondary spaghetti chef: ArgoTheNaut#8957
+Seondary spaghetti chef: ArgoTheNaut#9716
 Version: ${version}
 
 Library: Discordie (JavaScript):
@@ -483,16 +575,16 @@ Dragonite:
 <https://github.com/DragoniteSpam/SkarmBot>
 
 Argo:
-<https://github.com/Master9000>
+<https://github.com/ArgoTheNaut>
 
-Extra ideas came from SuperDragonite2172, willofd2011, Cadance and probably other people.
+Extra ideas came from SuperDragonite2172, willofd2011, and probably other people.
 
-Thanks to basically everyone on the Kingdom of Zeal server for testing this bot thing, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
+Thanks to basically everyone on the Kingdom of Zeal server for testing this bot, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
 
 Wolfram-Alpha is awesome:
 <https://www.npmjs.com/package/node-wolfram>
 
-Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
+Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Carlin, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
             );
         },
         
@@ -522,30 +614,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
     },
 	 */
 	Help: {
-        aliases: ["help", "man","?"],
+        aliases: ["help", "man", "?"],
         params: ["[term]"],
         usageChar: "!",
-        helpText: "Provides an encyclopedia entry for the specified command. Or alternatively, the bot as a whole.",
+        helpText: "Skarm is a Discord bot made by <@137336478291329024> and <@162952008712716288>.\r\n" +   /*unfortunately, "Constants.Moms.Drago.mention" could not be used due to not being initialized yet*/
+            "Use the help command with a command name to see the documentation for it!\r\n" +
+            "Type either `e!help [command-name]` to get help on a specific command, or `e!help` to see a list of all available commands.\r\n",
+        examples: [
+            {command: "e!help",         effect: "Shows all available commands to run"},
+            {command: "e!help help",    effect: "Shows the documentation for usage of `e!help` (hey, this is it!)"},
+            {command: "e!?",            effect: "Shows the documentation for usage of `e!help` (hey, this is it!)"},
+            {command: "e!man activity", effect: "Shows the documentation for usage of `e!activity`"}
+        ],
         ignoreHidden: true,
-		category: "meta",
+        category: "meta",
 
         execute(bot, e, userData, guildData) {
             let cmd = commandParamTokens(e.message.content)[0];
-            if(e.message.content==="e!?")
+            if (e.message.content === "e!?")
                 cmd = "?";
 
             if (cmd === "?") {
-                Skarm.sendMessageDelay(e.message.channel, " ",false,{
-                    color: Skarm.generateRGB(),
-                    description: "Skarm is a Discord bot made by "+Constants.Moms.DRAGO.mention+" and "+Constants.Moms.MASTER.mention+".\n"+
-                        "Use the help command with a command name to see the documentation for it!\n"+
-                        "Type either `e!help [command-name]` to get help on a specific command, or `e!help` to see a list of all available commands.\n",
-                        /*  title: "github",
-                            url: "http://github.com/DragoniteSpam/Skarmbot",
-                        */
-                        timestamp: new Date(),
-                        footer: {text: e.message.author.nick}
-                });
+                Skarm.help(this, e);
                 return;
             }
 
@@ -554,31 +644,31 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 let userData = Users.get(e.message.author.id);
                 let categories = {};
 
-                for(let key in bot.mapping.unaliased){
-                    if(bot.mapping.unaliased[key].usageChar === "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms)){
+                for (let key in bot.mapping.unaliased) {
+                    if (bot.mapping.unaliased[key].usageChar === "!" || guildData.hasPermissions(userData, bot.mapping.unaliased[key].perms)) {
                         let cat = bot.mapping.unaliased[key].category;
-                        if(cat in categories){
+                        if (cat in categories) {
                             categories[cat].push(key);
-                        }else{
-                            categories[cat]= [key];
+                        } else {
+                            categories[cat] = [key];
                         }
                     }
                 }
 
                 let alphabet = [];
-                for(let sets in categories){
+                for (let sets in categories) {
                     categories[sets].sort();
-                    alphabet.push({name: sets,value: categories[sets].join(", ")});
+                    alphabet.push({name: sets, value: categories[sets].join(", ")});
                 }
-                let embedobj= {
+                let embedobj = {
                     color: Skarm.generateRGB(),
                     title: "Commands",
                     timestamp: new Date(),
                     fields: alphabet,
-                    footer: {text: e.message.member.nick||e.message.author.username + " | "}
+                    footer: {text: e.message.member.nick || e.message.author.username + " | "}
                 };
 
-                Skarm.sendMessageDelay(e.message.channel, " ",false,embedobj);//"Available commands: ```" + alphabet.join("\n\n") + "```\nSome commands have additional aliases.");
+                Skarm.sendMessageDelay(e.message.channel, " ", false, embedobj);//"Available commands: ```" + alphabet.join("\n\n") + "```\nSome commands have additional aliases.");
                 return;
             }
 
@@ -586,16 +676,15 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 bot.mapping.help[cmd].help(bot, e);
                 return;
             }
-            
+
             if (bot.mapping.cmd[cmd]) {
                 bot.mapping.cmd[cmd].help(bot, e);
                 return;
             }
-            
 
             Skarm.sendMessageDelay(e.message.channel, "Command not found: " + cmd + ". Use the help command followed by the name of the command you wish to look up.");
         },
-        
+
         help(bot, e) {
             Skarm.help(this, e);
         },
@@ -605,6 +694,10 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: [],
         usageChar: "!",
         helpText: "Returns the number of messages in Skarm's log for the current server.",
+        examples: [{
+            command: "e!lines",
+            effect: "Reports the amount of general message lines recorded for parroting in this server."
+        }],
         ignoreHidden: true,
         category: "meta",
 
@@ -613,32 +706,37 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.sendMessageDelay(e.message.channel, "Lines known for **" +
                 guild.name + "**: " + Guilds.get(guild.id).getLineCount());
         },
-        
+
         help(bot, e) {
             Skarm.help(this, e);
         },
     },
     Nick: {
-        aliases: ["nick","nickname","name","setname"],
+        aliases: ["nick", "nickname", "setname"],
         params: ["newName"],
         usageChar: "!",
         helpText: "Set what you want skarm to call you across all servers.\r\nIf no nickname is given, skarm will default to your server nickname. \r\nUse `e!nick -` to remove",
+        examples: [
+            {command: "e!nick", effect: "Skarm will tell you what your current nickname is set to."},
+            {command: "e!nick 27", effect: "Skarm will set your nickname to `27`."},
+            {command: "e!setname -", effect: "Skarm will remove your nickname from his records and default to server nickname where possible."}
+        ],
         ignoreHidden: true,
         category: "meta",
 
         execute(bot, e, userData, guildData) {
             let newNick = commandParamString(e.message.content);
-            if(!newNick.length) {
-                Skarm.sendMessageDelay(e.message.channel,`Your current nickname is: ${userData.nickName}`);
+            if (!newNick.length) {
+                Skarm.sendMessageDelay(e.message.channel, `Your current nickname is: ${userData.nickName}`);
                 return;
             }
-            if(newNick === "-"){
+            if (newNick === "-") {
                 userData.nickName = undefined;
-                Skarm.sendMessageDelay(e.message.channel,`Nickname removed`);
+                Skarm.sendMessageDelay(e.message.channel, `Nickname removed`);
                 return;
             }
-            userData.nickName = newNick.substring(0,32); //limits imposed by discord inherited by skarm for the sake of sanity and such things
-            Skarm.sendMessageDelay(e.message.channel,`Skarm will now refer to you as "${userData.nickName}"`);
+            userData.nickName = newNick.substring(0, 32); //limits imposed by discord inherited by skarm for the sake of sanity and such things
+            Skarm.sendMessageDelay(e.message.channel, `Skarm will now refer to you as "${userData.nickName}"`);
         },
 
         help(bot, e) {
@@ -650,6 +748,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: [""],
         usageChar: "!",
         helpText: "Sends a test message to the channel, and then attempts to edit it. Useful for testing the bot's response time.",
+        examples: [{command: "e!ping", effect: "Skarm will send a message, and then edit the message to include the time that it took for the event to be registered."}],
         ignoreHidden: true,
         category: "meta",
 
@@ -670,6 +769,10 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["query..."],
         usageChar: "!",
         helpText: "Prints a list of the shanties skarm knows and is thus likely to sing while under the influence",
+        examples: [
+            {command: "e!shanties", effect: "Skarm will list all the shanties that he knows."},
+            {command: "e!shanty joli", effect: "Skarm will list all of the shanties that he knows that contain `joli` in their title"}
+        ],
         ignoreHidden: true,
         category: "meta",
 
@@ -677,9 +780,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			let target = commandParamString(e.message.content);
 			let names = bot.shanties.names;
             let shanties = "";
-            for (let i in names) {
-				if (names[i].includes(target))
-    				shanties += names[i] + ", ";
+            for (let name of names) {
+				if (name.includes(target))
+    				shanties += name + ", ";
 			}
 			if (shanties.length === 0) {
 				Skarm.sendMessageDelay(e.message.channel, "I can't recall any shanties with that in the title ヽ( ｡ ヮﾟ)ノ");
@@ -698,20 +801,21 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: [],
         usageChar: "!",
         helpText: "Provides a nanosecondly forecast of what the odds are that skarm will say something stupid (100%) and more importantly: what stupid thing Skarm'll say.",
+        examples: [{command: "e!skarm", effect: "Provides the latest forecast."}],
         ignoreHidden: true,
         category: "meta",
 
         execute(bot, e, userData, guildData) {
             //shanty counter is intentionally wrong following shanties being buffered on a per-channel basis
-			let shanty = Math.floor(Math.random()*5000)/100;
-			let skyrim=Math.floor((new Date).getDay()*bot.skyrimOddsModifier*10000)/100;
-            Skarm.sendMessageDelay(e.message.channel, "Current shanty forecast: **" +shanty+"%**\n"+
-			"The Elder Scrolls Forecast: **"+skyrim+"%**\n"+
-			"Something completely normal: **0%**\n"+
-			"Something completely different: **"+(100-shanty-skyrim)+"%**."
+            let shanty = Math.floor(Math.random() * 5000) / 100;
+            let skyrim = Math.floor((new Date).getDay() * bot.skyrimOddsModifier * 10000) / 100;
+            Skarm.sendMessageDelay(e.message.channel, "Current shanty forecast: **" + shanty + "%**\n" +
+                "The Elder Scrolls Forecast: **" + skyrim + "%**\n" +
+                "Something completely normal: **0%**\n" +
+                "Something completely different: **" + (100 - shanty - skyrim) + "%**."
             );
         },
-        
+
         help(bot, e) {
             Skarm.help(this, e);
         },
@@ -721,6 +825,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: [""],
         usageChar: "!",
         helpText: "Displays some stats about the bot.",
+        examples: [{command: "e!bot", effect: "Provides the stats."}],
         ignoreHidden: true,
         category: "meta",
 
@@ -731,7 +836,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             let uptimeMinutes = Math.floor((uptime / 60) % 60);
             let uptimeSeconds = Math.floor(uptime % 60);
             let uptimeString = "";
-            
+
             if (uptimeDays > 0) {
                 uptimeString = uptimeDays + ((uptimeDays > 1) ? " days, " : " day, ");
             }
@@ -742,27 +847,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                 uptimeString += uptimeMinutes + ((uptimeMinutes > 1) ? " minutes, " : " minute, ");
             }
             uptimeString += uptimeSeconds + ((uptimeSeconds > 1) ? " seconds" : " second");
-            
+
             Skarm.sendMessageDelay(e.message.channel,
                 "***Bot stats, and stuff:***\n```" +
                 "Users (probably): " + Object.keys(Users.users).length + "\n" +
                 "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
-				"Host: "+os.hostname()+"\n"+
-                "vPID: "+bot.pid+"\n"+
-                "Version: "+bot.version+"\n"+
+                "Host: " + os.hostname() + "\n" +
+                "vPID: " + bot.pid + "\n" +
+                "Version: " + bot.version + "\n" +
                 "Uptime (probably): " + uptimeString + "```"
             );
         },
-        
+
         help(bot, e) {
             Skarm.help(this, e);
         },
     },
     Suggest: {
-        aliases: ["suggest", "suggestion"],
+        aliases: ["suggest", "suggestion", "issue", "complain", "bug", "bugreport"],
         params: [""],
         usageChar: "!",
         helpText: "Provides a list to the Github Issues page, where you may complain to your heart's content.",
+        examples: [{command: "e!suggest", effect: "Provides the link to the submission page."}],
         ignoreHidden: true,
         category: "meta",
 
@@ -779,12 +885,16 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["<startIndex>"],
         usageChar: "!",
         helpText: "Queries a list of words sent in the server by their relative frequencies. Optional integer parameter for offsetting the 10 displayed words.",
+        examples: [
+            {command: "e!zipf", effect: "Lists the top 10 most frequent words said in the server."},
+            {command: "e!zipf 11", effect: "Lists the 11th through 20th most frequent words said in the server."}
+        ],
         ignoreHidden: true,
         category: "meta",
 
         execute(bot, e, userData, guildData) {
             let args = commandParamString(e.message.content);
-            if(!args || args.length < 1) args = 1;
+            if (!args || args.length < 1) args = 1;
             Skarm.sendMessageDelay(e.message.channel, guildData.getZipfSubset(args));
         },
 
@@ -802,6 +912,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["query..."],
         usageChar: "!",
         helpText: "Returns the results of a web search of the specified query. The `cosia` alias is an acceptable usage of punning.",
+        examples: [
+            {command: "e!google sonder definition", effect: "Provides a link to a search engine query for `sonder definition`"}
+        ],
         ignoreHidden: true,
         category: "web",
 
@@ -818,6 +931,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["query..."],
         usageChar: "!",
         helpText: "Returns a Stackoverflow search for the given query",
+        examples: [
+            {command: "e!stackoverflow how to center a div inside of a div", effect: "Provides a link to the stack overflow search results for `how to center a div inside of a div`"}
+        ],
         ignoreHidden: true,
         category: "web",
 
@@ -846,12 +962,17 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
     //         Skarm.help(this, e);
     //     },
     // },
-
     XKCD: {
         aliases: ["xkcd"],
         params: ["[id]"],
         usageChar: "!",
         helpText: "Returns the XKCD with the specified ID; if no ID is specified, it will return the latest strip instead. ID may be an index or a strip name.",
+        examples: [
+            {command: "e!xkcd ", effect: "Provides a link to the most recent XKCD comic."},
+            {command: "e!xkcd 753", effect: "Provides a link to XKCD 753."},
+            {command: "e!xkcd compiling", effect: "Provides a link to the xkcd titled `compiling`."},
+            {command: "e!xkcd web", effect: "Provides a link for every xkcd containing `web` in its title."}
+        ],
         ignoreHidden: true,
 		category: "web",
 
@@ -869,10 +990,17 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	*administrative
 	*/
     Alias: {
-        aliases: ["alias"],
-        params: ["add, remove, list, clear"],
+        aliases: ["alias", "trigger"],
+        params: ["add | remove | list | clear"],
         usageChar: "@",
-        helpText: "Manage additional names that skarm will respond to.  The scope of these aliases is within the guild in which they are configured.  All names are case insensitive.\r\nAdd registers new aliases, Remove or delete get rid of existing aliases.  List provides a complete list of guild-specific aliases.  Clear **purges all** guild-specific aliases.   \r\nUsage:  `e@alias add scramble`, `e@alias list`, `e@alias remove scramble`, `e@alias delete *`, `e@alias clear`",
+        helpText: "Manage additional names that skarm will respond to.  The scope of these aliases is within the guild in which they are configured.  All aliases are case insensitive.\r\nAdd registers new aliases, Remove or delete get rid of existing aliases.  List provides a complete list of guild-specific aliases.  Clear deletes **ALL** guild-specific aliases.",
+        examples: [
+            {command: "e@alias add scramble",    effect: "Adds `scramble` as an alias that skarm will respond to."},
+            {command: "e@alias list",            effect: "Lists all of the guild-specific aliases that skarm will respond to."},
+            {command: "e@alias remove scramble", effect: "Removes `scramble` as an alias that skarm will respond to."},
+            {command: "e@alias delete *",        effect: "Removes **ALL** guild-specific aliases that skarm will respond to."},
+            {command: "e@alias clear",           effect: "Removes **ALL** guild-specific aliases that skarm will respond to."}
+        ],
         ignoreHidden: false,
         perms: Permissions.MOD,
         category: "administrative",
@@ -946,53 +1074,59 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         },
     },
     Knight: {
-        aliases: ["mod", "knight"],
+        aliases: ["mod", "knight","mods"],
         params: ["member | clear"],
         usageChar: "@",
-        helpText: "Administrator command for appointing and removing moderators. Use `e@mod clear` to remove all moderators (caution is advised).",
+        helpText: "Administrator command for appointing and removing moderators.  Moderators can use certain administrative commands. Use `e@mod clear` to remove all moderators (caution is advised).",
+        examples: [
+            {command: "e@mod",    effect: "Lists all members who have been granted moderator-level access to Skarmbot in this guild."},
+            {command: "e@mod @TrustedMember",    effect: "Adds or removes `@TrustedMember` to the moderators list for the guild.  If they are currently on the list, they will be removed.  Otherwise, they will be added."},
+            {command: "e@mod clear",    effect: "Removes all moderators from the guild."},
+        ],
         ignoreHidden: true,
         perms: Permissions.ADMIN,
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-			let words=commandParamTokens(e.message.content);
-			if(!guildData.moderators)
-				guildData.moderators={ };
-			if(words.length===0){
-				let list = Object.keys(guildData.moderators);
-				if(list.length===0){
-					Skarm.sendMessageDelay(e.message.channel,"The administrators have not approved of any mods at this time. Use `e@mod @member` to add someone to the mod list.");
-					return;
-				}
-				
-				let mods = "";
-				for(let i in list){
-					var mod =Guilds.client.Users.get(list[i]);
-					if(mod!=null)
-						mods+= mod.username+", ";
-				}
-				Skarm.sendMessageDelay(e.message.channel,"The current moderators in this guild are: "+mods.substring(0,mods.length-2));
-				return;
-			}
-			
-			if(words[0]==="clear" || words[0]==="c"){
-				guildData.moderators={};
-				Skarm.sendMessageDelay(e.message.channel,"Removed everyone from the moderators list.");
-			}
-			
-			//mention => toggle
-            let member = words[0].replace("<","").replace("@","").replace("!","").replace(">","");
-			
-			Skarm.log("Toggling state of: "+member);
-			
-			if(member in guildData.moderators){
-				delete guildData.moderators[member];
-				Skarm.sendMessageDelay(e.message.channel,"Removed <@"+member+"> from the moderators list.");
-				
-			}else{
-				guildData.moderators[member]=Date.now();
-				Skarm.sendMessageDelay(e.message.channel,"Added <@"+member+"> to the moderators list.");
-			}
+            let words = commandParamTokens(e.message.content);
+            if (!guildData.moderators)
+                guildData.moderators = {};
+            if (words.length === 0) {
+                let list = Object.keys(guildData.moderators);
+                if (list.length === 0) {
+                    Skarm.sendMessageDelay(e.message.channel, "The administrators have not approved of any mods at this time. Use `e@mod @member` to add someone to the mod list.");
+                    return;
+                }
+
+                let mods = "";
+                for (let i in list) {
+                    var mod = Guilds.client.Users.get(list[i]);
+                    if (mod != null)
+                        mods += mod.username + ", ";
+                }
+                Skarm.sendMessageDelay(e.message.channel, "The current moderators in this guild are: " + mods.substring(0, mods.length - 2));
+                return;
+            }
+
+            if (words[0] === "clear" || words[0] === "c") {
+                guildData.moderators = {};
+                Skarm.sendMessageDelay(e.message.channel, "Removed everyone from the moderators list.");
+                return;
+            }
+
+            //mention => toggle
+            let member = words[0].replace("<", "").replace("@", "").replace("!", "").replace(">", "");
+
+            Skarm.log("Toggling state of: " + member);
+
+            if (member in guildData.moderators) {
+                delete guildData.moderators[member];
+                Skarm.sendMessageDelay(e.message.channel, "Removed <@" + member + "> from the moderators list.");
+
+            } else {
+                guildData.moderators[member] = Date.now();
+                Skarm.sendMessageDelay(e.message.channel, "Added <@" + member + "> to the moderators list.");
+            }
         },
         
         help(bot, e) {
@@ -1004,14 +1138,15 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["mention"],
         usageChar: "!",
         helpText: "Shows the user's access level (pleb, moderator, admin, Mom, etc).",
+        examples: [
+            {command: "e!sudo", effect: "Reports what your current access level is."},
+            {command: "e!sudo @GuildMember", effect: "Reports the current access level held by `@GuildMember`."}
+        ],
         ignoreHidden: true,
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
 			let words=commandParamTokens(e.message.content);
-
-            
-			
 			let member;
 			if(words.length===1){
 				let id=words[0].replace("<","").replace("@","").replace("!","").replace(">","");
@@ -1032,7 +1167,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             if (permissions & Permissions.BASE) permNames.push("BASE");
             if (permissions & Permissions.MOD) permNames.push("MOD");
             if (permissions & Permissions.ADMIN) permNames.push("ADMIN");
-            if (permissions === Permissions.SUDO) permNames.push("MOM");
+            if (permissions === Permissions.SUDO) permNames.push("DEVELOPER");
             
 			
             Skarm.sendMessageDelay(e.message.channel, "Current permissions of **" +
@@ -1045,6 +1180,7 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
+    /*
 	Censor: {
         aliases: ["censor"],
         params: [],
@@ -1066,19 +1202,22 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         help(bot, e) {
             Skarm.help(this, e);
         },
-    },
+    },*/
 	Hide: {
         aliases: ["hide"],
         params: [],
         usageChar: "@",
-        helpText: "Toggles visibility of the bot in the channel this is used in. This command is only usable by users with kicking boots.",
+        helpText: "Toggles visibility of the bot in the channel this is used in. Use of this command requires an access level no less than `moderator`.",
+        examples: [
+            {command: "e@hide", effect: "Toggles whether or not skarm will cause chaos in reaction to messages in the target channel."}
+        ],
         ignoreHidden: false,
-        perms: Permissions.ADMIN,
+        perms: Permissions.MOD,
 		category: "administrative",
 
         execute(bot, e, userData, guildData) {
             
-            if (guildData.toggleHiddenChannel(bot.channelsHidden, e.message.channel_id)) {
+            if (guildData.toggleHiddenChannel(e.message.channel_id)) {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
             } else {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
@@ -1091,9 +1230,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
     },
     Mayhem: {
         aliases: ["mayhem", "chaos"],
-        params: ["[role]"],
+        params: ["[roleID]"],
         usageChar: "@",
         helpText: "Toggles a role to function as a mayhem color. Please use the role ID as to avoid tagging people unnecessarily. If no parameter is specified, a list of the mayhem roles will be printed instead.",
+        examples: [
+            {command: "e@mayhem", effect: "Will cause Skarm to list all mayhem roles."},
+            {command: "e@chaos 412002840815599617", effect: "Will cause skarm to add the role with the ID `412002840815599617` to the mayhem list."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
@@ -1117,11 +1260,10 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                         roles[i] = undefined;
                     }
                 }
-                // if any invalid roles are in the mayhem list (deleted roles,
-                // etc) remove them
+                // if any invalid roles are in the mayhem list (deleted roles, etc) remove them
                 for (let i = 0; i < roles.length; i++) {
                     if (roles[i] === undefined) {
-                        roles.splice(i, 1);
+                        roles.splice(i--, 1);
                     }
                 }
                 roles.sort();
@@ -1157,67 +1299,15 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.help(this, e);
         },
     },
-    Munroe: {
-        aliases: ["munroe"],
-        params: ["cmd"],
-        usageChar: "@",
-        helpText: "This feature has been deprecated to now run through e@notify.  Please use that command instead.",
-        ignoreHidden: true,
-        perms: Permissions.MOD,
-        category: "administrative",
-
-        execute(bot, e, userData, guildData) {
-            let args = commandParamTokens(e.message.content);
-
-            if (args.length === 0) {
-                //Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
-                Skarm.sendMessageDelay(this.helpText);
-                return;
-            }
-
-            switch (args[0]) {
-                case "enable":
-                    bot.addChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
-                    Skarm.sendMessageDelay(e.message.channel, "XKCDs will now be sent to **" + e.message.channel.name + "!**");
-                    break;
-                case "disable":
-                    bot.removeChannel(bot.channelsWhoLikeXKCD, e.message.channel_id);
-                    Skarm.sendMessageDelay(e.message.channel, "XKCDs will no longer be sent to **" + e.message.channel.name + ".**");
-                    break;
-            }
-
-            let leave = true;
-            for (let mom in Constants.Moms) {
-                if (Constants.Moms[mom].id === e.message.author.id){
-                    leave = false;
-                }
-            }
-
-            if (leave) return;
-
-            // noinspection FallThroughInSwitchStatementJS
-            switch (args[0]) {
-                case "dump":
-                    Skarm.log(JSON.stringify(bot.channelsWhoLikeXKCD));
-                    break;
-                case "push":
-                    bot.xkcd.checkForNewXKCDs();
-                    break;
-                case "lockcheck":
-                    Skarm.log(bot.xkcd.lock);
-                    break;
-            }
-        },
-
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
     Notify: {
         aliases: ["notify"],
         params: ["#"],
         usageChar: "@",
         helpText: "Toggles the notifications of various information for this channel.  Use without a number input to view current state of channel.",
+        examples: [
+            {command: "e@notify", effect: "Will cause Skarm to list all available notification settings to toggle."},
+            {command: "e@notify 4", effect: "Will cause Skarm to toggle announcing all voice channel join and leave activity in the guild to the channel in which the command was sent."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
@@ -1232,10 +1322,10 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
                     author: {name: e.message.author.nick},
                     description: `Configure notification settings for <#${e.message.channel.id}>:\r\n\r\n`+
                         `1: **${(e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) ? "Disable":"Enable"}** member join/leave notifications\n`+
-                        `2: **${(e.message.channel.id in notifChannels.BAN) ? "Disable":"Enable"}** ban notifications\n`+
-                        `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE) ? "Disable":"Enable"}** name change notifications\n`+
-                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL) ? "Disable":"Enable"}** voice channel join/change/leave notifications\n`+
-                        `5: **${(e.message.channel.id in notifChannels.XKCD) ? "Disable":"Enable"}** posting new XKCDs upon their release \n`,
+                        `2: **${(e.message.channel.id in notifChannels.BAN)               ? "Disable":"Enable"}** ban notifications\n`+
+                        `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE)       ? "Disable":"Enable"}** name change notifications\n`+
+                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL)     ? "Disable":"Enable"}** voice channel join/change/leave notifications\n`+
+                        `5: **${(e.message.channel.id in notifChannels.XKCD)              ? "Disable":"Enable"}** posting new XKCDs upon their release \n`,
                     timestamp: new Date(),
                 });
                 return;
@@ -1306,22 +1396,40 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
     },
     Pin: {
         aliases: ["pin"],
-        params: ["query..."],
+        params: ["threshold"],
         usageChar: "@",
-        helpText: "Toggles the pinning of messages with the required number of upvote reactions in the channel. This command is only usable by users with kicking boots.",
+        helpText: "Toggles the pinning of messages with the required number of upvote reactions (⬆️) in the channel. This command is only usable by users with kicking boots.",
+        examples: [
+            {command: "e@pin", effect: "Will report the state of pinning upvoted messages."},
+            {command: "e@pin 4", effect: "Will set 4 as the threshold for upvotes in order to pin a message in the channel."},
+            {command: "e@pin 0", effect: "Will disable automatically pinning messages with any number of upvotes in the channel."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            
-            let guild = Guilds.get(e.message.guild.id);
-            
-            if (guild.togglePinnedChannel(e.message.channel_id)) {
-                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will now pin upvotes in **" + e.message.channel.name + "**");
-            } else {
-                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer pin upvotes in **" + e.message.channel.name + "**");
+            let tokens = commandParamTokens(e.message.content);
+            let channel = e.message.channel;
+
+            if(tokens.join("").length > 0) {
+                if(!isNaN(tokens[0] - 0)){
+                    guildData.setPinnedChannel(channel.id, tokens[0] - 0);
+                    Skarm.spam("updating data with " + tokens[0]);
+                }else{
+                    Skarm.help(this, e);
+                }
+            }else{
+                Skarm.spam(`Params of e@pin: ${tokens}`);
             }
+
+            let threshold = guildData.getPinnedChannelState(channel.id);
+            if(threshold){
+                Skarm.sendMessageDelay(channel, bot.nick + " will pin messages in **" + e.message.channel.name + `** Once they receive ${threshold} upvotes! (⬆️)`);
+            }else{
+                Skarm.sendMessageDelay(channel, bot.nick + " will not pin upvoted messages in **" + e.message.channel.name + "**");
+            }
+
         },
         
         help(bot, e) {
@@ -1332,10 +1440,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         aliases: ["welcome"],
         params: ["enable", "disable", "set <message>"],
         usageChar: "@",
-        helpText: "Configure welcome messages for the guild\n"+
-		"Usage:\n`e@welcome enable`\n"+
-		"`e@welcome set Welcome <newmember>! Please don't be evil!`\n"+
-		"`e@welcome set -` removes welcome message from that channel",
+        helpText: "Configure welcome messages for the guild",
+        examples: [
+            {command: "e@welcome enable", effect: "Will enable welcome messages being sent when users join."},
+            {command: "e@welcome disable", effect: "Will disable welcome messages from being sent when users join."},
+            {command: "e@welcome set -", effect: "Will remove the welcome message configured for the channel in which the command is run."},
+            {command: "e@welcome set Welcome <newmember>! Please don't be evil!", effect: "Will set the welcome message in the channel to `Welcome @theNewKid! Please don't be evil!`"}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOD,
 		category: "administrative",
@@ -1401,6 +1512,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: [],
         usageChar: "@",
         helpText: "Wash skarm's mouth out with soap if he picked up potty language from chat.",
+        examples: [
+            {command: "e@soap", effect: "Will remove the last thing that skarm parroted to chat from his quote archives."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOD,
         category: "administrative",
@@ -1421,9 +1535,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	*/
 	Rank: {
 		aliases: ["level","rank"],
-        params: ["<optionally mention a guild member>"],
+        params: ["[<@guild member>]"],
         usageChar: "!",
-        helpText: "returns how much exp you have in the guild",
+        helpText: "Reports how much exp a member has with the guild, what level that equates to, how much exp is needed to get to the next level, and the member's position on the guild leaderboard.",
+        examples: [
+            {command: "e!rank", effect: "Will report how much experience you have."},
+            {command: "e!rank @Dragonite", effect: "Will report how much experience `@Dragonite` has."},
+        ],
         ignoreHidden: true,
 		category: "leveling",
 
@@ -1475,7 +1593,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		aliases: ["srank","slevel"],
         params: ["<@targetID>, exp"],
         usageChar: "@",
-        helpText: "sets how much exp you have in the guild",
+        helpText: "Sets how much exp you have in the guild\r\n",
+        examples: [
+            {command: "e@srank 256",                 effect: "Sets your own experience points to 256.  Enough to achieve level 2!"},
+            {command: "e@srank @magikarp#1234 0",    effect: "Sets the experience points of the user @magikarp#1234 to 0"},
+            {command: "e@srank @Dragonite#7992 100", effect: "Sets the experience points of the user `@Dragonite#7992` to 100.  Enough to achieve level 1!"},
+            {command: "e@srank @Dragonite#7992 -",   effect: "Removes dragonite's record from the exp table.  Future message by dragonite will re-add him to the table."},
+        ],
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
@@ -1519,11 +1643,22 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 			target = target || e.message.author.id;
 			let user = guildData.expTable[target];
 			if(user) {
-			    if(!isNaN(newExp - 0))
-                    user.exp = newExp;
-                user.level = Skinner.getLevel(user.exp);
-                user.nextLevelEXP = Skinner.getMinEXP(user.level);
-                Skarm.sendMessageDelay(e.message.channel, "New rank data for <@"+ (target)+">\n>>> New total EXP: " + user.exp + "\nEXP required to go for next level: " + (user.nextLevelEXP - user.exp) + "\nCurrent level: " + user.level);
+			    if(newExp === "-"){
+                    delete guildData.expTable[target];
+                    Skarm.sendMessageDelay(e.message.channel, "User data purged.");
+                }else {
+                    if (!isNaN(newExp - 0))
+                        user.exp = newExp;
+                    user.level = Skinner.getLevel(user.exp);
+                    user.nextLevelEXP = Skinner.getMinEXP(user.level);
+                    Skarm.sendMessageDelay(e.message.channel, "New rank data for <@"+ (target)+">\n>>> New total EXP: " + user.exp + "\nEXP required to go for next level: " + (user.nextLevelEXP - user.exp) + "\nCurrent level: " + user.level);
+                    let guildMembers = e.message.guild.members;
+                    for(let member of guildMembers){
+                        if(member.id === target){
+                            guildData.roleCheck(member, user);
+                        }
+                    }
+                }
             }else{
 			    Skarm.sendMessageDelay(e.message.channel, `Failed to find guild record for user with ID ${target}`);
             }
@@ -1535,9 +1670,14 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	},
 	RoleStack: {
 		aliases: ["rolestack"],
-        params: ["enable/disable"],
+        params: ["enable | disable"],
         usageChar: "@",
         helpText: "Toggles whether or not to keep previous roles when rewarding a new level up role.",
+        examples: [
+            {command: "e@rolestack",                 effect: "Reports whether or not skarm currently stacks leveled role rewards."},
+            {command: "e@rolestack enable",          effect: "Configures skarm to reward the entire stack of level rewards for the server."},
+            {command: "e@rolestack disable",         effect: "Configures skarm to reward only the highest level role reward for the server."},
+        ],
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
@@ -1574,7 +1714,10 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		aliases: ["rolerewards","rr"],
 		params: [],
 		usageChar: "!",
-		helpText: "Displays roles rewarded for leveling up",
+		helpText: "Displays roles rewarded for leveling up.",
+        examples: [
+            {command: "e!rolerewards", effect: "Reports the roles that are rewarded for leveling up in this guild."},
+        ],
 		ignoreHidden:true,
 		category: "leveling",
 
@@ -1610,12 +1753,17 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 		params: ["level","@role | unbind"],
 		usageChar:"@",
 		helpText: "Configures a role reward for reaching a certain level. Only one role can be assigned to be granted at any given level. Current maximum level is: "+Skinner.EXPREQ.length,
-		ignoreHidden:true,
+        examples: [
+            {command: "e@slr",                    effect: "Reports the roles that are rewarded for leveling up in this guild"},
+            {command: "e@setlevelreward 2 @lvl2", effect: "Configures skarm to reward the role `@lvl2` for achieving level 2."},
+            {command: "e@setlevelreward 2 -",     effect: "Configures skarm to not reward any role for achieving level 2."}
+        ],
+		ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
-			if(e.message.guild==null){
+			if(e.message.guild === null){
 				Skarm.sendMessageDelay(e.message.channel, "Error: guild not found.");
 				return;
 			}
@@ -1632,22 +1780,27 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 				Skarm.help(this,e);
 				return;
 			}
-			if(!((pars[0]-0)<Skinner.EXPREQ.length && (pars[0]-0)>=0)){
+
+			let level = pars[0]-0;
+			if(!(level<Skinner.EXPREQ.length && level>=0 && Math.floor(level)===level)){
 				Skarm.help(this,e);
 				return;
 			}
-			if(pars[1]==="unbind"){
+			if(pars[1]==="unbind" || pars[1]==="-"){
 				delete Guilds.get(e.message.guild.id).rolesTable[pars[0]-0];
-				Skarm.sendMessageDelay(e.message.channel,"Unbound role attached to level "+pars[0]);
+                module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
 				return;
 			}
 			pars[1] = pars[1].replace("<","").replace("@","").replace("&","").replace(">","");
-			if(pars[1] > 0){
-				Guilds.get(e.message.guild.id).rolesTable[pars[0]-0]=pars[1];
-				module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
-				//Skarm.sendMessageDelay(e.message.channel,"Set level "+pars[0]+" to reward <@&"+pars[1]+">");
-				return;
-			}
+            let allGuildRoles = Guilds.getData(guildData.id).roles;
+            for(let role of allGuildRoles){
+                if(role.id === pars[1]){
+                    Guilds.get(e.message.guild.id).rolesTable[pars[0]-0]=pars[1];
+                    module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
+                    return;
+                }
+            }
+
 			Skarm.help(bot,e);
         },
         
@@ -1656,25 +1809,41 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         },
 	},
 	GuildAnnouncementSwitch: {
-		aliases: ["levelannounce","announce"],
-        params: [],
+		aliases: ["levelannounce", "announce"],
+        params: ["enable | disable"],
         usageChar: "@",
         helpText: "Toggles the state of announcing when a user levels up in the guild",
+        examples: [
+            {command: "e@announce",         effect: "Reports whether or not skarm announces level-ups in this guild."},
+            {command: "e@announce enable",  effect: "Configures skarm to announce level-ups in this guild."},
+            {command: "e@announce disable", effect: "Configures skarm to not announce level-ups in this guild."},
+        ],
         ignoreHidden: true,
 		category: "leveling",
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
-			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
-				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
-				return;
-			}
-			guildData.announcesLevels= !guildData.announcesLevels;
-			if(guildData.announcesLevels){
-				Skarm.sendMessageDelay(e.message.channel,"Level ups will now be announced in this guild");
-				return;
-			}
-			Skarm.sendMessageDelay(e.message.channel,"Level ups will no longer be announced in this guild");
+            if (!guildData.hasPermissions(userData, Permissions.MOD)) {
+                Skarm.spam("Unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+                return;
+            }
+
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            for (let token of tokens) {
+                if (token[0] === "e") {
+                    guildData.announcesLevels = true;
+                }
+
+                if (token[0] === "d") {
+                    guildData.announcesLevels = false;
+                }
+            }
+
+            if (guildData.announcesLevels) {
+                Skarm.sendMessageDelay(e.message.channel, "Level ups will be announced in this guild");
+                return;
+            }
+            Skarm.sendMessageDelay(e.message.channel, "Level ups will not be announced in this guild");
         },
         
         help(bot, e) {
@@ -1686,6 +1855,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: [],
         usageChar: "!",
         helpText: "Refreshes level up role assignments (Role rewards need to be configured for this to do anything useful)",
+        examples: [
+            {command: "e!refresh", effect: "Forces a refresh of your leveled roles."}
+        ],
         ignoreHidden: true,
         category: "leveling",
 
@@ -1704,6 +1876,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         usageChar: "@",
         helpText: "This command takes a single input csv attachment and sets the experience values of all usernames in the guild that appear in the csv file to the exp values on the csv file." +
             "  Expected CSV format of header: " + `"username","level","exp","msgs"`,
+        examples: [
+            {command: "e@ird", effect: "Takes the csv file attached to the message and assigns each user in the csv file their associated experience."}
+        ],
         ignoreHidden: true,
         category: "leveling",
         perms: Permissions.MOD,
@@ -1767,15 +1942,18 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
 	    aliases: ["configurebuffrole", "configbuff", "buffconfig", "buffconf", "cbr"],
         params: ["[action (get,set,remove)]", "[role(ping or id)]", "[stat(base,bonus,cooldown,luck)]", "[modifier(num 0 - 1000)]"],
         usageChar: "@",
-        helpText: "This command configures a role to give buffs for leveling up in the server.\r\n" +
-            "Example 1: `e@cbr set @admin basebuff 2` users with the `@admin` role will receive 2 more base exp per message. \r\n" +
-            "Example 2: `e@cbr get @admin` reports the current buffs affecting the `@admin` role. \r\n" +
-            "Example 3: `e@cbr get` reports the list of roles who have buffs of any kind. \r\n" +
-            "Example 4: `e@cbr remove @admin` removes all buffs currently assigned to the `@admin` role.\r\n\r\n" +
-            "Base: modifies the minimum exp gained when a qualifying message is sent. Default server value: 15\r\n" +
-            "Bonus: modifies the random bonus exp gained above the maximum when a qualifying message is sent.  Default server value: 10\r\n" +
-            "Cooldown: reduces the wait time between qualifying messages.  Scaling is linearized. Default server value: 100. Default server cooldown: 60s.  Granting 100 cooldown reduction will cause the effective cooldown to be 60s/(100 (base) + 100 (bonus)) = 30s\r\n" +
-            "Luck: modifies the probability that a message will get close to the full bonus exp. Default server value: 100.",
+        helpText: "This command configures a role to give buffs for leveling up in the server.",
+        examples: [
+            {command: "e@cbr set @admin basebuff 2", effect: "Users with the `@admin` role will receive 2 more base exp per message from this role."},
+            {command: "e@cbr set @admin bonus 10",   effect: "Users with the `@admin` role will receive up to 10 more bonus exp per message from this role."},
+            {command: "e@configurebuffrole get",     effect: "Reports the list of roles with buffs of any kind."},
+            {command: "e@cbr get @admin",            effect: "Reports the current buffs affecting the `@admin` role."},
+            {command: "e@cbr remove @admin",         effect: "Removes all buffs currently assigned to the `@admin` role."},
+            {command: "Base",     effect: "Modifies the minimum exp gained when a qualifying message is sent. Default server value: 15"},
+            {command: "Bonus",    effect: "Modifies the random bonus exp gained above the maximum when a qualifying message is sent.  Default server value: 10."},
+            {command: "Cooldown", effect: "Reduces the wait time between qualifying messages.  Scaling is linearized. Default server value: 100. Default server cooldown: 60s.  Granting 100 cooldown reduction will cause the effective cooldown to be 60s/(100 (base) + 100 (bonus)) = 30s"},
+            {command: "Luck",     effect: "Modifies the probability that a message will get close to the full bonus exp. Default server value: 100. For more info: https://github.com/DragoniteSpam/SkarmBot/blob/master/data/doc/Skarm%20leveling%20luck%20probability.pdf"},
+        ],
         ignoreHidden: true,
         category: "leveling",
         perms: Permissions.MOD,
@@ -1903,6 +2081,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["create the todo command"],
         usageChar: "@",
         helpText: "Logs to the todo list for the dev team",
+        examples: [
+            {command: "e@todo task", effect: "Records task to the todo channel"}
+        ],
         ignoreHidden: false,
         perms: Permissions.MOM,
         category: "infrastructure",
@@ -1920,6 +2101,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["<test>"],
         usageChar: "@",
         helpText: "Hey, what are you doing here?!",
+        examples: [
+            {command: "e@test", effect: "the test."}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOM,
         category: "infrastructure",
@@ -1969,17 +2153,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["id", "t..."],
         usageChar: "@",
         helpText: "Hey, what are you doing here?!",
+        examples: [
+            {command: "e@4 429537000408875008 Instance 4 protocol", effect: "Q"},
+            {command: "e@4 429537000408875008", effect: "push an instance of parrot"}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOM,
         category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
             let tokens = commandParamTokens(e.message.content);
-            if (tokens.length < 2) return Skarm.spam(tokens.length);
+            if (tokens.length < 1) return Skarm.spam(tokens.length);
+            if (tokens.length === 1) {
+                //assign the first character of the message to be a valid alias to bypass the parrot requirement for a valid alias to proceed parroting
+                let additionalAliases = { };
+                additionalAliases[e.message.content[0].toLowerCase()] = 1;
+                bot.parrot(e, additionalAliases, bot.client.Channels.get(tokens[0]));       //override the parrot function with the target channel
+                return;
+            }
 
             let destination = tokens.splice(0, 1)[0];
             let chan = bot.client.Channels.get(destination);
-            if (chan) Skarm.sendMessageDelay(chan, tokens.join(" "));
+            if (chan && tokens.join(" ").length > 1) Skarm.sendMessageDelay(chan, tokens.join(" "));
             else Skarm.spam(`<@${e.message.author.id}> hey, this message failed to send, probably because ${destination} resolved to null`);
         },
 
@@ -1992,6 +2187,11 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["id", "t..."],
         usageChar: "@",
         helpText: "Hey, what are you doing here?!",
+        examples: [
+            {command: "e@5 429537000408875008 Instance 5 protocol", effect: "Q"},
+            {command: "e@5 429537000408875008",                     effect: "ls"},
+            {command: "e@5 429537000408875008 -",                   effect: "purge"}
+        ],
         ignoreHidden: true,
         perms: Permissions.MOM,
         category: "infrastructure",
@@ -2025,22 +2225,26 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["[name]"],
         usageChar: "@",
         helpText: "Sets Skarm's current game. Omitting the game name will reset it to the spaghetti count.",
+        examples: [
+            {command: "e@game", effect: "Resets the game to switch between the normal oscillating states."},
+            {command: "e@game We are here to drink your beer", effect: "Sets the game skarm is currently playing to `We are here to drink your beer` indefinitely."}
+        ],
         ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
             let cps = commandParamString(e.message.content);
-            if(cps===undefined ||cps===null || cps.length<1 || cps==="cycle") {
-                bot.game = 0;
-                cps=bot.games[bot.game];
-            }else{
-                bot.game=-1;
+            if (cps === undefined || cps === null || cps.length < 1 || cps === "cycle") {
+                bot.game = Constants.GameState.AUTOMATIC;
+                cps = bot.games[bot.game];
+            } else {
+                bot.game = Constants.GameState.MANUAL;
             }
-            if(cps==="-")
-                cps=undefined;
+            if (cps === "-")
+                cps = undefined;
 
-            bot.client.User.setGame({name:cps,type: 0,url:"https://github.com/DragoniteSpam/Skarmbot"});
+            bot.client.User.setGame({name: cps, type: 0, url: "https://github.com/DragoniteSpam/Skarmbot"});
 
             Skarm.sendMessageDelay(e.message.channel, "Game set to **" + cps + "**.");
 
@@ -2055,21 +2259,28 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: ["-nosave", "vPID"],
         usageChar: "@",
         helpText: "Terminates the process running the bot safely. Use this to ensure that data is saved before restarting for maintainance or any other reasons. Use the extension -nosave to prevent commiting to skarmData.",
+        examples: [
+            {command: "e@exit", effect: "Save and shut down."},
+            {command: "e@exit -nosave", effect: "Shut down without saving."},
+            {command: "e@exit 37120",   effect: "Save and shut down the instance of Skarmbot with process ID 37120."},
+            {command: "e@exit 37120 -nosave",   effect: "Shut down the instance of Skarmbot with process ID 37120 without saving."},
+        ],
         ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
 
-
         execute(bot, e, userData, guildData) {
             let savecode = Constants.SaveCodes.EXIT;
             //save data before a shutdown
-			let tok = commandParamTokens(e.message.content.toLowerCase());
-			for(let i in tok){
-                if(tok[i] === "-nosave" || tok[i]=== "-ns"){
+			let tokens = commandParamTokens(e.message.content.toLowerCase());
+			for(let token of tokens){
+                if(token === "-nosave" || token === "-ns"){
                     //Skarm.log("Shutting down without saving by order of <@" + e.message.author.id + ">");
                     savecode=(Constants.SaveCodes.NOSAVE);
                 }
-                if(tok[i]-0 <1040 && tok[i]-0 !== bot.pid){
+
+                //if a process ID number is specified, abort shutdown unless this is your process ID
+                if(token < (Constants.processIdMax << Constants.versionOffsetBits) && tokens[i] != bot.pid){
                     return;
                 }
             }
@@ -2086,7 +2297,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: [],
         usageChar: "@",
         helpText: "Terminates the process running the bot safely, but with the exit code to restart operation. Use this to ensure that data is saved before restarting for updates. Note that this will only work if the bot is started from `launcher.bat`, which it always should be.",
-        ignoreHidden: false,
+        examples: [
+            {command: "e@reboot", effect: "Save and reboot."}
+        ],ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
 
@@ -2102,10 +2315,13 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
     },
 	Save: {
 		aliases: ["save","quicksave","s","f5"],
-		params: ["-nosave"],
+		params: [],
 		usageChar: "@",
 		helpText: "Save skarm's data in memory to storage. Saving data will automatically run during a restart or shutdown command",
-		ignoreHidden: false,
+        examples: [
+            {command: "e@save", effect: "Saves data."}
+        ],
+        ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
 
@@ -2123,6 +2339,9 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
         params: [],
         usageChar: "@",
         helpText: "Debug command to write the user and guild data to files, unencrypted.",
+        examples: [
+            {command: "e@write", effect: "Saves data to `./debug/`."}
+        ],
         ignoreHidden: false,
         perms: Permissions.MOM,
 		category: "infrastructure",
@@ -2133,6 +2352,52 @@ Random quotes are from Douglas Adams, Terry Pratchett, Arthur C. Clark, Rick Coo
             Skarm.sendMessageDelay(e.message.channel, "Saved the debug things!");
         },
         
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Munroe: {
+	    //TODO: double check what isn't useless here
+        aliases: ["munroe"],
+        params: ["push | lockcheck"],
+        usageChar: "@",
+        helpText: "This feature has been deprecated to now run through e@notify.  Please use that command instead.",
+        examples: [
+            {command: "e@munroe push", effect: "Forces a check for the latest xkcd release."}
+        ],
+        ignoreHidden: true,
+        perms: Permissions.MOM,
+        category: "infrastructure",
+
+        execute(bot, e, userData, guildData) {
+            let args = commandParamTokens(e.message.content);
+
+            if (args.length === 0) {
+                //Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
+                Skarm.sendMessageDelay(this.helpText);
+                return;
+            }
+
+            let leave = true;
+            for (let mom in Constants.Moms) {
+                if (Constants.Moms[mom].id === e.message.author.id){
+                    leave = false;
+                }
+            }
+
+            if (leave) return;
+
+            // noinspection FallThroughInSwitchStatementJS
+            switch (args[0]) {
+                case "push":
+                    bot.xkcd.checkForNewXKCDs();
+                    break;
+                case "lockcheck":
+                    Skarm.spam("XKCD lock state: " + bot.xkcd.lock);
+                    break;
+            }
+        },
+
         help(bot, e) {
             Skarm.help(this, e);
         },

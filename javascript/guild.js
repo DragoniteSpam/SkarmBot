@@ -70,10 +70,10 @@ const linkFunctions = function(guild) {
     //functions executed after every message
 
     guild.executeMayhem = function(botAccount) {
-        let guildData = Guild.getData(this.id);
+        let apiGuildData = Guild.getData(this.id);
 
-        let guildBotMember = botAccount.memberOf(guildData);
-        let guildPermissions = guildBotMember.permissionsFor(guildData);
+        let guildBotMember = botAccount.memberOf(apiGuildData);
+        let guildPermissions = guildBotMember.permissionsFor(apiGuildData);
 
         if (!guildPermissions.General.MANAGE_ROLES) {
             Skarm.spam(`I don't have permission to manage roles in ${this.id}. (mayhem)`);
@@ -86,10 +86,12 @@ const linkFunctions = function(guild) {
         }
 
         for (let roleID in this.mayhemRoles) {
-            for (let i = 0; i < guildData.roles.length; i++) {
-                let roleData = guildData.roles[i];
+            if(!this.mayhemRoles[roleID]) continue;             //double check to not toggle disabled mayhem roles
+            for (let i = 0; i < apiGuildData.roles.length; i++) {
+                let roleData = apiGuildData.roles[i];
                 if (skarmRank <= roleData.position) {
-                    Skarm.spam(`the mayhem role ${roleData.name} outranks me for some reason (the server admins of ${this.id} should probably change that)`);
+                    if(roleData.id === roleID)
+                        Skarm.spam(`the mayhem role ${roleData.name} outranks me for some reason (the server admins of ${this.id} should probably change that)`);
                     continue;
                 }
                 if (roleData.id === roleID) {
@@ -151,9 +153,9 @@ const linkFunctions = function(guild) {
             if (this.expTable[author.id].lastMessage + cooldownTime >= Date.now()) return;
         }else {
             this.expTable[author.id] = {
-                exp: Skinner.getMinEXP(0),           //num: current exp
+                exp: 0,                                   //num: current exp
                 level: 0,                                 //num: level
-                nextLevelEXP: Skinner.getMinEXP(1),  //num: exp needed to level up
+                nextLevelEXP: Skinner.getMinEXP(0),  //num: exp needed to level up
                 lastMessage: undefined,                   //num: timestamp
             };
         }
@@ -647,30 +649,36 @@ const linkFunctions = function(guild) {
         return (this.getPermissions(user) >= perm);
     };
 
-	guild.togglePinnedChannel = function(channel) {
+
+	guild.getPinnedChannelState = function (channelID){
+	    return this.channelsPinUpvotes[channelID];
+    };
+
+	guild.setPinnedChannel = function(channelID, threshold) {
         if (!this.channelsPinUpvotes) this.channelsPinUpvotes = { };
-        this.channelsPinUpvotes[channel] = !this.channelsPinUpvotes[channel];
-        return this.channelsPinUpvotes[channel];
+        this.channelsPinUpvotes[channelID] = threshold;
+        return this.channelsPinUpvotes[channelID];
     };
 
 	guild.roleCheck = function(member, userEXPData) {
-		if(Object.keys(guild.rolesTable).length==0)
-			return;
+		if(Object.keys(guild.rolesTable).length === 0) return;
 		//give users the role achieved at their level or the next one available bellow it
-            let i = userEXPData.level;
-		for (i; i >= 0; i--) {
-			if (i in this.rolesTable) {
-				member.assignRole(this.rolesTable[i]);
-				if (!this.roleStack) {
-					let n=i;
-					for (i--; i >= 0; i--) {
-						if(i in this.rolesTable){
-							if(this.rolesTable[i] != this.rolesTable[n]){
-								member.unassignRole(this.rolesTable[i]);
-							}
-						}
-					}
-					//logically unnecessary, but prevents anything goofy in case of revision
+        let i = userEXPData.level;
+		for (i; i >= 0; i--) {              //move down the roles table until you hit a level with an associated role
+			if (i in this.rolesTable) {     //hit the first rewarded role
+				member.assignRole(this.rolesTable[i]);      //assign the role for that level
+                if (!this.roleStack) {                      //if the guild is configured to only keep the highest level reward, drop the lower level roles
+                    setTimeout(() => {
+                        let keepRoleLevel = i--;
+                        for (i; i >= 0; i--) {                  //move down the list and purge any other lower-level roles
+                            if(i in this.rolesTable){
+                                if(this.rolesTable[i] !== this.rolesTable[keepRoleLevel]){
+                                    member.unassignRole(this.rolesTable[i]);
+                                }
+                            }
+                        }
+                    }, 500);
+
 					break;
 				}
 			}

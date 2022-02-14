@@ -156,26 +156,33 @@ class Skarm {
     }
 
     static help(cmd, e) {
-        let helpString = "Documentation:\n```";
-        let paramString = "";
-        // the parameter string is shown after each command alias
+        // the parameters available for this function
+        let paramString = " ";
         for (let param of cmd.params) {
             paramString += param + " ";
         }
-        // each alias is shown
-        for (let alias of cmd.aliases) {
-            helpString += "e" + cmd.usageChar + alias + " " + paramString + "\n";
-        }
-        // lastly, the actual help text
-        helpString = helpString.trim() + "```\n" + cmd.helpText;
-        
-        if (cmd.helpExamples) {
-            for (let example of cmd.helpExamples) {
-                helpString += example + "\n";
+
+        let fields = [{name: "Aliases", value: cmd.aliases.join(", "), inline: true}];
+        if (cmd.examples) {
+            fields.push({name: "\u200B", value: "\u200B", inline: false});
+            for (let example of cmd.examples) {
+                fields.push({name: example.command, value: example.effect, inline: false});
             }
         }
-        
-        Skarm.sendMessageDelay(e.message.channel, helpString);
+
+        //https://discordjs.guide/popular-topics/embeds.html#embed-preview
+        Skarm.sendMessageDelay(e.message.channel, " ",false, {
+            color: Skarm.generateRGB(),
+            //author: Constants.self,
+            timestamp: new Date(),
+            title: "Command usage: e" + cmd.usageChar + cmd.aliases[0] + paramString,
+            description: cmd.helpText,
+            fields: fields,
+            footer: {
+                text: "Skarmbot command support",
+                icon_url: Constants.self.avatarURL,
+            }
+        });
     }
     
     
