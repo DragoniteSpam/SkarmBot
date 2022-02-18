@@ -493,6 +493,40 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+    RoleMembers: {
+        aliases: ["rolemembers", "rm"],
+        params: ["role"],
+        usageChar: "!",
+        helpText: "Returns a list of members who ",
+        examples: [
+            {command: "e!rm @Admins", effect: "Will cause Skarm to list all of the admins that you just pinged."},
+            {command: "e!rolemembers bots", effect: "Will cause Skarm to list all of the members with the role `bots` in the server."},
+        ],
+        ignoreHidden: true,
+        category: "general",
+
+        execute(bot, e, userData, guildData) {
+            let target = commandParamTokens(e.message.content.toLowerCase());
+            if(target.length !== 1) return Skarm.help(this, e);
+            target = target[0];
+            let guildRoles = e.message.guild.roles;
+            for(let role of guildRoles){
+                if(role.id.includes(target) || role.name.toLowerCase().includes(target.toLowerCase())){
+                    target = role;
+                    break;
+                }
+            }
+            if(typeof(target)==="string") {
+                return Skarm.help(this, e);
+            }
+            // todo: compare against member list
+            
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     UnixToDate: {
         aliases: ["unixtodate", "utd", "time"],
         params: ["#"],
