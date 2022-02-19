@@ -493,6 +493,65 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+    RoleMembers: {
+        aliases: ["rolemembers", "rm"],
+        params: ["role"],
+        usageChar: "!",
+        helpText: "Returns a list of members who ",
+        examples: [
+            {command: "e!rm @Admins", effect: "Will cause Skarm to list all of the admins that you just pinged."},
+            {command: "e!rolemembers bots", effect: "Will cause Skarm to list all of the members with the role `bots` in the server."},
+        ],
+        ignoreHidden: true,
+        category: "general",
+
+        execute(bot, e, userData, guildData) {
+            let target = commandParamTokens(e.message.content.toLowerCase());
+            //todo: provide support for multiple roles to filter by
+            if(target.length !== 1) return Skarm.help(this, e);
+            let guildRoles = e.message.guild.roles;
+
+            // convert user input to role object
+            target = target[0];
+            for(let role of guildRoles){
+                if(role.id.includes(target) || role.name.toLowerCase().includes(target.toLowerCase())){
+                    target = role;
+                    break;
+                }
+            }
+
+            // target === string --> no role match found
+            if(typeof(target)==="string") {
+                return Skarm.help(this, e);
+            }
+            let matchingMembers = [ ];
+
+            // check who in the guild has the target role
+            let members = e.message.guild.members;
+            for(let member of members){
+                for(let r of member.roles){
+                    if(r.id === target.id) {
+                        matchingMembers.push(member.mention);
+                        break;                          //hopefully out of the roles loop
+                    }
+                }
+            }
+
+            //format results
+            let embedobj = {
+                color: Skarm.generateRGB(),
+                title: "Members of " + target.name,
+                description: matchingMembers.join("\r\n"),
+                timestamp: new Date(),
+                footer: {text: target.name}
+            };
+            Skarm.sendMessageDelay(e.message.channel, " ",false,embedobj);
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     UnixToDate: {
         aliases: ["unixtodate", "utd", "time"],
         params: ["#"],
