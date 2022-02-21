@@ -188,9 +188,9 @@ class Bot {
         let guildData = Guilds.get(e.guild.id);
 		if(!(e.member.id in guildData.expTable)){
 			guildData.expTable[e.member.id] = {
-                exp: Skinner.getMinEXP(0),
+                exp: 0,
                 level: 0,
-                nextLevelEXP: Skinner.getMinEXP(1),
+                nextLevelEXP: Skinner.getMinEXP(0),
                 lastMessage: undefined,
             };
 		}
