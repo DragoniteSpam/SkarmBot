@@ -552,18 +552,24 @@ class Bot {
             Guilds.get(e.message.guild.id).learnLine(e);
         }
     }
-    
+
+    /**
+     * Generates a deterministic hash of a message based on the message content and message author ID
+     * @param e
+     * @returns {number}
+     */
     messageHash(e) {
         if (e.message.content.length === 0) {
             return 0;
         }
         
-        let hash = 0;
+        let hash = e.message.author.id % Constants.Vars.USER_OFFSET_MOD;
         let str = e.message.content.toLowerCase();
         for (let i = 0; i < str.length; i++) {
           hash = (((hash << 5) - hash) + str.charCodeAt(i)) | 0;
         }
-        
+
+        // console.log(e.message.content, hash);
         return hash;
     }
     

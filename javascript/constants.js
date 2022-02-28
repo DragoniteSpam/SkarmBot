@@ -61,6 +61,7 @@ class Constants {
             SIMILAR_MESSAGE_ATTEMPTS: 5,
             SIMILAR_MESSAGE_KEYWORDS: 3,
             LOG_CAPACITY: 6000,
+            USER_OFFSET_MOD: 10000                           // Do not set this value to any multiple of 2 less than 1<<12.  https://discord.com/developers/docs/reference#snowflake-ids-in-pagination
         };
 
         //Notifications emitted to guilds upon certain events
