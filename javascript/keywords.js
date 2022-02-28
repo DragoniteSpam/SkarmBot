@@ -120,9 +120,44 @@ module.exports = {
             let head = "<:skarmhead:422560671574523904>";
             let blank = "<:background:448285187550347275>";
 
+            let titlesCollection = {
+                "king"       : 1,
+                "queen"      : 1,
+                "president"  : 1,
+                "dictator"   : 1,
+                "emperor"    : 1,
+                "general"    : 1,
+                "chancellor" : 1,
+                "guru"       : 1,
+                "janitor"    : 1,
+                "commander"  : 1,
+                "captain"    : 1,
+                "commodore"  : 1,
+                "marshal"    : 1,
+                "doctor"     : 1,
+                "senator"    : 1,
+            };
+
             let sabers = e._constants.Lightsabers;
 
-            let refName = e._userData.getName(e);
+            let refName = e._userData.getName(e).toLowerCase();
+
+            // set the user's title if they have one in their name
+            let userTitle = "general";
+            for(let title in titlesCollection){
+                if(refName.includes(title) || e.message.member.nick.toLowerCase().includes(title)) {
+                    userTitle = title;
+                    refName = refName.replace(title, "");        // remove the title from their name to avoid redundancy
+                }
+            }
+
+            // set the user's name as a best approximation of the longest component of their refName
+            let nameComponents = refName.split(" ");
+            let usedName = "";
+            for(let component of nameComponents){
+                if(component.length > usedName.length)
+                    usedName = component;
+            }
 
 			function randomLeft(){
 			    try {
@@ -167,9 +202,9 @@ module.exports = {
                 },350);
             }
 
-            let content = "GENERAL " + refName.toUpperCase() + "\nYou are a bold one.\n" + randomLeft() + randomLeft() + head + randomRight() + randomRight();
-            if(e.message.author.username.toLowerCase().includes("master")){
-                content = "MASTER JEDI" + "\nYou are a bold one.\n" +
+            let content = userTitle.toUpperCase() + " " + usedName.toUpperCase() + "\nYou are a bold one.\n" + randomLeft() + randomLeft() + head + randomRight() + randomRight();
+            if(refName.toLowerCase().includes("master")){
+                content = "**"+ refName.toUpperCase() + "\nYou are a bold one.**\n" +
                     randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n" +
                     randomLeft() + randomLeft() + head + randomRight() + randomRight() +"\n" +
                     randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n"
