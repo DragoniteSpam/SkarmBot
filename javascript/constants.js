@@ -38,18 +38,18 @@ class Constants {
 
         //channel objects for skarm's base server which are accessible to all skarm tokens
         Constants.Channels = {
-            LOG:            client.Channels.get("430545618314985504"), // #stdout
-            DELETED:        client.Channels.get("414291195028570112"),
-            TODO:      		client.Channels.get("766054985443311677"),
-			SPAM: 			client.Channels.get("678456248735367168"), // #stderr
+            LOG:        client.Channels.get("430545618314985504"), // #stdout
+            DELETED:    client.Channels.get("414291195028570112"),
+            TODO:       client.Channels.get("766054985443311677"),
+			SPAM: 	    client.Channels.get("678456248735367168"), // #stderr
         };
 
         //operation codes for when skarm is saving data, restarting, or shutting down
 		Constants.SaveCodes = {
-			NOSAVE: 		42,
-			DONOTHING:		-1,
-			EXIT:			0,
-			REBOOT:			69,
+			NOSAVE:     42,
+			DONOTHING:  -1,
+			EXIT:	    0,
+			REBOOT:	    69,
 		};
 
 		Constants.processIdMax      = 0x400;
@@ -57,11 +57,11 @@ class Constants {
 
 		//Various subtle modifiers for the behavior of parrot
         Constants.Vars = {
-            LEARN_MESSAGE_ODDS: 0.3,
-            SIMILAR_MESSAGE_ATTEMPTS: 5,
-            SIMILAR_MESSAGE_KEYWORDS: 3,
-            LOG_CAPACITY: 6000,
-            USER_OFFSET_MOD: 10000                           // Do not set this value to any multiple of 2 less than 1<<12.  https://discord.com/developers/docs/reference#snowflake-ids-in-pagination
+            LEARN_MESSAGE_ODDS:         0.3,
+            SIMILAR_MESSAGE_ATTEMPTS:   5,
+            SIMILAR_MESSAGE_KEYWORDS:   3,
+            LOG_CAPACITY:               6000,
+            USER_OFFSET_MOD:            10000,                           // Do not set this value to any multiple of 2 less than 1<<12.  https://discord.com/developers/docs/reference#snowflake-ids-in-pagination
         };
 
         //Notifications emitted to guilds upon certain events
@@ -104,8 +104,8 @@ class Constants {
                 Left:   "<:leftHilt:813564796049948712>",
                 Right:  "<:rightHilt:813564796044705822>"
             },
-            Head: "<:skarmhead:422560671574523904>",
-            Blank: "<:background:448285187550347275>",
+            Head:       "<:skarmhead:422560671574523904>",
+            Blank:      "<:background:448285187550347275>",
         }
 
         //the absolute path of the repository, formatted like "C:\Users\argo\Documents\GitHub\SkarmBot\"
