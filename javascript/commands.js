@@ -273,8 +273,9 @@ module.exports = {
                             delete table[userID].days[day];
                             continue;
                         }
-                        userReportObj.words += userTableObj.days[day].wordCount;
-                        userReportObj.messages += userTableObj.days[day].messageCount;
+                        let dayData = userTableObj.days[day];
+                        userReportObj.words += isNaN(dayData.wordCount) ? 0 : dayData.wordCount;            // don't let any NaN mess with the final answer (drop it instead)
+                        userReportObj.messages += isNaN(dayData.messageCount)? 0 : dayData.messageCount;
                     }
                 }
                 usersList.push(userReportObj);
