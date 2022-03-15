@@ -144,16 +144,16 @@ class Bot {
         const UPVOTE = 0x2b06;
         const REDX = '\u274c';
 
+		if(!e)
+			return Skarm.spam("encountered null event in OnMessageReactionAdd");
+		if(e.message==null)
+			return Skarm.spam("encountered null message in onMessageReactionAdd");
+		if(!e.message.guild)
+			return Skarm.spam("encountered null guild in OnMessageReactionAdd");
+
         let guildData = Guilds.get(e.message.guild.id);
         const REQUIRED_UPVOTES = guildData.channelsPinUpvotes[e.message.channel.id];
 
-		if(!e)
-			return Skarm.log("encountered null event in OnMessageReactionAdd");
-		if(e.message==null)
-			return Skarm.log("encountered null message in onMessageReactionAdd");
-		if(!e.message.guild)
-			return Skarm.log("encountered null guild in OnMessageReactionAdd");
-		
 		if(e.message.id in this.toBeDeletedCache) {
             for (let i in e.message.reactions) {
                 let reaction = e.message.reactions[i];
