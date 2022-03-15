@@ -9,7 +9,7 @@ module.exports = {
         odds: 0.1,
         
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel, "_hugs " + e.message.author.username + "_");
+            Skarm.sendMessageDelay(e.message.channel, "_hugs " + e._userData.getName(e) + "_");
         },
     },
     Sandwich: {
@@ -18,7 +18,7 @@ module.exports = {
         odds: 0.1,
         
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel, "_steals " + e.message.author.username + "'s sandwich_");
+            Skarm.sendMessageDelay(e.message.channel, "_steals " + e._userData.getName(e) + "'s sandwich_");
         },
     },
     Sandvich: {
@@ -27,7 +27,7 @@ module.exports = {
         odds: 0.25,
         
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel, "_steals " + e.message.author.username + "'s sandvich_");
+            Skarm.sendMessageDelay(e.message.channel, "_steals " + e._userData.getName(e) + "'s sandvich_");
         },
     },
     Balance: {
@@ -72,7 +72,7 @@ module.exports = {
         odds: 0.1,
         
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel, "_steals" + e.message.author.username + "'s cookies_");
+            Skarm.sendMessageDelay(e.message.channel, "_steals" + e._userData.getName(e) + "'s cookies_");
         },
     },
     Debug: {
