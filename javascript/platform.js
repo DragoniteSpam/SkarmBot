@@ -6,9 +6,10 @@ switch (process.platform) {
 		module.exports = {
 			processSaveData: function() {
 				return spawn("cmd.exe", ["/c", "saveData.bat"]);
-			};
+			},
 		};
 		break;
+
 	case "linux":
 		module.exports = {
 			processSaveData: function() {
@@ -17,11 +18,12 @@ switch (process.platform) {
 					// eat the standard output
 				});
 				return script;
-			};
+			},
 		};
 		break;
+
 	case "darwin": /* OSX */
 	default:
-		throw "unsupported platform (currently)";
+		throw "unsupported platform";
 		break;
 }
