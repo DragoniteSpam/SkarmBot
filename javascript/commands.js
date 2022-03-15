@@ -239,7 +239,8 @@ module.exports = {
             let tokens = commandParamTokens(e.message.content);
             let days = attemptNumParameterFetch(message, "-d") || 30;
             let page = attemptNumParameterFetch(message, "-p") - 1 || 0;    //convert page to array index
-            let dayImplemented = 1613001600000;                                      //Date of implementation
+            let dayImplemented = 1613001600000;                                      // Epoch timestamp of day of implementation
+            let pageLength = 10;
 
             if (isNaN(page)) {
                 Skarm.sendMessageDelay(e.message.channel, "Expected page input as an integer. e.g.: `e!activity 2`");
@@ -288,64 +289,39 @@ module.exports = {
             let spacer = "\t";
             let description = ["```", "Member" + spacer + "Words " + spacer + "Messages"];
 
-            let fields = [];
-            for (let i = 0; i + page * 10 < table.length && i < 10 && page >= 0; i++) {
-                let idx = i + page * 10;
-                let user = bot.client.Users.get(table[idx].userID);
+            let usersToPrint = [];
+            for (let i = 0; i + page * pageLength < table.length && i < pageLength && page >= 0; i++) {
+                let idx = i + page * pageLength;
 
                 let userMention;
                 try {
+                    let user = bot.client.Users.get(table[idx].userID);
                     userMention = `${user.username.replaceAll("`", "'")}#${user.discriminator}`;
                 } catch (e) {
                     userMention = `<@${table[idx].userID}>`;
                 }
-                description.push(`${userMention}${spacer}${table[idx].words}${spacer}${table[idx].messages}`);
-                fields.push({
-                    name: userMention,
-                    value: "words: " + table[idx].words + ", 💬:" + table[idx].messages,
-                    inline: true
+                usersToPrint.push({
+                    Member:   userMention,
+                    Words:    table[idx].words,
+                    Messages: table[idx].messages,
                 });
             }
-            description.push("```");
-            if (page * 10 > table.length) {
+
+            if (page * pageLength > table.length) {
                 Skarm.sendMessageDelay(e.message.channel, "Requested page is outside of active member range.  Please try again.");
                 return;
             }
 
-            //format description to look nice
-            while (description.join("").includes(spacer)) {
-                let maxSpace = 0;                           //maximum distance between start of line and spacer
-
-                //evaluate max distance to spacer
-                for (let d in description) {
-                    let line = description[d];
-                    if (line.includes("```")) continue;        //ignore upper and lower bounds
-                    let firstComponentDist = line.split(spacer)[0].length;
-                    maxSpace = Math.max(maxSpace, firstComponentDist);
-                }
-
-                //add space to each sector in place of the spacer
-                for (let d in description) {
-                    let line = description[d];
-                    if (line.includes("```")) continue;        //ignore upper and lower bounds
-                    let firstComponentDist = line.split(spacer)[0].length;
-                    let newSpacer = " ";                        //always provide a minimum padding of 1 space
-                    for (let i = firstComponentDist; i < maxSpace; i++) {
-                        newSpacer += " ";
-                    }
-                    description[d] = line.replace(spacer, newSpacer);
-                }
-
-            }
+            description = Skarm.formatTable(usersToPrint);
 
             let messageObject = {
                 color: Skarm.generateRGB(),
-                description: description.join("\r\n"),
+                description: description,
                 author: {name: e.message.author.nick},
                 title: "Server Activity for the past " + days + " days",
                 timestamp: new Date(),
                 // fields: fields,
-                footer: {text: `Page ${page + 1}/${Math.ceil(table.length / 10)}`},
+                footer: {text: `Page ${page + 1}/${Math.ceil(table.length / pageLength)}`},
             };
 
             Skarm.sendMessageDelete(e.message.channel, " ", false, messageObject, 1 << 20, e.message.author, bot);

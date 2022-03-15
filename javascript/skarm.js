@@ -386,6 +386,53 @@ class Skarm {
             }
         },
     }
+
+    /**
+     * Converts a data table to a string that can be sent in a discord message
+     * @param table - array of objects
+     * @param fields - array of properties of the table that should be displayed.  If not specified, all properties are appended
+     * @return tableString - string containing specified information
+     */
+    static formatTable = function (table, fields) {
+        // input formatting
+        if(fields === undefined) fields = Object.keys(table[0]);    // if the fields parameter isn't specified, display all properties of the table's objects
+
+        // internal constants
+        const space = " ";
+        const nl = "\r\n";
+
+        //initialize tableEntries array
+        let tableEntries = [];      // array of strings that will become the final output
+        let tableHeader = "";       // header that will be prepended to the final output
+        for(let _ in table){
+            tableEntries.push("");                          // initialize all entires as empty strings
+        }
+
+        // append each field to the table
+        for(let field of fields){
+            tableHeader += field;                                               // add new field to header
+            let maxEntryLen = tableHeader.length;                               // set length of header as initial min length due to this entry
+            // add next property to table data
+            for(let i in table){
+                tableEntries[i] += table[i][field];                             // add new property
+                maxEntryLen = Math.max(maxEntryLen, tableEntries[i].length);    // track biggest string length
+            }
+
+            // append spaces until all entries are at max length
+            maxEntryLen += 2;                                                   // add 2 as the minimum amount of spaces to append even for the longest entry to ensure space between fields
+            while(tableHeader.length < maxEntryLen) tableHeader += space;       // add space buffer to table header
+            for(let i in table){
+                while(tableEntries[i].length < maxEntryLen) tableEntries[i] += space;   // add space buffer to each table entry
+            }
+        }
+
+        // get rid of any loose spaces after the final table entry
+        for(let i in table){
+            tableEntries[i] = tableEntries[i].trim();
+        }
+
+        return "```" + nl + tableHeader+ nl+ tableEntries.join("\r\n") + nl +"```";   // return the table formatted as a string
+    }
 }
 
 module.exports = Skarm;
