@@ -393,7 +393,7 @@ class Skarm {
      * @param fields - array of properties of the table that should be displayed.  If not specified, all properties are appended
      * @return tableString - string containing specified information
      */
-    static formatTable = function (table, fields) {
+    static formatTable = function (table, fields, capitalizeTableKeys) {
         // input formatting
         if(fields === undefined) fields = Object.keys(table[0]);    // if the fields parameter isn't specified, display all properties of the table's objects
 
@@ -410,7 +410,17 @@ class Skarm {
 
         // append each field to the table
         for(let field of fields){
-            tableHeader += field;                                               // add new field to header
+            // optionally capitalize the first letter of each word for the table header
+            let fieldName = field;
+            if(capitalizeTableKeys){
+                let fn_bits = fieldName.split(" ");
+                for (let i in fn_bits){
+                    let bit = fn_bits[i];
+                    fn_bits[i] = bit[0].toUpperCase() + bit.substring(1);
+                }
+                fieldName = fn_bits.join(" ");
+            }
+            tableHeader += fieldName;                                           // add new field to header
             let maxEntryLen = tableHeader.length;                               // set length of header as initial min length due to this entry
             // add next property to table data
             for(let i in table){
@@ -432,6 +442,21 @@ class Skarm {
         }
 
         return "```" + nl + tableHeader+ nl+ tableEntries.join("\r\n") + nl +"```";   // return the table formatted as a string
+    }
+
+    /**
+     * Input: user ID
+     * Output: string mention of the user to the best of Skarm's ability
+     */
+    static getUserMention = function (bot, userID) {
+        let userMention;
+        try {
+            let user = bot.client.Users.get(userID);
+            userMention = `${user.username.replaceAll("`", "'")}#${user.discriminator}`;
+        } catch (e) {
+            userMention = `<@${userID}>`;
+        }
+        return userMention;
     }
 }
 

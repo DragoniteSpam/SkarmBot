@@ -56,6 +56,8 @@ let attemptNumParameterFetch = function (message, parameter) {
     }
 }
 
+Constants.initialize();     // if this line isn't here, local initialization of constants in "effect" fields break
+
 // noinspection JSUnusedLocalSymbols
 module.exports = {
     /** 
@@ -224,12 +226,12 @@ module.exports = {
         aliases: ["activity","activitytable"],
         params: ["-days # -page #"],
         usageChar: "!",
-        helpText: "Prints out a table of guild activity from the past # days.  If not specified, default is 30 days.  Use the page option to access data outside of the top 10 members.",
+        helpText: "Prints out a table of guild activity from the past # days.  If not specified, default is 30 days.  Use the page option to access data outside of the top "+Constants.Tables.MaxTableLength+" members.",
         examples: [
-            {command: "e!activity", effect: "Will cause Skarm to report the word and message counts of the top 10 members over the past 30 days."},
-            {command: "e!activity -days 45", effect: "Will cause Skarm to report the word and message counts of the top 10 members over the past 45 days."},
-            {command: "e!activity -page 2", effect: "Will cause Skarm to report the word and message counts of the 11th-20th most active members over the past 30 days."},
-            {command: "e!activity -days 45 -page 2", effect: "Will cause Skarm to report the word and message counts of the 11th-20th most active members over the past 45 days."}
+            {command: "e!activity", effect: "Will cause Skarm to report the word and message counts of the top "+Constants.Tables.MaxTableLength+" members over the past 30 days."},
+            {command: "e!activity -days 45", effect: "Will cause Skarm to report the word and message counts of the top "+Constants.Tables.MaxTableLength+" members over the past 45 days."},
+            {command: "e!activity -page 2", effect: "Will cause Skarm to report the word and message counts of the "+(1+Constants.Tables.MaxTableLength)+"th-"+(2*Constants.Tables.MaxTableLength)+"th most active members over the past 30 days."},
+            {command: "e!activity -days 45 -page 2", effect: "Will cause Skarm to report the word and message counts of the "+(1+Constants.Tables.MaxTableLength)+"th-"+(2*Constants.Tables.MaxTableLength)+"th most active members over the past 45 days."}
         ],
         ignoreHidden: true,
         category: "general",
@@ -240,7 +242,7 @@ module.exports = {
             let days = attemptNumParameterFetch(message, "-d") || 30;
             let page = attemptNumParameterFetch(message, "-p") - 1 || 0;    //convert page to array index
             let dayImplemented = 1613001600000;                                      // Epoch timestamp of day of implementation
-            let pageLength = 10;
+            let pageLength = Constants.Tables.MaxTableLength;
 
             if (isNaN(page)) {
                 Skarm.sendMessageDelay(e.message.channel, "Expected page input as an integer. e.g.: `e!activity 2`");
@@ -293,13 +295,8 @@ module.exports = {
             for (let i = 0; i + page * pageLength < table.length && i < pageLength && page >= 0; i++) {
                 let idx = i + page * pageLength;
 
-                let userMention;
-                try {
-                    let user = bot.client.Users.get(table[idx].userID);
-                    userMention = `${user.username.replaceAll("`", "'")}#${user.discriminator}`;
-                } catch (e) {
-                    userMention = `<@${table[idx].userID}>`;
-                }
+                let userMention = Skarm.getUserMention(bot, table[idx].userID);
+
                 usersToPrint.push({
                     Member:   userMention,
                     Words:    table[idx].words,
@@ -320,7 +317,6 @@ module.exports = {
                 author: {name: e.message.author.nick},
                 title: "Server Activity for the past " + days + " days",
                 timestamp: new Date(),
-                // fields: fields,
                 footer: {text: `Page ${page + 1}/${Math.ceil(table.length / pageLength)}`},
             };
 
@@ -1727,7 +1723,51 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             Skarm.help(this, e);
         },
 	},
-	RoleStack: {
+    Leaderboard: {
+        aliases: ["leaderboard","levels"],
+        params: ["start position"],
+        usageChar: "!",
+        helpText: "Prints out a table of the members with the most experience in the guild.  Use the page option to access data outside of the top "+Constants.Tables.MaxTableLength+" members.",
+        examples: [
+            {command: "e!leaderboard", effect: "Will cause Skarm to report the experience and ranks of the top 15 guild members."},
+            {command: "e!leaderboard "+(Constants.Tables.MaxTableLength+1), effect: "Will cause Skarm to report the word and message counts of the "+(Constants.Tables.MaxTableLength + 1)+"th-"+(2 * Constants.Tables.MaxTableLength)+"th guild members."},
+        ],
+        ignoreHidden: true,
+        category: "leveling",
+
+        execute(bot, e, userData, guildData) {
+            let message = commandParamString(e.message.content).toLowerCase();
+            let tokens = commandParamTokens(e.message.content);
+            let startIndex = (tokens && tokens[0] && tokens[0] > 0) ? tokens[0] - 1 : 0;     // initialize start index to be the place in the table where the leaderboard begins
+            let iteratingIdx = startIndex;
+
+            let table = guildData.getExpTable();
+            let fullTableLen = table.length;
+            table = table.splice(startIndex, Constants.Tables.MaxTableLength);     // extract desired elements
+            for(let entry of table) {
+                entry.rank = ++iteratingIdx;
+                entry.member = Skarm.getUserMention(bot, entry.userID);
+
+            }                              // add rank property to entries
+            table = Skarm.formatTable(table, ["rank", "member", "exp", "level"], true);                   // covert array to string
+
+            let messageObject = {
+                color: Skarm.generateRGB(),
+                description: table,
+                author: {name: e.message.author.nick},
+                title: `Experience Leaderboard`,
+                timestamp: new Date(),
+                footer: {text: `Page ${Math.floor(startIndex / Constants.Tables.MaxTableLength) + 1}/${Math.ceil(fullTableLen / Constants.Tables.MaxTableLength)}`},
+            };
+
+            Skarm.sendMessageDelete(e.message.channel, " ", false, messageObject, Constants.someBigNumber, e.message.author, bot);
+        },
+
+        help(bot,e) {
+            Skarm.help(this, e);
+        },
+    },
+    RoleStack: {
 		aliases: ["rolestack"],
         params: ["enable | disable"],
         usageChar: "@",

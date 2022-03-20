@@ -4,20 +4,11 @@
 // things, but they're in capital letters so if you try to modify any of them
 // I'm going to come to your house and whack you with a spoon.
 class Constants {
-    // assume we are connected
-    static initialize(client, p) {      //p = process
-        //the dev team user objects
-        Constants.Moms = {
-            DRAGO:   client.Users.get("137336478291329024"),
-            TIBERIA: client.Users.get("425428688830726144"),
-            MASTER:  client.Users.get("162952008712716288"),
-            ARGO:    client.Users.get("263474950181093396"),
+    // safe to run even when not yet connected
+    static initialize(){
+        Constants.Tables = {
+            MaxTableLength: 15              // maximum amount of objects to print in a table
         }
-
-        Constants.client = client;            //access to the client object
-        Constants.self = client.User;         //the bot's user object
-        Constants.ID = client.User.id;        //the bot's own ID
-
 
         //Weekdays with sunday at 0 and working up from there
         Constants.Days = {
@@ -36,26 +27,20 @@ class Constants {
             MANUAL:   -1,
         };
 
-        //channel objects for skarm's base server which are accessible to all skarm tokens
-        Constants.Channels = {
-            LOG:        client.Channels.get("430545618314985504"), // #stdout
-            DELETED:    client.Channels.get("414291195028570112"),
-            TODO:       client.Channels.get("766054985443311677"),
-			SPAM: 	    client.Channels.get("678456248735367168"), // #stderr
-        };
+        Constants.someBigNumber = 1 << 20;    // arbitrary large number
 
         //operation codes for when skarm is saving data, restarting, or shutting down
-		Constants.SaveCodes = {
-			NOSAVE:     42,
-			DONOTHING:  -1,
-			EXIT:	    0,
-			REBOOT:	    69,
-		};
+        Constants.SaveCodes = {
+            NOSAVE:     42,
+            DONOTHING:  -1,
+            EXIT:	    0,
+            REBOOT:	    69,
+        };
 
-		Constants.processIdMax      = 0x400;
-		Constants.versionOffsetBits = 0x006;
+        Constants.processIdMax      = 0x400;
+        Constants.versionOffsetBits = 0x006;
 
-		//Various subtle modifiers for the behavior of parrot
+        //Various subtle modifiers for the behavior of parrot
         Constants.Vars = {
             LEARN_MESSAGE_ODDS:         0.3,
             SIMILAR_MESSAGE_ATTEMPTS:   5,
@@ -107,6 +92,29 @@ class Constants {
             Head:       "<:skarmhead:422560671574523904>",
             Blank:      "<:background:448285187550347275>",
         }
+    }
+
+    // assume we are connected
+    static initializeDynamics(client, p) {      //p = process
+        //the dev team user objects
+        Constants.Moms = {
+            DRAGO:   client.Users.get("137336478291329024"),
+            TIBERIA: client.Users.get("425428688830726144"),
+            MASTER:  client.Users.get("162952008712716288"),
+            ARGO:    client.Users.get("263474950181093396"),
+        }
+
+        Constants.client = client;            //access to the client object
+        Constants.self = client.User;         //the bot's user object
+        Constants.ID = client.User.id;        //the bot's own ID
+
+        //channel objects for skarm's base server which are accessible to all skarm tokens
+        Constants.Channels = {
+            LOG:        client.Channels.get("430545618314985504"), // #stdout
+            DELETED:    client.Channels.get("414291195028570112"),
+            TODO:       client.Channels.get("766054985443311677"),
+			SPAM: 	    client.Channels.get("678456248735367168"), // #stderr
+        };
 
         //the absolute path of the repository, formatted like "C:\Users\argo\Documents\GitHub\SkarmBot\"
         Constants.skarmRootPath = p.argv[1].substring(0, process.argv[1].lastIndexOf("\\") + "\\".length);

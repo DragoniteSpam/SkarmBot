@@ -192,6 +192,28 @@ const linkFunctions = function(guild) {
     };
 
     /**
+     * Returns a sorted array of user experience objects with the following properties:
+     * exp: Num
+     * level: Num
+     * nextLevelEXP: Num
+     * lastMessage: Num
+     * userID: String User GUID
+     * The most active member of the guild will be the first entry in the array
+     */
+
+    guild.getExpTable = function() {
+        let memberObjList = [ ];
+        let members = Object.keys(this.expTable);
+        for (let member of members){
+            let obj = this.expTable[member];
+            obj.userID = member;                // Add property User ID to each object before publishing it
+            memberObjList.push(this.expTable[member]);
+        }
+        memberObjList.sort((a,b) => {return b.exp - a.exp});
+        return memberObjList;
+    };
+
+    /**
      * Modify a property of an exp buffing role or delete a role from the list.
      *  @Param0 channel: where status feedback should be reported
      *
@@ -915,7 +937,19 @@ class Guild {
         
 		this.rolesTable = { };
 		this.roleStack = false;
+
+        /**
+         * A hashmap with an arbitrarily large collection of keys being guild member
+         * GUIDs and values for each key being of the following format:
+         * {
+         *  exp: 0 (default)
+         *  level: 0 (default)
+         *  nextLevelEXP: 0
+         *  lastMessage: Date.now() (default initialized when user entry in table is created)
+         * }
+         */
 		this.expTable = { };
+
 		this.boostTable = { };
 		this.moderators = { };
 		this.announcesLevels=false;

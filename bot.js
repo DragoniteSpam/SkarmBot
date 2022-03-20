@@ -31,6 +31,8 @@ String.prototype.replaceAll = function(search, replacement) {
     return this.replace(new RegExp(search, "g"), replacement);
 };
 
+Constants.initialize();
+
 client.connect({token: token});
 
 let uptimeController = {
@@ -48,7 +50,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		Skarm.log("Came back online after " + (uptimeController.connectTime - uptimeController.disconnectTime) / 1000 + " seconds down");
 		return;
 	}
-	Constants.initialize(client, process);
+	Constants.initializeDynamics(client, process);
 
 	let dataPuller = spawn('powershell.exe', [Constants.skarmRootPath + "pullData.ps1"]);
 	Encrypt.initialize();
