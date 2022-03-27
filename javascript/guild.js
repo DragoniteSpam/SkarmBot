@@ -62,39 +62,49 @@ const linkVariables = function(guild) {
     if (guild.hiddenChannels === undefined) {guild.hiddenChannels = {};}
     if (guild.zipfMap === undefined){guild.zipfMap = { };}
     if (guild.expBuffRoles === undefined){guild.expBuffRoles = { };}
+    if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
 };
 
 // since de/serialized objects don't keep their functions
 const linkFunctions = function(guild) {
 
-    //functions executed after every message
-
-    guild.executeMayhem = function(botAccount) {
+    guild.botCanEditRole = function(roleID, botAccount) {
         let apiGuildData = Guild.getData(this.id);
+
+        let targetRole;
+        for (let role of apiGuildData.roles){
+            if (role.id === roleID){
+                targetRole = role;
+                break;
+            }
+        }
+        if (!targetRole) return false;
 
         let guildBotMember = botAccount.memberOf(apiGuildData);
         let guildPermissions = guildBotMember.permissionsFor(apiGuildData);
 
         if (!guildPermissions.General.MANAGE_ROLES) {
             Skarm.spam(`I don't have permission to manage roles in ${this.id}. (mayhem)`);
-            return;
+            return false;
         }
-        
+
         let skarmRank = 0;
         for (let role of guildBotMember.roles) {
             skarmRank = Math.max(skarmRank, role.position);
         }
 
+        return targetRole.position <= skarmRank;
+    }
+
+    //functions executed after every message
+
+    guild.executeMayhem = function(botAccount) {
+        let apiGuildData = Guild.getData(this.id);
         for (let roleID in this.mayhemRoles) {
             if(!this.mayhemRoles[roleID]) continue;             //double check to not toggle disabled mayhem roles
             for (let i = 0; i < apiGuildData.roles.length; i++) {
                 let roleData = apiGuildData.roles[i];
-                if (skarmRank <= roleData.position) {
-                    if(roleData.id === roleID)
-                        Skarm.spam(`the mayhem role ${roleData.name} outranks me for some reason (the server admins of ${this.id} should probably change that)`);
-                    continue;
-                }
-                if (roleData.id === roleID) {
+                if (roleData.id === roleID && guild.botCanEditRole(roleID, botAccount)) {
                     try {
                         let output = Skarm.generateRGB();
                         roleData.commit(roleData.name, output, roleData.hoist, roleData.mentionable);
@@ -200,7 +210,6 @@ const linkFunctions = function(guild) {
      * userID: String User GUID
      * The most active member of the guild will be the first entry in the array
      */
-
     guild.getExpTable = function() {
         let memberObjList = [ ];
         let members = Object.keys(this.expTable);
@@ -393,7 +402,6 @@ const linkFunctions = function(guild) {
     };
 
     //functions corresponding to commands
-
     guild.soap = function () {
         if(this.lastSendLine) delete this.lines[this.lastSendLine];
         this.lastSendLine = undefined;
@@ -478,8 +486,21 @@ const linkFunctions = function(guild) {
         return printData.join("\r\n");
     }
 
-    //functions that are subroutines of parrot
+    guild.assignNewMemberRoles = function (member, discord_guild, bot){
+        let roles = discord_guild.roles;
+        let validRoles = {};
+        for (let role of roles) validRoles[role.id] = true;
+        let t = 3;  // delay after join to assign roles
+        for (let role in guild.serverJoinRoles){
+            if(role in validRoles && guild.botCanEditRole(role, bot)){
+                setTimeout(()=>{
+                    member.assignRole(role);
+                }, 250 * t++);
+            }
+        }
+    }
 
+    //functions that are subroutines of parrot
     guild.pruneActions = function() {
         let keys = Object.keys(this.actions);
         if (keys.length <= Constants.Vars.LOG_CAPACITY) {
@@ -1028,6 +1049,13 @@ class Guild {
              */
             XKCD:                   {},
         };
+
+        /**
+         * A set of IDs associated with roles in the guild that are assigned upon joining the server.
+         * @Key: role ID
+         * @value: timestamp when the role was added
+         */
+		this.serverJoinRoles = { };
 
         /**
          * A hash map of words that have been observed to occur in the server.  Maps a word string to a

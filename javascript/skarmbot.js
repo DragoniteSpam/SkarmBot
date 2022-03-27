@@ -186,14 +186,7 @@ class Bot {
     
     OnMemberAdd(e) {
         let guildData = Guilds.get(e.guild.id);
-		if(!(e.member.id in guildData.expTable)){
-			guildData.expTable[e.member.id] = {
-                exp: 0,
-                level: 0,
-                nextLevelEXP: Skinner.getMinEXP(0),
-                lastMessage: undefined,
-            };
-		}
+        guildData.assignNewMemberRoles(e.member, e.guild, this.client.User);
 		guildData.roleCheck(e.member,guildData.expTable[e.member.id]);
 		guildData.notify(this.client,Constants.Notifications.MEMBER_JOIN,e);
 		if(guildData.welcoming){
