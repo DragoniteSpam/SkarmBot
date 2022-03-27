@@ -119,23 +119,21 @@ class Bot {
     }
 
     // events
-    OnMessageDelete(e) {
-        var string = "";
-        if (e.message){
-            if (!e.message.author.bot){
-                if (!e.message){
+    OnMessageDelete(message) {
+        let string = "";
+        if (message){
+            if (!message.author.bot){
+                if (!message){
                     string = "<message not cached>"; 
                 } else {
-                    string = e.message.content + " by " +
-                        e.message.author.username;
+                    string = message.content + " by " + message.author.username;
                 }
                 fs.appendFile("../skarmData/deleted.txt", string + "\r\n", (err) => {
                     if (err){
                         Skarm.logError(err);
                     }
                 });
-                Constants.Channels.DELETED.sendMessage(string + " <#" +
-                    e.message.channel_id + ">");
+                Constants.Channels.DELETED.sendMessage(string + " <#" + message.channel.id + ">");
             }
         }
     }

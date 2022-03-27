@@ -89,7 +89,14 @@ client.Dispatcher.on(events.MESSAGE_CREATE, e => {
 
 client.Dispatcher.on(events.MESSAGE_DELETE, e => {
 	if(bot)
-		bot.OnMessageDelete(e);
+		bot.OnMessageDelete(e.message);
+});
+
+//handle bulk message deletes
+client.Dispatcher.on(events.MESSAGE_DELETE_BULK, e => {
+	if(bot)
+		for(let message of e.messages)
+			bot.OnMessageDelete(message);
 });
 
 client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
