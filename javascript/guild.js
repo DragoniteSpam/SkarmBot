@@ -705,6 +705,11 @@ const linkFunctions = function(guild) {
 
 	guild.roleCheck = function(member, userEXPData) {
 		if(Object.keys(guild.rolesTable).length === 0) return;
+
+		if(userEXPData === undefined){
+		    return
+        }
+
 		//give users the role achieved at their level or the next one available bellow it
         let i = userEXPData.level;
 		for (i; i >= 0; i--) {              //move down the roles table until you hit a level with an associated role
