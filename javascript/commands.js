@@ -2398,7 +2398,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         ],
         ignoreHidden: false,
         perms: Permissions.MOM,
-		category: "infrastructure",
+        category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
             let cps = commandParamString(e.message.content);
@@ -2416,7 +2416,30 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             Skarm.sendMessageDelay(e.message.channel, "Game set to **" + cps + "**.");
 
         },
-        
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    GuildList: {
+        aliases: ["guildlist", "gl"],
+        params: [""],
+        usageChar: "@",
+        helpText: "Lists the guilds that skarm is currently in and the owners of each one.",
+        examples: [
+            {command: "e@gl", effect: "Lists guilds."},
+        ],
+        ignoreHidden: false,
+        perms: Permissions.MOM,
+        category: "infrastructure",
+
+        execute(bot, e, userData, guildData) {
+            // console.log(Object.keys(bot.client));
+            bot.client.Guilds.forEach((guild) => {
+                Skarm.spam(guild.name + ", <@" + guild.owner.id+">");
+            });
+        },
+
         help(bot, e) {
             Skarm.help(this, e);
         },
