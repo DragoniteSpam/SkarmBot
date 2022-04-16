@@ -1272,7 +1272,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
         execute(bot, e, userData, guildData) {
             
-            if (guildData.toggleHiddenChannel(e.message.channel_id)) {
+            if (guildData.toggleHiddenChannel(e.message.channel.id)) {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
             } else {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);

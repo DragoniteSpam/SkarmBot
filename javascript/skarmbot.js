@@ -62,7 +62,7 @@ class Bot {
         this.validShantyReferences = {
             "johnny":       0.01,
             "jonny":        0.01,
-            "jony":         0.01,
+            "jon":          0.01,
             "johny":        0.01,
             "drunk":        0.02,
             "sing":         0.03,
@@ -230,7 +230,7 @@ class Bot {
     }
 
 	OnMemberRemove(e) {
-        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.MEMBER_LEAVE,e);
+        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.MEMBER_LEAVE, e);
     }
 
     OnGuildBanAdd(e) {
@@ -322,8 +322,7 @@ class Bot {
         // ignore messages that mention anyone or anything
         if (e.message.mentions.length > 0 ||
             e.message.mention_roles.length > 0 ||
-            e.message.mention_everyone
-        ) {
+            e.message.mention_everyone) {
             return false;
         }
 
@@ -350,7 +349,6 @@ class Bot {
 
 
         for (let word in this.keywords) {
-
             let partial = text;
             let allComponentsMatch = true;
             let components = word.split("*");
