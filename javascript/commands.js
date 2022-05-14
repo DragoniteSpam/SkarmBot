@@ -681,7 +681,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e!?",            effect: "Shows the documentation for usage of `e!help` (hey, this is it!)"},
             {command: "e!man activity", effect: "Shows the documentation for usage of `e!activity`"}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         category: "meta",
 
         execute(bot, e, userData, guildData) {
@@ -804,7 +804,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         usageChar: "!",
         helpText: "Sends a test message to the channel, and then attempts to edit it. Useful for testing the bot's response time.",
         examples: [{command: "e!ping", effect: "Skarm will send a message, and then edit the message to include the time that it took for the event to be registered."}],
-        ignoreHidden: true,
+        ignoreHidden: false,
         category: "meta",
 
         execute(bot, e, userData, guildData) {
@@ -881,7 +881,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         usageChar: "!",
         helpText: "Displays some stats about the bot.",
         examples: [{command: "e!bot", effect: "Provides the stats."}],
-        ignoreHidden: true,
+        ignoreHidden: false,
         category: "meta",
 
         execute(bot, e, userData, guildData) {
@@ -1138,7 +1138,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@mod @TrustedMember",    effect: "Adds or removes `@TrustedMember` to the moderators list for the guild.  If they are currently on the list, they will be removed.  Otherwise, they will be added."},
             {command: "e@mod clear",    effect: "Removes all moderators from the guild."},
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         perms: Permissions.ADMIN,
         category: "administrative",
 
@@ -1197,7 +1197,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e!sudo", effect: "Reports what your current access level is."},
             {command: "e!sudo @GuildMember", effect: "Reports the current access level held by `@GuildMember`."}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
@@ -1258,7 +1258,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             Skarm.help(this, e);
         },
     },*/
-	Hide: {
+    Hide: {
         aliases: ["hide"],
         params: [],
         usageChar: "@",
@@ -1268,17 +1268,41 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         ],
         ignoreHidden: false,
         perms: Permissions.MOD,
-		category: "administrative",
+        category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            
+
             if (guildData.toggleHiddenChannel(e.message.channel.id)) {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now hidden from " + bot.nick);
             } else {
                 Skarm.sendMessageDelay(e.message.channel, "**" + e.message.channel.name + "** is now visible to " + bot.nick);
             }
         },
-        
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    Hidden: {
+        aliases: ["hidden"],
+        params: [],
+        usageChar: "@",
+        helpText: "Lists *ALL* channels that skarm is ignoring in the server.",
+        examples: [
+            {command: "e@hidden", effect: "Skarm prints a list of the channels that he's ignoring"}
+        ],
+        ignoreHidden: false,
+        perms: Permissions.MOD,
+        category: "administrative",
+
+        execute(bot, e, userData, guildData) {
+            let msgStr = "Hidden channels:\n";
+            guildData.getHiddenChannels().map((channel) => {
+                msgStr += `<#${channel}>\n`;
+            });
+            Skarm.sendMessageDelay(e.message.channel, msgStr);
+        },
+
         help(bot, e) {
             Skarm.help(this, e);
         },
@@ -1292,7 +1316,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@mayhem", effect: "Will cause Skarm to list all mayhem roles."},
             {command: "e@chaos 412002840815599617", effect: "Will cause skarm to add the role with the ID `412002840815599617` to the mayhem list."}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         perms: Permissions.MOD,
 		category: "administrative",
 
@@ -1363,7 +1387,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@notify", effect: "Will cause Skarm to list all available notification settings to toggle."},
             {command: "e@notify 4", effect: "Will cause Skarm to toggle announcing all voice channel join and leave activity in the guild to the channel in which the command was sent."}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         perms: Permissions.MOD,
         category: "administrative",
 
@@ -1502,7 +1526,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@welcome set -", effect: "Will remove the welcome message configured for the channel in which the command is run."},
             {command: "e@welcome set Welcome <newmember>! Please don't be evil!", effect: "Will set the welcome message in the channel to `Welcome @theNewKid! Please don't be evil!`"}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         perms: Permissions.MOD,
         category: "administrative",
 
@@ -1573,7 +1597,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@joinroles remove @StarterRole", effect: "Will remove the role @StarterRole from the list of roles being awarded to all new members joining the server."},
             {command: "e@joinroles clear", effect: "Will clear the list of roles awarded to all new members joining the server."},
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         perms: Permissions.MOD,
         category: "administrative",
 
@@ -1638,7 +1662,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         examples: [
             {command: "e@soap", effect: "Will remove the last thing that skarm parroted to chat from his quote archives."}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         perms: Permissions.MOD,
         category: "administrative",
 
@@ -2025,7 +2049,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         examples: [
             {command: "e!refresh", effect: "Forces a refresh of your leveled roles."}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         category: "leveling",
 
         execute(bot, e, userData, guildData) {
@@ -2271,7 +2295,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         examples: [
             {command: "e@test", effect: "the test."}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         perms: Permissions.MOM,
         category: "infrastructure",
 
@@ -2324,7 +2348,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@4 429537000408875008 Instance 4 protocol", effect: "Q"},
             {command: "e@4 429537000408875008", effect: "push an instance of parrot"}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         perms: Permissions.MOM,
         category: "infrastructure",
 
@@ -2359,27 +2383,34 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@5 429537000408875008",                     effect: "ls"},
             {command: "e@5 429537000408875008 -",                   effect: "purge"}
         ],
-        ignoreHidden: true,
+        ignoreHidden: false,
         perms: Permissions.MOM,
         category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
+            console.log(`Received command: ${e.message.content}`);
             let tokens = commandParamTokens(e.message.content);
             if (tokens.length < 1) return;
             let destination = tokens.splice(0, 1)[0];
             let srcChannel = e.message.channel;
             let chan = bot.client.Channels.get(destination);
             if (chan) {
-
                 if (tokens.length < 1) {
                     Skarm.sendMessageDelay(srcChannel, JSON.stringify(Guilds.get(chan.guild_id).channelBuffer[chan.id]));
                     return;
                 }
+
                 if (tokens.join("") === "-") {
                     Guilds.get(chan.guild_id).channelBuffer[chan.id] = { };
                     return Skarm.sendMessageDelay(e.message.channel, "cleared");
                 }
-                Skarm.queueMessage(Guilds, chan, tokens.join(" "));
+
+                // Each \n constitutes its own message, for ease of buffering purposes
+                let messages = tokens.join(" ").split("\n");
+                for(let message of messages){
+                    console.log(`Enqueueing ${message}`)
+                    Skarm.queueMessage(Guilds, chan, message);
+                }
             }
         },
 
