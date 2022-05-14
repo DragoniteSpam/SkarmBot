@@ -62,7 +62,8 @@ const linkFunctions = function(user) {
             dm.sendMessage("There was a message that we think you'll be " +
                 "interested in!\n```" + e.message.content +"``` by **" +
                 e.message.author.username + "** in <#" + e.message.channel_id +
-                "> (summon keyword: " + term + ")"
+                "> (summon keyword: " + term + ")\n" +
+                `Direct message link: https://discord.com/channels/${e.message.guild.id}/${e.message.channel.id}/${e.message.id}`
             );
         });
     };
