@@ -217,7 +217,7 @@ class Bot {
 					changes += ", ";
                 }
 			}
-			Skarm.log(changes);
+			Skarm.spam(changes);
 		}
 		if(e.member){
 		    if(e.previousNick !== e.member.nick) {
