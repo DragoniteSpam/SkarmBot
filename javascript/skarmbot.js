@@ -273,6 +273,7 @@ class Bot {
         if (e.message.deleted) {
             return false;
         }
+
         // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate) {
             e.message.channel.sendMessage("private message responses not yet implemented");
@@ -302,7 +303,7 @@ class Bot {
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         if (cmdData) {
-            if (!guildData.hiddenChannels[e.message.channel_id] || !cmdData.ignoreHidden) {
+            if (!guildData.hiddenChannels[e.message.channel.id] || !cmdData.ignoreHidden) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and
@@ -316,6 +317,8 @@ class Bot {
                         " stocking this year, " + author.username + ".");
                 }
                 return true;
+            }else{
+                Skarm.spam(`Attempted to use command \`${e.message.content}\` in channel: \`${e.message.channel.id}\``);
             }
         }
 
