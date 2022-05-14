@@ -588,6 +588,7 @@ const linkFunctions = function(guild) {
     };
 
     guild.queueMessage = function(channel,message,tts,object){
+        if(message.replaceAll("\r","").length === 0 && !object) return;        // don't enqueue empty messages -- no message and no object
         if(!this.channelBuffer){
             this.channelBuffer = { };
         }
@@ -938,6 +939,17 @@ const linkFunctions = function(guild) {
         this.hiddenChannels[channelID] = !this.hiddenChannels[channelID];
         return this.hiddenChannels[channelID];
     };
+
+	guild.getHiddenChannels = function () {
+	    let trulyHidden = [];
+	    for(let channel in this.hiddenChannels){
+	        if(this.hiddenChannels[channel])
+	            trulyHidden.push(channel);
+	        else
+	            delete this.hiddenChannels[channel];
+        }
+	    return trulyHidden;
+    }
 }
 
 class Guild {
