@@ -63,6 +63,7 @@ const linkVariables = function(guild) {
     if (guild.zipfMap === undefined) {guild.zipfMap = { };}
     if (guild.expBuffRoles === undefined) {guild.expBuffRoles = { };}
     if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
+    if (guild.selfAssignedRoles === undefined) guild.selfAssignedRoles = { };
 };
 
 // since de/serialized objects don't keep their functions
@@ -1073,6 +1074,18 @@ class Guild {
          * @value: timestamp when the role was added
          */
 		this.serverJoinRoles = { };
+
+
+        /**
+         * Role hive root.  Structure:
+         * Key[string]: role category (e.g. "games of interest")
+         * Value: Roles object: {
+         *     key[ID]: guild.role.id
+         *     Value: true
+         * }
+         */
+		this.selfAssignedRoles = { };
+
 
         /**
          * A hash map of words that have been observed to occur in the server.  Maps a word string to a
