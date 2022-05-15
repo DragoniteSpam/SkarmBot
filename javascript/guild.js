@@ -60,8 +60,8 @@ const linkVariables = function(guild) {
         }
     }
     if (guild.hiddenChannels === undefined) {guild.hiddenChannels = {};}
-    if (guild.zipfMap === undefined){guild.zipfMap = { };}
-    if (guild.expBuffRoles === undefined){guild.expBuffRoles = { };}
+    if (guild.zipfMap === undefined) {guild.zipfMap = { };}
+    if (guild.expBuffRoles === undefined) {guild.expBuffRoles = { };}
     if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
 };
 
@@ -150,10 +150,10 @@ const linkFunctions = function(guild) {
         let roles = e.message.member.roles;
         for(let role of roles){
             if(role.id in guild.expBuffRoles){
-                baseExpGain  += guild.expBuffRoles[role.id].baseBuff - 0;
-                maxBonusExp  += guild.expBuffRoles[role.id].bonusBuff - 0;
+                baseExpGain       += guild.expBuffRoles[role.id].baseBuff - 0;
+                maxBonusExp       += guild.expBuffRoles[role.id].bonusBuff - 0;
                 cooldownReduction += guild.expBuffRoles[role.id].cooldownBuff - 0;
-                luck         += guild.expBuffRoles[role.id].luckBuff - 0;
+                luck              += guild.expBuffRoles[role.id].luckBuff - 0;
             }
         }
 
