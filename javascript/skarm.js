@@ -191,12 +191,13 @@ class Skarm {
             "Consult the help documentation (`e!help " + cmd.aliases[0] + "`) for " +
             "information on how to use it.");
     }
-    
+
+    /** this function takes an object of Command objects and adds them to a
+     * hash table (JS object); each alias of each command is added. It
+     * returns one object for the general commands, and another for the
+     * Help commands (without the bot prefix).
+     */
     static addCommands(commands) {
-        // this function takes an object of Command objects and adds them to a
-        // hash table (JS object); each alias of each command is added. It
-        // returns one object for the general commands, and another for the
-        // Help commands (without the bot prefix).
         let mapping = { };
         let raw = { };
         let helpMapping = { };
@@ -237,7 +238,7 @@ class Skarm {
             }
             for (let alias of cmdData.aliases) {
                 mapping["e" + cmdData.usageChar + alias] = cmdData;
-                helpMapping[alias] = cmdData;
+                helpMapping["e" + "?" + alias] = cmdData;
             }
             // this is without the e and the usage char
             raw[cmdData.aliases[0]] = cmdData;

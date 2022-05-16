@@ -679,7 +679,8 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e!help",         effect: "Shows all available commands to run"},
             {command: "e!help help",    effect: "Shows the documentation for usage of `e!help` (hey, this is it!)"},
             {command: "e!?",            effect: "Shows the documentation for usage of `e!help` (hey, this is it!)"},
-            {command: "e!man activity", effect: "Shows the documentation for usage of `e!activity`"}
+            {command: "e!man activity", effect: "Shows the documentation for usage of `e!activity`"},
+            {command: "e?xkcd",         effect: "Shows the documentation for usage of `e!xkcd`"},
         ],
         ignoreHidden: false,
         category: "meta",
@@ -729,6 +730,11 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
             if (bot.mapping.help[cmd]) {
                 bot.mapping.help[cmd].help(bot, e);
+                return;
+            }
+
+            if (bot.mapping.help["e?"+cmd]) {
+                bot.mapping.help["e?"+cmd].help(bot, e);
                 return;
             }
 
