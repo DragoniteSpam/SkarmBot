@@ -7,6 +7,10 @@ const Discordie = require("discordie");
 const userdb = "../skarmData/users.penguin";
 const SUMMON_COOLDOWN = 60000;
 
+const linkVariables = function(user) {
+    if (user.actionState === undefined) user.actionState = { };
+}
+
 const linkFunctions = function(user) {
     user.addSummon = function(term) {
         if (term in this.summons) {
@@ -100,6 +104,16 @@ class User {
          */
         this.nickName = undefined;
 
+        /**
+         * A collection of per-channel states that skarm should act off of for cross-message user interaction.
+         * Keys: channel ID
+         * Values: {
+         *     handler: anonymous handler function (Event e: MESSAGE_CREATE) => {}
+         *     timeout: self-destruct timeout if state is not acted upon within the duration given
+         * }
+         */
+        this.actionState = { };
+
         User.add(this);
         
         linkFunctions(this);
@@ -147,6 +161,7 @@ class User {
             User.users = JSON.parse(data);
             for (let u in User.users) {
                 linkFunctions(User.users[u]);
+                linkVariables(User.users[u]);
             }
 			console.log("Initialized "+Object.keys(User.users).length + " Users");
         });
