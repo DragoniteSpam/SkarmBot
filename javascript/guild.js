@@ -752,7 +752,7 @@ const linkFunctions = function(guild) {
         if (notification === Constants.Notifications.MEMBER_LEAVE) {
             let user = eventObject.user;
             for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
-                Skarm.sendMessageDelay(client.Channels.get(channelID), " " + JSON.stringify(eventObject.getCachedData()), false, {
+                Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.RED,
                     description: `**${user.username}#${user.discriminator}** has left the server. (${user.id})`,
                     timestamp: new Date(),
