@@ -96,7 +96,7 @@ const linkFunctions = function(user) {
      * @param channelID
      * @param timeout seconds until state expires
      */
-    user.setActionState = function (callback, channelID = Constants.Channels.SPAM.id, timeout = 60000) {
+    user.setActionState = function (callback, channelID = Constants.Channels.SPAM.id, timeout = 60) {
         let st = Date.now();
         user.actionState[channelID] = {
             handler: callback,
