@@ -69,6 +69,18 @@ const linkVariables = function(guild) {
 // since de/serialized objects don't keep their functions
 const linkFunctions = function(guild) {
 
+    guild.printRolesInGroup = function (group, channel) {
+        let outputString = "";
+        let returnHash = { };
+        let i=0;
+        for(let role in guild.selfAssignedRoles[group]){
+            outputString += ++i + ": <@&" + role + ">\n";
+            returnHash[i] = role;
+        }
+        Skarm.sendMessageDelay(channel, outputString);
+        return returnHash;
+    }
+
     guild.botCanEditRole = function(roleID, botAccount) {
         let apiGuildData = Guild.getData(this.id);
 
