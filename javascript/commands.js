@@ -1837,7 +1837,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         aliases: ["sar", "getrole"],
         params: ["group"],
         usageChar: "!",
-        helpText: "Equip and self-assigned roles.  ",
+        helpText: "Equip self-assigned roles.",
         examples: [
             {command: "e!sar", effect: "Will list the available role groups to pick from."},
             {command: "e!sar games", effect: "Will list the available roles in the `games` group."},
@@ -1854,13 +1854,56 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             let outputString = "";
 
             if(action === undefined){
-                outputString = "Available groups: ";
+                outputString = "Available groups: \n";
+                let support = { };
+                let i=0;
                 for(let group in sarTreeRoot){
-                    outputString += "`"+group+"`, ";
+                    outputString += ++i + ": `"+group+"` \n";
+                    support[i] = group;
                 }
                 outputString=outputString.substring(0,outputString.length-2);
                 if (Object.keys(sarTreeRoot).length === 0){
                     outputString = "No self-assigned role groups exist.\nCreate one with `e@csar add YourGroupName`!";
+                }else{
+                    outputString += "\n\nSelect a group";
+
+                    let selectRoleFromGroup = function(e) {
+                        // filter invalid input
+                        if(!(e.message.content in userData.transcientActionStateData.validRoles)){
+                            Skarm.sendMessageDelay(e.message.channel, "Error: target role not found.");
+                            userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
+                            return;
+                        }
+                        // get member roles
+                        Skarm.spam("TODO: get member roles");
+                        // todo
+
+                        // toggle role based on user input
+                        Skarm.spam("TODO: edit member roles");
+                        // todo
+
+                        // clear state
+                        Skarm.spam("TODO: clear operation state");
+                        // todo
+                    }
+
+                    let selectGroupHandler = function(e) {
+                        // filter invalid input
+                        if (!(e.message.content in support)) {
+                            Skarm.sendMessageDelay(e.message.channel, "Error: target group not found.");
+                            userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
+                            return;
+                        }
+
+                        // display roles in selected group
+                        let group = support[e.message.content];
+                        userData.transcientActionStateData.validRoles = guildData.printRolesInGroup(group, e.message.channel);  // sends message containing available roles, returns those roles as a hashmap of valid entities
+
+                        // set state to role selection
+                        userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
+                    }
+
+                    userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
                 }
             }
 
@@ -1959,13 +2002,13 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         //         }
         //     }
         //
-        //     Skarm.sendMessageDelay(e.message.channel, " ", false, {
-        //         color: Skarm.generateRGB(),
-        //         author: {name: e.message.author.nick},
-        //         description: outputString,
-        //         timestamp: new Date(),
-        //         footer: {text: "SAR Configuration"}
-        //     });
+            Skarm.sendMessageDelay(e.message.channel, " ", false, {
+                color: Skarm.generateRGB(),
+                author: {name: e.message.author.nick},
+                description: outputString,
+                timestamp: new Date(),
+                footer: {text: "SAR"}
+            });
         },
 
         help(bot, e) {
