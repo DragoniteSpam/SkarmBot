@@ -3,6 +3,7 @@ const fs = require("fs");
 const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
 const Discordie = require("discordie");
+const Constants = require("./constants");
 
 const userdb = "../skarmData/users.penguin";
 const SUMMON_COOLDOWN = 60000;
@@ -87,6 +88,27 @@ const linkFunctions = function(user) {
     user.getName = function (e) {
         return (user.nickName || e.message.member.name);
     };
+
+    /**
+     * Sets a user's action state in a particular channel for a fixed interval of time
+     *
+     * @param callback(e: Event MESSAGE_CREATE) - the handler that should run due to the user's next message
+     * @param channelID
+     * @param timeout seconds until state expires
+     */
+    user.setActionState = function (callback, channelID = Constants.Channels.SPAM.id, timeout = 60000) {
+        let st = Date.now();
+        user.actionState[channelID] = {
+            handler: callback,
+            startTime: st,
+            timeout: setTimeout(() => {     // state self-destruct timeout if state isn't progressed
+                if(user.actionState[channelID].startTime === st){
+                    delete user.actionState[channelID];
+                    Skarm.sendMessageDelay(channelID, "Timeout: received no user input.");
+                }
+            }, timeout * 1000)
+        };
+    }
 }
 
 class User {
