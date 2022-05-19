@@ -300,6 +300,16 @@ class Bot {
         let text = e.message.content.toLowerCase();
         let first = text.split(" ")[0];
 
+        // check if message has prior commitments to attend to in the channel
+        let userChannelState = userData.actionState[e.message.channel.id];
+        if(userChannelState){
+            let handler = userChannelState.handler;              // save handler
+            clearTimeout(userChannelState.timeout);              // destroy timeout
+            delete userData.actionState[e.message.channel.id];   // destroy state remnant
+            handler(e);                                          // handle state
+            return;
+        }
+
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         let helpData = this.mapping.help[first];
