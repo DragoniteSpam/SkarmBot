@@ -1858,33 +1858,57 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                 let support = { };
                 let i=0;
                 for(let group in sarTreeRoot){
-                    outputString += ++i + ": `"+group+"` \n";
-                    support[i] = group;
+                    if(Object.keys(sarTreeRoot[group]).length) {
+                        outputString += ++i + ": `" + group + "` \n";
+                        support[i] = group;
+                    }
                 }
                 outputString=outputString.substring(0,outputString.length-2);
-                if (Object.keys(sarTreeRoot).length === 0){
-                    outputString = "No self-assigned role groups exist.\nCreate one with `e@csar add YourGroupName`!";
+                if (Object.keys(support).length === 0){
+                    outputString = "No populated self-assigned role groups exist.\nCreate a group with `e@csar add YourGroupName`!\nAdd a role to a group with `e@csar YourGroupName add @Bees`";
                 }else{
                     outputString += "\n\nSelect a group";
 
                     let selectRoleFromGroup = function(e) {
                         // filter invalid input
-                        if(!(e.message.content in userData.transcientActionStateData.validRoles)){
+                        if(!(e.message.content in userData.transcientActionStateData[e.message.channel].validRoles)){
                             Skarm.sendMessageDelay(e.message.channel, "Error: target role not found.");
                             userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
                             return;
                         }
+                        let targetRole = userData.transcientActionStateData[e.message.channel].validRoles[e.message.content];
+
                         // get member roles
-                        Skarm.spam("TODO: get member roles");
-                        // todo
+                        let userRoles = e.message.member.roles;
+                        let allRoles = e.message.guild.roles;
+
+                        let role = null;
+                        for(let guildRole of allRoles){
+                            if(guildRole.id === targetRole){
+                                role = guildRole;
+                                break;
+                            }
+                        }
+
+                        if(role === null){
+                            Skarm.sendMessageDelay(e.message.channel, "Error: target role is null.");
+                            return;
+                        }
 
                         // toggle role based on user input
-                        Skarm.spam("TODO: edit member roles");
-                        // todo
+                        for(let userRole of userRoles){
+                            if(userRole.id === role.id){
+                                e.message.member.unassignRole(role);
+                                Skarm.sendMessageDelay(e.message.channel, "Role removed.");
+                                return;
+                            }
+                        }
 
-                        // clear state
-                        Skarm.spam("TODO: clear operation state");
-                        // todo
+                        e.message.member.assignRole(role);
+                        Skarm.sendMessageDelay(e.message.channel, "Role added.");
+
+                        // purge remnants
+                        userData.transcientActionStateData[e.message.channel] = {};
                     }
 
                     let selectGroupHandler = function(e) {
@@ -1897,7 +1921,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
                         // display roles in selected group
                         let group = support[e.message.content];
-                        userData.transcientActionStateData.validRoles = guildData.printRolesInGroup(group, e.message.channel);  // sends message containing available roles, returns those roles as a hashmap of valid entities
+                        userData.transcientActionStateData[e.message.channel] = {validRoles: guildData.printRolesInGroup(group, e.message.channel)};  // sends message containing available roles, returns those roles as a hashmap of valid entities
 
                         // set state to role selection
                         userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);

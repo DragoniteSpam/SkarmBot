@@ -10,6 +10,7 @@ const SUMMON_COOLDOWN = 60000;
 
 const linkVariables = function(user) {
     if (user.actionState === undefined) user.actionState = { };
+    user.transcientActionStateData = { };    // clear on reboot
 }
 
 const linkFunctions = function(user) {
@@ -135,6 +136,7 @@ class User {
          * }
          */
         this.actionState = { };
+        this.transcientActionStateData = { };        // keys: channel ID, values: {anything} but only while action State exists in that channel
 
         User.add(this);
         

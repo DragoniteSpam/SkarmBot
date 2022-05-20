@@ -70,14 +70,19 @@ const linkVariables = function(guild) {
 const linkFunctions = function(guild) {
 
     guild.printRolesInGroup = function (group, channel) {
-        let outputString = "";
+        let outputString = "Available Roles:\n";
         let returnHash = { };
         let i=0;
         for(let role in guild.selfAssignedRoles[group]){
             outputString += ++i + ": <@&" + role + ">\n";
             returnHash[i] = role;
         }
-        Skarm.sendMessageDelay(channel, outputString);
+        Skarm.sendMessageDelay(channel, " ", false, {
+            color: Skarm.generateRGB(),
+            description: outputString,
+            timestamp: new Date(),
+            footer: {text: "SAR"}
+        });
         return returnHash;
     }
 
