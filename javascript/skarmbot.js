@@ -207,7 +207,7 @@ class Bot {
 					changes += ", ";
                 }
 			}
-			Skarm.log(changes);
+			Skarm.spam(changes);
 		}
 		if (e.rolesAdded.length > 0){
 			let changes = "Roles added for " + e.member.username + " in " + e.guild.name + ": ";
