@@ -1872,7 +1872,11 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                     let selectRoleFromGroup = function(e) {
                         // filter invalid input
                         if(!(e.message.content in userData.transcientActionStateData[e.message.channel].validRoles)){
-                            Skarm.sendMessageDelay(e.message.channel, "Error: target role not found.");
+                            if(e.message.content.toLowerCase() === "c") {
+                                Skarm.sendMessageDelay(e.message.channel, "Cancelled");
+                                return;
+                            }
+                            Skarm.sendMessageDelay(e.message.channel, "Error: target role not found. Please try again or `c` to cancel.");
                             userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
                             return;
                         }
@@ -1891,7 +1895,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                         }
 
                         if(role === null){
-                            Skarm.sendMessageDelay(e.message.channel, "Error: target role is null.");
+                            Skarm.sendMessageDelay(e.message.channel, "Error: target role is null. Please try again or `c` to cancel.");
                             return;
                         }
 
@@ -1899,13 +1903,13 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                         for(let userRole of userRoles){
                             if(userRole.id === role.id){
                                 e.message.member.unassignRole(role);
-                                Skarm.sendMessageDelay(e.message.channel, "Role removed.");
+                                Skarm.sendMessageDelay(e.message.channel, `Role ${role.name} removed.`);
                                 return;
                             }
                         }
 
                         e.message.member.assignRole(role);
-                        Skarm.sendMessageDelay(e.message.channel, "Role added.");
+                        Skarm.sendMessageDelay(e.message.channel, `Role ${role.name} added.`);
 
                         // purge remnants
                         userData.transcientActionStateData[e.message.channel] = {};
@@ -1914,6 +1918,10 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                     let selectGroupHandler = function(e) {
                         // filter invalid input
                         if (!(e.message.content in support)) {
+                            if(e.message.content.toLowerCase() === "c") {
+                                Skarm.sendMessageDelay(e.message.channel, "Cancelled");
+                                return;
+                            }
                             Skarm.sendMessageDelay(e.message.channel, "Error: target group not found.");
                             userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
                             return;
