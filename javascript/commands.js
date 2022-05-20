@@ -1938,6 +1938,11 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                     userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
                 }
             }
+
+            // todo action == remove All
+
+            // todo action == group Name -> skip a menu
+
             Skarm.sendMessageDelay(e.message.channel, " ", false, {
                 color: Skarm.generateRGB(),
                 author: {name: e.message.author.nick},
