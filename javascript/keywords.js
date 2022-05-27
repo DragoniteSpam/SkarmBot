@@ -145,7 +145,7 @@ module.exports = {
             // set the user's title if they have one in their name
             let userTitle = "general";
             for(let title in titlesCollection){
-                if(refName.includes(title) || e.message.member.nick.toLowerCase().includes(title)) {
+                if(refName.includes(title) || e.message.member.nick && e.message.member.nick.toLowerCase().includes(title)) {
                     userTitle = title;
                     refName = refName.replace(title, "");        // remove the title from their name to avoid redundancy
                 }
