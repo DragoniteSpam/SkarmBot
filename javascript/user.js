@@ -109,7 +109,28 @@ const linkFunctions = function(user) {
                 }
             }, timeout * 1000)
         };
-    }
+    };
+
+    /**
+     * Parses and handles all universally accepted keywords in a user's transcient state data
+     *
+     * Current Universally defined keywords:
+     *  deleteMessage -> messageID
+     *
+     * @param channelID
+     */
+    user.handleUniversalTASD = function(channelID) {
+        let transientData = this.transcientActionStateData[channelID];
+
+        if(transientData.deleteMessage){
+            let message = Constants.client.Messages.get(transientData.deleteMessage);
+            if(!message.deleted){
+                message.delete();                   // send request for discord to delete message
+                delete transientData.deleteMessage; // remove instruction from data
+            }
+        }
+
+    };
 }
 
 class User {

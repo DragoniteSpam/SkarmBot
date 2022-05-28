@@ -306,6 +306,7 @@ class Bot {
             let handler = userChannelState.handler;              // save handler
             clearTimeout(userChannelState.timeout);              // destroy timeout
             delete userData.actionState[e.message.channel.id];   // destroy state remnant
+            userData.handleUniversalTASD(e.message.channel.id);  // handle universally common transient action state data terms
             handler(e);                                          // handle state
             return;
         }
