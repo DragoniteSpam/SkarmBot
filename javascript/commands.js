@@ -1855,7 +1855,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
             let selectRoleFromGroup = function(e) {
                 // filter invalid input
-                if(!(e.message.content in userData.transcientActionStateData[e.message.channel].validRoles)){
+                if(!(e.message.content in userData.transcientActionStateData[e.message.channel.id].validRoles)){
                     if(e.message.content.toLowerCase() === "c") {
                         Skarm.sendMessageDelay(e.message.channel, "Cancelled");
                         return;
@@ -1864,7 +1864,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                     userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
                     return;
                 }
-                let targetRole = userData.transcientActionStateData[e.message.channel].validRoles[e.message.content];
+                let targetRole = userData.transcientActionStateData[e.message.channel.id].validRoles[e.message.content];
 
                 // get member roles
                 let userRoles = e.message.member.roles;
@@ -1888,15 +1888,17 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                     if(userRole.id === role.id){
                         e.message.member.unassignRole(role);
                         Skarm.sendMessageDelay(e.message.channel, `Role ${role.name} removed.`);
+                        e.message.delete();
                         return;
                     }
                 }
 
                 e.message.member.assignRole(role);
                 Skarm.sendMessageDelay(e.message.channel, `Role ${role.name} added.`);
+                e.message.delete();
 
-                // purge remnants
-                userData.transcientActionStateData[e.message.channel] = {};
+                // purge remnants, resolving state
+                userData.transcientActionStateData[e.message.channel.id] = {};
             }
 
 
@@ -1933,11 +1935,15 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
                         // display roles in selected group
                         let group = nonEmptyGroups[e.message.content];
-                        userData.transcientActionStateData[e.message.channel] = {validRoles: guildData.printRolesInGroup(group, e.message.channel)};  // sends message containing available roles, returns those roles as a hashmap of valid entities
+                        if(!userData.transcientActionStateData[e.message.channel.id]) userData.transcientActionStateData[e.message.channel.id] = {};
+                        userData.transcientActionStateData[e.message.channel.id].validRoles = guildData.printRolesInGroup(group, userData, e.message.channel);      // sends message containing available roles, returns those roles as a hashmap of valid entities
+
 
                         // set state to role selection
                         userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
+                        e.message.delete();
                     }
+
                     userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
                 }
             }
@@ -1946,13 +1952,22 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
             // todo action == group Name -> skip a menu
 
-            Skarm.sendMessageDelay(e.message.channel, " ", false, {
-                color: Skarm.generateRGB(),
-                author: {name: e.message.author.nick},
-                description: outputString,
-                timestamp: new Date(),
-                footer: {text: "SAR"}
-            });
+            Skarm.sendMessageDelay(e.message.channel,
+                " ",
+                false,
+                {
+                    color: Skarm.generateRGB(),
+                    author: {name: e.message.author.nick},
+                    description: outputString,
+                    timestamp: new Date(),
+                    footer: {text: "SAR"}
+                },
+
+                // Add next-state instruction to delete prior message
+                (message, err) => {
+                    userData.transcientActionStateData[e.message.channel.id] = {deleteMessage: message.id};
+                }
+            );
         },
 
         help(bot, e) {
