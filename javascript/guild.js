@@ -88,6 +88,9 @@ const linkFunctions = function(guild) {
             outputString += ++i + ": <@&" + role + ">\n";
             returnHash[i] = role;
         }
+
+        outputString += "c: cancel\n";
+
         Skarm.sendMessageDelay(channel,
             " ",
             false,
