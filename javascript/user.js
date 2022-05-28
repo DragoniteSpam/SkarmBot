@@ -111,15 +111,8 @@ const linkFunctions = function(user) {
         };
     };
 
-    /**
-     * Parses and handles all universally accepted keywords in a user's transcient state data
-     *
-     * Current Universally defined keywords:
-     *  deleteMessage -> messageID
-     *
-     * @param channelID
-     */
-    user.handleUniversalTASD = function(channelID) {
+
+    user.deleteTransientMessagePrev = function(channelID){
         let transientData = this.transcientActionStateData[channelID];
 
         if(transientData.deleteMessage){
