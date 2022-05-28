@@ -69,7 +69,18 @@ const linkVariables = function(guild) {
 // since de/serialized objects don't keep their functions
 const linkFunctions = function(guild) {
 
-    guild.printRolesInGroup = function (group, channel) {
+    /**
+     * Prints the list of self-assignable roles that a member of a guild is allowed to equip
+     *
+     * TODO: add state information for whether selecting this option will add or remove the role
+     * TODO: add 'c' to cancel option
+     *
+     * @param group - the name of the group the user requested
+     * @param userData - user data object for the member
+     * @param channel - channel in which modifications are happening
+     * @returns {{num -> roleID}}
+     */
+    guild.printRolesInGroup = function (group, userData, channel) {
         let outputString = "Available Roles:\n";
         let returnHash = { };
         let i=0;
@@ -77,12 +88,20 @@ const linkFunctions = function(guild) {
             outputString += ++i + ": <@&" + role + ">\n";
             returnHash[i] = role;
         }
-        Skarm.sendMessageDelay(channel, " ", false, {
-            color: Skarm.generateRGB(),
-            description: outputString,
-            timestamp: new Date(),
-            footer: {text: "SAR"}
-        });
+        Skarm.sendMessageDelay(channel,
+            " ",
+            false,
+            {
+                color: Skarm.generateRGB(),
+                description: outputString,
+                timestamp: new Date(),
+                footer: {text: "SAR"}
+            },
+            // Add next-state instruction to delete prior message
+            (message, err) => {
+                userData.transcientActionStateData[channel.id].deleteMessage = message.id;
+            }
+        );
         return returnHash;
     }
 
