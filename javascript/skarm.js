@@ -76,7 +76,7 @@ class Skarm {
         );
     }
 
-    static sendMessageDelay(channel, text,tts,obj) {
+    static sendMessageDelay(channel, text,tts,obj, promiseHandler) {
         if(channel===null){
             console.log("null channel target with message: "+text);
             return;
@@ -98,10 +98,12 @@ class Skarm {
         try{
             channel.sendTyping();
             setTimeout(function() {
-                channel.sendMessage(text,tts,obj);
+                let promise = channel.sendMessage(text,tts,obj);
+                if(promiseHandler){
+                    promise.then(promiseHandler);
+                }
             }, Math.random() * 2000 + 1500);
         } catch {
-
             console.log("failed to send message: "+text+" to channel "+channel.id);
         }
     }
