@@ -114,11 +114,11 @@ class Skarm {
      * @param text the content of the message
      * @param tts virtually useless parameter. Pay no regard.
      * @param obj Support for messages sent as embeds.
-     * @param timer the millisecond count between the time the message arrives in the discord server and when it is deleted.
+     * @param timerMS the millisecond count between the time the message arrives in the discord server and when it is deleted (default 24 hours).
      * @param senderID The ID of the author of the message who will be able to delete the message prematurely if they so choose.
      * @param skarmbotObject a reference to the skarmbot.js object in order to update the toBeDeletedCache mapping of MessageID to senderID which will be created for the duration of the message's existence.
      */
-    static sendMessageDelete(channel, text,tts,obj,timer,senderID,skarmbotObject) {
+    static sendMessageDelete(channel, text,tts,obj,timerMS = 1000 * 60 * 60 * 24, senderID,skarmbotObject) {
         if(channel==null){
             console.log("null channel target with message: "+text);
             return;
@@ -145,11 +145,11 @@ class Skarm {
                         //message was probably deleted by means of reaction.
                         return Skarm.logError(JSON.stringify(e));
                     }
-                },timer);
+                },timerMS);
                 skarmbotObject.toBeDeletedCache[message.id]={senderID:senderID,self:false,timeout:timeout};
             }));
         } catch {
-            console.error("failed to send message: [REDACTED] to channel "+channel.id);
+            console.error("failed to send message: [REDACTED] to channel " + channel.id);
         }
     }
 
