@@ -50,7 +50,7 @@ const linkFunctions = function(user) {
             return;
         }
         // you can't summon yourself
-        if (e.message.author.id == this.id) {
+        if (e.message.author.id === this.id) {
             return;
         }
         // can't see summons in channels they can't view

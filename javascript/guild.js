@@ -766,7 +766,7 @@ const linkFunctions = function(guild) {
 	guild.notify = function(client, notification, eventObject) {
 	    if(guild===undefined)
 	        return Skarm.logError("Undefined guild");
-        if (notification === Constants.Notifications.MEMBER_LEAVE) {
+	    if (notification === Constants.Notifications.MEMBER_LEAVE) {
             let user = eventObject.user;
             for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
