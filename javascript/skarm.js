@@ -118,35 +118,35 @@ class Skarm {
      * @param senderID The ID of the author of the message who will be able to delete the message prematurely if they so choose.
      * @param skarmbotObject a reference to the skarmbot.js object in order to update the toBeDeletedCache mapping of MessageID to senderID which will be created for the duration of the message's existence.
      */
-    static sendMessageDelete(channel, text,tts,obj,timerMS = 1000 * 60 * 60 * 24, senderID,skarmbotObject) {
-        if(channel==null){
-            console.log("null channel target with message: "+text);
+    static sendMessageDelete(channel, text, tts, obj, timerMS = 1000 * 60 * 60 * 24, senderID, skarmbotObject) {
+        if (channel == null) {
+            console.log("null channel target with message: " + text);
             return;
         }
-        if(!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES,channel)){
+        if (!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES, channel)) {
             this.log("Missing permission to read messages in " + channel.name);
             return;
         }
-        if(!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES,channel)){
+        if (!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES, channel)) {
             this.log("Missing permission to send message in " + channel.name);
             return;
         }
 
-        try{
+        try {
             //Skarm.logError("Sending async message");
-            channel.sendMessage(text,tts,obj).then((message => {
+            channel.sendMessage(text, tts, obj).then((message => {
                 //Skarm.logError("Async to be deleted message sent");
                 message.addReaction("\u274c");
                 var timeout = setTimeout(() => {
                     delete skarmbotObject.toBeDeletedCache[message.id];
                     try {
                         message.delete();
-                    }catch (e) {
+                    } catch (e) {
                         //message was probably deleted by means of reaction.
                         return Skarm.logError(JSON.stringify(e));
                     }
-                },timerMS);
-                skarmbotObject.toBeDeletedCache[message.id]={senderID:senderID,self:false,timeout:timeout};
+                }, timerMS);
+                skarmbotObject.toBeDeletedCache[message.id] = {senderID: senderID, self: false, timeout: timeout};
             }));
         } catch {
             console.error("failed to send message: [REDACTED] to channel " + channel.id);
