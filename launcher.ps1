@@ -3,7 +3,7 @@
    Launches skarmbot or a testing instance
 
 .DESCRIPTION
-   Launches skarmbot or a testing instance
+   Launches skarmbot or a testing instance.  If the computer is already hosting that particular version, the script will exit immediately.
 
 .EXAMPLE
     .\launcher.ps1 operationMode live
@@ -27,6 +27,17 @@
 param(
     [Parameter(Mandatory=$true)] [string][ValidateSet("live", "test")] $operationMode
 )
+
+$windowTitle = "SkarmBot $operationMode"
+
+$conflictingProcesses = Get-Process | where {$_.MainWindowTitle -eq $windowTitle}
+if($conflictingProcesses){
+    Write-Host "A process with this unique name is already running: "
+    return $conflictingProcesses
+}
+$host.ui.RawUI.WindowTitle = $windowTitle
+
+
 Push-Location
 cd $PSScriptRoot
 Start-Process -Wait powershell.exe -ArgumentList @("$PSScriptRoot\initialize-Dependencies.ps1")
