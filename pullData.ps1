@@ -14,10 +14,16 @@ $dataSource = "~\Box\skarmData\*.penguin"
 $dataDestination = "$PSScriptRoot\..\skarmData\"
 
 if(-not (Test-Path $dataSource)){
-    Write-Error "database files not found.  Please verify that the path ~\Box\skarmData exists and that Box Drive is working properly."
-    Start-Sleep 1
-    $Host.SetShouldExit(-1)
-    exit
+    try {
+        Start-Process 'C:\Program Files\Box\Box\Box.exe'
+        Write-Host "Starting up box drive..."
+        Start-Sleep 15
+    } catch {
+        Write-Error "database files not found.  Please verify that the path ~\Box\skarmData exists and that Box Drive is working properly."
+        Start-Sleep 1
+        $Host.SetShouldExit(-1)
+        exit
+    }
 }
 
 Write-Host "Copying files..."
