@@ -28,7 +28,7 @@ param(
     [Parameter(Mandatory=$true)] [string][ValidateSet("live", "test")] $operationMode
 )
 
-$windowTitle = "SkarmBot $operationMode"
+$windowTitle = "SkarmBot live"
 
 $conflictingProcesses = Get-Process | where {$_.MainWindowTitle -eq $windowTitle}
 if($conflictingProcesses){
@@ -40,9 +40,14 @@ $host.ui.RawUI.WindowTitle = $windowTitle
 
 Push-Location
 cd $PSScriptRoot
+Write-Host "Checking dependencies..."
 Start-Process -Wait powershell.exe -ArgumentList @("$PSScriptRoot\initialize-Dependencies.ps1")
 
+# Reset window title as it may have gotten wiped when starting the dependency initializer
+$host.ui.RawUI.WindowTitle = $windowTitle
 
+
+Write-Host "Starting Skarmbot bootloop"
 if($operationMode -eq "live"){
     do{
         node $PSScriptRoot\bot.js beta

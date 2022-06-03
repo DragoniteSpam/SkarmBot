@@ -4,6 +4,9 @@
 
 #>
 
+$windowTitle = "SkarmBot live"
+$host.ui.RawUI.WindowTitle = $windowTitle
+
 $dataDestination = "~\Box\skarmData\"
 $dataSource = "$PSScriptRoot\..\skarmData\*.penguin"
 

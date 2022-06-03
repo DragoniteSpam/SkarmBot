@@ -3,6 +3,10 @@
     Copies in the encrypted databases used by skarm into the path SkarmBot\..\skarmData\ from cloud copies accessed via Box Drive
 
 #>
+
+$windowTitle = "Skarmbot live"
+$host.ui.RawUI.WindowTitle = $windowTitle
+
 Push-Location
 cd $PSScriptRoot
 
