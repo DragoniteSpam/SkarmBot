@@ -78,14 +78,22 @@ const linkFunctions = function(guild) {
      * @param group - the name of the group the user requested
      * @param userData - user data object for the member
      * @param channel - channel in which modifications are happening
+     * @params member - Discordie guild member object
      * @returns {{num -> roleID}}
      */
-    guild.printRolesInGroup = function (group, userData, channel) {
+    guild.printRolesInGroup = function (group, userData, channel, member) {
+        let userHasRole = function(roleID){
+            for(let role of member.roles){
+                if(role.id === roleID) return true;
+            }
+            return false;
+        }
+
         let outputString = "Available Roles:\n";
         let returnHash = { };
         let i=0;
         for(let role in guild.selfAssignedRoles[group]){
-            outputString += ++i + ": <@&" + role + ">\n";
+            outputString += `${++i}: ${userHasRole(role) ? "Remove" : "Equip"} <@&${role}>\n`;
             returnHash[i] = role;
         }
 

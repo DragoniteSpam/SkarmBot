@@ -1952,7 +1952,6 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             }
 
             let selectGroup = function(channel, messageContent) {
-                console.log("selecting group:", channel.id, messageContent);
                 // handle cancellations first
                 if(messageContent.toLowerCase() === "c") {
                     Skarm.sendMessageDelay(channel, "Cancelled");
@@ -1969,7 +1968,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                 // display roles in selected group
                 let group = nonEmptyGroups[messageContent];
                 if(!userData.transcientActionStateData[channel.id]) userData.transcientActionStateData[channel.id] = { };
-                userData.transcientActionStateData[channel.id].validRoles = guildData.printRolesInGroup(group, userData, channel);      // sends message containing available roles, returns those roles as a hashmap of valid entities
+                userData.transcientActionStateData[channel.id].validRoles = guildData.printRolesInGroup(group, userData, channel, e.message.member);      // sends message containing available roles, returns those roles as a hashmap of valid entities
 
                 // set state to role selection
                 userData.setActionState(selectRoleFromGroup, channel.id, 60);
