@@ -28,6 +28,7 @@ class Constants {
         };
 
         Constants.someBigNumber = 1 << 20;    // arbitrary large number
+        Constants.GuidLength = "137336478291329024".length;
 
         //operation codes for when skarm is saving data, restarting, or shutting down
         Constants.SaveCodes = {

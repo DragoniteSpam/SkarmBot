@@ -1698,6 +1698,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@csar Games remove Terraria", effect: "Will remove the role @Terraria from the SAR group `Games`."},
             {command: "e@csar Games remove Terraria, Warframe, Factorio", effect: "Will remove the roles @Terraria, @Warframe, and @Factorio to the SAR group `Games`."},
             {command: "e@csar Games clear", effect: "Will remove all roles from the SAR group `Games`."},
+            {command: "e@csar Games max", effect: "Will report the amount of roles from the group `Games` that can be equipped."},
+            {command: "e@csar Games max 0", effect: "Will remove the limit for the amount of roles from the group `Games` that can be equipped."},
+            {command: "e@csar Games max 2", effect: "Will set the limit for the amount of roles from the group `Games` that can be equipped to 2 roles."},
         ],
         ignoreHidden: false,
         perms: Permissions.MOD,
@@ -1764,24 +1767,27 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             }
 
             if(action in sarTreeRoot) {
-                let group = action;
+                let groupStr = action;
+                let groupObj = sarTreeRoot[groupStr];
                 action = tokens.shift();
 
-                // repeat with role actions
+                // role actions available
 
                 //list
                 if(action === undefined){
-                    outputString = "Roles in group " + group + ":\n";
-                    for(let role in sarTreeRoot[group]){
-                        outputString += `<@&${role}>, `;
+                    outputString = "Roles in group " + groupStr + ":\n";
+                    for(let key in groupObj){
+                        if(key.length === Constants.GuidLength)
+                            outputString += `<@&${key}>, `;
                     }
-                    outputString=outputString.substring(0,outputString.length-2);
-                    if (Object.keys(sarTreeRoot[group]).length === 0){
-                        outputString = "No self-assigned roles in this group!\nAdd them with `e@csar " + group + " add RoleName`!";
+                    outputString = outputString.substring(0,outputString.length-2);
+
+                    if (Object.keys(groupObj).length === 0){
+                        outputString = "No self-assigned roles in this group!\nAdd them with `e@csar " + groupStr + " add RoleName`!";
                     }
                 }
 
-                // add
+                // add roles to the group
                 if(action==="add"){
                     for(let roleToAdd of tokens) {
                         let roleAddable = false;
@@ -1791,15 +1797,15 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                             }
                         }
                         if (roleAddable) {
-                            sarTreeRoot[group][roleAddable] = true;
-                            outputString += `Added role <@&${roleAddable}> to group `+ group + "\n";
+                            sarTreeRoot[groupStr][roleAddable] = true;
+                            outputString += `Added role <@&${roleAddable}> to group `+ groupStr + "\n";
                         } else {
                             outputString += "Target `" + roleToAdd + "` not found.\n";
                         }
                     }
                 }
 
-                // remove
+                // remove roles from the group
                 if(action==="remove") {
                     for (let roleToRem of tokens) {
                         let removeID = false;
@@ -1808,15 +1814,39 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                                 removeID = role.id;
                             }
                         }
-                        delete sarTreeRoot[group][removeID];
-                        outputString += `Removed role <@&${removeID}> from group `+ group+ "\n";
+                        delete sarTreeRoot[groupStr][removeID];
+                        outputString += `Removed role <@&${removeID}> from group `+ groupStr+ "\n";
                     }
                 }
 
-                // clear
+                // clear all data from group
                 if(action==="clear") {
-                    sarTreeRoot[group] = { };
-                    outputString += "Cleared all roles from group: " + group +"\n";
+                    sarTreeRoot[groupStr] = { };
+                    outputString += "Cleared all data from group: " + groupStr +"\n";
+                }
+
+                // max
+                if(action === "max") {
+                    if(tokens.length) {
+                        if (tokens[0] === "0") {                  // clear
+                            delete groupObj["max"];
+                        }
+
+                        let max = tokens[0] - 0;
+                        if (!isNaN(max) && max > 0) {             // set
+                            groupObj.max = max;
+                        }else{
+                            outputString = "";
+                        }
+                    }
+
+                    // default: get
+                    if(groupObj.max){
+                        outputString = `Maximum number of roles that can be equipped from ${groupStr}: ${groupObj.max}`;
+                    }else{
+                        outputString = "Unlimited roles can be equipped from group: " + groupStr;
+                    }
+
                 }
             }
 

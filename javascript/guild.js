@@ -1130,6 +1130,14 @@ class Guild {
          *     key[ID]: guild.role.id
          *     Value: true
          * }
+         *
+         * e.g. this.selfAssignedRoles = {
+         *     "Games": {
+         *         "max": 0,                        // the maximum amount of roles that can be equipped from this group (0 -> unlimited)
+         *         "300090020080700300": true,      // some role that can be equipped
+         *         "300090020080700300": true,      // some other role that can also be equipped
+         *     }
+         * }
          */
 		this.selfAssignedRoles = { };
 
