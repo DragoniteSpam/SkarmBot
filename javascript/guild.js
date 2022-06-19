@@ -75,13 +75,13 @@ const linkFunctions = function(guild) {
      * TODO: add state information for whether selecting this option will add or remove the role
      * TODO: add 'c' to cancel option
      *
-     * @param group - the name of the group the user requested
+     * @param groupStr - the name of the group the user requested
      * @param userData - user data object for the member
      * @param channel - channel in which modifications are happening
      * @params member - Discordie guild member object
      * @returns {{num -> roleID}}
      */
-    guild.printRolesInGroup = function (group, userData, channel, member) {
+    guild.printRolesInGroup = function (groupStr, userData, channel, member) {
         let userHasRole = function(roleID){
             for(let role of member.roles){
                 if(role.id === roleID) return true;
@@ -91,17 +91,32 @@ const linkFunctions = function(guild) {
 
         let outputString = "Available Roles:\n";
         let returnHash = { };
-        let i=0;
-        for(let role in guild.selfAssignedRoles[group]){
-            outputString += `${++i}: ${userHasRole(role) ? "Remove" : "Equip"} <@&${role}>\n`;
-            returnHash[i] = role;
+        switch(guild.selfAssignedRoles[groupStr].max){
+            case undefined:
+            case 0:
+                let i=0;
+                for(let role in guild.selfAssignedRoles[groupStr]){
+                    outputString += `${++i}: ${userHasRole(role) ? "Remove" : "Equip"} <@&${role}>\n`;
+                    returnHash[i] = role;
+                }
+                break;
+
+            case 1:
+                // todo
+                //  check which role from the group the user has
+                //  provide available options as switch-outs
+                break;
+
+            default:
+                // todo
+                //  count how many roles in the group the user has
+                //  provide available options
+                break;
         }
 
         outputString += "c: cancel\n";
 
-        Skarm.sendMessageDelay(channel,
-            " ",
-            false,
+        Skarm.sendMessageDelay(channel," ",false,
             {
                 color: Skarm.generateRGB(),
                 description: outputString,
