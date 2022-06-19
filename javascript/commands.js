@@ -1847,11 +1847,33 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
+            /**
+             * Global variables
+             */
+
             let tokens = commandParamTokens(e.message.content.toLowerCase());
             let guildRoles = e.message.guild.roles;
             let action = tokens.shift();
             let sarTreeRoot = guildData.selfAssignedRoles;
-            let outputString = "";
+            let nonEmptyGroups = { };
+            let outputString = "Unknown argument";
+
+            /**
+             * Functions
+             */
+
+            // populate non-empty role groups for user selection
+            // this function modifies outputStrings and populates nonEmptyGroups `global` variables
+            let populateAvailableGroups = function() {
+                let i=0;
+                for (let group in sarTreeRoot) {
+                    if(Object.keys(sarTreeRoot[group]).length) {      // check if any roles are in the group
+                        outputString += ++i + ": `" + group + "` \n";
+                        nonEmptyGroups[i] = group;
+                    }
+                }
+                outputString += "c: cancel\n";
+            }
 
             let selectRoleFromGroup = function(e) {
                 // Check cancellation condition
@@ -1929,64 +1951,70 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                 userData.transcientActionStateData[e.message.channel.id] = {};
             }
 
-
-            if(action === undefined){
-                outputString = "Available groups: \n";
-                let nonEmptyGroups = { };
-                let i=0;
-
-                // populate non-empty role groups for user selection
-                for (let group in sarTreeRoot) {
-                    if(Object.keys(sarTreeRoot[group]).length) {
-                        outputString += ++i + ": `" + group + "` \n";
-                        nonEmptyGroups[i] = group;
-                    }
+            let selectGroup = function(channel, messageContent) {
+                console.log("selecting group:", channel.id, messageContent);
+                // handle cancellations first
+                if(messageContent.toLowerCase() === "c") {
+                    Skarm.sendMessageDelay(channel, "Cancelled");
+                    return;
                 }
 
-                outputString += "c: cancel\n";
+                // filter invalid input
+                if (!(messageContent in nonEmptyGroups)) {
+                    Skarm.sendMessageDelete(channel, "Error: target group not found. Please try again or `c` to cancel.", undefined, undefined, 60000, e.message.author.id, bot);
+                    userData.setActionState(selectGroupHandler, channel.id, 60);
+                    return;
+                }
 
+                // display roles in selected group
+                let group = nonEmptyGroups[messageContent];
+                if(!userData.transcientActionStateData[channel.id]) userData.transcientActionStateData[channel.id] = { };
+                userData.transcientActionStateData[channel.id].validRoles = guildData.printRolesInGroup(group, userData, channel);      // sends message containing available roles, returns those roles as a hashmap of valid entities
 
+                // set state to role selection
+                userData.setActionState(selectRoleFromGroup, channel.id, 60);
+            }
+
+            let selectGroupHandler = function(e) {
+                selectGroup(e.message.channel, e.message.content);
+                // delete priors
+                userData.deleteTransientMessagePrev(e.message.channel.id);
+                e.message.delete();
+            }
+
+            /**
+             * Initialization
+             */
+
+            populateAvailableGroups();
+            outputString = "";          // clear output string after it is set during population
+
+            /**
+             * Case handling
+             */
+
+            // Default Case: no arguments
+            if(action === undefined){
+                outputString = "Available groups: \n";
+                populateAvailableGroups();
                 if (Object.keys(nonEmptyGroups).length === 0){
                     outputString = "No populated self-assigned role groups exist.\nCreate a group with `e@csar add YourGroupName`!\nAdd a role to a group with `e@csar YourGroupName add @Bees`";
                 }else{
-                    outputString += "\nSelect a group";
-
-                    let selectGroupHandler = function(e) {
-                        // handle cancellations first
-                        if(e.message.content.toLowerCase() === "c") {
-                            Skarm.sendMessageDelay(e.message.channel, "Cancelled");
-                            return;
-                        }
-
-                        // filter invalid input
-                        if (!(e.message.content in nonEmptyGroups)) {
-                            Skarm.sendMessageDelete(e.message.channel, "Error: target group not found. Please try again or `c` to cancel.", undefined, undefined, 60000, e.message.author.id, bot);
-                            userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
-                            return;
-                        }
-
-                        // display roles in selected group
-                        let group = nonEmptyGroups[e.message.content];
-                        if(!userData.transcientActionStateData[e.message.channel.id]) userData.transcientActionStateData[e.message.channel.id] = { };
-                        userData.transcientActionStateData[e.message.channel.id].validRoles = guildData.printRolesInGroup(group, userData, e.message.channel);      // sends message containing available roles, returns those roles as a hashmap of valid entities
-
-
-                        // set state to role selection
-                        userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
-
-                        // delete priors
-                        userData.deleteTransientMessagePrev(e.message.channel.id);
-                        e.message.delete();
-                    }
-
+                    outputString += "\nSelect a group!";
                     userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
                 }
             }
 
             // todo action == remove All
 
-            // todo action == group Name -> skip a menu
-
+            // Case: action == group Name -> skip a menu
+            for(let idx in nonEmptyGroups){
+                if(action === nonEmptyGroups[idx]){
+                    selectGroup(e.message.channel, idx);
+                    return;         // avoids smd end of function
+                }
+            }
+            
             Skarm.sendMessageDelay(e.message.channel,
                 " ",
                 false,
