@@ -1854,12 +1854,14 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             let outputString = "";
 
             let selectRoleFromGroup = function(e) {
+                // Check cancellation condition
+                if(e.message.content.toLowerCase() === "c") {
+                    Skarm.sendMessageDelay(e.message.channel, "Cancelled");
+                    return;
+                }
+
                 // filter invalid input
                 if(!(e.message.content in userData.transcientActionStateData[e.message.channel.id].validRoles)){
-                    if(e.message.content.toLowerCase() === "c") {
-                        Skarm.sendMessageDelay(e.message.channel, "Cancelled");
-                        return;
-                    }
                     Skarm.sendMessageDelete(e.message.channel, "Error: target role not found. Please try again or `c` to cancel.", undefined, undefined, 60000, e.message.author.id, bot);
                     userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
                     return;
@@ -1950,12 +1952,14 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                     outputString += "\nSelect a group";
 
                     let selectGroupHandler = function(e) {
+                        // handle cancellations first
+                        if(e.message.content.toLowerCase() === "c") {
+                            Skarm.sendMessageDelay(e.message.channel, "Cancelled");
+                            return;
+                        }
+
                         // filter invalid input
                         if (!(e.message.content in nonEmptyGroups)) {
-                            if(e.message.content.toLowerCase() === "c") {
-                                Skarm.sendMessageDelay(e.message.channel, "Cancelled");
-                                return;
-                            }
                             Skarm.sendMessageDelete(e.message.channel, "Error: target group not found. Please try again or `c` to cancel.", undefined, undefined, 60000, e.message.author.id, bot);
                             userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
                             return;
@@ -1963,7 +1967,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
                         // display roles in selected group
                         let group = nonEmptyGroups[e.message.content];
-                        if(!userData.transcientActionStateData[e.message.channel.id]) userData.transcientActionStateData[e.message.channel.id] = {};
+                        if(!userData.transcientActionStateData[e.message.channel.id]) userData.transcientActionStateData[e.message.channel.id] = { };
                         userData.transcientActionStateData[e.message.channel.id].validRoles = guildData.printRolesInGroup(group, userData, e.message.channel);      // sends message containing available roles, returns those roles as a hashmap of valid entities
 
 
