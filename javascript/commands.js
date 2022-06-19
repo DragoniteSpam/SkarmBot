@@ -1834,7 +1834,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
                         let max = tokens[0] - 0;
                         if (!isNaN(max) && max > 0) {             // set
-                            groupObj.max = max;
+                            groupObj.max = Math.floor(max);
                         }else{
                             outputString = "";
                         }
