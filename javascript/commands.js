@@ -1906,6 +1906,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             }
 
             let selectRoleFromGroup = function(e) {
+                let outputString = "";
                 // Check cancellation condition
                 if(e.message.content.toLowerCase() === "c") {
                     Skarm.sendMessageDelay(e.message.channel, "Cancelled");
@@ -1921,11 +1922,11 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                 let targetRole = userData.transcientActionStateData[e.message.channel.id].validRoles[e.message.content];
 
                 // get member roles
-                let userRoles = e.message.member.roles;
-                let allRoles = e.message.guild.roles;
+                let userGuildRoles = e.message.member.roles;
+                let allGuildRoles = e.message.guild.roles;
 
                 let role = null;
-                for(let guildRole of allRoles){
+                for(let guildRole of allGuildRoles){
                     if(guildRole.id === targetRole){
                         role = guildRole;
                         break;
@@ -1937,38 +1938,67 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                     return;
                 }
 
-                // toggle role based on user input
-                for(let userRole of userRoles){
-                    if(userRole.id === role.id){
-                        e.message.member.unassignRole(role);
 
-                        Skarm.sendMessageDelay(e.message.channel,
-                            " ",
-                            false,
-                            {
-                                color: Skarm.generateRGB(),
-                                author: {name: e.message.author.nick},
-                                description: `Role ${role.name} removed.`,
-                                timestamp: new Date(),
-                                footer: {text: "SAR"}
-                            });
-
-                        // delete priors
-                        userData.deleteTransientMessagePrev(e.message.channel.id);
-                        e.message.delete();
-
-                        return;
+                // handle toggle case (max = 1) (accept string "1" or num 1 (==))
+                if(sarTreeRoot[userData.transcientActionStateData[e.message.channel.id].group].max == 1){
+                    let roleShouldBeAssigned = true;
+                    // purge all roles in group for user
+                    for(let i = 0; i < userGuildRoles.length; i++){
+                        for(let j in userData.transcientActionStateData[e.message.channel.id].validRoles){
+                            if(userGuildRoles[i].id === userData.transcientActionStateData[e.message.channel.id].validRoles[j]){
+                                if (userGuildRoles[i].id === role.id) {roleShouldBeAssigned = false;}
+                                outputString += `Removed role: ${userGuildRoles.splice(i--, 1)[0].name}\n`;
+                            }
+                        }
                     }
+
+                    if(roleShouldBeAssigned){
+                        let j = 0;
+                        for(let i in allGuildRoles){
+                            if(allGuildRoles[i].id === role.id){
+                                userGuildRoles.splice(i, 0, role);
+                                outputString += `Added role: ${role.name}\n`;
+                                break;
+                            }
+                            if(userGuildRoles.length > j && allGuildRoles[i].id === userGuildRoles[j].id){
+                                j++;
+                            }
+                        }
+                    }
+
+                    e.message.member.setRoles(userGuildRoles);
+
+                } else {
+                    // toggle role based on user input
+                    for (let userRole of userGuildRoles) {
+                        if (userRole.id === role.id) {
+                            e.message.member.unassignRole(role);
+
+                            Skarm.sendMessageDelay(e.message.channel, " ", false,
+                                {
+                                    color: Skarm.generateRGB(),
+                                    author: {name: e.message.author.nick},
+                                    description: `Role ${role.name} removed.`,
+                                    timestamp: new Date(),
+                                    footer: {text: "SAR"}
+                                });
+
+                            // delete priors
+                            userData.deleteTransientMessagePrev(e.message.channel.id);
+                            e.message.delete();
+
+                            return;
+                        }
+                    }
+                    e.message.member.assignRole(role);
+                    outputString = `Role ${role.name} added.`;
                 }
 
-                e.message.member.assignRole(role);
-                Skarm.sendMessageDelay(e.message.channel,
-                    " ",
-                    false,
+                Skarm.sendMessageDelay(e.message.channel, " ", false,
                     {
                         color: Skarm.generateRGB(),
                         author: {name: e.message.author.nick},
-                        description: `Role ${role.name} added.`,
+                        description: outputString,
                         timestamp: new Date(),
                         footer: {text: "SAR"}
                     });
@@ -1978,7 +2008,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                 e.message.delete();
 
                 // purge remnants, resolving state
-                userData.transcientActionStateData[e.message.channel.id] = {};
+                userData.transcientActionStateData[e.message.channel.id] = { };
             }
 
             let selectGroup = function(channel, messageContent) {
@@ -1999,6 +2029,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                 let group = nonEmptyGroups[messageContent];
                 if(!userData.transcientActionStateData[channel.id]) userData.transcientActionStateData[channel.id] = { };
                 userData.transcientActionStateData[channel.id].validRoles = guildData.printRolesInGroup(group, userData, channel, e.message.member);      // sends message containing available roles, returns those roles as a hashmap of valid entities
+                userData.transcientActionStateData[channel.id].group = group;
 
                 // set state to role selection
                 userData.setActionState(selectRoleFromGroup, channel.id, 60);

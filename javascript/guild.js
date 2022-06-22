@@ -91,26 +91,60 @@ const linkFunctions = function(guild) {
 
         let outputString = "Available Roles:\n";
         let returnHash = { };
+        let i = 0;
         switch(guild.selfAssignedRoles[groupStr].max){
             case undefined:
             case 0:
-                let i=0;
+                i = 0;
                 for(let role in guild.selfAssignedRoles[groupStr]){
-                    outputString += `${++i}: ${userHasRole(role) ? "Remove" : "Equip"} <@&${role}>\n`;
-                    returnHash[i] = role;
+                    if (role.length === Constants.GuidLength) {
+                        outputString += `${++i}: ${userHasRole(role) ? "Remove" : "Equip"} <@&${role}>\n`;
+                        returnHash[i] = role;
+                    }
                 }
                 break;
 
+            //
+            // check which role from the group the user has
+            // provide available options as switch-outs
             case 1:
-                // todo
-                //  check which role from the group the user has
-                //  provide available options as switch-outs
+                let userOwnedRole;
+                for(let role in guild.selfAssignedRoles[groupStr]) {
+                    if(userHasRole(role)){
+                        userOwnedRole = role;
+                    }
+                }
+                i = 0;
+                for(let role in guild.selfAssignedRoles[groupStr]) {
+                    if (role.length === Constants.GuidLength) {
+                        if (userOwnedRole) {
+                            outputString += `${++i}: ${userOwnedRole === role ? "Remove" : "Switch to"} <@&${role}>\n`;
+                        } else {
+                            outputString += `${++i}: Equip <@&${role}>\n`;
+                        }
+                        returnHash[i] = role;
+                    }
+                }
                 break;
 
+            //  count how many roles in the group the user has
+            //  provide available options
             default:
-                // todo
-                //  count how many roles in the group the user has
-                //  provide available options
+                let userRoleCount = 0;
+                for(let role in guild.selfAssignedRoles[groupStr]) {
+                    if(userHasRole(role)){
+                        userRoleCount++;
+                    }
+                }
+                i = 0;
+                for(let role in guild.selfAssignedRoles[groupStr]){
+                    if(userRoleCount < guild.selfAssignedRoles[groupStr].max || userHasRole(role)) {
+                        if (role.length === Constants.GuidLength) {
+                            outputString += `${++i}: ${userHasRole(role) ? "Remove" : "Equip"} <@&${role}>\n`;
+                            returnHash[i] = role;
+                        }
+                    }
+                }
                 break;
         }
 
