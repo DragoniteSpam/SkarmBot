@@ -2115,19 +2115,25 @@ module.exports = {
 
         execute(bot, e, userData, guildData) {
 			let target = e.message.author.id;
-			let tok =commandParamTokens(e.message.content);
+			let tok = commandParamTokens(e.message.content);
+			let outputBase = " ";
 			if(tok.length===1){
-				tok = tok[0].replace("<","").replace("@","").replace(">","").replace("!","");
-				if(!(tok in guildData.expTable)){
+				let user = guildData.resolveUser(tok[0]);
+				if(Array.isArray(user)){
+				    outputBase =`Multiple users (${user.length}) identified as potential matches.  Please refine query.`;
+				    user = user[0];
+                }
+				if(!user || !(user.id in guildData.expTable)){
 					Skarm.sendMessageDelay(e.message.channel,"Error: this user may have not talked at all or you didn't mention them properly.");
 					return;
 				}
-				target = tok;
+				target = user.id;
 			}
+
 			let user = guildData.expTable[target];
 			let exp = user.exp - 0;
 			let lvl = user.level;
-			let toNextLvl = user.nextLevelEXP-exp;
+			let toNextLvl = user.nextLevelEXP - exp;
 			let targetEntity = bot.client.Users.get(target);
 			let guildMembers = e.message.guild.members;
 			let targetNick;
@@ -2136,7 +2142,7 @@ module.exports = {
             }
 
 			//https://discordjs.guide/popular-topics/embeds.html#embed-preview
-            e.message.channel.sendMessage(" ", false, {
+            e.message.channel.sendMessage(outputBase, false, {
                 color: Skarm.generateRGB(),
                 author: {name: Users.get(target).nickName || targetNick || targetEntity.username || target},
                 timestamp: new Date(),
