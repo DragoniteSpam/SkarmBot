@@ -1899,12 +1899,12 @@ module.exports = {
             let populateAvailableGroups = function() {
                 let i=0;
                 for (let group in sarTreeRoot) {
-                    if(Object.keys(sarTreeRoot[group]).length) {      // check if any roles are in the group
+                    if(sarTreeRoot[group].hasRoles()) {      // check if any roles are in the group
                         outputString += ++i + ": `" + group + "` \n";
                         nonEmptyGroups[i] = group;
                     }
                 }
-                outputString += "c: cancel\n";
+                    outputString += "`c`: Cancel\n";
             }
 
             let selectRoleFromGroup = function(e) {
@@ -1921,7 +1921,7 @@ module.exports = {
                     userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
                     return;
                 }
-                let targetRole = userData.transcientActionStateData[e.message.channel.id].validRoles[e.message.content];
+                let targetRole = userData.transcientActionStateData[e.message.channel.id].validRoles[e.message.content].role;
 
                 // get member roles
                 let userGuildRoles = e.message.member.roles;
@@ -1940,64 +1940,13 @@ module.exports = {
                     return;
                 }
 
+                let roleDeltas = sarTreeRoot[userData.transcientActionStateData[e.message.channel.id].group].requestRoleToggle(targetRole, e.message.member);
 
-                // handle toggle case (max = 1) (accept string "1" or num 1 (==))
-                if(sarTreeRoot[userData.transcientActionStateData[e.message.channel.id].group].max == 1){
-                    let roleShouldBeAssigned = true;
-                    // purge all roles in group for user
-                    for(let i = 0; i < userGuildRoles.length; i++){
-                        for(let j in userData.transcientActionStateData[e.message.channel.id].validRoles){
-                            if(userGuildRoles[i].id === userData.transcientActionStateData[e.message.channel.id].validRoles[j]){
-                                if (userGuildRoles[i].id === role.id) {roleShouldBeAssigned = false;}
-                                outputString += `Removed role: ${userGuildRoles.splice(i--, 1)[0].name}\n`;
-                            }
-                        }
-                    }
-
-                    if(roleShouldBeAssigned){
-                        let j = 0;
-                        for(let i in allGuildRoles){
-                            if(allGuildRoles[i].id === role.id){
-                                userGuildRoles.splice(i, 0, role);
-                                outputString += `Added role: ${role.name}\n`;
-                                break;
-                            }
-                            if(userGuildRoles.length > j && allGuildRoles[i].id === userGuildRoles[j].id){
-                                j++;
-                            }
-                        }
-                    }
-
-                    e.message.member.setRoles(userGuildRoles);
-
-                } else {
-                    // toggle role based on user input
-                    for (let userRole of userGuildRoles) {
-                        if (userRole.id === role.id) {
-                            e.message.member.unassignRole(role);
-
-                            Skarm.sendMessageDelay(e.message.channel, " ", false,
-                                {
-                                    color: Skarm.generateRGB(),
-                                    author: {name: e.message.author.nick},
-                                    description: `Role ${role.name} removed.`,
-                                    timestamp: new Date(),
-                                    footer: {text: "SAR"}
-                                });
-
-                            // delete priors
-                            userData.deleteTransientMessagePrev(e.message.channel.id);
-                            e.message.delete();
-
-                            return;
-                        }
-                    }
-                    e.message.member.assignRole(role);
-                    outputString = `Role ${role.name} added.`;
+                for(let delta of roleDeltas){
+                    outputString += `${delta.change} role: <@&${delta.role}>\n`;
                 }
 
-                Skarm.sendMessageDelay(e.message.channel, " ", false,
-                    {
+                Skarm.sendMessageDelay(e.message.channel, " ", false, {
                         color: Skarm.generateRGB(),
                         author: {name: e.message.author.nick},
                         description: outputString,
@@ -2029,12 +1978,36 @@ module.exports = {
 
                 // display roles in selected group
                 let group = nonEmptyGroups[messageContent];
-                if(!userData.transcientActionStateData[channel.id]) userData.transcientActionStateData[channel.id] = { };
-                userData.transcientActionStateData[channel.id].validRoles = guildData.printRolesInGroup(group, userData, channel, e.message.member);      // sends message containing available roles, returns those roles as a hashmap of valid entities
+                if(!userData.transcientActionStateData[channel.id])
+                    userData.transcientActionStateData[channel.id] = { };
+
+                let vr = sarTreeRoot[group].getAvailableRoles(e.message.member);
+                userData.transcientActionStateData[channel.id].validRoles = vr; //guildData.printRolesInGroup(group, userData, channel, e.message.member);      // sends message containing available roles, returns those roles as a hashmap of valid entities
                 userData.transcientActionStateData[channel.id].group = group;
 
                 // set state to role selection
                 userData.setActionState(selectRoleFromGroup, channel.id, 60);
+
+                let outputString = "Available Roles:\n";
+
+                // i - indexed role-action pair, vr - valid roles
+                for(let i in vr){
+                    outputString += `\`${i}\`: ${vr[i].action} role: <@&${vr[i].role}>\n`;
+                }
+
+                outputString += "`c`: Cancel\n";
+
+                Skarm.sendMessageDelay(channel," ",false, {
+                        color: Skarm.generateRGB(),
+                        description: outputString,
+                        timestamp: new Date(),
+                        footer: {text: "SAR"}
+                    },
+                    // Add next-state instruction to delete prior message
+                    (message, err) => {
+                        userData.transcientActionStateData[channel.id].deleteMessage = message.id;
+                    }
+                );
             }
 
             let selectGroupHandler = function(e) {
@@ -2048,26 +2021,35 @@ module.exports = {
              * Initialization
              */
 
-            populateAvailableGroups();
-            outputString = "";          // clear output string after it is set during population
+            // populateAvailableGroups();
+            // outputString = "";          // clear output string after it is set during population
 
             /**
              * Case handling
              */
 
+            outputString = "Available groups: \n";
+            populateAvailableGroups();
+
             // Default Case: no arguments
             if(action === undefined){
-                outputString = "Available groups: \n";
-                populateAvailableGroups();
-                if (Object.keys(nonEmptyGroups).length === 0){
-                    outputString = "No populated self-assigned role groups exist.\nCreate a group with `e@csar add YourGroupName`!\nAdd a role to a group with `e@csar YourGroupName add @Bees`";
-                }else{
-                    outputString += "\nSelect a group!";
-                    userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
+                let nonEmptyGroupCount = Object.keys(nonEmptyGroups).length;
+                switch (nonEmptyGroupCount){
+                    case 0:
+                        outputString = "No populated self-assigned role groups exist.\nCreate a group with `e@csar add YourGroupName`!\nAdd a role to a group with `e@csar YourGroupName add @Bees`";
+                        break;
+                    case 1:
+                        // autoselect the only group
+                        selectGroup(e.message.channel, Object.keys(nonEmptyGroups)[0]);
+                        return;
+
+                    default:
+                        outputString += "\nSelect a group!";
+                        userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
                 }
             }
 
-            // todo action == remove All
+            // todo Case: action == remove All
 
             // Case: action == group Name -> skip a menu
             for(let idx in nonEmptyGroups){
@@ -2077,17 +2059,13 @@ module.exports = {
                 }
             }
             
-            Skarm.sendMessageDelay(e.message.channel,
-                " ",
-                false,
-                {
+            Skarm.sendMessageDelay(e.message.channel, " ", false, {
                     color: Skarm.generateRGB(),
                     author: {name: e.message.author.nick},
                     description: outputString,
                     timestamp: new Date(),
                     footer: {text: "SAR"}
                 },
-
                 // Add next-state instruction to delete prior message
                 (message, err) => {
                     userData.transcientActionStateData[e.message.channel.id] = {deleteMessage: message.id};

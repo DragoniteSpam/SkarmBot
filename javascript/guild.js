@@ -143,72 +143,7 @@ const linkFunctions = function(guild) {
      * @returns {{num -> roleID}}
      */
     guild.printRolesInGroup = function (groupStr, userData, channel, member) {
-        let userHasRole = function(roleID){
-            for(let role of member.roles){
-                if(role.id === roleID) return true;
-            }
-            return false;
-        }
-
         let outputString = "Available Roles:\n";
-        let returnHash = { };
-        let i = 0;
-        switch(guild.selfAssignedRoles[groupStr].max){
-            case undefined:
-            case 0:
-                i = 0;
-                for(let role in guild.selfAssignedRoles[groupStr]){
-                    if (role.length === Constants.GuidLength) {
-                        outputString += `${++i}: ${userHasRole(role) ? "Remove" : "Equip"} <@&${role}>\n`;
-                        returnHash[i] = role;
-                    }
-                }
-                break;
-
-            //
-            // check which role from the group the user has
-            // provide available options as switch-outs
-            case 1:
-                let userOwnedRole;
-                for(let role in guild.selfAssignedRoles[groupStr]) {
-                    if(userHasRole(role)){
-                        userOwnedRole = role;
-                    }
-                }
-                i = 0;
-                for(let role in guild.selfAssignedRoles[groupStr]) {
-                    if (role.length === Constants.GuidLength) {
-                        if (userOwnedRole) {
-                            outputString += `${++i}: ${userOwnedRole === role ? "Remove" : "Switch to"} <@&${role}>\n`;
-                        } else {
-                            outputString += `${++i}: Equip <@&${role}>\n`;
-                        }
-                        returnHash[i] = role;
-                    }
-                }
-                break;
-
-            //  count how many roles in the group the user has
-            //  provide available options
-            default:
-                let userRoleCount = 0;
-                for(let role in guild.selfAssignedRoles[groupStr]) {
-                    if(userHasRole(role)){
-                        userRoleCount++;
-                    }
-                }
-                i = 0;
-                for(let role in guild.selfAssignedRoles[groupStr]){
-                    if(userRoleCount < guild.selfAssignedRoles[groupStr].max || userHasRole(role)) {
-                        if (role.length === Constants.GuidLength) {
-                            outputString += `${++i}: ${userHasRole(role) ? "Remove" : "Equip"} <@&${role}>\n`;
-                            returnHash[i] = role;
-                        }
-                    }
-                }
-                break;
-        }
-
         outputString += "c: cancel\n";
 
         Skarm.sendMessageDelay(channel," ",false,

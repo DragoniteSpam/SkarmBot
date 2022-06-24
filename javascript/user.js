@@ -115,7 +115,7 @@ const linkFunctions = function(user) {
     user.deleteTransientMessagePrev = function(channelID){
         let transientData = this.transcientActionStateData[channelID];
 
-        if(transientData.deleteMessage){
+        if(transientData && transientData.deleteMessage){
             let message = Constants.client.Messages.get(transientData.deleteMessage);
             if(!message.deleted){
                 message.delete();                   // send request for discord to delete message
