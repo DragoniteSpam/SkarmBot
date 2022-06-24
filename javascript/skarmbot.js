@@ -313,18 +313,20 @@ class Bot {
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         let helpData = this.mapping.help[first];
-        if (cmdData || helpData) {
-            let data = cmdData || helpData;
+        let data = cmdData || helpData;
+        if (data) {
             if (!guildData.hiddenChannels[e.message.channel.id] || !data.ignoreHidden) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and
                 // you don't otherwise have a way to reference it
                 if (guildData.hasPermissions(userData, data.perms)) {
-                    if(cmdData)
+                    if(cmdData) {
                         data.execute(this, e, userData, guildData);
-                    if(helpData)
+                    }
+                    if(helpData) {
                         data.help(this, e);
+                    }
                 } else {
                     Skarm.sendMessageDelay(e.message.channel, "**" + author.username +
                         "** was not found in the sudoers file. This incident will" +
