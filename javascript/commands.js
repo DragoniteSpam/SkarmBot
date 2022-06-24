@@ -1911,7 +1911,7 @@ module.exports = {
                 let outputString = "";
                 // Check cancellation condition
                 if(e.message.content.toLowerCase() === "c") {
-                    Skarm.sendMessageDelay(e.message.channel, "Cancelled");
+                    Skarm.sendMessage(e.message.channel, "Cancelled");
                     return;
                 }
 
@@ -1946,7 +1946,7 @@ module.exports = {
                     outputString += `${delta.change} role: <@&${delta.role}>\n`;
                 }
 
-                Skarm.sendMessageDelay(e.message.channel, " ", false, {
+                Skarm.sendMessage(e.message.channel, " ", false, {
                         color: Skarm.generateRGB(),
                         author: {name: e.message.author.nick},
                         description: outputString,
@@ -1965,7 +1965,7 @@ module.exports = {
             let selectGroup = function(channel, messageContent) {
                 // handle cancellations first
                 if(messageContent.toLowerCase() === "c") {
-                    Skarm.sendMessageDelay(channel, "Cancelled");
+                    Skarm.sendMessage(channel, "Cancelled");
                     return;
                 }
 
@@ -1997,7 +1997,7 @@ module.exports = {
 
                 outputString += "`c`: Cancel\n";
 
-                Skarm.sendMessageDelay(channel," ",false, {
+                Skarm.sendMessage(channel," ",false, {
                         color: Skarm.generateRGB(),
                         description: outputString,
                         timestamp: new Date(),
@@ -2059,7 +2059,7 @@ module.exports = {
                 }
             }
             
-            Skarm.sendMessageDelay(e.message.channel, " ", false, {
+            Skarm.sendMessage(e.message.channel, " ", false, {
                     color: Skarm.generateRGB(),
                     author: {name: e.message.author.nick},
                     description: outputString,
