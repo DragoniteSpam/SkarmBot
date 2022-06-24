@@ -41,9 +41,11 @@ let linkFunctions = function (sarGroup){
     }
 
     /**
-     * Accepts any number input, casts to a natural number quantity of roles that can be equipped from the group.
+     * Accepts any number input, casts to a natural number
+     * quantity of roles that can be equipped from the group.
      *
-     * @param newMax the amount of roles that can be equipped simultaneously from the group
+     * @param newMax the amount of roles that can be equipped
+     *          simultaneously from the group
      * @returns {number} the amount that has been set in memory
      */
     sarGroup.setMax = function (newMax) {
@@ -57,10 +59,18 @@ class SarGroup {
     constructor(guildId, groupName, max= 0) {
         this.name = groupName;
         this.guildId = guildId; // the GUID of the guild
-        this.max = 0;           // the maximum number of roles that any member can equip from the guild.
-                                //  special case max = 0: unlimited roles
-                                //  special case max = 1: requesting one role removes currently equipped one from group
-        this.roles = { };       // the IDs of the roles that can be equipped from the group.
+
+        /**
+         * the maximum number of roles that any member can equip from the guild.
+         * special case max = 0:
+         *   unlimited roles
+         * special case max = 1:
+         *   requesting one role removes currently equipped roles in the group from the user
+        */
+        this.max = 0;
+
+        // the IDs of the roles that can be equipped from the group.
+        this.roles = { };
 
         SarGroup.initialize(this);
     }
