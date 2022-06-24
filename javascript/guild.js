@@ -81,7 +81,7 @@ const linkFunctions = function(guild) {
      * @returns An IUser corresponding to the userid it's an ID or Discord username, or an array of users if more than one user matches the userid if it's a server nickname
      */
     guild.resolveUser = function(userid) {
-        let members = self.resolveMember(userid);
+        let members = this.resolveMember(userid);
         if (members === null) return null;
         if (Array.isArray(members)) {
             for (let i = 0; i < members.length; i++) {
@@ -105,21 +105,22 @@ const linkFunctions = function(guild) {
      * @returns An IGuildMember corresponding to the userid if it's an ID or Discord username, or an array of members if more than one member matches the userid if it's a server nickname
      */
     guild.resolveMember = function(userid) {
+        userid = userid.trim().replace("<","").replace("@","").replace(">","").replace("!","").toLowerCase();    // clean up data
         let server = Guild.client.Guilds.get(this.id);
         let members = server.members;
-        for (let i = 0; i < members.length; i++) {
-            let member = members[i];
-            if (member.id == userid) return member;
-            if (member.username + "#" + member.discriminator == userid) return member;
+        for (let member of members) {
+            if (member.id === userid) return member;
+            if (member.username.toLowerCase() === userid) return member;
         }
+
         let potential = [];
-        for (let i = 0; i < members.length; i++) {
-            if (members[i].nick.startsWith(userid)) {
-                potential.push(members[i]);
+        for (let member of members) {
+            if (member.username && member.username.toLowerCase().includes(userid) || member.nick && member.nick.toLowerCase().includes(userid)) {
+                potential.push(member);
             }
         }
-        if (potential.length == 0) return null;
-        if (potential.length == 1) return potential[0];
+        if (potential.length === 0) return null;
+        if (potential.length === 1) return potential[0];
         return potential;
     };
 
