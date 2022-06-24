@@ -7,6 +7,8 @@ const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 const Users = require("./user.js");
 
+const SarGroups = require("./guildClasses/sar.js");
+
 const guilddb = "../skarmData/guilds.penguin";
 
 const MIN_LINES = 40;
@@ -68,6 +70,10 @@ const linkVariables = function(guild) {
 
 // since de/serialized objects don't keep their functions
 const linkFunctions = function(guild) {
+    for(let groupName in guild.selfAssignedRoles){
+        SarGroups.initialize(guild.selfAssignedRoles[groupName]);
+    }
+
     /**
      * Fetch the IUser object(s) representing a user in the current server
      * Examples:
@@ -1229,18 +1235,11 @@ class Guild {
 
         /**
          * Role hive root.  Structure:
-         * Key[string]: role category (e.g. "games of interest")
-         * Value: Roles object: {
-         *     key[ID]: guild.role.id
-         *     Value: true
-         * }
+         * Key[string]: role group object (e.g. "games of interest")
          *
          * e.g. this.selfAssignedRoles = {
-         *     "Games": {
-         *         "max": 0,                        // the maximum amount of roles that can be equipped from this group (0 -> unlimited)
-         *         "300090020080700300": true,      // some role that can be equipped
-         *         "300090020080700300": true,      // some other role that can also be equipped
-         *     }
+         *     "Games": Class SarGroup(guild, "Games"),
+         *     "Sports": Class SarGroup(guild, "Sports"),
          * }
          */
 		this.selfAssignedRoles = { };

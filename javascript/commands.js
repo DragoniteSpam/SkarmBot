@@ -1,14 +1,16 @@
 "use strict";
-const Skarm = require("./skarm.js");
-const Constants = require("./constants.js");
-const Web = require("./web.js");
 const os = require("os");
 const request = require("request");
 
+const Skarm = require("./skarm.js");
+const Constants = require("./constants.js");
+const Web = require("./web.js");
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
+
+const SarGroups = require("./guildClasses/sar.js");
 
 let commandParamTokens = function(message) {
     let tokens = message.trim().split(" ");
@@ -1732,7 +1734,7 @@ module.exports = {
                 for(let groupToAdd of tokens) {
                     if (groupToAdd in reservedHash) continue;
                     if (!(groupToAdd in sarTreeRoot)){
-                        sarTreeRoot[groupToAdd] = { };
+                        sarTreeRoot[groupToAdd] = new SarGroups(guildData.id, groupToAdd);
                         outputString += `Added group: `+groupToAdd+`\n`;
                     }
                 }
@@ -1761,6 +1763,7 @@ module.exports = {
                     }else{
                         sarTreeRoot[newName] = sarTreeRoot[oldName];
                         delete sarTreeRoot[oldName];
+                        sarTreeRoot[newName].rename(newName);
                         outputString += "renamed group " + oldName + " to " + newName;
                     }
                 }
@@ -1776,9 +1779,8 @@ module.exports = {
                 //list
                 if(action === undefined){
                     outputString = "Roles in group " + groupStr + ":\n";
-                    for(let key in groupObj){
-                        if(key.length === Constants.GuidLength)
-                            outputString += `<@&${key}>, `;
+                    for(let roleID of groupObj.getRoles()){
+                            outputString += `<@&${roleID}>, `;
                     }
                     outputString = outputString.substring(0,outputString.length-2);
 
@@ -1797,8 +1799,11 @@ module.exports = {
                             }
                         }
                         if (roleAddable) {
-                            sarTreeRoot[groupStr][roleAddable] = true;
-                            outputString += `Added role <@&${roleAddable}> to group `+ groupStr + "\n";
+                            if(groupObj.addRoleToGroup(roleAddable)) {
+                                outputString += `Added role <@&${roleAddable}> to group ` + groupStr + "\n";
+                            }else {
+                                outputString += `Role <@&${roleAddable}> was already in group ` + groupStr + "\n";
+                            }
                         } else {
                             outputString += "Target `" + roleToAdd + "` not found.\n";
                         }
@@ -1814,39 +1819,36 @@ module.exports = {
                                 removeID = role.id;
                             }
                         }
-                        delete sarTreeRoot[groupStr][removeID];
-                        outputString += `Removed role <@&${removeID}> from group `+ groupStr+ "\n";
+                        if (groupObj.removeRoleFromGroup(removeID)) {
+                            outputString += `Removed role <@&${removeID}> from group ` + groupStr + "\n";
+                        }else{
+                            outputString += `Role <@&${removeID}> was not in group ` + groupStr + "\n";
+                        }
                     }
                 }
 
                 // clear all data from group
                 if(action==="clear") {
-                    sarTreeRoot[groupStr] = { };
-                    outputString += "Cleared all data from group: " + groupStr +"\n";
+                    sarTreeRoot[groupStr] = new SarGroups(e.message.guild.id, groupStr);
+                    outputString += "Hard reset applied to group: " + groupStr +"\n";
                 }
 
                 // max
                 if(action === "max") {
                     if(tokens.length) {
-                        if (tokens[0] === "0") {                  // clear
-                            delete groupObj["max"];
-                        }
-
-                        let max = tokens[0] - 0;
-                        if (!isNaN(max) && max > 0) {             // set
-                            groupObj.max = Math.floor(max);
-                        }else{
-                            outputString = "";
+                        let newMRC = groupObj.setMax(tokens[0]);
+                        if(newMRC)
+                            outputString = "Maximum roles for group set to: " + newMRC;
+                        else
+                            outputString = "Role maximum for group removed";
+                    } else {
+                        // default: get
+                        if (groupObj.max) {
+                            outputString = `Maximum number of roles that can be equipped from ${groupStr}: ${groupObj.max}`;
+                        } else {
+                            outputString = "Unlimited roles can be equipped from group: " + groupStr;
                         }
                     }
-
-                    // default: get
-                    if(groupObj.max){
-                        outputString = `Maximum number of roles that can be equipped from ${groupStr}: ${groupObj.max}`;
-                    }else{
-                        outputString = "Unlimited roles can be equipped from group: " + groupStr;
-                    }
-
                 }
             }
 

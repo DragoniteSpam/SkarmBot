@@ -669,9 +669,16 @@ class Bot {
     // i can't say i care enough to deal with promises and async.
     getSpaghetti() {
         let lines = 0;
-        let files = fs.readdirSync("./javascript/");
-        for (let i in files) {
-            lines = lines + this.lineCount("./javascript/" + files[i]);
+        let dirPaths = [
+            "./javascript/",
+            "./javascript/guildClasses/"
+        ];
+        for(let dirPath of dirPaths) {
+            let files = fs.readdirSync(dirPath);
+            for (let i in files) {
+                if (files[i].includes(".js"))
+                    lines = lines + this.lineCount(dirPath + files[i]);
+            }
         }
         return lines + this.lineCount("./bot.js");
     }
