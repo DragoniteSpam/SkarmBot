@@ -1923,7 +1923,7 @@ module.exports = {
                 }
                 let targetRole = userData.transcientActionStateData[e.message.channel.id].validRoles[e.message.content].role;
 
-                let role = null;
+                let role;
                 for(let guildRole of e.message.guild.roles) {
                     if(guildRole.id === targetRole) {
                         role = guildRole;
@@ -1931,8 +1931,8 @@ module.exports = {
                     }
                 }
 
-                if(role === null){
-                    Skarm.sendMessageDelete(e.message.channel, "Error: target role is null. Please try again or `c` to cancel.", 60000, e.message.author.id, bot);
+                if(!role){
+                    Skarm.sendMessageDelete(e.message.channel, "Error: target role not found. Please try again or `c` to cancel.", 60000, e.message.author.id, bot);
                     return;
                 }
 
