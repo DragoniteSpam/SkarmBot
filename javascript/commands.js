@@ -2018,15 +2018,13 @@ module.exports = {
              * Initialization
              */
 
-            // populateAvailableGroups();
-            // outputString = "";          // clear output string after it is set during population
+            outputString = "Available groups: \n";
+            populateAvailableGroups();
 
             /**
              * Case handling
              */
 
-            outputString = "Available groups: \n";
-            populateAvailableGroups();
 
             // Default Case: no arguments
             if(action === undefined){
