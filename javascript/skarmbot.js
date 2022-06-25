@@ -207,7 +207,7 @@ class Bot {
 					changes += ", ";
                 }
 			}
-			Skarm.log(changes);
+			Skarm.spam(changes);
 		}
 		if (e.rolesAdded.length > 0){
 			let changes = "Roles added for " + e.member.username + " in " + e.guild.name + ": ";
@@ -300,21 +300,33 @@ class Bot {
         let text = e.message.content.toLowerCase();
         let first = text.split(" ")[0];
 
+        // check if message has prior commitments to attend to in the channel
+        let userChannelState = userData.actionState[e.message.channel.id];
+        if(userChannelState){
+            let handler = userChannelState.handler;              // save handler
+            clearTimeout(userChannelState.timeout);              // destroy timeout
+            delete userData.actionState[e.message.channel.id];   // destroy state remnant
+            handler(e);                                          // handle state
+            return;
+        }
+
         // this is where all of the command stuff happens
         let cmdData = this.mapping.cmd[first];
         let helpData = this.mapping.help[first];
-        if (cmdData || helpData) {
-            let data = cmdData || helpData;
+        let data = cmdData || helpData;
+        if (data) {
             if (!guildData.hiddenChannels[e.message.channel.id] || !data.ignoreHidden) {
                 // i'm not a fan of needing to pass "this" as a parameter to you
                 // own functions, but javascript doesn't seem to want to execute
                 // functions called in this way in the object's own scope and
                 // you don't otherwise have a way to reference it
                 if (guildData.hasPermissions(userData, data.perms)) {
-                    if(cmdData)
+                    if(cmdData) {
                         data.execute(this, e, userData, guildData);
-                    if(helpData)
+                    }
+                    if(helpData) {
                         data.help(this, e);
+                    }
                 } else {
                     Skarm.sendMessageDelay(e.message.channel, "**" + author.username +
                         "** was not found in the sudoers file. This incident will" +
@@ -657,9 +669,16 @@ class Bot {
     // i can't say i care enough to deal with promises and async.
     getSpaghetti() {
         let lines = 0;
-        let files = fs.readdirSync("./javascript/");
-        for (let i in files) {
-            lines = lines + this.lineCount("./javascript/" + files[i]);
+        let dirPaths = [
+            "./javascript/",
+            "./javascript/guildClasses/"
+        ];
+        for(let dirPath of dirPaths) {
+            let files = fs.readdirSync(dirPath);
+            for (let i in files) {
+                if (files[i].includes(".js"))
+                    lines = lines + this.lineCount(dirPath + files[i]);
+            }
         }
         return lines + this.lineCount("./bot.js");
     }

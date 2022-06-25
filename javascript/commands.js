@@ -1,14 +1,16 @@
 "use strict";
-const Skarm = require("./skarm.js");
-const Constants = require("./constants.js");
-const Web = require("./web.js");
 const os = require("os");
 const request = require("request");
 
+const Skarm = require("./skarm.js");
+const Constants = require("./constants.js");
+const Web = require("./web.js");
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
+
+const SarGroups = require("./guildClasses/sar.js");
 
 let commandParamTokens = function(message) {
     let tokens = message.trim().split(" ");
@@ -617,29 +619,29 @@ module.exports = {
         execute(bot, e, userData, guildData) {
             let version = Math.floor(Math.random() * 0xffffffff);
             Skarm.sendMessageDelay(e.message.channel,
-`**Skarm Bot 2**\n
-Lead spaghetti chef: Dragonite#7992
-Seondary spaghetti chef: ArgoTheNaut#9716
-Version: ${version}
-
-Library: Discordie (JavaScript):
-<https://qeled.github.io/discordie/#/?_k=m9kij6>
-
-Dragonite:
-<https://www.youtube.com/c/dragonitespam>
-<https://github.com/DragoniteSpam/SkarmBot>
-
-Argo:
-<https://github.com/ArgoTheNaut>
-
-Extra ideas came from SuperDragonite2172, willofd2011, and probably other people.
-
-Thanks to basically everyone on the Kingdom of Zeal server for testing this bot, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
-
-Wolfram-Alpha is awesome:
-<https://www.npmjs.com/package/node-wolfram>
-
-Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Carlin, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
+            `**Skarm Bot 2**\n
+            Lead spaghetti chef: Dragonite#7992
+            Seondary spaghetti chef: ArgoTheNaut#9716
+            Version: ${version}
+            
+            Library: Discordie (JavaScript):
+            <https://qeled.github.io/discordie/#/?_k=m9kij6>
+            
+            Dragonite:
+            <https://www.youtube.com/c/dragonitespam>
+            <https://github.com/DragoniteSpam/SkarmBot>
+            
+            Argo:
+            <https://github.com/ArgoTheNaut>
+            
+            Extra ideas came from SuperDragonite2172, willofd2011, and probably other people.
+            
+            Thanks to basically everyone on the Kingdom of Zeal server for testing this bot, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
+            
+            Wolfram-Alpha is awesome:
+            <https://www.npmjs.com/package/node-wolfram>
+            
+            Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Carlin, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
             );
         },
         
@@ -1698,6 +1700,9 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             {command: "e@csar Games remove Terraria", effect: "Will remove the role @Terraria from the SAR group `Games`."},
             {command: "e@csar Games remove Terraria, Warframe, Factorio", effect: "Will remove the roles @Terraria, @Warframe, and @Factorio to the SAR group `Games`."},
             {command: "e@csar Games clear", effect: "Will remove all roles from the SAR group `Games`."},
+            {command: "e@csar Games max", effect: "Will report the amount of roles from the group `Games` that can be equipped."},
+            {command: "e@csar Games max 0", effect: "Will remove the limit for the amount of roles from the group `Games` that can be equipped."},
+            {command: "e@csar Games max 2", effect: "Will set the limit for the amount of roles from the group `Games` that can be equipped to 2 roles."},
         ],
         ignoreHidden: false,
         perms: Permissions.MOD,
@@ -1729,7 +1734,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                 for(let groupToAdd of tokens) {
                     if (groupToAdd in reservedHash) continue;
                     if (!(groupToAdd in sarTreeRoot)){
-                        sarTreeRoot[groupToAdd] = { };
+                        sarTreeRoot[groupToAdd] = new SarGroups(guildData.id, groupToAdd);
                         outputString += `Added group: `+groupToAdd+`\n`;
                     }
                 }
@@ -1758,30 +1763,33 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                     }else{
                         sarTreeRoot[newName] = sarTreeRoot[oldName];
                         delete sarTreeRoot[oldName];
+                        sarTreeRoot[newName].rename(newName);
                         outputString += "renamed group " + oldName + " to " + newName;
                     }
                 }
             }
 
             if(action in sarTreeRoot) {
-                let group = action;
+                let groupStr = action;
+                let groupObj = sarTreeRoot[groupStr];
                 action = tokens.shift();
 
-                // repeat with role actions
+                // role actions available
 
                 //list
                 if(action === undefined){
-                    outputString = "Roles in group " + group + ":\n";
-                    for(let role in sarTreeRoot[group]){
-                        outputString += `<@&${role}>, `;
+                    outputString = "Roles in group " + groupStr + ":\n";
+                    for(let roleID of groupObj.getRoles()){
+                            outputString += `<@&${roleID}>, `;
                     }
-                    outputString=outputString.substring(0,outputString.length-2);
-                    if (Object.keys(sarTreeRoot[group]).length === 0){
-                        outputString = "No self-assigned roles in this group!\nAdd them with `e@csar " + group + " add RoleName`!";
+                    outputString = outputString.substring(0,outputString.length-2);
+
+                    if (Object.keys(groupObj).length === 0){
+                        outputString = "No self-assigned roles in this group!\nAdd them with `e@csar " + groupStr + " add RoleName`!";
                     }
                 }
 
-                // add
+                // add roles to the group
                 if(action==="add"){
                     for(let roleToAdd of tokens) {
                         let roleAddable = false;
@@ -1791,15 +1799,18 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                             }
                         }
                         if (roleAddable) {
-                            sarTreeRoot[group][roleAddable] = true;
-                            outputString += `Added role <@&${roleAddable}> to group `+ group + "\n";
+                            if(groupObj.addRoleToGroup(roleAddable)) {
+                                outputString += `Added role <@&${roleAddable}> to group ` + groupStr + "\n";
+                            }else {
+                                outputString += `Role <@&${roleAddable}> was already in group ` + groupStr + "\n";
+                            }
                         } else {
                             outputString += "Target `" + roleToAdd + "` not found.\n";
                         }
                     }
                 }
 
-                // remove
+                // remove roles from the group
                 if(action==="remove") {
                     for (let roleToRem of tokens) {
                         let removeID = false;
@@ -1808,15 +1819,36 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
                                 removeID = role.id;
                             }
                         }
-                        delete sarTreeRoot[group][removeID];
-                        outputString += `Removed role <@&${removeID}> from group `+ group+ "\n";
+                        if (groupObj.removeRoleFromGroup(removeID)) {
+                            outputString += `Removed role <@&${removeID}> from group ` + groupStr + "\n";
+                        }else{
+                            outputString += `Role <@&${removeID}> was not in group ` + groupStr + "\n";
+                        }
                     }
                 }
 
-                // clear
+                // clear all data from group
                 if(action==="clear") {
-                    sarTreeRoot[group] = { };
-                    outputString += "Cleared all roles from group: " + group +"\n";
+                    sarTreeRoot[groupStr] = new SarGroups(e.message.guild.id, groupStr);
+                    outputString += "Hard reset applied to group: " + groupStr +"\n";
+                }
+
+                // max
+                if(action === "max") {
+                    if(tokens.length) {
+                        let newMRC = groupObj.setMax(tokens[0]);
+                        if(newMRC)
+                            outputString = "Maximum roles for group set to: " + newMRC;
+                        else
+                            outputString = "Role maximum for group removed";
+                    } else {
+                        // default: get
+                        if (groupObj.max) {
+                            outputString = `Maximum number of roles that can be equipped from ${groupStr}: ${groupObj.max}`;
+                        } else {
+                            outputString = "Unlimited roles can be equipped from group: " + groupStr;
+                        }
+                    }
                 }
             }
 
@@ -1833,7 +1865,212 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             Skarm.help(this, e);
         },
     },
+    SAR: {
+        aliases: ["sar", "getrole"],
+        params: ["group"],
+        usageChar: "!",
+        helpText: "Equip self-assigned roles.",
+        examples: [
+            {command: "e!sar", effect: "Will list the available role groups to pick from."},
+            {command: "e!sar games", effect: "Will list the available roles in the `games` group."},
+        ],
+        ignoreHidden: false,
+        perms: Permissions.BASE,
+        category: "administrative",
 
+        execute(bot, e, userData, guildData) {
+            /**
+             * Global variables
+             */
+
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let action = tokens.shift();
+            let sarTreeRoot = guildData.selfAssignedRoles;
+            let nonEmptyGroups = { };
+            let outputString = "Unknown argument";
+
+            /**
+             * Functions
+             */
+
+            // populate non-empty role groups for user selection
+            // this function modifies outputStrings and populates nonEmptyGroups `global` variables
+            let populateAvailableGroups = function() {
+                let i=0;
+                for (let group in sarTreeRoot) {
+                    if(sarTreeRoot[group].hasRoles()) {      // check if any roles are in the group
+                        outputString += `\`${++i}\`: ${group}\n`;
+                        nonEmptyGroups[i] = group;
+                    }
+                }
+                    outputString += "`c`: Cancel\n";
+            }
+
+            let selectRoleFromGroup = function(e) {
+                let outputString = "";
+                // Check cancellation condition
+                if(e.message.content.toLowerCase() === "c") {
+                    Skarm.sendMessage(e.message.channel, "Cancelled");
+                    return;
+                }
+
+                // filter invalid input
+                if(!(e.message.content in userData.transcientActionStateData[e.message.channel.id].validRoles)){
+                    Skarm.sendMessageDelete(e.message.channel, "Error: target role not found. Please try again or `c` to cancel.", undefined, undefined, 60000, e.message.author.id, bot);
+                    userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
+                    return;
+                }
+
+                let targetRole = userData.transcientActionStateData[e.message.channel.id].validRoles[e.message.content].role;
+
+                let role;
+                for(let guildRole of e.message.guild.roles) {
+                    if(guildRole.id === targetRole) {
+                        role = guildRole;
+                        break;
+                    }
+                }
+
+                if(!role){
+                    Skarm.sendMessageDelete(e.message.channel, "Error: target role not found. Please try again or `c` to cancel.", 60000, e.message.author.id, bot);
+                    return;
+                }
+
+                let roleDeltas = sarTreeRoot[userData.transcientActionStateData[e.message.channel.id].group].requestRoleToggle(targetRole, e.message.member);
+
+                for(let delta of roleDeltas) {
+                    outputString += `${delta.change} role: <@&${delta.role}>\n`;
+                }
+
+                Skarm.sendMessage(e.message.channel, " ", false, {
+                        color: Skarm.generateRGB(),
+                        author: {name: e.message.author.nick},
+                        description: outputString,
+                        timestamp: new Date(),
+                        footer: {text: "SAR"}
+                    });
+
+                // delete priors
+                userData.deleteTransientMessagePrev(e.message.channel.id);
+                e.message.delete();
+
+                // purge remnants, resolving state
+                userData.transcientActionStateData[e.message.channel.id] = { };
+            }
+
+            let selectGroup = function(channel, messageContent) {
+                // handle cancellations first
+                if(messageContent.toLowerCase() === "c") {
+                    Skarm.sendMessage(channel, "Cancelled");
+                    return;
+                }
+
+                // filter invalid input
+                if (!(messageContent in nonEmptyGroups)) {
+                    Skarm.sendMessageDelete(channel, "Error: target group not found. Please try again or `c` to cancel.", undefined, undefined, 60000, e.message.author.id, bot);
+                    userData.setActionState(selectGroupHandler, channel.id, 60);
+                    return;
+                }
+
+                // display roles in selected group
+                let group = nonEmptyGroups[messageContent];
+                if(!userData.transcientActionStateData[channel.id])
+                    userData.transcientActionStateData[channel.id] = { };
+
+                let vr = sarTreeRoot[group].getAvailableRoles(e.message.member);
+                userData.transcientActionStateData[channel.id].validRoles = vr; //guildData.printRolesInGroup(group, userData, channel, e.message.member);      // sends message containing available roles, returns those roles as a hashmap of valid entities
+                userData.transcientActionStateData[channel.id].group = group;
+
+                // set state to role selection
+                userData.setActionState(selectRoleFromGroup, channel.id, 60);
+
+                let outputString = "Available Roles:\n";
+
+                // i - indexed role-action pair, vr - valid roles
+                for(let i in vr){
+                    outputString += `\`${i}\`: ${vr[i].action} role: <@&${vr[i].role}>\n`;
+                }
+
+                outputString += "`c`: Cancel\n";
+
+                Skarm.sendMessage(channel," ",false, {
+                        color: Skarm.generateRGB(),
+                        description: outputString,
+                        timestamp: new Date(),
+                        footer: {text: "SAR"}
+                    },
+                    // Add next-state instruction to delete prior message
+                    (message, err) => {
+                        userData.transcientActionStateData[channel.id].deleteMessage = message.id;
+                    }
+                );
+            }
+
+            let selectGroupHandler = function(e) {
+                selectGroup(e.message.channel, e.message.content);
+
+                // delete priors
+                userData.deleteTransientMessagePrev(e.message.channel.id);
+                e.message.delete();
+            }
+
+            /**
+             * Initialization
+             */
+
+            outputString = "Available groups: \n";
+            populateAvailableGroups();
+
+            /**
+             * Case handling
+             */
+
+
+            // Default Case: no arguments
+            if(action === undefined){
+                let nonEmptyGroupCount = Object.keys(nonEmptyGroups).length;
+                switch (nonEmptyGroupCount){
+                    case 0:
+                        outputString = "No populated self-assigned role groups exist.\nCreate a group with `e@csar add YourGroupName`!\nAdd a role to a group with `e@csar YourGroupName add @Bees`";
+                        break;
+
+                    case 1:
+                        // autoselect the only group
+                        selectGroup(e.message.channel, Object.keys(nonEmptyGroups)[0]);
+                        return;
+
+                    default:
+                        outputString += "\nSelect a group!";
+                        userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
+                }
+            }
+
+            // Case: action == group Name -> skip a menu
+            for(let idx in nonEmptyGroups){
+                if(action === nonEmptyGroups[idx]){
+                    selectGroup(e.message.channel, idx);
+                    return;         // avoids smd end of function
+                }
+            }
+            
+            Skarm.sendMessage(e.message.channel, " ", false, {
+                    color: Skarm.generateRGB(),
+                    author: {name: e.message.author.nick},
+                    description: outputString,
+                    timestamp: new Date(),
+                    footer: {text: "SAR"}
+                },
+                // Add next-state instruction to delete prior message
+                (message, err) => {
+                    userData.transcientActionStateData[e.message.channel.id] = {deleteMessage: message.id};
+                }
+            );
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
 	
 	/**
 	*	leveling
@@ -1852,19 +2089,25 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
 
         execute(bot, e, userData, guildData) {
 			let target = e.message.author.id;
-			let tok =commandParamTokens(e.message.content);
+			let tok = commandParamTokens(e.message.content);
+			let outputBase = " ";
 			if(tok.length===1){
-				tok = tok[0].replace("<","").replace("@","").replace(">","").replace("!","");
-				if(!(tok in guildData.expTable)){
+				let user = guildData.resolveUser(tok[0]);
+				if(Array.isArray(user)){
+				    outputBase =`Multiple users (${user.length}) identified as potential matches.  Please refine query.`;
+				    user = user[0];
+                }
+				if(!user || !(user.id in guildData.expTable)){
 					Skarm.sendMessageDelay(e.message.channel,"Error: this user may have not talked at all or you didn't mention them properly.");
 					return;
 				}
-				target = tok;
+				target = user.id;
 			}
+
 			let user = guildData.expTable[target];
 			let exp = user.exp - 0;
 			let lvl = user.level;
-			let toNextLvl = user.nextLevelEXP-exp;
+			let toNextLvl = user.nextLevelEXP - exp;
 			let targetEntity = bot.client.Users.get(target);
 			let guildMembers = e.message.guild.members;
 			let targetNick;
@@ -1873,7 +2116,7 @@ Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Car
             }
 
 			//https://discordjs.guide/popular-topics/embeds.html#embed-preview
-            e.message.channel.sendMessage(" ", false, {
+            e.message.channel.sendMessage(outputBase, false, {
                 color: Skarm.generateRGB(),
                 author: {name: Users.get(target).nickName || targetNick || targetEntity.username || target},
                 timestamp: new Date(),

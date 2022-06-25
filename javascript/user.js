@@ -3,9 +3,15 @@ const fs = require("fs");
 const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
 const Discordie = require("discordie");
+const Constants = require("./constants");
 
 const userdb = "../skarmData/users.penguin";
 const SUMMON_COOLDOWN = 60000;
+
+const linkVariables = function(user) {
+    if (user.actionState === undefined) user.actionState = { };
+    user.transcientActionStateData = { };    // clear on reboot
+}
 
 const linkFunctions = function(user) {
     user.addSummon = function(term) {
@@ -44,7 +50,7 @@ const linkFunctions = function(user) {
             return;
         }
         // you can't summon yourself
-        if (e.message.author.id == this.id) {
+        if (e.message.author.id === this.id) {
             return;
         }
         // can't see summons in channels they can't view
@@ -83,6 +89,41 @@ const linkFunctions = function(user) {
     user.getName = function (e) {
         return (user.nickName || e.message.member.name);
     };
+
+    /**
+     * Sets a user's action state in a particular channel for a fixed interval of time
+     *
+     * @param callback(e: Event MESSAGE_CREATE) - the handler that should run due to the user's next message
+     * @param channelID
+     * @param timeout seconds until state expires
+     */
+    user.setActionState = function (callback, channelID = Constants.Channels.SPAM.id, timeout = 60) {
+        let st = Date.now();
+        user.actionState[channelID] = {
+            handler: callback,
+            startTime: st,
+            timeout: setTimeout(() => {     // state self-destruct timeout if state isn't progressed
+                if(user.actionState[channelID].startTime === st){
+                    delete user.actionState[channelID];
+                    Skarm.sendMessageDelay(channelID, "Timeout: received no user input.");
+                }
+            }, timeout * 1000)
+        };
+    };
+
+
+    user.deleteTransientMessagePrev = function(channelID){
+        let transientData = this.transcientActionStateData[channelID];
+
+        if(transientData && transientData.deleteMessage){
+            let message = Constants.client.Messages.get(transientData.deleteMessage);
+            if(!message.deleted){
+                message.delete();                   // send request for discord to delete message
+                delete transientData.deleteMessage; // remove instruction from data
+            }
+        }
+
+    };
 }
 
 class User {
@@ -99,6 +140,17 @@ class User {
          * @type String
          */
         this.nickName = undefined;
+
+        /**
+         * A collection of per-channel states that skarm should act off of for cross-message user interaction.
+         * Keys: channel ID
+         * Values: {
+         *     handler: anonymous handler function (Event e: MESSAGE_CREATE) => {}
+         *     timeout: self-destruct timeout if state is not acted upon within the duration given
+         * }
+         */
+        this.actionState = { };
+        this.transcientActionStateData = { };        // keys: channel ID, values: {anything} but only while action State exists in that channel
 
         User.add(this);
         
@@ -147,6 +199,7 @@ class User {
             User.users = JSON.parse(data);
             for (let u in User.users) {
                 linkFunctions(User.users[u]);
+                linkVariables(User.users[u]);
             }
 			console.log("Initialized "+Object.keys(User.users).length + " Users");
         });

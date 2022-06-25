@@ -7,6 +7,8 @@ const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 const Users = require("./user.js");
 
+const SarGroups = require("./guildClasses/sar.js");
+
 const guilddb = "../skarmData/guilds.penguin";
 
 const MIN_LINES = 40;
@@ -68,6 +70,96 @@ const linkVariables = function(guild) {
 
 // since de/serialized objects don't keep their functions
 const linkFunctions = function(guild) {
+    for(let groupName in guild.selfAssignedRoles){
+        SarGroups.initialize(guild.selfAssignedRoles[groupName]);
+    }
+
+    /**
+     * Fetch the IUser object(s) representing a user in the current server
+     * Examples:
+     *      guild.resolveMember("137336478291329024")
+     *          -> IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... }
+     *      guild.resolveMember("Dragonite#7992")
+     *          -> IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... }
+     *      guild.resolveMember("drago")
+     *          -> [ IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... } ]
+     * @param {string} userid The id, server nickname, or Discord username of the member you want to look up
+     * @returns An IUser corresponding to the userid it's an ID or Discord username, or an array of users if more than one user matches the userid if it's a server nickname
+     */
+    guild.resolveUser = function(userid) {
+        let members = this.resolveMember(userid);
+        if (members === null) return null;
+        if (Array.isArray(members)) {
+            for (let i = 0; i < members.length; i++) {
+                members[i] = Guild.client.Users.get(members[i].id);
+            }
+            return members;
+        }
+        return Guild.client.Users.get(members.id);
+    };
+
+    /**
+     * Fetch the IGuildMember object(s) representing a user in the current server
+     * Examples:
+     *      guild.resolveMember("137336478291329024")
+     *          -> IGuildMember { id: "137336478291329024", nick: "drago", ... }
+     *      guild.resolveMember("Dragonite#7992")
+     *          -> IGuildMember { id: "137336478291329024", nick: "drago", ... }
+     *      guild.resolveMember("drago")
+     *          -> [ IGuildMember { id: "137336478291329024", nick: "drago", ... } ]
+     * @param {string} userid The id, server nickname, or Discord username of the member you want to look up
+     * @returns An IGuildMember corresponding to the userid if it's an ID or Discord username, or an array of members if more than one member matches the userid if it's a server nickname
+     */
+    guild.resolveMember = function(userid) {
+        userid = userid.trim().replace("<","").replace("@","").replace(">","").replace("!","").toLowerCase();    // clean up data
+        let server = Guild.client.Guilds.get(this.id);
+        let members = server.members;
+        for (let member of members) {
+            if (member.id === userid) return member;
+            if (member.username.toLowerCase() === userid) return member;
+        }
+
+        let potential = [];
+        for (let member of members) {
+            if (member.username && member.username.toLowerCase().includes(userid) || member.nick && member.nick.toLowerCase().includes(userid)) {
+                potential.push(member);
+            }
+        }
+        if (potential.length === 0) return null;
+        if (potential.length === 1) return potential[0];
+        return potential;
+    };
+
+    /**
+     * Prints the list of self-assignable roles that a member of a guild is allowed to equip
+     *
+     * TODO: add state information for whether selecting this option will add or remove the role
+     * TODO: add 'c' to cancel option
+     *
+     * @param groupStr - the name of the group the user requested
+     * @param userData - user data object for the member
+     * @param channel - channel in which modifications are happening
+     * @params member - Discordie guild member object
+     * @returns {{num -> roleID}}
+     */
+    guild.printRolesInGroup = function (groupStr, userData, channel, member) {
+        let outputString = "Available Roles:\n";
+        outputString += "c: cancel\n";
+
+        Skarm.sendMessageDelay(channel," ",false,
+            {
+                color: Skarm.generateRGB(),
+                description: outputString,
+                timestamp: new Date(),
+                footer: {text: "SAR"}
+            },
+            // Add next-state instruction to delete prior message
+            (message, err) => {
+                userData.transcientActionStateData[channel.id].deleteMessage = message.id;
+            }
+        );
+        return returnHash;
+    }
 
     guild.botCanEditRole = function(roleID, botAccount) {
         let apiGuildData = Guild.getData(this.id);
@@ -749,7 +841,7 @@ const linkFunctions = function(guild) {
 	guild.notify = function(client, notification, eventObject) {
 	    if(guild===undefined)
 	        return Skarm.logError("Undefined guild");
-        if (notification === Constants.Notifications.MEMBER_LEAVE) {
+	    if (notification === Constants.Notifications.MEMBER_LEAVE) {
             let user = eventObject.user;
             for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
@@ -1078,10 +1170,11 @@ class Guild {
 
         /**
          * Role hive root.  Structure:
-         * Key[string]: role category (e.g. "games of interest")
-         * Value: Roles object: {
-         *     key[ID]: guild.role.id
-         *     Value: true
+         * Key[string]: role group object (e.g. "games of interest")
+         *
+         * e.g. this.selfAssignedRoles = {
+         *     "Games": Class SarGroup(guild, "Games"),
+         *     "Sports": Class SarGroup(guild, "Sports"),
          * }
          */
 		this.selfAssignedRoles = { };
