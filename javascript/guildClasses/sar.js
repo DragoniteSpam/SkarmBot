@@ -1,5 +1,13 @@
+/**
+ * Self-Assigned Roles
+ *
+ * This module implements the Self-Assigned Role Group class.
+ *
+ * Self-Assigned roles can be equipped by any member by using the relevant commands
+ * Future support for reaction-based 
+ */
+
 "use strict";
-const fs = require("fs");
 const Skarm = require("../skarm.js");
 const Constants = require("../constants.js");
 const Permissions = require("../permissions.js");
@@ -30,14 +38,11 @@ let linkFunctions = function (sarGroup){
     };
 
     /**
-     * returns array of deltas:
-     * [
+     * returns array of deltas: [
      * {roleID1, added},
      * {roleD2, removed}
      * ]
      */
-
-
     sarGroup.requestRoleToggle = function(roleID, iGuildMember) {
         let deltas = [];
         let userGuildRoles = iGuildMember.roles;

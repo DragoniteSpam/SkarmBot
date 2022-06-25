@@ -1884,7 +1884,6 @@ module.exports = {
              */
 
             let tokens = commandParamTokens(e.message.content.toLowerCase());
-            let guildRoles = e.message.guild.roles;
             let action = tokens.shift();
             let sarTreeRoot = guildData.selfAssignedRoles;
             let nonEmptyGroups = { };
@@ -1900,7 +1899,7 @@ module.exports = {
                 let i=0;
                 for (let group in sarTreeRoot) {
                     if(sarTreeRoot[group].hasRoles()) {      // check if any roles are in the group
-                        outputString += ++i + ": `" + group + "` \n";
+                        outputString += `\`${++i}\`: ${group}\n`;
                         nonEmptyGroups[i] = group;
                     }
                 }
@@ -1921,6 +1920,7 @@ module.exports = {
                     userData.setActionState(selectRoleFromGroup, e.message.channel.id, 60);
                     return;
                 }
+
                 let targetRole = userData.transcientActionStateData[e.message.channel.id].validRoles[e.message.content].role;
 
                 let role;
