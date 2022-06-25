@@ -76,7 +76,15 @@ class Skarm {
         );
     }
 
-    static sendMessageDelay(channel, text,tts,obj, promiseHandler) {
+    static sendMessageDelay(channel, text, tts, obj, promiseHandler) {
+        if (channel === null) {
+            console.log("null channel target with message: " + text);
+            return;
+        }
+        if (typeof (channel) === "string") {
+            channel = Constants.client.Channels.get(channel);
+        }
+
         channel.sendTyping();
         setTimeout(function () {
             Skarm.sendMessage(channel, text, tts, obj, promiseHandler);
@@ -88,14 +96,16 @@ class Skarm {
             console.log("null channel target with message: " + text);
             return;
         }
-        if (typeof (channel) === "string") {
-            channel = Constants.client.Channels.get(channel);//clinet.channel/get channel
 
+        if (typeof (channel) === "string") {
+            channel = Constants.client.Channels.get(channel);
         }
+
         if (!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES, channel)) {
             this.log("Missing permission to read messages in " + channel.name);
             return;
         }
+
         if (!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES, channel)) {
             this.log("Missing permission to send message in " + channel.name);
             return;
