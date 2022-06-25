@@ -1923,13 +1923,9 @@ module.exports = {
                 }
                 let targetRole = userData.transcientActionStateData[e.message.channel.id].validRoles[e.message.content].role;
 
-                // get member roles
-                let userGuildRoles = e.message.member.roles;
-                let allGuildRoles = e.message.guild.roles;
-
                 let role = null;
-                for(let guildRole of allGuildRoles){
-                    if(guildRole.id === targetRole){
+                for(let guildRole of e.message.guild.roles) {
+                    if(guildRole.id === targetRole) {
                         role = guildRole;
                         break;
                     }
@@ -1942,7 +1938,7 @@ module.exports = {
 
                 let roleDeltas = sarTreeRoot[userData.transcientActionStateData[e.message.channel.id].group].requestRoleToggle(targetRole, e.message.member);
 
-                for(let delta of roleDeltas){
+                for(let delta of roleDeltas) {
                     outputString += `${delta.change} role: <@&${delta.role}>\n`;
                 }
 
@@ -2012,6 +2008,7 @@ module.exports = {
 
             let selectGroupHandler = function(e) {
                 selectGroup(e.message.channel, e.message.content);
+
                 // delete priors
                 userData.deleteTransientMessagePrev(e.message.channel.id);
                 e.message.delete();
@@ -2038,6 +2035,7 @@ module.exports = {
                     case 0:
                         outputString = "No populated self-assigned role groups exist.\nCreate a group with `e@csar add YourGroupName`!\nAdd a role to a group with `e@csar YourGroupName add @Bees`";
                         break;
+
                     case 1:
                         // autoselect the only group
                         selectGroup(e.message.channel, Object.keys(nonEmptyGroups)[0]);
@@ -2048,8 +2046,6 @@ module.exports = {
                         userData.setActionState(selectGroupHandler, e.message.channel.id, 60);
                 }
             }
-
-            // todo Case: action == remove All
 
             // Case: action == group Name -> skip a menu
             for(let idx in nonEmptyGroups){
