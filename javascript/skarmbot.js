@@ -341,12 +341,6 @@ class Bot {
             Skarm.spam(`hit on keyword: "${word}"`);
 
             let keyword = this.keywords[word];
-            if (keyword.standalone && (!text.startsWith(word + " ") &&
-                !text.endsWith(" " + word) &&
-                !text.includes(" " + word + " "))
-            ) {
-                continue;
-            }
 
             if (Math.random() > keyword.odds) {
                 continue;
@@ -448,7 +442,7 @@ class Bot {
         channel = channel || e.message.channel;
         let guildId = (channel && channel.guild.id) || e.message.guild.id;
         let guild = Guilds.get(guildId);
-        if (this.mentions(e, guild.parrotKeywords.nickname) || (additionalAliases && this.mentions(e, additionalAliases))) {
+        if (this.mentions(e, guild.parrotKeywords.nickname.keywords) || (additionalAliases && this.mentions(e, additionalAliases))) {
 			// sometimes skarm will quote skyrim even if you dont say the magic words
 			let seed = Math.random();
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
