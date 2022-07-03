@@ -663,7 +663,7 @@ module.exports = {
                 case "nick":
                 case "nickname":
                     keywordList = guildData.parrotKeywords.nickname.keywords;
-                    outputHeader = "**Skarm's summoning keywords:**";
+                    outputHeader = "**Skarm's summoning keywords:**\n";
                     outputVoidMessage = "_No summoning keywords defined for *${guildData.name}*_";
                     outputVoidAddMessage = "No summoning keyword specified";
                     outputAddMessage = " has been set as a summoning keyword with an activation rate of ";
@@ -675,7 +675,7 @@ module.exports = {
                 case "skyrim":
                 case "sky":
                     keywordList = guildData.parrotKeywords.skyrim.keywords;
-                    outputHeader = "**Skarm's Skyrim keywords:**";
+                    outputHeader = "**Skarm's Skyrim keywords:**\n";
                     outputVoidMessage = "_No Skyrim keywords defined for *${guildData.name}*_";
                     outputVoidAddMessage = "No Skyrim keyword specified";
                     outputAddMessage = " has been set as a Skyrim keyword with an activation rate of ";
@@ -686,7 +686,7 @@ module.exports = {
                     break;
                 case "shanty":
                     keywordList = guildData.parrotKeywords.shanties.keywords;
-                    outputHeader = "**Skarm's shanty keywords:**";
+                    outputHeader = "**Skarm's shanty keywords:**\n";
                     outputVoidMessage = "_No shanty keywords defined for *${guildData.name}*_";
                     outputVoidAddMessage = "No shanty keyword specified";
                     outputAddMessage = " has been set as a shanty keyword with an activation rate of ";
@@ -712,7 +712,7 @@ module.exports = {
                             outputString = outputVoidMessage;
                         } else {
                             list.sort();
-                            for (let keyword in keywordList)
+                            for (let keyword in list)
                                 outputString += `\r\n\`${keyword}\`: ${Math.floor(keywordList[keyword] * 100)}%`;
                         }
                         break;
