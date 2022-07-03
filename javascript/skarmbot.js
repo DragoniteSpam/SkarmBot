@@ -35,7 +35,7 @@ class Bot {
         this.pid = Math.floor(Math.random()*Constants.processIdMax)<<Constants.versionOffsetBits + this.version%Constants.versionOffsetBits;
         this.client = client;
 
-        this.skyrimOddsModifier = 1/20;
+        this.skyrimOddsModifier = 1 / 60;
         // skyrim and shanty keywords are now per-guild
 
         this.minimumMessageReplyLength = 3;
