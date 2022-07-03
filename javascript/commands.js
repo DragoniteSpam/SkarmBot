@@ -1794,7 +1794,7 @@ module.exports = {
                     keyword = tokens.shift();
 
                     if (keyword === undefined) {
-                        outputString = "No shanty keyword specified";
+                        outputString = "No shanty keyword specified for removal";
                     } else {
                         if (keyword in guildShantyKeywords) {
                             delete guildShantyKeywords[keyword];
@@ -1814,7 +1814,88 @@ module.exports = {
                 author: { name: e.message.author.nick },
                 description: outputString,
                 timestamp: new Date(),
-                footer: { text: "Guild nickname configuration" }
+                footer: { text: "Shanty keyword configuration" }
+            });
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    ConfigParrotSkyrimKeywords: {
+        aliases: ["cpsky"],
+        params: ["{add | remove} keyword odds"],
+        usageChar: "@",
+        helpText: "Define keywords that will cause Skarm to quote skyrim. He's of the children of Skyrim, who fight all their lives, and when Sovngarde beckons he stays where he is because he's also a sort of immortal poltergeist being thing that's impossible to get rid of unless the bot computer crashes.",
+        examples: [
+            {command: "e@cpsky", effect: "Will list the current keywords that invokes Skyrim, along with their summoning odds."},
+            {command: "e@cpsky add monahven 5", effect: "Will add \"monahven\" as one of Skarm's Skyrim keywords, with an activation rate of 5%."},
+            {command: "e@cpsky remove monahven", effect: "Will remove \"monahven\" from the list of Skarm's Skyrim keywords."},
+        ],
+        ignoreHidden: false,
+        perms: Permissions.MOD,
+        category: "administrative",
+
+        execute(bot, e, userData, guildData) {
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let action = tokens.shift();
+            let guildSkyrimKeywords = guildData.parrotKeywords.skyrim.keywords;
+            let outputString = "";
+            let keyword = "";
+
+            switch (action) {
+                case undefined:
+                    outputString = "**Skarm's Skyrim keywords:**";
+                    let list = [];
+                    for (let keyword in guildSkyrimKeywords)
+                        list.push(keyword);
+                    
+                    if (list.length == 0) {
+                        outputString = "_No Skyrim keywords defined for *" + guildData.name + "*_";
+                    } else {
+                        list.sort();
+                        for (let keyword in guildSkyrimKeywords)
+                            outputString += "`" + keyword + "`: " + guildSkyrimKeywords[keyword] * 100 + "%";
+                    }
+                    break;
+                case "add":
+                    keyword = tokens.shift();
+                    let odds = parseFloat(tokens.shift());
+
+                    if (keyword === undefined) {
+                        outputString = "No Skyrim keyword specified";
+                    } else if (odds === NaN ) {
+                        outputString = "No Skyrim keyword odds specified";
+                    } else {
+                        guildSkyrimKeywords[keyword] = odds / 100;
+                        outputString = "`" + keyword + "` has been set with an activation rate of " + odds + "%";
+                    }
+                    break;
+                case "remove":
+                    keyword = tokens.shift();
+
+                    if (keyword === undefined) {
+                        outputString = "No Skyrim keyword specified for removal";
+                    } else {
+                        if (keyword in guildSkyrimKeywords) {
+                            delete guildSkyrimKeywords[keyword];
+                            outputString = "`" + keyword + "` has been removed as a Skyrim keyword";
+                        } else {
+                            outputString = "`" + keyword + "` is not a Skyrim keyword";
+                        }
+                    }
+                    break;
+                default:
+                    outputString = "_Invalid use of the `ConfigParrotSkyrimKeywords` command_";
+                    break;
+            }
+
+            Skarm.sendMessageDelay(e.message.channel, " ", false, {
+                color: Skarm.generateRGB(),
+                author: { name: e.message.author.nick },
+                description: outputString,
+                timestamp: new Date(),
+                footer: { text: "Skyrim keyword configuration" }
             });
         },
 
