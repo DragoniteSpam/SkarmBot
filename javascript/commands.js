@@ -608,7 +608,7 @@ module.exports = {
         },
     },
     ConfigParrot: {
-        aliases: ["cp"],
+        aliases: ["configureparrot", "cp"],
         params: ["(various)"],
         usageChar: "@",
         helpText: "Define keywords that will cause Skarm to say different things.",
