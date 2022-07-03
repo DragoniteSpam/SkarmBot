@@ -617,17 +617,24 @@ module.exports = {
             {command: "e@cp nick", effect: "Will list the current keywords that summon Skarm, along with their summoning odds."},
             {command: "e@cp nickname add birdo", effect: "Will add \"birdo\" as one of Skarm's summoning keywords with an activation rate of 100%."},
             {command: "e@cp nick add birdo", effect: "Will add \"birdo\" as one of Skarm's summoning keywords with an activation rate of 100%."},
+            {command: "e@cp nickname set birdo", effect: "Will add \"birdo\" as one of Skarm's summoning keywords with an activation rate of 100%."},
+            {command: "e@cp nick set birdo", effect: "Will add \"birdo\" as one of Skarm's summoning keywords with an activation rate of 100%."},
             {command: "e@cp nickname add birdo 50", effect: "Will add \"birdo\" as one of Skarm's summoning keywords, but it will only activate 50% of the time."},
             {command: "e@cp nick add birdo 50", effect: "Will add \"birdo\" as one of Skarm's summoning keywords, but it will only activate 50% of the time."},
+            {command: "e@cp nickname set birdo 50", effect: "Will add \"birdo\" as one of Skarm's summoning keywords, but it will only activate 50% of the time."},
+            {command: "e@cp nick set birdo 50", effect: "Will add \"birdo\" as one of Skarm's summoning keywords, but it will only activate 50% of the time."},
             {command: "e@cp nickname remove birdo", effect: "Will remove \"birdo\" from the list of Skarm's summoning keywords."},
             {command: "e@cp nick remove birdo", effect: "Will remove \"birdo\" from the list of Skarm's summoning keywords."},
             {command: "e@cp shanty", effect: "Will list the current keywords that invoke shanties, along with their summoning odds."},
             {command: "e@cp shanty add scurvy 5", effect: "Will add \"scurvy\" as one of Skarm's shanty keywords, with an activation rate of 5%."},
+            {command: "e@cp shanty set scurvy 5", effect: "Will add \"scurvy\" as one of Skarm's shanty keywords, with an activation rate of 5%."},
             {command: "e@cp shanty remove scurvy", effect: "Will remove \"scurvy\" from the list of Skarm's shanty keywords."},
             {command: "e@cp skyrim", effect: "Will list the current keywords that invokes Skyrim, along with their summoning odds."},
             {command: "e@cp sky", effect: "Will list the current keywords that invokes Skyrim, along with their summoning odds."},
             {command: "e@cp skyrim add monahven 5", effect: "Will add \"monahven\" as one of Skarm's Skyrim keywords, with an activation rate of 5%."},
             {command: "e@cp sky add monahven 5", effect: "Will add \"monahven\" as one of Skarm's Skyrim keywords, with an activation rate of 5%."},
+            {command: "e@cp skyrim set monahven 5", effect: "Will add \"monahven\" as one of Skarm's Skyrim keywords, with an activation rate of 5%."},
+            {command: "e@cp sky set monahven 5", effect: "Will add \"monahven\" as one of Skarm's Skyrim keywords, with an activation rate of 5%."},
             {command: "e@cp skyrim remove monahven", effect: "Will remove \"monahven\" from the list of Skarm's Skyrim keywords."},
             {command: "e@cp sky remove monahven", effect: "Will remove \"monahven\" from the list of Skarm's Skyrim keywords."},
         ],
@@ -662,6 +669,7 @@ module.exports = {
                             }
                             break;
                         case "add":
+                        case "set":
                             keyword = tokens.shift();
                             let odds = parseFloat(tokens.shift());
         
@@ -711,6 +719,7 @@ module.exports = {
                             }
                             break;
                         case "add":
+                        case "set":
                             keyword = tokens.shift();
                             let odds = parseFloat(tokens.shift());
         
@@ -760,6 +769,7 @@ module.exports = {
                             }
                             break;
                         case "add":
+                        case "set":
                             keyword = tokens.shift();
                             let odds = parseFloat(tokens.shift());
         
