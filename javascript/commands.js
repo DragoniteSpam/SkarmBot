@@ -649,161 +649,104 @@ module.exports = {
             let outputString = "";
             let keyword = "";
 
+            let keywordList = undefined;
+            let outputHeader = "";
+            let outputVoidMessage = "";
+            let outputVoidAddMessage = "";
+            let outputAddMessage = "";
+            let outputVoidRemoveMessage = "";
+            let outputRemoveMessage = "";
+            let outputRemoveNotFoundMessage = "";
+            let outputInvalidCommandMessage = "";
+
             switch (domain) {
                 case "nick":
                 case "nickname":
-                    let guildSummonKeywords = guildData.parrotKeywords.nickname.keywords;
-                    switch (action) {
-                        case undefined:
-                            outputString = "**Skarm's summoning keywords:**";
-                            let list = [];
-                            for (let keyword in guildSummonKeywords)
-                                list.push(keyword);
-                            
-                            if (list.length == 0) {
-                                outputString = "_No summoning keywords defined for *" + guildData.name + "*_";
-                            } else {
-                                list.sort();
-                                for (let keyword in guildSummonKeywords)
-                                    outputString += "`" + keyword + "`: " + guildSummonKeywords[keyword] * 100 + "%";
-                            }
-                            break;
-                        case "add":
-                        case "set":
-                            keyword = tokens.shift();
-                            let odds = parseFloat(tokens.shift());
-        
-                            if (odds === NaN) odds = 100;
-                            if (keyword === undefined) {
-                                outputString = "No summoning keyword specified";
-                            } else {
-                                guildSummonKeywords[keyword] = odds / 100;
-                                outputString = "`" + keyword + "` has been set with an activation rate of " + odds + "%";
-                            }
-                            break;
-                        case "remove":
-                            keyword = tokens.shift();
-        
-                            if (keyword === undefined) {
-                                outputString = "No summoning keyword specified";
-                            } else {
-                                if (keyword in guildSummonKeywords) {
-                                    delete guildSummonKeywords[keyword];
-                                    outputString = "`" + keyword + "` has been removed as a summoning keyword";
-                                } else {
-                                    outputString = "`" + keyword + "` is not a summoning keyword";
-                                }
-                            }
-                            break;
-                        default:
-                            outputString = "_Invalid use of the `ConfigParrot` command_";
-                            break;
-                    }
+                    keywordList = guildData.parrotKeywords.nickname.keywords;
+                    outputHeader = "**Skarm's summoning keywords:**";
+                    outputVoidMessage = "_No summoning keywords defined for *{guildData.name}*_";
+                    outputVoidAddMessage = "No summoning keyword specified";
+                    outputAddMessage = " has been set as a summoning keyword with an activation rate of ";
+                    outputVoidRemoveMessage = "No summoning keyword specified";
+                    outputRemoveMessage = " has been removed as a summoning keyword";
+                    outputRemoveNotFoundMessage = " is not a summoning keyword";
+                    outputInvalidCommandMessage = "_Invalid use of the `ConfigParrot nickname` command_";
                     break;
                 case "skyrim":
                 case "sky":
-                    let guildSkyrimKeywords = guildData.parrotKeywords.skyrim.keywords;
-                    switch (action) {
-                        case undefined:
-                            outputString = "**Skarm's Skyrim keywords:**";
-                            let list = [];
-                            for (let keyword in guildSkyrimKeywords)
-                                list.push(keyword);
-                            
-                            if (list.length == 0) {
-                                outputString = "_No Skyrim keywords defined for *" + guildData.name + "*_";
-                            } else {
-                                list.sort();
-                                for (let keyword in guildSkyrimKeywords)
-                                    outputString += "`" + keyword + "`: " + guildSkyrimKeywords[keyword] * 100 + "%";
-                            }
-                            break;
-                        case "add":
-                        case "set":
-                            keyword = tokens.shift();
-                            let odds = parseFloat(tokens.shift());
-        
-                            if (keyword === undefined) {
-                                outputString = "No Skyrim keyword specified";
-                            } else if (odds === NaN ) {
-                                outputString = "No Skyrim keyword odds specified";
-                            } else {
-                                guildSkyrimKeywords[keyword] = odds / 100;
-                                outputString = "`" + keyword + "` has been set with an activation rate of " + odds + "%";
-                            }
-                            break;
-                        case "remove":
-                            keyword = tokens.shift();
-        
-                            if (keyword === undefined) {
-                                outputString = "No Skyrim keyword specified for removal";
-                            } else {
-                                if (keyword in guildSkyrimKeywords) {
-                                    delete guildSkyrimKeywords[keyword];
-                                    outputString = "`" + keyword + "` has been removed as a Skyrim keyword";
-                                } else {
-                                    outputString = "`" + keyword + "` is not a Skyrim keyword";
-                                }
-                            }
-                            break;
-                        default:
-                            outputString = "_Invalid use of the `ConfigParrot` command_";
-                            break;
-                    }
+                    keywordList = guildData.parrotKeywords.skyrim.keywords;
+                    outputHeader = "**Skarm's Skyrim keywords:**";
+                    outputVoidMessage = "_No Skyrim keywords defined for *{guildData.name}*_";
+                    outputVoidAddMessage = "No Skyrim keyword specified";
+                    outputAddMessage = " has been set as a Skyrim keyword with an activation rate of ";
+                    outputVoidRemoveMessage = "No Skyrim keyword specified";
+                    outputRemoveMessage = " has been removed as a Skyrim keyword";
+                    outputRemoveNotFoundMessage = " is not a Skyrim keyword";
+                    outputInvalidCommandMessage = "_Invalid use of the `ConfigParrot skyrim` command_";
                     break;
                 case "shanty":
-                    let guildShantyKeywords = guildData.parrotKeywords.shanties.keywords;
-                    switch (action) {
-                        case undefined:
-                            outputString = "**Skarm's shanty keywords:**";
-                            let list = [];
-                            for (let keyword in guildShantyKeywords)
-                                list.push(keyword);
-                            
-                            if (list.length == 0) {
-                                outputString = "_No shanty keywords defined for *" + guildData.name + "*_";
-                            } else {
-                                list.sort();
-                                for (let keyword in guildShantyKeywords)
-                                    outputString += "`" + keyword + "`: " + guildShantyKeywords[keyword] * 100 + "%";
-                            }
-                            break;
-                        case "add":
-                        case "set":
-                            keyword = tokens.shift();
-                            let odds = parseFloat(tokens.shift());
-        
-                            if (keyword === undefined) {
-                                outputString = "No shanty keyword specified";
-                            } else if (odds === NaN ) {
-                                outputString = "No shanty keyword odds specified";
-                            } else {
-                                guildShantyKeywords[keyword] = odds / 100;
-                                outputString = "`" + keyword + "` has been set with an activation rate of " + odds + "%";
-                            }
-                            break;
-                        case "remove":
-                            keyword = tokens.shift();
-        
-                            if (keyword === undefined) {
-                                outputString = "No shanty keyword specified for removal";
-                            } else {
-                                if (keyword in guildShantyKeywords) {
-                                    delete guildShantyKeywords[keyword];
-                                    outputString = "`" + keyword + "` has been removed as a shanty keyword";
-                                } else {
-                                    outputString = "`" + keyword + "` is not a shanty keyword";
-                                }
-                            }
-                            break;
-                        default:
-                            outputString = "_Invalid use of the `ConfigParrot` command_";
-                            break;
-                    }
+                    keywordList = guildData.parrotKeywords.shanties.keywords;
+                    outputHeader = "**Skarm's shanty keywords:**";
+                    outputVoidMessage = "_No shanty keywords defined for *{guildData.name}*_";
+                    outputVoidAddMessage = "No shanty keyword specified";
+                    outputAddMessage = " has been set as a shanty keyword with an activation rate of ";
+                    outputVoidRemoveMessage = "No shanty keyword specified";
+                    outputRemoveMessage = " has been removed as a shanty keyword";
+                    outputRemoveNotFoundMessage = " is not a shanty keyword";
+                    outputInvalidCommandMessage = "_Invalid use of the `ConfigParrot shanty` command_";
                     break;
                 default:
                     outputString = "_Invalid use of the `ConfigParrot` command_";
                     break;
+            }
+
+            if (keywordList !== undefined) {
+                switch (action) {
+                    case undefined:
+                        outputString = outputHeader;
+                        let list = [];
+                        for (let keyword in keywordList)
+                            list.push(keyword);
+                        
+                        if (list.length == 0) {
+                            outputString = outputVoidMessage;
+                        } else {
+                            list.sort();
+                            for (let keyword in keywordList)
+                                outputString += "`{keyword}`: {keywordList[keyword] * 100}%";
+                        }
+                        break;
+                    case "add":
+                    case "set":
+                        keyword = tokens.shift();
+                        let odds = parseFloat(tokens.shift());
+
+                        if (odds === NaN) odds = 100;
+                        if (keyword === undefined) {
+                            outputString = outputVoidAddMessage;
+                        } else {
+                            keywordList[keyword] = odds / 100;
+                            outputString = "`{keyword}`" + outputAddMessage + "{odds}%";
+                        }
+                        break;
+                    case "remove":
+                        keyword = tokens.shift();
+
+                        if (keyword === undefined) {
+                            outputString = outputVoidRemoveMessage;
+                        } else {
+                            if (keyword in guildSummonKeywords) {
+                                delete guildSummonKeywords[keyword];
+                                outputString = "`{keyword}`" + outputRemoveMessage;
+                            } else {
+                                outputString = "`{keyword}`" + outputRemoveNotFoundMessage;
+                            }
+                        }
+                        break;
+                    default:
+                        outputString = outputInvalidCommandMessage;
+                        break;
+                }
             }
         },
 
