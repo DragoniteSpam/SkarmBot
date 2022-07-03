@@ -35,41 +35,8 @@ class Bot {
         this.pid = Math.floor(Math.random()*Constants.processIdMax)<<Constants.versionOffsetBits + this.version%Constants.versionOffsetBits;
         this.client = client;
 
-        this.nick = "Skarm";
         this.skyrimOddsModifier = 1/20;
-        //words that will get skarm to talk skyrim
-        this.validESReferences = {
-            "balgruuf":     0.25,
-            "ulfric":       0.25,
-            "dovah":      	0.45,
-            "whiterun":     0.25,
-            "imperial":     0.05,
-            "war":          0.05,
-            "ysmir":        0.50,
-            "shor":         0.69,
-        };
-
-        //words that will get skarm singing
-        this.validShantyReferences = {
-            "johnny":       0.01,
-            "jonny":        0.01,
-            "jon":          0.01,
-            "johny":        0.01,
-            "drunk":        0.02,
-            "sing":         0.03,
-            "rum":          0.04,
-            "ship":         0.05,
-            "captain":      0.06,
-            "sea":          0.08,
-            "maui":         0.09,
-            "sailor":       0.10,
-            "stan":         0.11,
-            "shanty":       0.35,
-            "shanties":     0.40,
-            "dreadnought":  0.50,
-			//"shantest":     1.2,
-        };
-
+        // skyrim and shanty keywords are now per-guild
 
         this.minimumMessageReplyLength = 3;
 
@@ -348,16 +315,15 @@ class Bot {
             this.censor(e);
         }
 
-        if (this.mentions(e, this.validESReferences) && this.isValidResponse(e)) {
+        if (guildData.parrotKeywords.skyrim.enabled && this.mentions(e, guildData.parrotKeywords.skyrim.keywords) && this.isValidResponse(e)) {
             this.returnSkyrim(e);
             return true;
         }
 
-        if (this.mentions(e, this.validShantyReferences) && this.isValidResponse(e)) {
+        if (guildData.parrotKeywords.shanties.enabled && this.mentions(e, guildData.parrotKeywords.shanties.keywords) && this.isValidResponse(e)) {
             this.singShanty(e);
             return true;
         }
-
 
         for (let word in this.keywords) {
             let partial = text;
@@ -496,8 +462,8 @@ class Bot {
     parrot(e, additionalAliases, channel) {
         channel = channel || e.message.channel;
         let guildId = (channel && channel.guild.id) || e.message.guild.id;
-			//once skarm starts singing, he'd rather do that than talk
         if (this.mentions(e, guildId.parrotKeywords.nickname) || (additionalAliases && this.mentions(e, additionalAliases))) {
+			// sometimes skarm will quote skyrim even if you dont say the magic words
 			let seed = Math.random();
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);
