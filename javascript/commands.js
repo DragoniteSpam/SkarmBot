@@ -723,8 +723,8 @@ module.exports = {
                         if (keyword === undefined) {
                             outputString = outputVoidRemoveMessage;
                         } else {
-                            if (keyword in guildSummonKeywords) {
-                                delete guildSummonKeywords[keyword];
+                            if (keyword in keywordList) {
+                                delete keywordList[keyword];
                                 outputString = "`${keyword}`" + outputRemoveMessage;
                             } else {
                                 outputString = "`${keyword}`" + outputRemoveNotFoundMessage;
