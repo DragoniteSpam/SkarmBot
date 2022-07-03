@@ -694,16 +694,14 @@ module.exports = {
                 switch (action) {
                     case undefined:
                         outputString = outputHeader;
-                        let list = [];
-                        for (let keyword in keywordList)
-                            list.push(keyword);
+                        let list = Object.keys(keywordList);
                         
-                        if (list.length == 0) {
+                        if (list.length === 0) {
                             outputString = outputVoidMessage;
                         } else {
                             list.sort();
-                            for (let keyword in list)
-                                outputString += `\r\n\`${list[keyword]}\`: ${Math.floor(list[keywordList[keyword]] * 100)}%`;
+                            for (let keyword of list)
+                                outputString += `\r\n\`${keyword}\`: ${Math.floor(keywordList[keyword] * 100)}%`;
                         }
                         break;
                     case "add":
