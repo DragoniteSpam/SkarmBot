@@ -440,7 +440,7 @@ class Bot {
 
     /**
      * Learning and reciting lines
-     * @param e
+     * @param e - Discordie message event
      * @param additionalAliases optional additional aliases to check against
      * @param channel an override target channel if you don't want to use e.message.channel
      */
@@ -545,17 +545,23 @@ class Bot {
         return !(text.split(" ").length < this.minimumMessageReplyLength);
     }
 
+    /**
+     * Checks if a given message event contains text that meets the probabilistic requirement for that reference
+     * @param e - Discordie Message Event
+     * @param references - mapping of keywords to probabilities of getting a response for that word
+     * @returns {boolean}
+     */
     mentions(e, references) {
         let text = e.message.content.toLowerCase();
+        let cumulativeProbability = 0;
 
-        
         for (let keyword of Object.keys(references)) {
             if (text.includes(keyword)) {
-                return (Math.random() < references[keyword]);
+                cumulativeProbability += references[keyword];
             }
         }
-        
-        return false;
+
+        return (Math.random() < cumulativeProbability);
     }
 
     /**
