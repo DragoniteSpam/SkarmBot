@@ -726,7 +726,7 @@ module.exports = {
                             outputString = outputVoidAddMessage;
                         } else {
                             keywordList[keyword] = odds / 100;
-                            outputString = `\r\n\`${keyword}\` + outputAddMessage + ${Math.floor(odds)}%`;
+                            outputString = `\r\n\`${keyword}\` ${outputAddMessage} ${Math.floor(odds)}%`;
                         }
                         break;
                     case "remove":
