@@ -721,7 +721,7 @@ module.exports = {
                         keyword = tokens.shift();
                         let odds = parseFloat(tokens.shift());
 
-                        if (odds === NaN) odds = 100;
+                        if (isNaN(odds)) odds = 100;
                         if (keyword === undefined) {
                             outputString = outputVoidAddMessage;
                         } else {
