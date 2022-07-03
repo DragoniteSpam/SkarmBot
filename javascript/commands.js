@@ -713,7 +713,7 @@ module.exports = {
                         } else {
                             list.sort();
                             for (let keyword in keywordList)
-                                outputString += "`${keyword}`: ${keywordList[keyword] * 100}%";
+                                outputString += "`${keyword}`: ${Math.floor(keywordList[keyword] * 100)}%";
                         }
                         break;
                     case "add":
@@ -726,7 +726,7 @@ module.exports = {
                             outputString = outputVoidAddMessage;
                         } else {
                             keywordList[keyword] = odds / 100;
-                            outputString = "`${keyword}`" + outputAddMessage + "${odds}%";
+                            outputString = "`${keyword}`" + outputAddMessage + "${Math.floor(odds)}%";
                         }
                         break;
                     case "remove":
