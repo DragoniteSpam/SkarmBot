@@ -36,15 +36,6 @@ class Bot {
         this.client = client;
 
         this.nick = "Skarm";
-        this.validNickReferences = {
-            "skarm":        					1,
-            "skram!":       					1,
-            "birdbrain":    					1,
-            "spaghetti":    					0.1,
-            "botface":      					1,
-			"something completely different":	1,
-        };
-
         this.skyrimOddsModifier = 1/20;
         //words that will get skarm to talk skyrim
         this.validESReferences = {
@@ -505,8 +496,8 @@ class Bot {
     parrot(e, additionalAliases, channel) {
         channel = channel || e.message.channel;
         let guildId = (channel && channel.guild.id) || e.message.guild.id;
-        if (this.mentions(e, this.validNickReferences) || (additionalAliases && this.mentions(e, additionalAliases))) {
 			//once skarm starts singing, he'd rather do that than talk
+        if (this.mentions(e, guildId.parrotKeywords.nickname) || (additionalAliases && this.mentions(e, additionalAliases))) {
 			let seed = Math.random();
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);

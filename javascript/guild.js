@@ -37,7 +37,7 @@ class DefaultParrotShantyData {
 
 class DefaultParrotSkyrimData {
     constructor() {
-        this.enabled =true;
+        this.enabled = true;
         this.keywords = {
             "balgruuf":     0.25,
             "ulfric":       0.25,
@@ -47,6 +47,19 @@ class DefaultParrotSkyrimData {
             "war":          0.05,
             "ysmir":        0.50,
             "shor":         0.69,
+        }
+    }
+}
+
+class DefaultParrotNicknameData {
+    constructor() {
+        this.keywords = {
+            "skarm":        					1,
+            "skram!":       					1,
+            "birdbrain":    					1,
+            "spaghetti":    					0.1,
+            "botface":      					1,
+			"something completely different":	1,
         }
     }
 }
@@ -110,6 +123,7 @@ const linkVariables = function(guild) {
     guild.parrotKeywords ??= { };
     guild.parrotKeywords.shanties ??= new DefaultParrotShantyData();
     guild.parrotKeywords.skyrim ??= new DefaultParrotSkyrimData();
+    guild.parrotKeywords.nickname ??= new DefaultParrotNicknameData();
 };
 
 // since de/serialized objects don't keep their functions
@@ -1236,6 +1250,7 @@ class Guild {
         this.parrotKeywords = {
             shanties: new DefaultParrotShantyData(),
             skyrim: new DefaultParrotSkyrimData(),
+            nickname: new DefaultParrotNicknameData(),
         };
 		
 		this.lastSendLine = undefined;
