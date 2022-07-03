@@ -664,7 +664,7 @@ module.exports = {
                 case "nickname":
                     keywordList = guildData.parrotKeywords.nickname.keywords;
                     outputHeader = "**Skarm's summoning keywords:**";
-                    outputVoidMessage = "_No summoning keywords defined for *{guildData.name}*_";
+                    outputVoidMessage = "_No summoning keywords defined for *${guildData.name}*_";
                     outputVoidAddMessage = "No summoning keyword specified";
                     outputAddMessage = " has been set as a summoning keyword with an activation rate of ";
                     outputVoidRemoveMessage = "No summoning keyword specified";
@@ -676,7 +676,7 @@ module.exports = {
                 case "sky":
                     keywordList = guildData.parrotKeywords.skyrim.keywords;
                     outputHeader = "**Skarm's Skyrim keywords:**";
-                    outputVoidMessage = "_No Skyrim keywords defined for *{guildData.name}*_";
+                    outputVoidMessage = "_No Skyrim keywords defined for *${guildData.name}*_";
                     outputVoidAddMessage = "No Skyrim keyword specified";
                     outputAddMessage = " has been set as a Skyrim keyword with an activation rate of ";
                     outputVoidRemoveMessage = "No Skyrim keyword specified";
@@ -687,7 +687,7 @@ module.exports = {
                 case "shanty":
                     keywordList = guildData.parrotKeywords.shanties.keywords;
                     outputHeader = "**Skarm's shanty keywords:**";
-                    outputVoidMessage = "_No shanty keywords defined for *{guildData.name}*_";
+                    outputVoidMessage = "_No shanty keywords defined for *${guildData.name}*_";
                     outputVoidAddMessage = "No shanty keyword specified";
                     outputAddMessage = " has been set as a shanty keyword with an activation rate of ";
                     outputVoidRemoveMessage = "No shanty keyword specified";
@@ -713,7 +713,7 @@ module.exports = {
                         } else {
                             list.sort();
                             for (let keyword in keywordList)
-                                outputString += "`{keyword}`: {keywordList[keyword] * 100}%";
+                                outputString += "`${keyword}`: ${keywordList[keyword] * 100}%";
                         }
                         break;
                     case "add":
@@ -726,7 +726,7 @@ module.exports = {
                             outputString = outputVoidAddMessage;
                         } else {
                             keywordList[keyword] = odds / 100;
-                            outputString = "`{keyword}`" + outputAddMessage + "{odds}%";
+                            outputString = "`${keyword}`" + outputAddMessage + "${odds}%";
                         }
                         break;
                     case "remove":
@@ -737,9 +737,9 @@ module.exports = {
                         } else {
                             if (keyword in guildSummonKeywords) {
                                 delete guildSummonKeywords[keyword];
-                                outputString = "`{keyword}`" + outputRemoveMessage;
+                                outputString = "`${keyword}`" + outputRemoveMessage;
                             } else {
-                                outputString = "`{keyword}`" + outputRemoveNotFoundMessage;
+                                outputString = "`${keyword}`" + outputRemoveNotFoundMessage;
                             }
                         }
                         break;
