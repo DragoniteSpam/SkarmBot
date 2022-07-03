@@ -43,7 +43,6 @@ class Bot {
         this.shanties = new ShantyCollection();
         this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
 
-        this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
         this.xkcd = new XKCD(this);
 
@@ -309,12 +308,6 @@ class Bot {
             return false;
         }
 
-        // each of these will kick out of the function if it finds something,
-        // so the most important ones should be at the top
-        if (!this.channelsCensorHidden[e.message.channel_id]) {
-            this.censor(e);
-        }
-
         if (guildData.parrotKeywords.skyrim.enabled && this.mentions(e, guildData.parrotKeywords.skyrim.keywords) && this.isValidResponse(e)) {
             this.returnSkyrim(e);
             return true;
@@ -421,14 +414,6 @@ class Bot {
 	
     // functionality
 
-
-
-
-    //does many things, and stuff and things...
-    censor(e) {
-	    //TODO
-    }
-    
     toggleChannel(map, channel) {
         map[channel] = !map[channel];
         return map[channel];
