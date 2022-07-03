@@ -1667,7 +1667,7 @@ module.exports = {
         helpText: "Define keywords that will summon Skarm when a user says them. It's the same technology that the Death Eaters used to find people talking about Voldemort!",
         examples: [
             {command: "e@cpn", effect: "Will list the current keywords that summon Skarm, along with their summoning odds."},
-            {command: "e@cpn add birdo", effect: "Will add \"birdo\" as one of Skarm's summoning keywords."},
+            {command: "e@cpn add birdo", effect: "Will add \"birdo\" as one of Skarm's summoning keywords with an activation rate of 100%."},
             {command: "e@cpn add birdo 50", effect: "Will add \"birdo\" as one of Skarm's summoning keywords, but it will only activate 50% of the time."},
             {command: "e@cpn remove birdo", effect: "Will remove \"birdo\" from the list of Skarm's summoning keywords."},
         ],
@@ -1683,19 +1683,18 @@ module.exports = {
             let keyword = "";
 
             switch (action) {
-                case "":
+                case undefined:
                     outputString = "**Skarm's summoning keywords:**";
                     let list = [];
-                    for (let keyword in guildSummonKeywords) {
+                    for (let keyword in guildSummonKeywords)
                         list.push(keyword);
-                    }
+                    
                     if (list.length == 0) {
                         outputString = "_No summoning keywords defined for *" + guildData.name + "*_";
                     } else {
                         list.sort();
-                        for (let keyword in guildSummonKeywords) {
+                        for (let keyword in guildSummonKeywords)
                             outputString += "`" + keyword + "`: " + guildSummonKeywords[keyword] * 100 + "%";
-                        }
                     }
                     break;
                 case "add":
@@ -1707,7 +1706,7 @@ module.exports = {
                         outputString = "No summoning keyword specified";
                     } else {
                         guildSummonKeywords[keyword] = odds / 100;
-                        outputString = "`" + keyword + "` has been set with a probability of " + odds + "%";
+                        outputString = "`" + keyword + "` has been set with an activation rate of " + odds + "%";
                     }
                     break;
                 case "remove":
@@ -1723,6 +1722,90 @@ module.exports = {
                             outputString = "`" + keyword + "` is not a summoning keyword";
                         }
                     }
+                    break;
+                default:
+                    outputString = "_Invalid use of the `ConfigParrotNicknames` command_";
+                    break;
+            }
+
+            Skarm.sendMessageDelay(e.message.channel, " ", false, {
+                color: Skarm.generateRGB(),
+                author: { name: e.message.author.nick },
+                description: outputString,
+                timestamp: new Date(),
+                footer: { text: "Guild nickname configuration" }
+            });
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+    ConfigParrotShantyKeywords: {
+        aliases: ["cpsk"],
+        params: ["{add | remove} keyword odds"],
+        usageChar: "@",
+        helpText: "Define keywords that will cause Skarm to break out into song. He's truly a bird of the high seas.",
+        examples: [
+            {command: "e@cpsk", effect: "Will list the current keywords that invoke shanties, along with their summoning odds."},
+            {command: "e@cpsk add scurvy 5", effect: "Will add \"scurvy\" as one of Skarm's shanty keywords, with an activation rate of 5%."},
+            {command: "e@cpsk remove scurvy", effect: "Will remove \"scurvy\" from the list of Skarm's shanty keywords."},
+        ],
+        ignoreHidden: false,
+        perms: Permissions.MOD,
+        category: "administrative",
+
+        execute(bot, e, userData, guildData) {
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let action = tokens.shift();
+            let guildShantyKeywords = guildData.parrotKeywords.shanties.keywords;
+            let outputString = "";
+            let keyword = "";
+
+            switch (action) {
+                case undefined:
+                    outputString = "**Skarm's shanty keywords:**";
+                    let list = [];
+                    for (let keyword in guildShantyKeywords)
+                        list.push(keyword);
+                    
+                    if (list.length == 0) {
+                        outputString = "_No shanty keywords defined for *" + guildData.name + "*_";
+                    } else {
+                        list.sort();
+                        for (let keyword in guildShantyKeywords)
+                            outputString += "`" + keyword + "`: " + guildShantyKeywords[keyword] * 100 + "%";
+                    }
+                    break;
+                case "add":
+                    keyword = tokens.shift();
+                    let odds = parseFloat(tokens.shift());
+
+                    if (keyword === undefined) {
+                        outputString = "No shanty keyword specified";
+                    } else if (odds === NaN ) {
+                        outputString = "No shanty keyword odds specified";
+                    } else {
+                        guildShantyKeywords[keyword] = odds / 100;
+                        outputString = "`" + keyword + "` has been set with an activation rate of " + odds + "%";
+                    }
+                    break;
+                case "remove":
+                    keyword = tokens.shift();
+
+                    if (keyword === undefined) {
+                        outputString = "No shanty keyword specified";
+                    } else {
+                        if (keyword in guildShantyKeywords) {
+                            delete guildShantyKeywords[keyword];
+                            outputString = "`" + keyword + "` has been removed as a shanty keyword";
+                        } else {
+                            outputString = "`" + keyword + "` is not a shanty keyword";
+                        }
+                    }
+                    break;
+                default:
+                    outputString = "_Invalid use of the `ConfigParrotShantyKeywords` command_";
                     break;
             }
 
