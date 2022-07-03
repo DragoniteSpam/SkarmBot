@@ -748,6 +748,14 @@ module.exports = {
                         break;
                 }
             }
+
+            Skarm.sendMessageDelay(e.message.channel, " ", false, {
+                color: Skarm.generateRGB(),
+                author: {name: e.message.author.nick},
+                description: outputString,
+                timestamp: new Date(),
+                footer: {text: "Parrot configuration"}
+            });
         },
 
         help(bot, e) {
