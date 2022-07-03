@@ -713,7 +713,7 @@ module.exports = {
                         } else {
                             list.sort();
                             for (let keyword in keywordList)
-                                outputString += "`${keyword}`: ${Math.floor(keywordList[keyword] * 100)}%";
+                                outputString += "`${keyword}`: ${Math.floor(keywordList[keyword] * 100)}%\n";
                         }
                         break;
                     case "add":
