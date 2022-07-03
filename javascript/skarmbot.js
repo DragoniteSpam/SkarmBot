@@ -308,12 +308,15 @@ class Bot {
             return false;
         }
 
-        if (guildData.parrotKeywords.skyrim.enabled && this.mentions(e, guildData.parrotKeywords.skyrim.keywords) && this.isValidResponse(e)) {
+        // this is kinda expensive and there's no point in calling it more than once
+        let validResponse = this.isValidResponse(e);
+
+        if (validResponse && guildData.parrotKeywords.skyrim.enabled && this.mentions(e, guildData.parrotKeywords.skyrim.keywords)) {
             this.returnSkyrim(e);
             return true;
         }
 
-        if (guildData.parrotKeywords.shanties.enabled && this.mentions(e, guildData.parrotKeywords.shanties.keywords) && this.isValidResponse(e)) {
+        if (validResponse && guildData.parrotKeywords.shanties.enabled && this.mentions(e, guildData.parrotKeywords.shanties.keywords)) {
             this.singShanty(e);
             return true;
         }
@@ -361,7 +364,7 @@ class Bot {
         }
 
 
-        if(this.isValidResponse(e)){
+        if (validResponse) {
             this.parrot(e, guildData.aliases);
         }
 
@@ -533,10 +536,8 @@ class Bot {
     
     // helpers
 
-
     isValidResponse(e) {
-        let text = e.message.content.toLowerCase();
-        return !(text.split(" ").length < this.minimumMessageReplyLength);
+        return (e.message.content.split(" ").length >= this.minimumMessageReplyLength);
     }
 
     /**
