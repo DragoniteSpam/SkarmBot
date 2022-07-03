@@ -447,13 +447,13 @@ class Bot {
     parrot(e, additionalAliases, channel) {
         channel = channel || e.message.channel;
         let guildId = (channel && channel.guild.id) || e.message.guild.id;
-        if (this.mentions(e, guildId.parrotKeywords.nickname) || (additionalAliases && this.mentions(e, additionalAliases))) {
+        let guild = Guilds.get(guildId);
+        if (this.mentions(e, guild.parrotKeywords.nickname) || (additionalAliases && this.mentions(e, additionalAliases))) {
 			// sometimes skarm will quote skyrim even if you dont say the magic words
 			let seed = Math.random();
 			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
 				return this.returnSkyrim(e);
 			}
-			let guild = Guilds.get(guildId);
             let line = guild.getRandomLine(e);
             if (line !== undefined) {
                 Skarm.sendMessageDelay(channel, line);
