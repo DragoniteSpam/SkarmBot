@@ -712,7 +712,7 @@ module.exports = {
                             outputString = outputVoidMessage;
                         } else {
                             list.sort();
-                            for (let keyword in keywordList)
+                            for (let keyword in list)
                                 outputString += `\r\n\`${keyword}\`: ${Math.floor(keywordList[keyword] * 100)}%`;
                         }
                         break;
