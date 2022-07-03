@@ -713,7 +713,7 @@ module.exports = {
                         } else {
                             list.sort();
                             for (let keyword in keywordList)
-                                outputString += "`${keyword}`: ${Math.floor(keywordList[keyword] * 100)}%\n";
+                                outputString += `\r\n\`${keyword}\`: ${Math.floor(keywordList[keyword] * 100)}%`;
                         }
                         break;
                     case "add":
@@ -721,12 +721,12 @@ module.exports = {
                         keyword = tokens.shift();
                         let odds = parseFloat(tokens.shift());
 
-                        if (odds === NaN) odds = 100;
+                        if (isNaN(odds)) odds = 100;
                         if (keyword === undefined) {
                             outputString = outputVoidAddMessage;
                         } else {
                             keywordList[keyword] = odds / 100;
-                            outputString = "`${keyword}`" + outputAddMessage + "${Math.floor(odds)}%";
+                            outputString = `\r\n\`${keyword}\` + outputAddMessage + ${Math.floor(odds)}%`;
                         }
                         break;
                     case "remove":
