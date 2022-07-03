@@ -1660,6 +1660,85 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
+    ConfigParrotNicknames: {
+        aliases: ["cpn"],
+        params: ["{add | remove} keyword [odds]"],
+        usageChar: "@",
+        helpText: "Define keywords that will summon Skarm when a user says them. It's the same technology that the Death Eaters used to find people talking about Voldemort!",
+        examples: [
+            {command: "e@cpn", effect: "Will list the current keywords that summon Skarm, along with their summoning odds."},
+            {command: "e@cpn add birdo", effect: "Will add \"birdo\" as one of Skarm's summoning keywords."},
+            {command: "e@cpn add birdo 50", effect: "Will add \"birdo\" as one of Skarm's summoning keywords, but it will only activate 50% of the time."},
+            {command: "e@cpn remove birdo", effect: "Will remove \"birdo\" from the list of Skarm's summoning keywords."},
+        ],
+        ignoreHidden: false,
+        perms: Permissions.MOD,
+        category: "administrative",
+
+        execute(bot, e, userData, guildData) {
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let action = tokens.shift();
+            let guildSummonKeywords = guildData.parrotKeywords.nickname.keywords;
+            let outputString = "";
+            let keyword = "";
+
+            switch (action) {
+                case "":
+                    outputString = "**Skarm's summoning keywords:**";
+                    let list = [];
+                    for (let keyword in guildSummonKeywords) {
+                        list.push(keyword);
+                    }
+                    if (list.length == 0) {
+                        outputString = "_No summoning keywords defined for *" + guildData.name + "*_";
+                    } else {
+                        list.sort();
+                        for (let keyword in guildSummonKeywords) {
+                            outputString += "`" + keyword + "`: " + guildSummonKeywords[keyword] * 100 + "%";
+                        }
+                    }
+                    break;
+                case "add":
+                    keyword = tokens.shift();
+                    let odds = parseFloat(tokens.shift());
+
+                    if (odds === NaN) odds = 100;
+                    if (keyword === undefined) {
+                        outputString = "No summoning keyword specified";
+                    } else {
+                        guildSummonKeywords[keyword] = odds / 100;
+                        outputString = "`" + keyword + "` has been set with a probability of " + odds + "%";
+                    }
+                    break;
+                case "remove":
+                    keyword = tokens.shift();
+
+                    if (keyword === undefined) {
+                        outputString = "No summoning keyword specified";
+                    } else {
+                        if (keyword in guildSummonKeywords) {
+                            delete guildSummonKeywords[keyword];
+                            outputString = "`" + keyword + "` has been removed as a summoning keyword";
+                        } else {
+                            outputString = "`" + keyword + "` is not a summoning keyword";
+                        }
+                    }
+                    break;
+            }
+
+            Skarm.sendMessageDelay(e.message.channel, " ", false, {
+                color: Skarm.generateRGB(),
+                author: { name: e.message.author.nick },
+                description: outputString,
+                timestamp: new Date(),
+                footer: { text: "Guild nickname configuration" }
+            });
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
     ConfigSAR: {
         aliases: ["configsar","csar", "cesar"],
         params: ["[varied]"],
