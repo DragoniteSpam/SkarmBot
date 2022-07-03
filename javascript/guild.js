@@ -11,6 +11,46 @@ const SarGroups = require("./guildClasses/sar.js");
 
 const guilddb = "../skarmData/guilds.penguin";
 
+class DefaultParrotShantyData {
+    constructor() {
+        this.enabled = true;
+        this.keywords = {
+            "johnny":       0.01,
+            "jonny":        0.01,
+            "jon":          0.01,
+            "johny":        0.01,
+            "drunk":        0.02,
+            "sing":         0.03,
+            "rum":          0.04,
+            "ship":         0.05,
+            "captain":      0.06,
+            "sea":          0.08,
+            "maui":         0.09,
+            "sailor":       0.10,
+            "stan":         0.11,
+            "shanty":       0.35,
+            "shanties":     0.40,
+            "dreadnought":  0.50,
+        };
+    }
+};
+
+class DefaultParrotSkyrimData {
+    constructor() {
+        this.enabled =true;
+        this.keywords = {
+            "balgruuf":     0.25,
+            "ulfric":       0.25,
+            "dovah":      	0.45,
+            "whiterun":     0.25,
+            "imperial":     0.05,
+            "war":          0.05,
+            "ysmir":        0.50,
+            "shor":         0.69,
+        }
+    }
+}
+
 const MIN_LINES = 40;
 
 let defaultLines = ["please stand by"];
@@ -66,6 +106,10 @@ const linkVariables = function(guild) {
     if (guild.expBuffRoles === undefined) {guild.expBuffRoles = { };}
     if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
     if (guild.selfAssignedRoles === undefined) guild.selfAssignedRoles = { };
+
+    guild.parrotKeywords ??= { };
+    guild.parrotKeywords.shanties ??= new DefaultParrotShantyData();
+    guild.parrotKeywords.skyrim ??= new DefaultParrotSkyrimData();
 };
 
 // since de/serialized objects don't keep their functions
@@ -1188,6 +1232,11 @@ class Guild {
 
 		this.welcoming = true;
 		this.welcomes = { };
+
+        this.parrotKeywords = {
+            shanties: new DefaultParrotShantyData(),
+            skyrim: new DefaultParrotSkyrimData(),
+        };
 		
 		this.lastSendLine = undefined;
 		
