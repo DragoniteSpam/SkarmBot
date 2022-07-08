@@ -45,7 +45,7 @@ module.exports = {
         odds: 0.75,
 
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel, new Date(Date.now()*2*Math.random()));
+            Skarm.sendMessageDelay(e.message.channel, new Date(Date.now() * 2 * Math.random()));
         },
     },
     Thanks: {
