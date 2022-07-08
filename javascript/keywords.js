@@ -7,7 +7,7 @@ module.exports = {
         aliases: ["hug", "hugs"],
         standalone: true,
         odds: 0.1,
-        
+
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "_hugs " + e._userData.getName(e) + "_");
         },
@@ -16,7 +16,7 @@ module.exports = {
         aliases: ["sandwich", "sandwiches"],
         standalone: true,
         odds: 0.1,
-        
+
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "_steals " + e._userData.getName(e) + "'s sandwich_");
         },
@@ -25,7 +25,7 @@ module.exports = {
         aliases: ["sandvich", "sandviches"],
         standalone: true,
         odds: 0.25,
-        
+
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "_steals " + e._userData.getName(e) + "'s sandvich_");
         },
@@ -52,7 +52,7 @@ module.exports = {
         aliases: ["thank*skarm"],
         standalone: false,
         odds: 0.9,
-        
+
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "no problem, buddy");
         },
@@ -61,7 +61,7 @@ module.exports = {
         aliases: ["knife dragon"],
         standalone: false,
         odds: 1,
-        
+
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "_stabs dragonite_");
         },
@@ -70,7 +70,7 @@ module.exports = {
         aliases: ["cookie"],
         standalone: false,
         odds: 0.1,
-        
+
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "_steals" + e._userData.getName(e) + "'s cookies_");
         },
@@ -79,7 +79,7 @@ module.exports = {
         aliases: ["debug"],
         standalone: false,
         odds: 0.3,
-        
+
         execute(bot, e) {
             Skarm.sendMessageDelay(e.message.channel, "the bugs didn't go away, they just got better at hiding");
         },
@@ -99,7 +99,7 @@ module.exports = {
         odds: 0.9,
 
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel,  "The first rule of Fight Club is: you do not talk about Fight Club.");
+            Skarm.sendMessageDelay(e.message.channel, "The first rule of Fight Club is: you do not talk about Fight Club.");
         },
     },
     FightClub2: {
@@ -108,14 +108,14 @@ module.exports = {
         odds: 0.9,
 
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel,  "The second rule of Fight Club is: you DO NOT talk about Fight Club!");
+            Skarm.sendMessageDelay(e.message.channel, "The second rule of Fight Club is: you DO NOT talk about Fight Club!");
         },
     },
     HelloThere: {
         aliases: ["hello there"],
         standalone: false,
         odds: 1,
-        
+
         execute(bot, e) {
             let head = "<:skarmhead:422560671574523904>";
             let blank = "<:background:448285187550347275>";
@@ -144,8 +144,8 @@ module.exports = {
 
             // set the user's title if they have one in their name
             let userTitle = "general";
-            for(let title in titlesCollection){
-                if(refName.includes(title) || e.message.member.nick && e.message.member.nick.toLowerCase().includes(title)) {
+            for (let title in titlesCollection) {
+                if (refName.includes(title) || e.message.member.nick && e.message.member.nick.toLowerCase().includes(title)) {
                     userTitle = title;
                     refName = refName.replace(title, "");        // remove the title from their name to avoid redundancy
                 }
@@ -154,35 +154,35 @@ module.exports = {
             // set the user's name as a best approximation of the longest component of their refName
             let nameComponents = refName.split(" ");
             let usedName = "";
-            for(let component of nameComponents){
-                if(component.length > usedName.length)
+            for (let component of nameComponents) {
+                if (component.length > usedName.length)
                     usedName = component;
             }
 
-			function randomLeft(){
-			    try {
+            function randomLeft() {
+                try {
                     if (1)
                         return sabers.Hilts.Left;
-                } catch (e){
-			        Skarm.spam((sabers));
+                } catch (e) {
+                    Skarm.spam((sabers));
                 }
-			    let colors  = [
+                let colors = [
                     "<:redlightsaberyx:455820731775844367>",
                     "<:greenlightsaberyx:422559631030878209>",
                     "<:bluelightsaberyx:422558517287845889>",
                     "<:Purplelightsaberymx:455819615440732171>"
                 ];
                 return colors[Math.floor(Math.random() * colors.length)];
-			}
+            }
 
-			function randomRight(){
+            function randomRight() {
                 try {
                     if (1)
                         return sabers.Hilts.Right;
-                } catch (e){
+                } catch (e) {
                     Skarm.spam((sabers));
                 }
-                let colors =[
+                let colors = [
                     "<:redlightsaberyx:455820732228698122>",
                     "<:greenlightsaberyx:422559630741340171>",
                     "<:bluelightsaberyx:422558517589704704>",
@@ -191,26 +191,26 @@ module.exports = {
                 return colors[Math.floor(Math.random() * colors.length)];
             }
 
-            function recursiveEdits(message,i){
-			    if(!message.content.toLowerCase().includes("hilt")) return;
-			    setTimeout(() => {
-                    if(i%2){//Left start
-                        message.edit(Skarm.lightsaber.insertLeft(message.content,2)).then((r) => recursiveEdits(r,i+1));
-                    }else{//Right start
-                        message.edit(Skarm.lightsaber.insertRight(message.content,2)).then((r) => recursiveEdits(r,i+1));
+            function recursiveEdits(message, i) {
+                if (!message.content.toLowerCase().includes("hilt")) return;
+                setTimeout(() => {
+                    if (i % 2) {//Left start
+                        message.edit(Skarm.lightsaber.insertLeft(message.content, 2)).then((r) => recursiveEdits(r, i + 1));
+                    } else {//Right start
+                        message.edit(Skarm.lightsaber.insertRight(message.content, 2)).then((r) => recursiveEdits(r, i + 1));
                     }
-                },350);
+                }, 350);
             }
 
             let content = userTitle.toUpperCase() + " " + usedName.toUpperCase() + "\nYou are a bold one.\n" + randomLeft() + randomLeft() + head + randomRight() + randomRight();
-            if(refName.toLowerCase().includes("master")){
-                content = "**"+ refName.toUpperCase() + "\nYou are a bold one.**\n" +
-                    randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n" +
-                    randomLeft() + randomLeft() + head  + randomRight() + randomRight() +"\n" +
-                    randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n"
+            if (refName.toLowerCase().includes("master")) {
+                content = "**" + refName.toUpperCase() + "\nYou are a bold one.**\n" +
+                    randomLeft() + randomLeft() + blank + randomRight() + randomRight() + "\n" +
+                    randomLeft() + randomLeft() + head  + randomRight() + randomRight() + "\n" +
+                    randomLeft() + randomLeft() + blank + randomRight() + randomRight() + "\n"
             }
-            e.message.channel.sendMessage(content).then(r  =>{
-                recursiveEdits(r,Math.floor(Math.random()*2));
+            e.message.channel.sendMessage(content).then(r => {
+                recursiveEdits(r, Math.floor(Math.random() * 2));
             });
         },
     },
