@@ -206,7 +206,7 @@ module.exports = {
             if(refName.toLowerCase().includes("master")){
                 content = "**"+ refName.toUpperCase() + "\nYou are a bold one.**\n" +
                     randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n" +
-                    randomLeft() + randomLeft() + head + randomRight() + randomRight() +"\n" +
+                    randomLeft() + randomLeft() + head  + randomRight() + randomRight() +"\n" +
                     randomLeft() + randomLeft() + blank + randomRight() + randomRight() +"\n"
             }
             e.message.channel.sendMessage(content).then(r  =>{
