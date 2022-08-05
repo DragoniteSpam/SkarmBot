@@ -18,9 +18,7 @@
 
 "use strict";
 const fs = require("fs");
-const Skarm = require("../skarm.js");
-const Constants = require("../constants.js");
-const Users = require("../user.js");
+const Guilds = require("../guild.js");
 
 const quoteReposRoot = "./data/dynamicQuotes/";
 const quoteDataSuffix = "/quotes.txt";
@@ -30,8 +28,8 @@ let triggerData = {};
 
 let linkVariables = function (parrot) {
     parrot.creationTime ??= Date.now;
-    parrot.repoWeights ??= {};
-    parrot.everythingWeights ??= {};
+    parrot.repoWeights ??= { };               // word -> repo || everything
+    parrot.everythingWeights ??= { };         // everything -> other repos
 
     // initialize weights and `everything` weights for each dynamic quote repo
     for(let repo in Parrot.quoteRepos){
@@ -70,14 +68,14 @@ let linkVariables = function (parrot) {
         "dreadnought":  0.50,
     };
     parrot.repoWeights["everything"] ??= {
-        "skarm":        					1,
-        "skram!":       					1,
-        "birdbrain":    					1,
+        "skarm":        					10,
+        "skram!":       					10,
+        "birdbrain":    					10,
     };
 
-    parrot.everythingWeights["skarm"] ??= 100;
+    parrot.everythingWeights["skarm"] ??= 1;
     parrot.everythingWeights["shanty"] ??= 1;
-}
+};
 
 let linkFunctions = function (parrot){
     // returns a hashmap of valid quote repos and their associated distributions of everything
@@ -111,12 +109,85 @@ let linkFunctions = function (parrot){
 
     }
 
-    // returns a random line from one of the quote repositories, weighted by:
-    // * trigger message words
-    // * everything redistribution
-    // * additional keywords
-    parrot.getRandomLine = function (message) {
-        // todo
+    /**
+    * Returns a random line from one of the quote repositories, weighted by:
+    * * trigger message words
+    * * everything redistribution
+    * * additional keywords
+    */
+    parrot.getRandomLine = function (message, guildData) {
+        let tokens = message.toLowerCase().split(" ");
+        let messageOutcomes = { };
+        for(let token of tokens) {
+            for(let repo in parrot.repoWeights) {
+                messageOutcomes[repo] ??= 0;
+                if (token in parrot.repoWeights[repo]) {
+                    messageOutcomes[repo] += parrot.repoWeights[repo][token];
+                }
+            }
+        }
+
+        // console.log(messageOutcomes);
+
+        // distribute odds of `everything` to the real repositories
+        let everythingSum = 0;
+        for(let repo in parrot.everythingWeights){
+            everythingSum += parrot.everythingWeights[repo];
+        }
+        // console.log(parrot.everythingWeights);
+
+        // only distribute when you can avoid dividing by zero (everything has values)
+        if(everythingSum) {
+            for(let repo in parrot.everythingWeights){
+                messageOutcomes[repo] += messageOutcomes.everything * parrot.everythingWeights[repo] / everythingSum;
+            }
+            delete messageOutcomes["everything"];
+        }
+
+        let outcomeSum = 0;
+        for(let repo in messageOutcomes){
+            outcomeSum += messageOutcomes[repo];
+        }
+
+        let outcomeRepoIndex = Math.random() * outcomeSum;
+
+        // console.log(messageOutcomes);
+
+        for(let repo in messageOutcomes){
+            outcomeRepoIndex -= messageOutcomes[repo];
+            if(outcomeRepoIndex <= 0) {
+                return parrot.getRepoLine(repo, guildData);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a random string from the repo specified
+     * @param repo
+     */
+    parrot.getRepoLine = function (repo, guildData) {
+        let lines;
+        switch(repo){
+            case "skarm":
+                // console.log("Acquiring guild quote...");
+                lines = Object.keys(guildData.lines);
+                return lines[Math.floor(Math.random() * lines.length)];
+                break;
+
+            case "shanty":
+                // console.log("Acquiring shanty line...");
+                return guildData.shanties.getNextBlock();
+                break;
+
+            default:
+                lines = Parrot.quoteRepos[repo];
+                // console.log(repo);
+                // console.log(repo, Parrot.quoteRepos[repo]);
+                return lines[Math.floor(Math.random() * lines.length)];
+                break;
+        }
     }
 }
 
@@ -133,7 +204,6 @@ class Parrot {
         linkFunctions(parrot);
     }
 
-
     /**
      * quote repos: {
      *     "skyrim": [],
@@ -142,7 +212,7 @@ class Parrot {
      * }
      */
     static loadRepos() {
-        Parrot.quoteRepos = {};
+        Parrot.quoteRepos = { };
         console.log("Initializing Parrot Dynamic Quote Repositories");
         let files = fs.readdirSync(quoteReposRoot);
         console.log(`Found ${files.length} dynamic quote repos...`);

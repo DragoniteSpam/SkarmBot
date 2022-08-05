@@ -6,6 +6,7 @@ const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 const Users = require("./user.js");
+const { ShantyCollection, Shanty } = require("./shanties.js");
 
 const SarGroups = require("./guildClasses/sar.js");
 const Parrot = require("./guildClasses/parrot.js");
@@ -69,6 +70,7 @@ const linkVariables = function(guild) {
     if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
     if (guild.selfAssignedRoles === undefined) guild.selfAssignedRoles = { };
     guild.parrot ??= new Parrot();
+    guild.shanties ??= new ShantyCollection();
 };
 
 // since de/serialized objects don't keep their functions

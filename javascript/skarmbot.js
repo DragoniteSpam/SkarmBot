@@ -329,17 +329,7 @@ class Bot {
             this.censor(e);
         }
 
-        if (this.mentions(e, this.validESReferences) && this.isValidResponse(e)) {
-            this.returnSkyrim(e);
-            return true;
-        }
-
-        if (this.mentions(e, this.validShantyReferences) && this.isValidResponse(e)) {
-            this.singShanty(e);
-            return true;
-        }
-
-
+        // keywords that map to dedicated responses
         for (let word in this.keywords) {
             let partial = text;
             let allComponentsMatch = true;
@@ -359,8 +349,6 @@ class Bot {
             if (!allComponentsMatch) {
                 continue;
             }
-
-            Skarm.spam(`hit on keyword: "${word}"`);
 
             let keyword = this.keywords[word];
             if (keyword.standalone && (!text.startsWith(word + " ") &&
@@ -389,22 +377,24 @@ class Bot {
         }
 
 
+        // parrot module - all large scale quote repos and dynamic data acquired from the guild
         if(this.isValidResponse(e)){
-            this.parrot(e, guildData.aliases);
+            this.parrot(e, guildData);
         }
 
         return false;
     }
 
     OnPresenceUpdate(e){
-        let proceed = (n)=>{
+        let proceed = (n) => {
             if(Users.get(e.user.id).previousName)
                 return Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.NAME_CHANGE, e);
             else if(n>0){
                 return setTimeout(()=>{proceed(n-1);},25);
             }
-            //Skarm.spam("Failed to find defined previous name for User ID: "+e.user.id);
-            //Skarm.spam("OnPresenceUpdate JSON object retrieved: "+JSON.stringify(Users.get(e.user.id)));
+
+            // Skarm.spam("Failed to find defined previous name for User ID: "+e.user.id);
+            // Skarm.spam("OnPresenceUpdate JSON object retrieved: "+JSON.stringify(Users.get(e.user.id)));
         };
         if(e.user.bot)return;
         //Skarm.spam("Presence Update detected for User : "+ (e.user.id));
@@ -475,28 +465,20 @@ class Bot {
      * @param additionalAliases optional additional aliases to check against
      * @param channel an override target channel if you don't want to use e.message.channel
      */
-    parrot(e, additionalAliases, channel) {
+    parrot(e, guildData, channel) {
+        // console.log("Inspecting parrot...");
         channel = channel || e.message.channel;
-        let guildId = (channel && channel.guild.id) || e.message.guild.id;
-        if (this.mentions(e, this.validNickReferences) || (additionalAliases && this.mentions(e, additionalAliases))) {
-			//once skarm starts singing, he'd rather do that than talk
-			let seed = Math.random();
-			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
-				return this.returnSkyrim(e);
-			}
-			let guild = Guilds.get(guildId);
-            let line = guild.getRandomLine(e);
-            if (line !== undefined) {
-                Skarm.sendMessageDelay(channel, line);
-				guild.lastSendLine=line;
-            }
+        let line = guildData.parrot.getRandomLine(e.message.content, guildData);
+        // console.log(line);
+
+        if (line) {
+            Skarm.sendMessageDelay(channel, line);
+            guildData.lastSendLine = line;
             return;
         }
 
         this.attemptLearnLine(e);
     }
-
-    // end of TODO: Rework
 
     //skarm will enqueue a shanty to be sung in just the one channel which triggered the song
 	singShanty(e) {
