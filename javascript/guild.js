@@ -8,6 +8,8 @@ const Skinner = require("./skinnerbox.js");
 const Users = require("./user.js");
 
 const SarGroups = require("./guildClasses/sar.js");
+const Parrot = require("./guildClasses/parrot.js");
+
 
 const guilddb = "../skarmData/guilds.penguin";
 
@@ -21,7 +23,7 @@ let messageIsAction = function(message) {
     return false;
 };
 
-fs.readFile("data/default.birb", function(err, data) {
+fs.readFile("data/dynamicQuotes/dna/quotes.txt", function(err, data) {
     defaultLines = data.toString().split("\n");
 });
 
@@ -66,6 +68,7 @@ const linkVariables = function(guild) {
     if (guild.expBuffRoles === undefined) {guild.expBuffRoles = { };}
     if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
     if (guild.selfAssignedRoles === undefined) guild.selfAssignedRoles = { };
+    guild.parrot ??= new Parrot();
 };
 
 // since de/serialized objects don't keep their functions

@@ -48,14 +48,7 @@ class Bot {
         this.skyrimOddsModifier = 1/20;
         //words that will get skarm to talk skyrim
         this.validESReferences = {
-            "balgruuf":     0.25,
-            "ulfric":       0.25,
-            "dovah":      	0.45,
-            "whiterun":     0.25,
-            "imperial":     0.05,
-            "war":          0.05,
-            "ysmir":        0.50,
-            "shor":         0.69,
+
         };
 
         //words that will get skarm singing
@@ -83,7 +76,7 @@ class Bot {
         this.minimumMessageReplyLength = 3;
 
         this.shanties = new ShantyCollection();
-        this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
+        this.skyrim = ["todo: remove this"];
 
         this.channelsCensorHidden = {};
         this.guildsWithWelcomeMessage = {};
@@ -497,6 +490,7 @@ class Bot {
     }
 
     /**
+     * TODO: Rework
      * Learning and reciting lines
      * @param e
      * @param additionalAliases optional additional aliases to check against
@@ -522,6 +516,8 @@ class Bot {
 
         this.attemptLearnLine(e);
     }
+
+    // end of TODO: Rework
 
     //skarm will enqueue a shanty to be sung in just the one channel which triggered the song
 	singShanty(e) {
