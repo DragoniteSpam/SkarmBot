@@ -1,0 +1,8 @@
+{
+	"triggerWeights":{
+		"life":         0.25,
+		"universe":     0.25,
+		"everything":   0.25
+	},
+	"everythingWeight": 1
+}
