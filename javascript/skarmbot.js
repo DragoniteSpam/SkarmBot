@@ -37,12 +37,7 @@ class Bot {
 
         this.nick = "Skarm";
         this.validNickReferences = {
-            "skarm":        					1,
-            "skram!":       					1,
-            "birdbrain":    					1,
-            "spaghetti":    					0.1,
-            "botface":      					1,
-			"something completely different":	1,
+
         };
 
         this.skyrimOddsModifier = 1/20;
@@ -53,22 +48,6 @@ class Bot {
 
         //words that will get skarm singing
         this.validShantyReferences = {
-            "johnny":       0.01,
-            "jonny":        0.01,
-            "jon":          0.01,
-            "johny":        0.01,
-            "drunk":        0.02,
-            "sing":         0.03,
-            "rum":          0.04,
-            "ship":         0.05,
-            "captain":      0.06,
-            "sea":          0.08,
-            "maui":         0.09,
-            "sailor":       0.10,
-            "stan":         0.11,
-            "shanty":       0.35,
-            "shanties":     0.40,
-            "dreadnought":  0.50,
 			//"shantest":     1.2,
         };
 
