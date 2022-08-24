@@ -76,11 +76,31 @@ class Skarm {
         );
     }
 
-    static sendMessageDelay(channel, text, tts, obj, promiseHandler) {
+    static hasMessageAccess(channel){
         if (channel === null) {
             console.log("null channel target with message: " + text);
             return;
         }
+
+        let requiredTextPermissions = [
+            "READ_MESSAGES",
+            "SEND_MESSAGES"
+        ];
+
+        for(let permission of requiredTextPermissions) {
+            if (!Constants.client.User.can(discordie.Permissions.Text[permission], channel)) {
+                this.log(`Missing permission ${permission} in ${channel.name}`);
+                return;
+            }
+        }
+
+
+        return true;
+    }
+
+    static sendMessageDelay(channel, text, tts, obj, promiseHandler) {
+        if(!this.hasMessageAccess(channel))return;
+
         if (typeof (channel) === "string") {
             channel = Constants.client.Channels.get(channel);
         }
@@ -92,24 +112,12 @@ class Skarm {
     }
 
     static sendMessage(channel, text,tts,obj, promiseHandler) {
-        if (channel === null) {
-            console.log("null channel target with message: " + text);
-            return;
-        }
+        if(!this.hasMessageAccess(channel))return;
 
         if (typeof (channel) === "string") {
             channel = Constants.client.Channels.get(channel);
         }
 
-        if (!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES, channel)) {
-            this.log("Missing permission to read messages in " + channel.name);
-            return;
-        }
-
-        if (!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES, channel)) {
-            this.log("Missing permission to send message in " + channel.name);
-            return;
-        }
 
         try {
             let promise = channel.sendMessage(text, tts, obj);
@@ -134,14 +142,8 @@ class Skarm {
             console.log("null channel target with message: " + text);
             return;
         }
-        if (!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES, channel)) {
-            this.log("Missing permission to read messages in " + channel.name);
-            return;
-        }
-        if (!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES, channel)) {
-            this.log("Missing permission to send message in " + channel.name);
-            return;
-        }
+
+        if(!this.hasMessageAccess(channel))return;
 
         try {
             //Skarm.logError("Sending async message");
