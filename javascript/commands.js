@@ -2874,10 +2874,10 @@ module.exports = {
                     guilds.push({
                         name: guild.name,
                         value: "" +
-                            // `Guild ID: ${guild.id}\r\n`+
-                            guild.owner.username + "\r\n" +
+                            `Guild ID: ${guild.id}\r\n`+
+                            `Owner: ${guild.owner.username} \r\n` +
                             "<@" + guild.owner.id + ">" + "\r\n" +
-                            "Members: " + guild.members.length,
+                            "Member Count: " + guild.members.length,
                         inline: true,
                         members: guild.members.length
                     });
