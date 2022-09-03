@@ -626,7 +626,7 @@ class Bot {
             process.exit(Constants.SaveCodes.NOSAVE);
         }
 
-        Skarm.STDERR("\n\nBeginning save sequence...");
+        Skarm.STDERR("\n\nBeginning save sequence at " + new Date());
 
         Guilds.save();
         Users.save();
