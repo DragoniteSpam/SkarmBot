@@ -4,22 +4,25 @@ const Skarm = require("./skarm.js");
 
 class ShantyCollection {
     constructor() {
-        this.list = [];
-		this.names = [];
-        this.scan();
+        this.list = [];           // array of Shanty objects
+		this.names = [];          // array of shanty names (str)
+        this.scan();              // populate shanty list
 		this.isSinging = false;
-		this.activeSong = -1;
-		this.ivanhoe=1/4; //Probability of shanties variable
+		this.activeSong = -1;     // index of names and list arrays
+		this.ivanhoe = 1/4;       // Probability of shanties variable.  TODO: deprecate
     }
     
     load(filename) {
-        if (fs.existsSync("data/shanties/" + filename)) {
+        let shantypath = "data/shanties/" + filename;
+        if (fs.existsSync(shantypath)) {
             this.list.push(new Shanty(filename));
 			let name = filename.replace(".shanty", "");
 			while (name.indexOf("-") > 0) {
 				name = name.replace("-", " ");
             }
 			this.names.push(name);
+        } else{
+            console.log("Error: Missing shanty", shantypath);
         }
     }
     
@@ -29,6 +32,9 @@ class ShantyCollection {
             files.forEach(file => {
                 this.load(file);
             });
+
+            // TODO: fix every guild having their own instance of every single shanty
+            console.log("Initialized", this.getCumulativeLinesLength(), "lines across", this.list.length, "shanties");
         });
     }
 	
@@ -44,6 +50,14 @@ class ShantyCollection {
 		}
 		return this.list[this.activeSong].getNextBlock(this);
 	}
+
+    getCumulativeLinesLength() {
+        let totalLines = 0;
+        for(let shanty of this.list){
+            totalLines += shanty.getLineCount();
+        }
+        return totalLines;
+    }
 }
 
 class Shanty {
@@ -80,6 +94,10 @@ class Shanty {
     
     resetBlock() {
         this.currentLine = 0;
+    }
+
+    getLineCount() {
+        return this.lines.length;
     }
 }
 

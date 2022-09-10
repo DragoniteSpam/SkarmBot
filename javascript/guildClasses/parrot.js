@@ -19,6 +19,7 @@
 "use strict";
 const fs = require("fs");
 const Guilds = require("../guild.js");
+const {ShantyCollection, Shanty} = require("../shanties");
 
 const quoteReposRoot = "./data/dynamicQuotes/";
 const quoteDataSuffix = "/quotes.txt";
@@ -68,9 +69,9 @@ let linkVariables = function (parrot) {
         "dreadnought":  0.50,
     };
     parrot.repoWeights["everything"] ??= {
-        "skarm":        					10,
-        "skram!":       					10,
-        "birdbrain":    					10,
+        "skarm":        					0.1,
+        "skram!":       					0.1,
+        "birdbrain":    					0.1,
     };
 
     parrot.everythingWeights["skarm"] ??= 1;
@@ -121,13 +122,16 @@ let linkFunctions = function (parrot){
         for(let token of tokens) {
             for(let repo in parrot.repoWeights) {
                 messageOutcomes[repo] ??= 0;
-                if (token in parrot.repoWeights[repo]) {
-                    messageOutcomes[repo] += parrot.repoWeights[repo][token];
+                for (let weight in parrot.repoWeights[repo]){
+                    if(token.includes(weight)){
+                        messageOutcomes[repo] += parrot.repoWeights[repo][weight];
+
+                    }
                 }
             }
         }
 
-        // console.log(messageOutcomes);
+        console.log("Message outcomes (ev): ", messageOutcomes); //outcomes with everything
 
         // distribute odds of `everything` to the real repositories
         let everythingSum = 0;
@@ -144,18 +148,38 @@ let linkFunctions = function (parrot){
             delete messageOutcomes["everything"];
         }
 
+        console.log("Message outcomes (ne): ", messageOutcomes); //outcomes without everything
+
+        // check if sufficient trigger token appearance to justify next step
         let outcomeSum = 0;
         for(let repo in messageOutcomes){
             outcomeSum += messageOutcomes[repo];
         }
+        console.log("Outcome sum:", outcomeSum);
+        if (outcomeSum < Math.random()) return;   // if the cumulative probability of the trigger words doesn't exceed 1, it only has a random chance of triggering.
+
+
+        // scale message outcomes by the amount of lines in each repo
+        for(let repo in messageOutcomes){
+            messageOutcomes[repo] *= parrot.getRepoLineCount(repo, guildData);
+        }
+
+        console.log("Message outcomes (sc): ", messageOutcomes); //outcomes without everything
+
+        // reset outcome sum for repo indexing
+        outcomeSum = 0;
+        for(let repo in messageOutcomes){
+            outcomeSum += messageOutcomes[repo];
+        }
+        console.log("Outcome sum:", outcomeSum);
 
         let outcomeRepoIndex = Math.random() * outcomeSum;
 
-        // console.log(messageOutcomes);
 
         for(let repo in messageOutcomes){
             outcomeRepoIndex -= messageOutcomes[repo];
             if(outcomeRepoIndex <= 0) {
+                console.log("Outcome repo:", repo);
                 return parrot.getRepoLine(repo, guildData);
             }
         }
@@ -189,6 +213,22 @@ let linkFunctions = function (parrot){
                 break;
         }
     }
+
+    /**
+     * Returns the amount of lines in a particular archive
+     */
+    parrot.getRepoLineCount = function (repo, guildData) {
+        switch(repo){
+            case "skarm":
+                return Object.keys(guildData.lines).length;
+
+            case "shanty":
+                return guildData.shanties.getCumulativeLinesLength();
+
+            default:
+                return Parrot.quoteRepos[repo].length;
+        }
+    }
 }
 
 
@@ -200,8 +240,8 @@ class Parrot {
 
     static initialize(parrot){
         if (!Parrot.quoteRepos) this.loadRepos();
-        linkVariables(parrot);
         linkFunctions(parrot);
+        linkVariables(parrot);
     }
 
     /**
