@@ -72,7 +72,7 @@ module.exports = {
         odds: 0.1,
 
         execute(bot, e) {
-            Skarm.sendMessageDelay(e.message.channel, "_steals" + e._userData.getName(e) + "'s cookies_");
+            Skarm.sendMessageDelay(e.message.channel, "_steals " + e._userData.getName(e) + "'s cookies_");
         },
     },
     Debug: {
