@@ -949,6 +949,7 @@ const linkFunctions = function(guild) {
             }else{
                 oldName=member.username;
             }
+            console.log(eventObject);
             for (let channelID in guild.notificationChannels.NAME_CHANGE) {
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.BLUE,
@@ -962,7 +963,8 @@ const linkFunctions = function(guild) {
         if (notification === Constants.Notifications.NAME_CHANGE) {
             let member = eventObject.member;
             let oldName= Users.get(eventObject.user.id).previousName;
-            Skarm.logError(`Might be sending out name change notification out to guild: ${JSON.stringify(guild.id)}\n> ${JSON.stringify(guild.notificationChannels)}`);
+            Skarm.logError(`Might be sending out name change notification out to guild: ${JSON.stringify(guild.id)}\n Notification channel list: ${JSON.stringify(guild.notificationChannels)}`);
+            console.log(eventObject);
             Skarm.spam("Notification of name change: "+oldName +" -> " + JSON.stringify(eventObject.user));
             if(oldName===undefined){// && !guild.hasPermissions(eventObject.user,Permissions.MOM)){
                 Skarm.logError(`scratch that. ${eventObject.user.name} was not detected to have changed names`);

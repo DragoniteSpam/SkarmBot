@@ -426,13 +426,12 @@ class Bot {
 
     OnPresenceUpdate(e){
         let proceed = (n)=>{
-            if(Users.get(e.user.id).previousName)
+            if(Users.get(e.user.id).previousName) {
                 return Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.NAME_CHANGE, e);
-            else if(n>0){
+            }
+            if(n>0){
                 return setTimeout(()=>{proceed(n-1);},25);
             }
-            //Skarm.spam("Failed to find defined previous name for User ID: "+e.user.id);
-            //Skarm.spam("OnPresenceUpdate JSON object retrieved: "+JSON.stringify(Users.get(e.user.id)));
         };
         if(e.user.bot)return;
         //Skarm.spam("Presence Update detected for User : "+ (e.user.id));
@@ -442,6 +441,7 @@ class Bot {
     OnPresenceMemberUpdate(e){
         if(e.old.username !== e.new.username){
             Users.get(e.new.id).previousName = e.old.username+"#"+e.old.discriminator;
+            console.log(`Old username ${e.old.username} updated to new username ${e.new.username}`);
             //Skarm.spam(`Username update set to user object:  ${Users.get(e.new.id).previousName} is now ${e.new.username}`);
             //Skarm.spam("OnPresenceMemberUpdate JSON object for user: "+JSON.stringify(Users.get(e.new.id)));
             setTimeout(() =>{
