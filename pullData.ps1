@@ -11,6 +11,7 @@ Push-Location
 cd $PSScriptRoot
 
 $dataSource = "~\Box\skarmData\*.penguin"
+$dataRemoval = "~\Box\skarmData\*(*).penguin"
 $dataDestination = "$PSScriptRoot\..\skarmData\"
 
 if(-not (Test-Path $dataSource)){
@@ -30,6 +31,9 @@ Write-Host "Copying files..."
 if(-not (Test-Path $dataDestination)){
     New-Item -Path $dataDestination -ItemType Directory
 }
+
+# Purge clones
+ls $dataRemoval | Remove-Item -Verbose
 
 # Copy in data if the file size is at least 1 byte (avoids one-time case where 0-length data was pushed to the database)
 ls $dataSource | where {$_.Length -gt 8} | foreach {Write-Host "Copying in $($_.Name) of size $($_.Length)"; Copy-Item -Path $_ -Destination $dataDestination}

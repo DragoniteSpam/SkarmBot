@@ -8,6 +8,7 @@ $windowTitle = "SkarmBot live"
 $host.ui.RawUI.WindowTitle = $windowTitle
 
 $dataDestination = "~\Box\skarmData\"
+$dataRemoval = "$PSScriptRoot\..\skarmData\*(*).penguin"
 $dataSource = "$PSScriptRoot\..\skarmData\*.penguin"
 
 if(-not(Test-Path $dataSource)){
@@ -22,4 +23,8 @@ if(-not(Test-Path $dataDestination)){
     exit
 }
 
+# Purge clones
+ls $dataRemoval | Remove-Item -Verbose
+
+# Save data to Box
 ls $dataSource | where {$_.Length -gt 8} | foreach {Write-Host "Saving $($_.Name) of size $($_.Length) to the cloud..."; Copy-Item -Path $_ -Destination $dataDestination -Force}
