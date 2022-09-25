@@ -752,7 +752,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Lines: {
+	Lines: { // todo: update for parrot rework
         aliases: ["line", "lines", "linecount"],
         params: [],
         usageChar: "!",
@@ -1662,7 +1662,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Soap: {
+	Soap: { // todo: update for parrot-rework
         aliases: ["soap"],
         params: [],
         usageChar: "@",
@@ -2071,7 +2071,76 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	
+    ConfigParrot: {
+        aliases: ["parrot", "config-parrot"],
+        params: ["[varied]"],
+        usageChar: "@",
+        helpText: "Configures the keywords that skarm will respond to, how he will respond, and how likely he is to respond.",
+        examples: [
+            {command: "e@parrot", effect: "Will list the available keyword tables that can be configured."},
+            {command: "e@parrot skyrim", effect: "Will list the weights for keywords in the `skyrim` table.  Messages sent with keyword weights that add up to >1 will guarantee that skarm responds."},
+        ],
+        ignoreHidden: false,
+        perms: Permissions.MOD,
+        category: "administrative",
+
+        execute(bot, e, userData, guildData) {
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let guildRoles = e.message.guild.roles;
+            let action = tokens.shift();
+            let outputString = "Unknown command.  Please run `e?parrot` for help on how to use e@parrot.";
+            let fields = [];
+            let quoteRepos = guildData.parrot.getValidQuoteRepos();
+
+            let reservedTerms = ["add", "delete", "del", "rename", "ren"];
+            let reservedHash = {};
+            for (let rt of reservedTerms) reservedHash[rt]=true;
+
+            // Read currently configured terms
+            if(action === undefined){
+                outputString = "The following repositories are currently triggered by the following keywords.  Use `e@parrot yourRepositoryHere` to view probabilities";
+                for(let repo in quoteRepos){
+                    fields.push({name: `${repo}`, value: `${Object.keys(quoteRepos[repo]).join(", ")}`, inline: true});
+                }
+            }
+
+            // operations on a specific repo
+            if (action in quoteRepos) {
+                let quoteRepoTerm = tokens.shift();    // take next token to determine what to act on
+
+                // if no term is specified, list current config
+                if (quoteRepoTerm === undefined) {
+                    let repoData = quoteRepos[action];
+                    outputString = `Weights attributed to each keyword in \`${action}\`.  Weights that add up to at least 1 will guarantee skarm responds.`;
+                    for (let keyword in repoData) {
+                        fields.push({name: `${keyword}`, value: `${repoData[keyword]}`, inline: true});
+                    }
+                }
+
+                // todo: if a term is specified, make sure it's valid then make the adjustment
+                // i.e. `e@parrot skyrim whiterun 1` sets the probability of whiterun being triggered to 1
+                // i.e. `e@parrot skyrim whiterun 0` removes whiterun from the word list for skyrim
+            }
+
+            if (action === "ew") {
+                // todo: view and edit everything weights
+            }
+
+            Skarm.sendMessageDelay(e.message.channel, " ", false, {
+                color: Skarm.generateRGB(),
+                author: {name: e.message.author.nick},
+                description: outputString,
+                timestamp: new Date(),
+                fields: fields,
+                footer: {text: "Parrot Configuration"}
+            });
+        },
+
+        help(bot, e) {
+            Skarm.help(this, e);
+        },
+    },
+
 	/**
 	*	leveling
 	*/

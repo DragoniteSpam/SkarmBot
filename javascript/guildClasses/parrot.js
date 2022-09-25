@@ -50,11 +50,10 @@ let linkVariables = function (parrot) {
         "botface":      					1,
         "something completely different":	1,
     };
+
     parrot.repoWeights["shanty"] ??= {
-        "johnny":       0.01,
-        "jonny":        0.01,
+        "john":         0.01,
         "jon":          0.01,
-        "johny":        0.01,
         "drunk":        0.02,
         "sing":         0.03,
         "rum":          0.04,
@@ -68,6 +67,7 @@ let linkVariables = function (parrot) {
         "shanties":     0.40,
         "dreadnought":  0.50,
     };
+
     parrot.repoWeights["everything"] ??= {
         "skarm":        					0.1,
         "skram!":       					0.1,
@@ -79,8 +79,12 @@ let linkVariables = function (parrot) {
 };
 
 let linkFunctions = function (parrot){
-    // returns a hashmap of valid quote repos and their associated distributions of everything
+    // returns a hashmap of valid quote repos and their associated distributions
     parrot.getValidQuoteRepos = function () {
+        return parrot.repoWeights;
+    }
+
+    parrot.getEverythingWeights = function () {
         return parrot.everythingWeights;
     }
 
