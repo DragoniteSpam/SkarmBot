@@ -79,6 +79,8 @@ const linkFunctions = function(guild) {
         SarGroups.initialize(guild.selfAssignedRoles[groupName]);
     }
 
+    Parrot.initialize(guild.parrot);
+
     /**
      * Fetch the IUser object(s) representing a user in the current server
      * Examples:
