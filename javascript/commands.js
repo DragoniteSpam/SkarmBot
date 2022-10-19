@@ -617,7 +617,7 @@ module.exports = {
 		category: "meta",
 
         execute(bot, e, userData, guildData) {
-            let version = Math.floor(Math.random() * 0xffffffff);
+            let version = bot.version;
             Skarm.sendMessageDelay(e.message.channel,
             `**Skarm Bot 2**\n
             Lead spaghetti chef: Dragonite#7992
