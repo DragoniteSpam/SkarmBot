@@ -53,12 +53,15 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	Constants.initializeDynamics(client, process);
 
 	let dataPuller = spawn('powershell.exe', [Constants.skarmRootPath + "pullData.ps1"]);
+    let skarmVersion = undefined;
 	Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
 		console.log("Pulled in skarmData.\nGit revision count: " + code);
+        skarmVersion ??= code;
+        console.log("Using version data: ", skarmVersion);
 		Users.initialize(client);
 		Guilds.initialize(client);
-		bot = new SkarmBot(client, code);
+		bot = new SkarmBot(client, skarmVersion);
 		Skarm.log("Connected as " + client.User.username + ". Yippee!\n");
 	});
 	dataPuller.stderr.on("data", (err) => {
@@ -69,6 +72,11 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 		if (message.length > 1) {	//if this minimum isn't included, extra new lines get added between each printed line
 			console.log(message.replaceAll("\n", "").replaceAll("\r", ""));
 		}
+        
+        let versionStartString = "Version: ";
+        if(message.includes(versionStartString)){
+            skarmVersion = message.substring(message.indexOf(versionStartString) + versionStartString.length);
+        }
 	});
 });
 

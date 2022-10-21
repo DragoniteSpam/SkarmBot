@@ -29,7 +29,7 @@ class Bot {
      *
      **/
     constructor(client, version) {
-        this.version = `2.1.${version}`;
+        this.version = `${version}`;
 
         //upper bits: randomly generated.  Lower bits: mod of version number
         this.pid = Math.floor(Math.random()*Constants.processIdMax)<<Constants.versionOffsetBits + this.version%Constants.versionOffsetBits;
