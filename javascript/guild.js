@@ -199,7 +199,7 @@ const linkFunctions = function(guild) {
                 let roleData = apiGuildData.roles[i];
                 if (roleData.id === roleID && guild.botCanEditRole(roleID, botAccount)) {
                     try {
-                        let output = Skarm.generateRGB();
+                        let output = Skarm.generateRGBWeighted();
                         roleData.commit(roleData.name, output, roleData.hoist, roleData.mentionable);
                     } catch (e) {
                         console.error(e);
