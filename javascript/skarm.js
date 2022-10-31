@@ -316,7 +316,7 @@ class Skarm {
      * brightness increased slightly
      */
     static generateRGBWeighted() {
-        let source = Skarm.GenerateRGB();
+        let source = Skarm.generateRGB();
         let r = source & 0x0000ff;
         let g = (source & 0x00ff00) >> 8;
         let b = (source & 0xff0000) >> 16;
