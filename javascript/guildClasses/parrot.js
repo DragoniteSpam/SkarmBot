@@ -76,6 +76,8 @@ let linkVariables = function (parrot) {
 
     parrot.everythingWeights["skarm"] ??= 1;
     parrot.everythingWeights["shanty"] ??= 1;
+
+    parrot.everythingScaling = 1;    // The power to which the cardinality of the repo should be raised before factoring it into the weighted distribution
 };
 
 let linkFunctions = function (parrot){
@@ -112,6 +114,16 @@ let linkFunctions = function (parrot){
         }
         return false;
 
+    }
+
+
+    parrot.getEverythingScaling = function () {
+        return parrot.everythingScaling;
+    }
+
+    parrot.setEverythingScaling = function (newScaling) {
+        if(!isNaN(newScaling - 0))
+            parrot.everythingScaling = newScaling;
     }
 
     /**
@@ -163,9 +175,11 @@ let linkFunctions = function (parrot){
         if (outcomeSum < Math.random()) return;   // if the cumulative probability of the trigger words doesn't exceed 1, it only has a random chance of triggering.
 
 
-        // scale message outcomes by the amount of lines in each repo
+        // parrot.everythingScaling = 0 -> every repo is equally likely
+        // parrot.everythingScaling = 1 -> every line is equally likely
+        // scale message outcomes by (the amount of lines in each repo) ^ everythingScaling
         for(let repo in messageOutcomes){
-            messageOutcomes[repo] *= parrot.getRepoLineCount(repo, guildData);
+            messageOutcomes[repo] *= Math.pow(parrot.getRepoLineCount(repo, guildData), parrot.everythingScaling);
         }
 
         console.log("Message outcomes (sc): ", messageOutcomes); //outcomes without everything
