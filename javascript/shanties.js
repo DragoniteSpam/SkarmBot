@@ -102,9 +102,10 @@ class ShantyIterator {
 
         iterator.next = function(){
             let block = "";
-            console.log("Getting line count of shanty:", iterator.shantyName);
-            console.log(ShantyCollection.shanties[iterator.shantyName]);
-            console.log(ShantyCollection.shanties[iterator.shantyName].getLineCount());
+            //  Debug:
+            // console.log("Getting line count of shanty:", iterator.shantyName);
+            // console.log(ShantyCollection.shanties[iterator.shantyName]);
+            // console.log(ShantyCollection.shanties[iterator.shantyName].getLineCount());
             if(iterator.currentLine < ShantyCollection.shanties[iterator.shantyName].getLineCount()){
                 block = ShantyCollection.shanties[iterator.shantyName].getBlockFrom(iterator.currentLine);
                 iterator.currentLine += 2;
