@@ -2130,6 +2130,9 @@ module.exports = {
                 // todo: view and edit everything weights
             }
 
+            if (action === "scaling") {
+                // todo: read and adjust scaling
+            }
             Skarm.sendMessageDelay(e.message.channel, " ", false, {
                 color: Skarm.generateRGB(),
                 author: {name: e.message.author.nick},
