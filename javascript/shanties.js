@@ -3,24 +3,21 @@ const fs = require("fs");
 const Skarm = require("./skarm.js");
 
 class ShantyCollection {
-    constructor() {
-        this.list = [];           // array of Shanty objects
-		this.names = [];          // array of shanty names (str)
+    constructor(prior) {
         this.scan();              // populate shanty list
-		this.isSinging = false;
-		this.activeSong = -1;     // index of names and list arrays
-		this.ivanhoe = 1/4;       // Probability of shanties variable.  TODO: deprecate
     }
     
     load(filename) {
         let shantypath = "data/shanties/" + filename;
         if (fs.existsSync(shantypath)) {
-            this.list.push(new Shanty(filename));
 			let name = filename.replace(".shanty", "");
 			while (name.indexOf("-") > 0) {
 				name = name.replace("-", " ");
             }
 			this.names.push(name);
+            this.list.push(new Shanty(filename));
+            ShantyCollection.shanties ??= {};
+            ShantyCollection.shanties[name] = new Shanty(filename);
         } else{
             console.log("Error: Missing shanty", shantypath);
         }
@@ -65,35 +62,18 @@ class Shanty {
         this.filename = filename;
         this.lines = fs.readFileSync("data/shanties/" + filename)
             .toString().split('\n');
-        this.currentLine = 0;
-        // the old system had you specify the number of lines per message
-        // (usually 2 or 4). we no longer do that. shanties should automatically
-        // post two lines per message.
     }
     
-    getNextBlock(collection) {
+    getBlockFrom(startLine) {
         let block = "";
         
         // lazy way of safely fetching the next two lines and resetting if
         // you've hit the end
-        if (this.currentLine < this.lines.length) {
-            block = block + this.lines[this.currentLine] + "\n";
-            this.currentLine++;
+        for(let i = 0; startLine+i < this.lines.length && i<2; i++){
+            block += this.lines[startLine + i] + "\n";
         }
-        if (this.currentLine < this.lines.length) {
-            block = block + this.lines[this.currentLine] + "\n";
-            this.currentLine++;
-        } 
-		if (this.currentLine >= this.lines.length) {
-            collection.isSinging=false;
-			collection.activeSong=-1;
-        }
-        
+
         return block;
-    }
-    
-    resetBlock() {
-        this.currentLine = 0;
     }
 
     getLineCount() {
@@ -101,7 +81,40 @@ class Shanty {
     }
 }
 
+class ShantyIterator {
+    constructor(shantyName){
+        this.shantyName = shantyName;
+        this.currentLine = 0;
+        // the old system had you specify the number of lines per message
+        // (usually 2 or 4). we no longer do that. shanties should automatically
+        // post two lines per message.
+    }
+
+    resetBlock() {
+        this.currentLine = 0;
+    }
+
+    next(){
+        let block = "";
+        if(this.currentLine < ShantyCollection[this.shantyName].getLineCount()){
+            block = [this.shantyName].getBlockFrom(this.currentLine);
+            this.currentLine+=2;
+        }else{
+            // reset the iterator to a new shanty
+            let oldShanty = this.shantyName;
+            let newShanty = oldShanty;
+            let shantyNames = Object.keys(ShantyCollection.shanties);
+            while(oldShanty === newShanty){
+                newShanty = shantyNames[Math.floor(shantyNames.length * Math.random())];
+            }
+            this.resetBlock();
+        }
+        return block;
+    }
+}
+
 module.exports = {
     ShantyCollection,
-    Shanty
+    Shanty,
+    ShantyIterator
 }
