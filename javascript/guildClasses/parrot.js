@@ -77,7 +77,7 @@ let linkVariables = function (parrot) {
     parrot.everythingWeights["skarm"] ??= 1;
     parrot.everythingWeights["shanty"] ??= 1;
 
-    parrot.everythingScaling = 1;    // The power to which the cardinality of the repo should be raised before factoring it into the weighted distribution
+    parrot.everythingScaling ??= 1;    // The power to which the cardinality of the repo should be raised before factoring it into the weighted distribution
 };
 
 let linkFunctions = function (parrot){
@@ -179,7 +179,7 @@ let linkFunctions = function (parrot){
         // parrot.everythingScaling = 1 -> every line is equally likely
         // scale message outcomes by (the amount of lines in each repo) ^ everythingScaling
         for(let repo in messageOutcomes){
-            messageOutcomes[repo] *= Math.pow(parrot.getRepoLineCount(repo, guildData), parrot.everythingScaling);
+            messageOutcomes[repo] *= Math.pow(parrot.getRepoLineCount(repo, guildData), parrot.getEverythingScaling());
         }
 
         console.log("Message outcomes (sc): ", messageOutcomes); //outcomes without everything
