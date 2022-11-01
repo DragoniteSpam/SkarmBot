@@ -3,23 +3,24 @@ const fs = require("fs");
 const Skarm = require("./skarm.js");
 
 class ShantyCollection {
-    constructor(prior) {
+    constructor() {
         this.scan();              // populate shanty list
+        this.shanties = ShantyCollection.shanties;
     }
     
     load(filename) {
-        let shantypath = "data/shanties/" + filename;
-        if (fs.existsSync(shantypath)) {
+        let shantyPath = "data/shanties/" + filename;
+        if (fs.existsSync(shantyPath)) {
 			let name = filename.replace(".shanty", "");
 			while (name.indexOf("-") > 0) {
 				name = name.replace("-", " ");
             }
-			this.names.push(name);
-            this.list.push(new Shanty(filename));
+			// this.names.push(name);
+            // this.list.push(new Shanty(filename));
             ShantyCollection.shanties ??= {};
             ShantyCollection.shanties[name] = new Shanty(filename);
         } else{
-            console.log("Error: Missing shanty", shantypath);
+            console.log("Error: Missing shanty", shantyPath);
         }
     }
     
@@ -31,27 +32,14 @@ class ShantyCollection {
             });
 
             // TODO: fix every guild having their own instance of every single shanty
-            console.log("Initialized", this.getCumulativeLinesLength(), "lines across", this.list.length, "shanties");
+            console.log("Initialized", ShantyCollection.getCumulativeLinesLength(), "lines across", Object.keys(ShantyCollection.shanties).length, "shanties");
         });
     }
-	
-	drinkCount() {
-		if (!this.isSinging) return 0;
-		return this.list[this.activeSong].currentLine;
-	}
-	
-	getNextBlock() {
-		if (!this.isSinging) {
-			this.isSinging = true;
-			this.activeSong = Math.floor(Math.random() * this.list.length);
-		}
-		return this.list[this.activeSong].getNextBlock(this);
-	}
 
-    getCumulativeLinesLength() {
+    static getCumulativeLinesLength() {
         let totalLines = 0;
-        for(let shanty of this.list){
-            totalLines += shanty.getLineCount();
+        for(let shanty in ShantyCollection.shanties){
+            totalLines += ShantyCollection.shanties[shanty].getLineCount();
         }
         return totalLines;
     }
@@ -82,34 +70,51 @@ class Shanty {
 }
 
 class ShantyIterator {
-    constructor(shantyName){
-        this.shantyName = shantyName;
-        this.currentLine = 0;
+    constructor(iterator){
+        ShantyIterator.linkFunctions(this);
+        if(iterator) {
+            this.shantyName  = iterator.shantyName;
+            this.currentLine = iterator.currentLine;
+        }
+        if(!this.shantyName || !this.currentLine) this.resetIterator();
+
         // the old system had you specify the number of lines per message
         // (usually 2 or 4). we no longer do that. shanties should automatically
         // post two lines per message.
     }
 
-    resetBlock() {
-        this.currentLine = 0;
-    }
-
-    next(){
-        let block = "";
-        if(this.currentLine < ShantyCollection[this.shantyName].getLineCount()){
-            block = [this.shantyName].getBlockFrom(this.currentLine);
-            this.currentLine+=2;
-        }else{
+    static linkFunctions(iterator){
+        iterator.resetIterator = function (){
             // reset the iterator to a new shanty
-            let oldShanty = this.shantyName;
-            let newShanty = oldShanty;
             let shantyNames = Object.keys(ShantyCollection.shanties);
+            let oldShanty = iterator.shantyName;
+            let newShanty = shantyNames[Math.floor(shantyNames.length * Math.random())];
             while(oldShanty === newShanty){
                 newShanty = shantyNames[Math.floor(shantyNames.length * Math.random())];
             }
-            this.resetBlock();
+            iterator.shantyName = newShanty;
+            iterator.resetBlock();
         }
-        return block;
+
+        iterator.resetBlock = function () {
+            iterator.currentLine = 0;
+        }
+
+        iterator.next = function(){
+            let block = "";
+            console.log("Getting line count of shanty:", iterator.shantyName);
+            console.log(ShantyCollection.shanties[iterator.shantyName]);
+            console.log(ShantyCollection.shanties[iterator.shantyName].getLineCount());
+            if(iterator.currentLine < ShantyCollection.shanties[iterator.shantyName].getLineCount()){
+                block = ShantyCollection.shanties[iterator.shantyName].getBlockFrom(iterator.currentLine);
+                iterator.currentLine += 2;
+            }else{
+                iterator.resetIterator();
+                return iterator.next();
+            }
+            return block;
+        }
+
     }
 }
 

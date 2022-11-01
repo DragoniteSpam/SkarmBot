@@ -483,7 +483,7 @@ class Bot {
     //skarm will enqueue a shanty to be sung in just the one channel which triggered the song
 	singShanty(e) {
 	    //console.log("they've started singing");
-	    const guildData = Guilds.get(e.message.channel.guild_id);
+	    const guildData = Guilds.get(e.message.channel.guild.id);
 	    try {
             if (guildData.channelBuffer[e.message.channel.id].length > 0)
                 return this.parrot(e);

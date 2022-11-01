@@ -649,27 +649,6 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	/*
-
-    Drunk: {
-        aliases: ["drunk"],
-        params: [""],
-        usageChar: "!",
-        helpText: "States how much bird rum the bot has had to drink",
-        ignoreHidden: true,
-        category: "meta",
-        
-        execute(bot, e) {
-			var pints = bot.shanties.drinkCount() / 2;
-			Skarm.sendMessageDelay(e.message.channel, "Skarm has had " + pints +
-                " pint" + ((pints === 1) ? "s" : "") + " of rum");
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
-	 */
 	Help: {
         aliases: ["help", "man", "?"],
         params: ["[term]"],
@@ -841,7 +820,7 @@ module.exports = {
 
         execute(bot, e, userData, guildData) {
 			let target = commandParamString(e.message.content);
-			let names = bot.shanties.names;
+			let names = Object.keys(bot.shanties.shanties);
             let shanties = "";
             for (let name of names) {
 				if (name.includes(target))
@@ -859,7 +838,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Skarll: {
+	Skarll: {   // TODO: REWORK TO MATCH PARROT REWORK
         aliases: ["skarm"],
         params: [],
         usageChar: "!",

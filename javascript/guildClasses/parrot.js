@@ -19,7 +19,7 @@
 "use strict";
 const fs = require("fs");
 const Guilds = require("../guild.js");
-const {ShantyCollection, Shanty} = require("../shanties");
+const {ShantyCollection, Shanty, ShantyIterator} = require("../shanties");
 
 const quoteReposRoot = "./data/dynamicQuotes/";
 const quoteDataSuffix = "/quotes.txt";
@@ -220,7 +220,7 @@ let linkFunctions = function (parrot){
 
             case "shanty":
                 // console.log("Acquiring shanty line...");
-                return guildData.shanties.getNextBlock();
+                return guildData.shantyIterator.next();
                 break;
 
             default:
@@ -241,7 +241,7 @@ let linkFunctions = function (parrot){
                 return Object.keys(guildData.lines).length;
 
             case "shanty":
-                return guildData.shanties.getCumulativeLinesLength();
+                return ShantyCollection.getCumulativeLinesLength();
 
             default:
                 return Parrot.quoteRepos[repo].length;
