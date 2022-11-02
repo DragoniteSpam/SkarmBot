@@ -1664,17 +1664,41 @@ module.exports = {
     },
 	Soap: {
         aliases: ["soap"],
-        params: [],
+        params: ["[scope]"],
         usageChar: "@",
-        helpText: "Wash skarm's mouth out with soap if he picked up potty language from chat.",
+        helpText: "Wash skarm's mouth out with soap if he picked up potty language from chat (or some other forms of purging the logs).",
         examples: [
-            {command: "e@soap", effect: "Will remove the last thing that skarm parroted to chat from his quote archives."}
+            {command: "e@soap", effect: "Will remove the last thing that skarm parroted to chat from his quote archives."},
+            {command: "e@soap --text", effect: "Deletes the text logs for the guild."},
+            {command: "e@soap --action", effect: "Deletes the action logs for the guild."},
+            {command: "e@soap --global", effect: "Deletes tboth the text and action logs for the guild."}
         ],
         ignoreHidden: false,
         perms: Permissions.MOD,
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
+            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let action = tokens.shift();
+            
+            if (action == "--text") {
+                guildData.soapLines();
+                Skarm.sendMessageDelay(e.message.channel,"Text log has been purged!");
+                return;
+            }
+            if (action == "--action") {
+                guildData.soapActions();
+                Skarm.sendMessageDelay(e.message.channel,"Action log has been purged!");
+                return;
+            }
+            if (action == "--global") {
+                guildData.soapText();
+                guildData.soapActions();
+                Skarm.sendMessageDelay(e.message.channel,"Text and action logs have been purged!");
+                return;
+            }
+            
+            // fallback soap behavior
             guildData.soap();
 			Skarm.sendMessageDelay(e.message.channel,"sorry...");
         },
