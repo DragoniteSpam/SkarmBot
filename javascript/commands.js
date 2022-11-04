@@ -2117,20 +2117,40 @@ module.exports = {
                     }
 
                 }
-                
+
                 // clean up namespace of 0's?
             }
 
-            //             {command: "e@parrot e w",             effect: "Will list the weights for how the everything distribution is factored into the other repositories."},
-            //             {command: "e@parrot e w skyrim 0.3",  effect: "Will set the weight for the skyrim distribution to receive 0.3 shares of the distribution for every sum total of weights."},
-            if (action === "ew") {
-                // todo: view and edit everything weights
+            if (action === "e") {
+                let subAction = tokens.shift();    // take next token to determine what to act on
+
+                // view and edit everything weights
+                //             {command: "e@parrot e w",             effect: "Will list the weights for how the everything distribution is factored into the other repositories."},
+                //             {command: "e@parrot e w skyrim 0.3",  effect: "Will set the weight for the skyrim distribution to receive 0.3 shares of the distribution for every sum total of weights."},
+                if (subAction === "w") {
+                    let everythingWeights = guildData.parrot.getEverythingWeights();
+                    if(tokens.length === 2){
+                        let repo = tokens.shift();
+                        let newWeight = tokens.shift()-0;
+                        if(repo in everythingWeights && !isNaN(newWeight)){
+                            everythingWeights[repo] = newWeight;
+                        }
+                        outputString = `Everything weight for \`${repo}\` set to \`${everythingWeights[repo]}\``;
+                    } else {
+                        outputString = "The following weights are assigned to each repo for each point of everything:";
+                        for(let repo in everythingWeights){
+                            fields.push({name: `${repo}`, value: `${everythingWeights[repo]}`, inline: true});
+                        }
+                    }
+                }
+
+                
+                if (subAction === "scaling") {
+                    // todo: read and adjust scaling
+                    //            {command: "e@parrot e scaling 0",     effect: "Sets the degree to which the size of the quote repo affects the probability that it will be drawn from when `everything` is called.\r\n0 -> everything weights are independent of size. 1 -> the more lines there are in a quote repo, the higher the probability that it will be drawn from (linearly growing share)\r\nCalling this command without the number will return the current value."},
+                }
             }
 
-            //            {command: "e@parrot e scaling 0",     effect: "Sets the degree to which the size of the quote repo affects the probability that it will be drawn from when `everything` is called.\r\n0 -> everything weights are independent of size. 1 -> the more lines there are in a quote repo, the higher the probability that it will be drawn from (linearly growing share)\r\nCalling this command without the number will return the current value."},
-            if (action === "scaling") {
-                // todo: read and adjust scaling
-            }
 
 
             //todo             {command: "e@parrot factory-reset",   effect: "Will reset the weights of all repositories to the defaults that skarm started off with."},
