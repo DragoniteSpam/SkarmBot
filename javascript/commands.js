@@ -2105,20 +2105,15 @@ module.exports = {
                     // if a term is specified, make sure it's valid then make the adjustment
                     // i.e. `e@parrot skyrim whiterun 1` sets the probability of whiterun being triggered to 1
                     // i.e. `e@parrot skyrim whiterun 0` removes whiterun from the word list for skyrim
-                    console.log("repo data:", repoKeywordWeightMapping);
+                    // console.log("repo data:", repoKeywordWeightMapping);
                     if(tokens.length === 1){
                         let newVal = tokens.shift() - 0;
-                        if(!isNaN(newVal)) {
-                            repoKeywordWeightMapping[quoteRepoTerm] = newVal; // use the user input only if it is valid
-                        }
+                        guildData.parrot.setTriggerWeight(quoteRepoTerm, action, newVal);
                         outputString = `Weight of term \`${quoteRepoTerm}\` set to \`${repoKeywordWeightMapping[quoteRepoTerm]}\``;
                     } else {
                         outputString = `The weight of term \`${quoteRepoTerm}\` is currently set to \`${repoKeywordWeightMapping[quoteRepoTerm]}\``;
                     }
-
                 }
-
-                // clean up namespace of 0's?
             }
 
             if (action === "e") {
