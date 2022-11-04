@@ -123,7 +123,7 @@ let linkFunctions = function (parrot){
     }
 
     parrot.setEverythingScaling = function (newScaling) {
-        if(!isNaN(newScaling - 0))
+        if(isFinite(newScaling - 0))
             parrot.everythingScaling = newScaling;
     }
 

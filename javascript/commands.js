@@ -2107,7 +2107,7 @@ module.exports = {
                     // i.e. `e@parrot skyrim whiterun 0` removes whiterun from the word list for skyrim
                     // console.log("repo data:", repoKeywordWeightMapping);
                     if(tokens.length === 1){
-                        let newVal = tokens.shift() - 0;
+                        let newVal = tokens.shift();
                         guildData.parrot.setTriggerWeight(quoteRepoTerm, action, newVal);
                         outputString = `Weight of term \`${quoteRepoTerm}\` set to \`${repoKeywordWeightMapping[quoteRepoTerm]}\``;
                     } else {
@@ -2144,10 +2144,8 @@ module.exports = {
                 //            {command: "e@parrot e scaling 0",     effect: "Sets the degree to which the size of the quote repo affects the probability that it will be drawn from when `everything` is called.\r\n0 -> everything weights are independent of size. 1 -> the more lines there are in a quote repo, the higher the probability that it will be drawn from (linearly growing share)\r\nCalling this command without the number will return the current value."},
                 if (subAction === "scaling") {
                     if(tokens.length === 1){
-                        let newScaling = tokens.shift()-0;
-                        if(!isNaN(newScaling)){
-                            guildData.parrot.setEverythingScaling(newScaling);
-                        }
+                        let newScaling = tokens.shift();
+                        guildData.parrot.setEverythingScaling(newScaling);
                         outputString = `Repo everything scaling set to: ${guildData.parrot.getEverythingScaling()}`;
                     } else {
                         outputString = `Repo everything scaling is set to: ${guildData.parrot.getEverythingScaling()}`;
