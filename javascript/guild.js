@@ -79,6 +79,7 @@ const linkFunctions = function(guild) {
         SarGroups.initialize(guild.selfAssignedRoles[groupName]);
     }
 
+    guild.parrot ??= new Parrot(guild.id);
     Parrot.initialize(guild.parrot);
 
     /**

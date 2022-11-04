@@ -11,6 +11,7 @@ const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 
 const SarGroups = require("./guildClasses/sar.js");
+const {ShantyCollection} = require("./shanties");
 
 let commandParamTokens = function(message) {
     let tokens = message.trim().split(" ");
@@ -820,7 +821,7 @@ module.exports = {
 
         execute(bot, e, userData, guildData) {
 			let target = commandParamString(e.message.content);
-			let names = Object.keys(bot.shanties.shanties);
+			let names = Object.keys(ShantyCollection.shanties);
             let shanties = "";
             for (let name of names) {
 				if (name.includes(target))
@@ -2105,13 +2106,18 @@ module.exports = {
                 // i.e. `e@parrot skyrim whiterun 0` removes whiterun from the word list for skyrim
             }
 
+            //             {command: "e@parrot e w",             effect: "Will list the weights for how the everything distribution is factored into the other repositories."},
+            //             {command: "e@parrot e w skyrim 0.3",  effect: "Will set the weight for the skyrim distribution to receive 0.3 shares of the distribution for every sum total of weights."},
             if (action === "ew") {
                 // todo: view and edit everything weights
             }
 
+            //            {command: "e@parrot e scaling 0",     effect: "Sets the degree to which the size of the quote repo affects the probability that it will be drawn from when `everything` is called.\r\n0 -> everything weights are independent of size. 1 -> the more lines there are in a quote repo, the higher the probability that it will be drawn from (linearly growing share)\r\nCalling this command without the number will return the current value."},
             if (action === "scaling") {
                 // todo: read and adjust scaling
             }
+
+
             Skarm.sendMessageDelay(e.message.channel, " ", false, {
                 color: Skarm.generateRGB(),
                 author: {name: e.message.author.nick},

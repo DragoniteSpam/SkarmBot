@@ -63,6 +63,7 @@ let linkVariables = function (parrot) {
         "maui":         0.09,
         "sailor":       0.10,
         "stan":         0.11,
+        "rogers":       0.11,
         "shanty":       0.35,
         "shanties":     0.40,
         "dreadnought":  0.50,
