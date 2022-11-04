@@ -2133,9 +2133,9 @@ module.exports = {
                         let repo = tokens.shift();
                         let newWeight = tokens.shift()-0;
                         if(repo in everythingWeights && !isNaN(newWeight)){
-                            everythingWeights[repo] = newWeight;
+                            guildData.parrot.setEverythingWeight(repo, newWeight);
                         }
-                        outputString = `Everything weight for \`${repo}\` set to \`${everythingWeights[repo]}\``;
+                        outputString = `Everything weight for \`${repo}\` set to \`${guildData.parrot.getEverythingWeights()[repo]}\``;
                     } else {
                         outputString = "The following weights are assigned to each repo for each point of everything:";
                         for(let repo in everythingWeights){
@@ -2144,10 +2144,19 @@ module.exports = {
                     }
                 }
 
-                
+
+                // read and adjust scaling
+                //            {command: "e@parrot e scaling 0",     effect: "Sets the degree to which the size of the quote repo affects the probability that it will be drawn from when `everything` is called.\r\n0 -> everything weights are independent of size. 1 -> the more lines there are in a quote repo, the higher the probability that it will be drawn from (linearly growing share)\r\nCalling this command without the number will return the current value."},
                 if (subAction === "scaling") {
-                    // todo: read and adjust scaling
-                    //            {command: "e@parrot e scaling 0",     effect: "Sets the degree to which the size of the quote repo affects the probability that it will be drawn from when `everything` is called.\r\n0 -> everything weights are independent of size. 1 -> the more lines there are in a quote repo, the higher the probability that it will be drawn from (linearly growing share)\r\nCalling this command without the number will return the current value."},
+                    if(tokens.length === 1){
+                        let newScaling = tokens.shift()-0;
+                        if(!isNaN(newScaling)){
+                            guildData.parrot.setEverythingScaling(newScaling);
+                        }
+                        outputString = `Repo everything scaling set to: ${guildData.parrot.getEverythingScaling()}`;
+                    } else {
+                        outputString = `Repo everything scaling is set to: ${guildData.parrot.getEverythingScaling()}`;
+                    }
                 }
             }
 
