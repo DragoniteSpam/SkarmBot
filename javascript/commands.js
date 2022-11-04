@@ -2142,7 +2142,7 @@ module.exports = {
 
                 // read and adjust scaling
                 //            {command: "e@parrot e scaling 0",     effect: "Sets the degree to which the size of the quote repo affects the probability that it will be drawn from when `everything` is called.\r\n0 -> everything weights are independent of size. 1 -> the more lines there are in a quote repo, the higher the probability that it will be drawn from (linearly growing share)\r\nCalling this command without the number will return the current value."},
-                if (subAction === "scaling") {
+                if (subAction === "scaling" || subAction === "s") {
                     if(tokens.length === 1){
                         let newScaling = tokens.shift();
                         guildData.parrot.setEverythingScaling(newScaling);
@@ -2155,8 +2155,9 @@ module.exports = {
 
 
 
-            //todo             {command: "e@parrot factory-reset",   effect: "Will reset the weights of all repositories to the defaults that skarm started off with."},
-            //todo             {command: "e@parrot factory-reset skyrim",   effect: "Will reset the weights of all of the skyrim weights to the defaults that skarm started off with."},
+            //todo  {command: "e@parrot factory-reset",   effect: "Will reset the weights of all repositories to the defaults that skarm started off with."},
+            //todo  {command: "e@parrot factory-reset skyrim",   effect: "Will reset the weights of all of the skyrim weights to the defaults that skarm started off with."},
+
 
 
             Skarm.sendMessageDelay(e.message.channel, " ", false, {
