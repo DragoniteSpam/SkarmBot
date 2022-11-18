@@ -1261,7 +1261,7 @@ class Guild {
     
     static saveDebug() {
         fs.writeFile("debug/guilds.butt",
-            JSON.stringify(Guild.guilds),
+            JSON.stringify(Guild.guilds, null, 3),
             "utf8",
             function(err) {
                 if (err) console.log("something went wrong: " + err);

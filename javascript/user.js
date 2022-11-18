@@ -212,7 +212,7 @@ class User {
     
     static saveDebug() {
         fs.writeFile("debug/users.butt",
-            JSON.stringify(User.users),
+            JSON.stringify(User.users, null, 3),
             "utf8",
             function(err) {
                 if (err) console.log("something went wrong: " + err);
