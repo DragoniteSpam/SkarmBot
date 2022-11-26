@@ -106,6 +106,7 @@ let linkFunctions = function (parrot){
     // only sets the weight if it is a valid 0+ number
     // returns `true` on success and `false` otherwise
     parrot.setTriggerWeight = function (term, repoStr, weight) {
+        weight = Number(weight);
         if(repoStr in parrot.repoWeights && !isNaN(weight) && isFinite(weight) && weight >= 0) {
             parrot.repoWeights[repoStr][term] = weight;
             if(weight === 0) {
