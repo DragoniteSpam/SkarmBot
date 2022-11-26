@@ -2154,11 +2154,18 @@ module.exports = {
             }
 
 
-
-            //todo  {command: "e@parrot factory-reset",   effect: "Will reset the weights of all repositories to the defaults that skarm started off with."},
-            //todo  {command: "e@parrot factory-reset skyrim",   effect: "Will reset the weights of all of the skyrim weights to the defaults that skarm started off with."},
-
-
+            if (action === "factory-reset"){
+                let repo = tokens.shift();    // take next token to determine what to act on
+                if(repo in quoteRepos){
+                    // {command: "e@parrot factory-reset skyrim",   effect: "Will reset the weights of all of the skyrim weights to the defaults that skarm started off with."},
+                    guildData.parrot.resetRepo(repo);
+                    outputString = `Reset data for repo: ${repo}`;
+                } else {
+                    // {command: "e@parrot factory-reset",   effect: "Will reset the weights of all repositories to the defaults that skarm started off with."},
+                    guildData.parrot.hardReset();
+                    outputString = "All weight scalings have been reset to defaults";
+                }
+            }
 
             Skarm.sendMessageDelay(e.message.channel, " ", false, {
                 color: Skarm.generateRGB(),

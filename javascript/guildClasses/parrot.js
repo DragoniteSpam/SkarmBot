@@ -82,6 +82,23 @@ let linkVariables = function (parrot) {
 };
 
 let linkFunctions = function (parrot){
+    /**
+     * Resets the repo weights and everything weights for
+     * @param repo
+     */
+    parrot.resetRepo = function (repo) {
+        delete parrot.repoWeights[repo];
+        delete parrot.everythingWeights[repo];
+        linkVariables(parrot);
+    }
+
+    parrot.hardReset = function () {
+        parrot.repoWeights = { };
+        delete parrot["everythingWeights"];
+        delete parrot["everythingScaling"];
+        linkVariables(parrot);
+    }
+
     // returns a hashmap of valid quote repos and their associated distributions
     parrot.getValidQuoteRepos = function () {
         return parrot.repoWeights;
