@@ -1618,7 +1618,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Soap: { // todo: update for parrot-rework
+	Soap: {
         aliases: ["soap"],
         params: [],
         usageChar: "@",
