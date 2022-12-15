@@ -839,30 +839,6 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Skarll: {   // TODO: REWORK TO MATCH PARROT REWORK
-        aliases: ["skarm"],
-        params: [],
-        usageChar: "!",
-        helpText: "Provides a nanosecondly forecast of what the odds are that skarm will say something stupid (100%) and more importantly: what stupid thing Skarm'll say.",
-        examples: [{command: "e!skarm", effect: "Provides the latest forecast."}],
-        ignoreHidden: true,
-        category: "meta",
-
-        execute(bot, e, userData, guildData) {
-            //shanty counter is intentionally wrong following shanties being buffered on a per-channel basis
-            let shanty = Math.floor(Math.random() * 5000) / 100;
-            let skyrim = Math.floor((new Date).getDay() * bot.skyrimOddsModifier * 10000) / 100;
-            Skarm.sendMessageDelay(e.message.channel, "Current shanty forecast: **" + shanty + "%**\n" +
-                "The Elder Scrolls Forecast: **" + skyrim + "%**\n" +
-                "Something completely normal: **0%**\n" +
-                "Something completely different: **" + (100 - shanty - skyrim) + "%**."
-            );
-        },
-
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
 	Stats: {
         aliases: ["bot"],
         params: [""],
