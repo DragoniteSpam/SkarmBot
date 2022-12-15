@@ -732,7 +732,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Lines: { // todo: update for parrot rework
+	Lines: {
         aliases: ["line", "lines", "linecount"],
         params: [],
         usageChar: "!",
