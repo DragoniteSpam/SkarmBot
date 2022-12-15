@@ -47,6 +47,23 @@ class Skarm {
         Skarm.spamBufferString+=message+"\r\n";
     }
 
+    static saveNoBuffer(message) {
+        if(message.length > 0)
+            return Constants.Channels.SAVELOG.sendMessage(message);
+    }
+
+    static saveLog (message){
+        if(typeof(message)==="object") message = JSON.stringify(message);
+        if(Skarm.saveLogBufferString === undefined) {
+            Skarm.saveLogBufferString = "";
+            Skarm.saveLogBufferTimer = setInterval(function () {
+                Skarm.saveNoBuffer(Skarm.saveLogBufferString.substring(0,2000));
+                Skarm.saveLogBufferString=Skarm.saveLogBufferString.substring(2000);
+            },2000);
+        }
+        Skarm.saveLogBufferString+=message+"\r\n";
+    }
+
     /**
      * standard error output stream which also sends a copy of errors to spam aka #stderr
      * @param err the error object
