@@ -36,29 +36,11 @@ class Bot {
         this.client = client;
 
         this.nick = "Skarm";
-        this.validNickReferences = {
-
-        };
-
-        this.skyrimOddsModifier = 1/20;
-        //words that will get skarm to talk skyrim
-        this.validESReferences = {
-
-        };
-
-        //words that will get skarm singing
-        this.validShantyReferences = {
-			//"shantest":     1.2,
-        };
-
 
         this.minimumMessageReplyLength = 3;
 
         this.shanties = new ShantyCollection();
-        this.skyrim = ["todo: remove this"];
 
-        this.channelsCensorHidden = {};
-        this.guildsWithWelcomeMessage = {};
         this.xkcd = new XKCD(this);
 
 
@@ -323,11 +305,7 @@ class Bot {
             return false;
         }
 
-        // each of these will kick out of the function if it finds something,
-        // so the most important ones should be at the top
-        if (!this.channelsCensorHidden[e.message.channel_id]) {
-            this.censor(e);
-        }
+
 
         // keywords that map to dedicated responses
         for (let word in this.keywords) {
