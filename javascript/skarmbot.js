@@ -468,7 +468,7 @@ class Bot {
     parrot(e, guildData, channel) {
         // console.log("Inspecting parrot...");
         channel = channel || e.message.channel;
-        let line = guildData.parrot.getRandomLine(e.message.content, guildData);
+        let line = guildData.getRandomLine(e);
         // console.log(line);
 
         if (line) {
@@ -480,31 +480,6 @@ class Bot {
         this.attemptLearnLine(e);
     }
 
-    //skarm will enqueue a shanty to be sung in just the one channel which triggered the song
-	singShanty(e) {
-	    //console.log("they've started singing");
-	    const guildData = Guilds.get(e.message.channel.guild.id);
-	    try {
-            if (guildData.channelBuffer[e.message.channel.id].length > 0)
-                return this.parrot(e);
-        }catch (e) {
-            Skarm.logError(JSON.stringify(e));
-        }
-	    guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
-	    while(this.shanties.isSinging)
-            guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
-		//Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
-
-        if(guildData.channelBuffer[e.message.channel.id].length > 10)
-            Skarm.spam(`Warning: Over 10 shanty lines may have been loaded in to be sent to <#${e.message.channel.id}>`);
-
-        this.parrot(e);
-	}
-
-	//sends a random skyrim line to the channel which the event message originated from
-	returnSkyrim(e){
-		Skarm.sendMessageDelay(e.message.channel,this.skyrim[Math.floor(this.skyrim.length * Math.random())]);
-	}
     
     getRandomLine(e) {
         return Guilds.get(e.message.guild.id).getRandomLine(e);
