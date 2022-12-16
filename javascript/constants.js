@@ -93,6 +93,10 @@ class Constants {
             Head:       "<:skarmhead:422560671574523904>",
             Blank:      "<:background:448285187550347275>",
         }
+
+        Constants.Shanties = {
+            linesPerMessage: 2,
+        }
     }
 
     // assume we are connected

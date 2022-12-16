@@ -1,6 +1,7 @@
 "use strict";
 const fs = require("fs");
 const Skarm = require("./skarm.js");
+const Constants = require("./constants.js");
 
 class ShantyCollection {
     constructor() {
@@ -56,7 +57,7 @@ class Shanty {
         
         // lazy way of safely fetching the next two lines and resetting if
         // you've hit the end
-        for(let i = 0; startLine+i < this.lines.length && i<2; i++){
+        for(let i = 0; startLine+i < this.lines.length && i < Constants.Shanties.linesPerMessage; i++){
             block += this.lines[startLine + i] + "\n";
         }
 
