@@ -31,7 +31,6 @@ class ShantyCollection {
                 this.load(file);
             });
 
-            // TODO: fix every guild having their own instance of every single shanty
             console.log("Initialized", ShantyCollection.getCumulativeLinesLength(), "lines across", Object.keys(ShantyCollection.shanties).length, "shanties");
         });
     }

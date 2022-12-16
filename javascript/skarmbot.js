@@ -404,40 +404,7 @@ class Bot {
 	
     // functionality
 
-
-
-
-    //does many things, and stuff and things...
-    censor(e) {
-	    //TODO
-    }
-    
-    toggleChannel(map, channel) {
-        map[channel] = !map[channel];
-        return map[channel];
-    }
-    
-    removeChannel(map, channel) {
-        map[channel] = false;
-    }
-    
-    addChannel(map, channel) {
-        map[channel] = true;
-    }
-    
-    toggleGuild(map, channel) {
-        // guilds have a channel associated with them
-        if (!!map[channel.guild_id]) {
-            map[channel.guild_id] = undefined;
-            return false;
-        }
-        
-        map[channel.guild_id] = channel.id;
-        return true;
-    }
-
     /**
-     * TODO: Rework
      * Learning and reciting lines
      * @param e
      * @param additionalAliases optional additional aliases to check against

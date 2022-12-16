@@ -1199,29 +1199,6 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    /*
-	Censor: {
-        aliases: ["censor"],
-        params: [],
-        usageChar: "@",
-        helpText: "Toggles the censor in the guild. This command is only usable by users with kicking boots. Hint: if you wish to cause mass pandemonium, be generous with your kicking boots.",
-        ignoreHidden: true,
-        perms: Permissions.MOD,
-        category: "administrative",
-
-        execute(bot, e, userData, guildData) {
-            
-            if (bot.toggleChannel(bot.channelsCensorHidden, e.message.channel_id)) {
-                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will no longer run the censor on **" + e.message.channel.name + "**");
-            } else {
-                Skarm.sendMessageDelay(e.message.channel, bot.nick + " will run the censor on **" + e.message.channel.name + "**");
-            }
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },*/
     Hide: {
         aliases: ["hide"],
         params: [],
