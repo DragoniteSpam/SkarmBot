@@ -93,6 +93,11 @@ class Constants {
             Head:       "<:skarmhead:422560671574523904>",
             Blank:      "<:background:448285187550347275>",
         }
+
+        // Control constants for shanty behavior
+        Constants.Shanties = {
+            linesPerMessage: 2,
+        }
     }
 
     // assume we are connected
@@ -115,6 +120,7 @@ class Constants {
             DELETED:    client.Channels.get("414291195028570112"),
             TODO:       client.Channels.get("766054985443311677"),
 			SPAM: 	    client.Channels.get("678456248735367168"), // #stderr
+            SAVELOG:    client.Channels.get("1052777938480791572"),
         };
 
         //the absolute path of the repository, formatted like "C:\Users\argo\Documents\GitHub\SkarmBot\"

@@ -36,56 +36,11 @@ class Bot {
         this.client = client;
 
         this.nick = "Skarm";
-        this.validNickReferences = {
-            "skarm":        					1,
-            "skram!":       					1,
-            "birdbrain":    					1,
-            "spaghetti":    					0.1,
-            "botface":      					1,
-			"something completely different":	1,
-        };
-
-        this.skyrimOddsModifier = 1/20;
-        //words that will get skarm to talk skyrim
-        this.validESReferences = {
-            "balgruuf":     0.25,
-            "ulfric":       0.25,
-            "dovah":      	0.45,
-            "whiterun":     0.25,
-            "imperial":     0.05,
-            "war":          0.05,
-            "ysmir":        0.50,
-            "shor":         0.69,
-        };
-
-        //words that will get skarm singing
-        this.validShantyReferences = {
-            "johnny":       0.01,
-            "jonny":        0.01,
-            "jon":          0.01,
-            "johny":        0.01,
-            "drunk":        0.02,
-            "sing":         0.03,
-            "rum":          0.04,
-            "ship":         0.05,
-            "captain":      0.06,
-            "sea":          0.08,
-            "maui":         0.09,
-            "sailor":       0.10,
-            "stan":         0.11,
-            "shanty":       0.35,
-            "shanties":     0.40,
-            "dreadnought":  0.50,
-			//"shantest":     1.2,
-        };
-
 
         this.minimumMessageReplyLength = 3;
 
         this.shanties = new ShantyCollection();
-        this.skyrim = fs.readFileSync("./data/skyrim/outtake.skyrim").toString().trim().split("\n");
 
-        this.guildsWithWelcomeMessage = {};
         this.xkcd = new XKCD(this);
 
 
@@ -351,17 +306,7 @@ class Bot {
         }
 
 
-        if (this.mentions(e, this.validESReferences) && this.isValidResponse(e)) {
-            this.returnSkyrim(e);
-            return true;
-        }
-
-        if (this.mentions(e, this.validShantyReferences) && this.isValidResponse(e)) {
-            this.singShanty(e);
-            return true;
-        }
-
-
+        // keywords that map to dedicated responses
         for (let word in this.keywords) {
             let partial = text;
             let allComponentsMatch = true;
@@ -381,8 +326,6 @@ class Bot {
             if (!allComponentsMatch) {
                 continue;
             }
-
-            Skarm.spam(`hit on keyword: "${word}"`);
 
             let keyword = this.keywords[word];
             if (keyword.standalone && (!text.startsWith(word + " ") &&
@@ -411,15 +354,17 @@ class Bot {
         }
 
 
+        // parrot module - all large scale quote repos and dynamic data acquired from the guild
         if(this.isValidResponse(e)){
-            this.parrot(e, guildData.aliases);
+            this.parrot(e, guildData);
         }
 
         return false;
     }
 
     OnPresenceUpdate(e){
-        let proceed = (n)=>{
+
+        let proceed = (n) => {
             if(Users.get(e.user.id).previousName) {
                 return Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.NAME_CHANGE, e);
             }
@@ -427,6 +372,7 @@ class Bot {
                 return setTimeout(()=>{proceed(n-1);},25);
             }
         };
+        
         if(e.user.bot)return;
         //Skarm.spam("Presence Update detected for User : "+ (e.user.id));
         proceed(100);
@@ -458,82 +404,27 @@ class Bot {
 	
     // functionality
 
-
-
-
-    toggleChannel(map, channel) {
-        map[channel] = !map[channel];
-        return map[channel];
-    }
-    
-
-    addChannel(map, channel) {
-        map[channel] = true;
-    }
-    
-    toggleGuild(map, channel) {
-        // guilds have a channel associated with them
-        if (!!map[channel.guild_id]) {
-            map[channel.guild_id] = undefined;
-            return false;
-        }
-        
-        map[channel.guild_id] = channel.id;
-        return true;
-    }
-
     /**
      * Learning and reciting lines
      * @param e
      * @param additionalAliases optional additional aliases to check against
      * @param channel an override target channel if you don't want to use e.message.channel
      */
-    parrot(e, additionalAliases, channel) {
+    parrot(e, guildData, channel, line) {
+        // console.log("Inspecting parrot...");
         channel = channel || e.message.channel;
-        let guildId = (channel && channel.guild.id) || e.message.guild.id;
-        if (this.mentions(e, this.validNickReferences) || (additionalAliases && this.mentions(e, additionalAliases))) {
-			//once skarm starts singing, he'd rather do that than talk
-			let seed = Math.random();
-			if(seed < (new Date).getDay()*this.skyrimOddsModifier){
-				return this.returnSkyrim(e);
-			}
-			let guild = Guilds.get(guildId);
-            let line = guild.getRandomLine(e);
-            if (line !== undefined) {
-                Skarm.sendMessageDelay(channel, line);
-				guild.lastSendLine=line;
-            }
+        line ||= guildData.getRandomLine(e);
+        // console.log(line);
+
+        if (line) {
+            Skarm.sendMessageDelay(channel, line);
+            guildData.lastSendLine = line;
             return;
         }
 
         this.attemptLearnLine(e);
     }
 
-    //skarm will enqueue a shanty to be sung in just the one channel which triggered the song
-	singShanty(e) {
-	    //console.log("they've started singing");
-	    const guildData = Guilds.get(e.message.channel.guild_id);
-	    try {
-            if (guildData.channelBuffer[e.message.channel.id].length > 0)
-                return this.parrot(e);
-        }catch (e) {
-            Skarm.logError(JSON.stringify(e));
-        }
-	    guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
-	    while(this.shanties.isSinging)
-            guildData.queueMessage(e.message.channel,this.shanties.getNextBlock());
-		//Skarm.sendMessageDelay(e.message.channel,this.shanties.getNextBlock());
-
-        if(guildData.channelBuffer[e.message.channel.id].length > 10)
-            Skarm.spam(`Warning: Over 10 shanty lines may have been loaded in to be sent to <#${e.message.channel.id}>`);
-
-        this.parrot(e);
-	}
-
-	//sends a random skyrim line to the channel which the event message originated from
-	returnSkyrim(e){
-		Skarm.sendMessageDelay(e.message.channel,this.skyrim[Math.floor(this.skyrim.length * Math.random())]);
-	}
     
     getRandomLine(e) {
         return Guilds.get(e.message.guild.id).getRandomLine(e);
@@ -612,24 +503,25 @@ class Bot {
             process.exit(Constants.SaveCodes.NOSAVE);
         }
 
-        Skarm.STDERR("\n\nBeginning save sequence at " + new Date());
+        Skarm.saveLog("\n\nBeginning save sequence...");
+
 
         Guilds.save();
         Users.save();
         this.xkcd.save();
 
-        Skarm.STDERR("Beginning push to cloud storage...");
+        Skarm.saveLog("Beginning push to cloud storage...");
 
         let savior = spawn('powershell.exe', [Constants.skarmRootPath + 'saveData.ps1']);
         savior.stdout.on("data", (data) => {
             data = data.toString().replaceAll("\r","").replaceAll("\n","");
             if(data.length > 1)
-                Skarm.STDERR(data);
+                Skarm.saveLog(data);
         });
         savior.stderr.on("data", (data) => {
             data = data.toString().replaceAll("\r","").replaceAll("\n","");
             if(data.length > 1)
-                Skarm.STDERR(data);
+                Skarm.saveLog(data);
         });
         savior.on('exit', (code) => {
             console.log("Received code: " + code + " on saving data.");

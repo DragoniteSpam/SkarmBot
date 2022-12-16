@@ -6,8 +6,11 @@ const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 const Users = require("./user.js");
+const { ShantyCollection, Shanty, ShantyIterator } = require("./shanties.js");
 
 const SarGroups = require("./guildClasses/sar.js");
+const Parrot = require("./guildClasses/parrot.js");
+
 
 const guilddb = "../skarmData/guilds.penguin";
 
@@ -21,7 +24,7 @@ let messageIsAction = function(message) {
     return false;
 };
 
-fs.readFile("data/default.birb", function(err, data) {
+fs.readFile("data/dynamicQuotes/dna/quotes.txt", function(err, data) {
     defaultLines = data.toString().split("\n");
 });
 
@@ -66,6 +69,8 @@ const linkVariables = function(guild) {
     if (guild.expBuffRoles === undefined) {guild.expBuffRoles = { };}
     if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
     if (guild.selfAssignedRoles === undefined) guild.selfAssignedRoles = { };
+    guild.parrot ??= new Parrot(guild.id);
+    guild.shantyIterator = new ShantyIterator(guild.shantyIterator);
 };
 
 // since de/serialized objects don't keep their functions
@@ -73,6 +78,9 @@ const linkFunctions = function(guild) {
     for(let groupName in guild.selfAssignedRoles){
         SarGroups.initialize(guild.selfAssignedRoles[groupName]);
     }
+
+    guild.parrot ??= new Parrot(guild.id);
+    Parrot.initialize(guild.parrot);
 
     /**
      * Fetch the IUser object(s) representing a user in the current server
@@ -600,7 +608,7 @@ const linkFunctions = function(guild) {
             return;
         }
 
-        for (let i = 0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length; i+=2) {
             delete this.actions[keys[i]];
         }
     };
@@ -614,10 +622,11 @@ const linkFunctions = function(guild) {
         message = message.substring(1, message.length - 1).toLowerCase();
         let keywords = message.split(" ");
 
-        let keys = Object.keys(this.lines);
+        let keys = Object.keys(this.actions);
         // if there are no stored messages, use the default log instead
         if (keys.length < MIN_LINES) {
-            keys = defaultLines;
+            // console.log(`Guild has less action lines (${keys.length}) than minimum (${MIN_LINES})`);
+            return guild.parrot.getRandomLine(e.message.content, guild);
         }
 
         let sort = function(array) {
@@ -675,7 +684,7 @@ const linkFunctions = function(guild) {
             return;
         }
 
-        for (let i = 0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length; i+=2) {
             delete this.lines[keys[i]];
         }
     };
@@ -697,10 +706,10 @@ const linkFunctions = function(guild) {
 	guild.getRandomLine = function(e) {
         if (messageIsAction(e.message.content)) return this.getRandomAction(e);
 
-        //handle the queue message buffer for e@5 and shanties
-        //console.log("checking the buffer...");
+        // handle the queue message buffer for e@5
+        // console.log("checking the buffer...");
         if(typeof(this.channelBuffer)==="undefined") {
-            //console.log(`redefining channel buffer: ${JSON.stringify(this.channelBuffer)}`);
+            // console.log(`redefining channel buffer: ${JSON.stringify(this.channelBuffer)}`);
             this.channelBuffer = { };
         }
 
@@ -708,51 +717,10 @@ const linkFunctions = function(guild) {
         if(e.message.channel.id in this.channelBuffer) {
             if (this.channelBuffer[e.message.channel.id].length > 0) {
                 return this.channelBuffer[e.message.channel.id].shift()._1;
-            }else{
-                //console.log("no messages in buffer");
-            }
-        }else{
-            //console.log("channel has no buffer. Channel ID:"+e.message.channel.id+"\n guild channelBuffer object:"+JSON.stringify(this.channelBuffer));
-        }
-
-        let keywords = e.message.content.toLowerCase().split(" ");
-        let keys = Object.keys(this.lines);
-        // if there are no stored messages, use the default log instead
-        if (keys.length < MIN_LINES) {
-            keys = defaultLines;
-        }
-
-        let sort = function(array) {
-            array.sort(function(a, b) {
-                return b.length - a.length;
-            });
-        }
-
-        sort(keywords);
-
-        let currentMessage = "";
-        let currentMessageScore = -1;
-        let testWords = Math.min(Constants.Vars.SIMILAR_MESSAGE_KEYWORDS,
-            keywords.length);
-
-        // try a given number of messages
-        for (let i = 0; i < Constants.Vars.SIMILAR_MESSAGE_ATTEMPTS; i++) {
-            let message = keys[Math.floor(Math.random() * keys.length)];
-            let messageScore = 0;
-            // messages are scored based on how many of the longest words
-            // in the original they share
-            for (let j = 0; j < testWords; j++) {
-                if (message.includes(keywords[i])) {
-                    messageScore++
-                }
-            }
-            if (messageScore > currentMessageScore) {
-                currentMessageScore = messageScore;
-                currentMessage = message;
             }
         }
 
-        return currentMessage;
+        return guild.parrot.getRandomLine(e.message.content, guild);
     };
 
 	guild.getPermissions = function(user) {

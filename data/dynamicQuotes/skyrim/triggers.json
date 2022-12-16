@@ -1,0 +1,13 @@
+{
+	"triggerWeights":{
+		"balgruuf":     0.25,
+		"ulfric":       0.25,
+		"dovah":      	0.45,
+		"whiterun":     0.25,
+		"imperial":     0.05,
+		"war":          0.05,
+		"ysmir":        0.50,
+		"shor":         0.69
+	},
+	"everythingWeight": 0.01
+}

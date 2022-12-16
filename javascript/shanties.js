@@ -1,25 +1,27 @@
 "use strict";
 const fs = require("fs");
 const Skarm = require("./skarm.js");
+const Constants = require("./constants.js");
 
 class ShantyCollection {
     constructor() {
-        this.list = [];
-		this.names = [];
-        this.scan();
-		this.isSinging = false;
-		this.activeSong = -1;
-		this.ivanhoe=1/4; //Probability of shanties variable
+        this.scan();              // populate shanty list
+        this.shanties = ShantyCollection.shanties;
     }
     
     load(filename) {
-        if (fs.existsSync("data/shanties/" + filename)) {
-            this.list.push(new Shanty(filename));
+        let shantyPath = "data/shanties/" + filename;
+        if (fs.existsSync(shantyPath)) {
 			let name = filename.replace(".shanty", "");
 			while (name.indexOf("-") > 0) {
 				name = name.replace("-", " ");
             }
-			this.names.push(name);
+
+            // ShantyCollection.shanties hashmap {"shantyName" -> ShantyObject}
+            ShantyCollection.shanties ??= {};
+            ShantyCollection.shanties[name] = new Shanty(filename);
+        } else{
+            console.log("Error: Missing shanty", shantyPath);
         }
     }
     
@@ -29,61 +31,93 @@ class ShantyCollection {
             files.forEach(file => {
                 this.load(file);
             });
+
+            console.log("Initialized", ShantyCollection.getCumulativeLinesLength(), "lines across", Object.keys(ShantyCollection.shanties).length, "shanties");
         });
     }
-	
-	drinkCount() {
-		if (!this.isSinging) return 0;
-		return this.list[this.activeSong].currentLine;
-	}
-	
-	getNextBlock() {
-		if (!this.isSinging) {
-			this.isSinging = true;
-			this.activeSong = Math.floor(Math.random() * this.list.length);
-		}
-		return this.list[this.activeSong].getNextBlock(this);
-	}
+
+    static getCumulativeLinesLength() {
+        let totalLines = 0;
+        for(let shanty in ShantyCollection.shanties){
+            totalLines += ShantyCollection.shanties[shanty].getLineCount();
+        }
+        return totalLines;
+    }
 }
 
 class Shanty {
     constructor(filename) {
         this.filename = filename;
-        this.lines = fs.readFileSync("data/shanties/" + filename)
-            .toString().split('\n');
-        this.currentLine = 0;
+        this.lines = fs.readFileSync("data/shanties/" + filename).toString().split('\n');
+    }
+    
+    getBlockFrom(startLine) {
+        let block = "";
+        
+        for(let i = 0; startLine+i < this.lines.length && i < Constants.Shanties.linesPerMessage; i++){
+            block += this.lines[startLine + i] + "\n";
+        }
+
+        return block;
+    }
+
+    getLineCount() {
+        return this.lines.length;
+    }
+}
+
+class ShantyIterator {
+    constructor(iterator){
+        ShantyIterator.linkFunctions(this);
+        if(iterator) {
+            this.shantyName  = iterator.shantyName;
+            this.currentLine = iterator.currentLine;
+        }
+        if(!this.shantyName || !this.currentLine) this.resetIterator();
+
         // the old system had you specify the number of lines per message
         // (usually 2 or 4). we no longer do that. shanties should automatically
         // post two lines per message.
     }
-    
-    getNextBlock(collection) {
-        let block = "";
-        
-        // lazy way of safely fetching the next two lines and resetting if
-        // you've hit the end
-        if (this.currentLine < this.lines.length) {
-            block = block + this.lines[this.currentLine] + "\n";
-            this.currentLine++;
+
+    static linkFunctions(iterator){
+        iterator.resetIterator = function (){
+            // reset the iterator to a new shanty
+            let shantyNames = Object.keys(ShantyCollection.shanties);
+            let oldShanty = iterator.shantyName;
+            let newShanty = shantyNames[Math.floor(shantyNames.length * Math.random())];
+            while(oldShanty === newShanty){
+                newShanty = shantyNames[Math.floor(shantyNames.length * Math.random())];
+            }
+            iterator.shantyName = newShanty;
+            iterator.resetBlock();
         }
-        if (this.currentLine < this.lines.length) {
-            block = block + this.lines[this.currentLine] + "\n";
-            this.currentLine++;
-        } 
-		if (this.currentLine >= this.lines.length) {
-            collection.isSinging=false;
-			collection.activeSong=-1;
+
+        iterator.resetBlock = function () {
+            iterator.currentLine = 0;
         }
-        
-        return block;
-    }
-    
-    resetBlock() {
-        this.currentLine = 0;
+
+        iterator.next = function(){
+            let block = "";
+            //  Debug:
+            // console.log("Getting line count of shanty:", iterator.shantyName);
+            // console.log(ShantyCollection.shanties[iterator.shantyName]);
+            // console.log(ShantyCollection.shanties[iterator.shantyName].getLineCount());
+            if(iterator.currentLine < ShantyCollection.shanties[iterator.shantyName].getLineCount()){
+                block = ShantyCollection.shanties[iterator.shantyName].getBlockFrom(iterator.currentLine);
+                iterator.currentLine += 2;
+            }else{
+                iterator.resetIterator();
+                return iterator.next();
+            }
+            return block;
+        }
+
     }
 }
 
 module.exports = {
     ShantyCollection,
-    Shanty
+    Shanty,
+    ShantyIterator
 }
