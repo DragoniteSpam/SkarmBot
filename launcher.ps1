@@ -28,6 +28,7 @@ param(
     [Parameter(Mandatory=$true)] [string][ValidateSet("live", "test")] $operationMode
 )
 
+$host.ui.RawUI.WindowTitle = "Definitely not SkarmBot"
 $windowTitle = "SkarmBot live"
 
 $conflictingProcesses = Get-Process | where {$_.MainWindowTitle -eq $windowTitle}

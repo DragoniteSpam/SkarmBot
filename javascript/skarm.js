@@ -94,11 +94,31 @@ class Skarm {
         );
     }
 
-    static sendMessageDelay(channel, text, tts, obj, promiseHandler) {
+    static hasMessageAccess(channel){
         if (channel === null) {
             console.log("null channel target with message: " + text);
             return;
         }
+
+        let requiredTextPermissions = [
+            "READ_MESSAGES",
+            "SEND_MESSAGES"
+        ];
+
+        for(let permission of requiredTextPermissions) {
+            if (!Constants.client.User.can(discordie.Permissions.Text[permission], channel)) {
+                this.log(`Missing permission ${permission} in ${channel.name}`);
+                return;
+            }
+        }
+
+
+        return true;
+    }
+
+    static sendMessageDelay(channel, text, tts, obj, promiseHandler) {
+        if(!this.hasMessageAccess(channel))return;
+
         if (typeof (channel) === "string") {
             channel = Constants.client.Channels.get(channel);
         }
@@ -110,24 +130,12 @@ class Skarm {
     }
 
     static sendMessage(channel, text,tts,obj, promiseHandler) {
-        if (channel === null) {
-            console.log("null channel target with message: " + text);
-            return;
-        }
+        if(!this.hasMessageAccess(channel))return;
 
         if (typeof (channel) === "string") {
             channel = Constants.client.Channels.get(channel);
         }
 
-        if (!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES, channel)) {
-            this.log("Missing permission to read messages in " + channel.name);
-            return;
-        }
-
-        if (!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES, channel)) {
-            this.log("Missing permission to send message in " + channel.name);
-            return;
-        }
 
         try {
             let promise = channel.sendMessage(text, tts, obj);
@@ -152,14 +160,8 @@ class Skarm {
             console.log("null channel target with message: " + text);
             return;
         }
-        if (!Constants.client.User.can(discordie.Permissions.Text.READ_MESSAGES, channel)) {
-            this.log("Missing permission to read messages in " + channel.name);
-            return;
-        }
-        if (!Constants.client.User.can(discordie.Permissions.Text.SEND_MESSAGES, channel)) {
-            this.log("Missing permission to send message in " + channel.name);
-            return;
-        }
+
+        if(!this.hasMessageAccess(channel))return;
 
         try {
             //Skarm.logError("Sending async message");
@@ -297,6 +299,12 @@ class Skarm {
         return mapping;
     }
 
+    /*
+     * Generates a random color.
+     *   The hue can be anything
+     *   The saturation can be (75%, 100%)
+     *   The value can be (75%, 100%)
+     */
     static generateRGB(){
         let h = Math.random() * 360;
         let s = Math.random() * 0.25 + 0.75;
@@ -318,6 +326,38 @@ class Skarm {
         b = Math.floor((b + m) * 255);
         // I don't know if discord wants the color to be in BGR
         // or RGB order, but in this case it doesn't actually matter
+        return Math.floor(r | (g << 8) | (b << 16));
+    }
+
+    /*
+     * Same as above, but colors that are perceived as dark have their
+     * brightness increased slightly
+     */
+    static generateRGBWeighted() {
+        let source = Skarm.generateRGB();
+        let r = source & 0x0000ff;
+        let g = (source & 0x00ff00) >> 8;
+        let b = (source & 0xff0000) >> 16;
+
+        // these magic numbers are the most common luma weights, nobody seems
+        // to know where they came from any more specifically than "someone at
+        // microsoft made them up," if argo throws a fit about magic numbers
+        // i'm going to practice my eye-rolling for when i see him at magfest
+        let luma = r * 0.299 + g * 0.587 + g * 0.114;
+
+        // if the color's luma is below the brightness threshold, brighten it
+        const max_brightening_factor = 0.25;
+        const brightening_threshold = 0.3;
+        let inv_luma_scale = Math.max(0, brightening_threshold - luma);         // [0, brightening_threshold] where 0 is a sufficiently bright color and b_t is black
+        inv_luma_scale /= brightening_threshold;                                // [0, 1] where 0 is a sufficiently bright color and 1 is black
+        inv_luma_scale *= max_brightening_factor;                               // [0, max_brightening_factor] where 0 is a sufficiently bright color and m_b_f is black
+        inv_luma_scale += 1;                                                    // [1, 1 + m_b_f] where i'm not going to explain this further
+
+        // we brighten it a bit
+        r = Math.floor(Math.min(255, r * inv_luma_scale));
+        g = Math.floor(Math.min(255, g * inv_luma_scale));
+        b = Math.floor(Math.min(255, b * inv_luma_scale));
+
         return Math.floor(r | (g << 8) | (b << 16));
     }
 

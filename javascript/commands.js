@@ -618,7 +618,7 @@ module.exports = {
 		category: "meta",
 
         execute(bot, e, userData, guildData) {
-            let version = Math.floor(Math.random() * 0xffffffff);
+            let version = bot.version;
             Skarm.sendMessageDelay(e.message.channel,
             `**Skarm Bot 2**\n
             Lead spaghetti chef: Dragonite#7992
@@ -2936,10 +2936,10 @@ module.exports = {
                     guilds.push({
                         name: guild.name,
                         value: "" +
-                            // `Guild ID: ${guild.id}\r\n`+
-                            guild.owner.username + "\r\n" +
+                            `Guild ID: ${guild.id}\r\n`+
+                            `Owner: ${guild.owner.username} \r\n` +
                             "<@" + guild.owner.id + ">" + "\r\n" +
-                            "Members: " + guild.members.length,
+                            "Member Count: " + guild.members.length,
                         inline: true,
                         members: guild.members.length
                     });
