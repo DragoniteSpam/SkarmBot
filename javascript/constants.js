@@ -94,6 +94,7 @@ class Constants {
             Blank:      "<:background:448285187550347275>",
         }
 
+        // Control constants for shanty behavior
         Constants.Shanties = {
             linesPerMessage: 2,
         }

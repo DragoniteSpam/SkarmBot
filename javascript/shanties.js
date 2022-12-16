@@ -16,8 +16,8 @@ class ShantyCollection {
 			while (name.indexOf("-") > 0) {
 				name = name.replace("-", " ");
             }
-			// this.names.push(name);
-            // this.list.push(new Shanty(filename));
+
+            // ShantyCollection.shanties hashmap {"shantyName" -> ShantyObject}
             ShantyCollection.shanties ??= {};
             ShantyCollection.shanties[name] = new Shanty(filename);
         } else{
@@ -48,15 +48,12 @@ class ShantyCollection {
 class Shanty {
     constructor(filename) {
         this.filename = filename;
-        this.lines = fs.readFileSync("data/shanties/" + filename)
-            .toString().split('\n');
+        this.lines = fs.readFileSync("data/shanties/" + filename).toString().split('\n');
     }
     
     getBlockFrom(startLine) {
         let block = "";
         
-        // lazy way of safely fetching the next two lines and resetting if
-        // you've hit the end
         for(let i = 0; startLine+i < this.lines.length && i < Constants.Shanties.linesPerMessage; i++){
             block += this.lines[startLine + i] + "\n";
         }
