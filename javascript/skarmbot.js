@@ -410,10 +410,10 @@ class Bot {
      * @param additionalAliases optional additional aliases to check against
      * @param channel an override target channel if you don't want to use e.message.channel
      */
-    parrot(e, guildData, channel) {
+    parrot(e, guildData, channel, line) {
         // console.log("Inspecting parrot...");
         channel = channel || e.message.channel;
-        let line = guildData.getRandomLine(e);
+        line ||= guildData.getRandomLine(e);
         // console.log(line);
 
         if (line) {

@@ -145,6 +145,15 @@ let linkFunctions = function (parrot){
             parrot.everythingScaling = newScaling;
     }
 
+    parrot.getVeryRandomLine = function (guildData) {
+        let veryRandomSourceMessage = "";
+        for(let repo in parrot.repoWeights){
+            veryRandomSourceMessage += Object.keys(parrot.repoWeights[repo]).join(", ");
+        }
+        console.log("Fowarding very random source message:", veryRandomSourceMessage);
+        return parrot.getRandomLine(veryRandomSourceMessage, guildData);
+    }
+
     /**
     * Returns a random line from one of the quote repositories, weighted by:
     * * trigger message words
@@ -166,7 +175,13 @@ let linkFunctions = function (parrot){
             }
         }
 
-        console.log("Message outcomes (ev): ", messageOutcomes); //outcomes with everything
+        let debug = [
+            (a=undefined,s=undefined,d=undefined,f=undefined) => {},
+            console.log
+        ][0];     // set to 1 to print debug messages for probabilities every time that skarm receives a message
+                  // set to 0 to avoid having your terminal explode with all of that text
+
+        debug("Message outcomes (ev): ", messageOutcomes); //outcomes with everything
 
         // distribute odds of `everything` to the real repositories
         let everythingSum = 0;
@@ -183,14 +198,14 @@ let linkFunctions = function (parrot){
             delete messageOutcomes["everything"];
         }
 
-        console.log("Message outcomes (ne): ", messageOutcomes); //outcomes without everything
+        debug("Message outcomes (ne): ", messageOutcomes); //outcomes without everything
 
         // check if sufficient trigger token appearance to justify next step
         let outcomeSum = 0;
         for(let repo in messageOutcomes){
             outcomeSum += messageOutcomes[repo];
         }
-        console.log("Outcome sum:", outcomeSum);
+        debug("Outcome sum:", outcomeSum);
         if (outcomeSum < Math.random()) return;   // if the cumulative probability of the trigger words doesn't exceed 1, it only has a random chance of triggering.
 
 
@@ -201,14 +216,14 @@ let linkFunctions = function (parrot){
             messageOutcomes[repo] *= Math.pow(parrot.getRepoLineCount(repo, guildData), parrot.getEverythingScaling());
         }
 
-        console.log("Message outcomes (sc): ", messageOutcomes); //outcomes without everything
+        debug("Message outcomes (sc): ", messageOutcomes); //outcomes without everything
 
         // reset outcome sum for repo indexing
         outcomeSum = 0;
         for(let repo in messageOutcomes){
             outcomeSum += messageOutcomes[repo];
         }
-        console.log("Outcome sum:", outcomeSum);
+        debug("Outcome sum:", outcomeSum);
 
         let outcomeRepoIndex = Math.random() * outcomeSum;
 
@@ -216,7 +231,7 @@ let linkFunctions = function (parrot){
         for(let repo in messageOutcomes){
             outcomeRepoIndex -= messageOutcomes[repo];
             if(outcomeRepoIndex <= 0) {
-                console.log("Outcome repo:", repo);
+                debug("Outcome repo:", repo);
                 return parrot.getRepoLine(repo, guildData);
             }
         }

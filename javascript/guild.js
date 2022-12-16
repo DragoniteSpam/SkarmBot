@@ -706,10 +706,10 @@ const linkFunctions = function(guild) {
 	guild.getRandomLine = function(e) {
         if (messageIsAction(e.message.content)) return this.getRandomAction(e);
 
-        //handle the queue message buffer for e@5 and shanties
-        //console.log("checking the buffer...");
+        // handle the queue message buffer for e@5
+        // console.log("checking the buffer...");
         if(typeof(this.channelBuffer)==="undefined") {
-            //console.log(`redefining channel buffer: ${JSON.stringify(this.channelBuffer)}`);
+            // console.log(`redefining channel buffer: ${JSON.stringify(this.channelBuffer)}`);
             this.channelBuffer = { };
         }
 
@@ -717,12 +717,7 @@ const linkFunctions = function(guild) {
         if(e.message.channel.id in this.channelBuffer) {
             if (this.channelBuffer[e.message.channel.id].length > 0) {
                 return this.channelBuffer[e.message.channel.id].shift()._1;
-            }else{
-
-                //console.log("no messages in buffer");
             }
-        }else{
-            //console.log("channel has no buffer. Channel ID:"+e.message.channel.id+"\n guild channelBuffer object:"+JSON.stringify(this.channelBuffer));
         }
 
         return guild.parrot.getRandomLine(e.message.content, guild);
