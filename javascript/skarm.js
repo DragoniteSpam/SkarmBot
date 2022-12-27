@@ -339,11 +339,12 @@ class Skarm {
         let g = (source & 0x00ff00) >> 8;
         let b = (source & 0xff0000) >> 16;
 
-        // these magic numbers are the most common luma weights, nobody seems
-        // to know where they came from any more specifically than "someone at
-        // microsoft made them up," if argo throws a fit about magic numbers
-        // i'm going to practice my eye-rolling for when i see him at magfest
-        let luma = r * 0.299 + g * 0.587 + g * 0.114;
+        // luminance transform from RGB value weights as defined by:
+        // https://www.itu.int/rec/R-REC-BT.1700-0-200502-I/en
+        let YIQ_R = 0.229;
+        let YIQ_G = 0.587;
+        let YIQ_B = 0.114;
+        let luma = r * YIQ_R + g * YIQ_G + b * YIQ_B;
 
         // if the color's luma is below the brightness threshold, brighten it
         const max_brightening_factor = 0.25;
@@ -351,12 +352,12 @@ class Skarm {
         let inv_luma_scale = Math.max(0, brightening_threshold - luma);         // [0, brightening_threshold] where 0 is a sufficiently bright color and b_t is black
         inv_luma_scale /= brightening_threshold;                                // [0, 1] where 0 is a sufficiently bright color and 1 is black
         inv_luma_scale *= max_brightening_factor;                               // [0, max_brightening_factor] where 0 is a sufficiently bright color and m_b_f is black
-        inv_luma_scale += 1;                                                    // [1, 1 + m_b_f] where i'm not going to explain this further
+        //inv_luma_scale += 1;                                                    // [1, 1 + m_b_f] where i'm not going to explain this further
 
         // we brighten it a bit
-        r = Math.floor(Math.min(255, r * inv_luma_scale));
-        g = Math.floor(Math.min(255, g * inv_luma_scale));
-        b = Math.floor(Math.min(255, b * inv_luma_scale));
+        r = Math.floor(Math.min(255, r + inv_luma_scale));
+        g = Math.floor(Math.min(255, g + inv_luma_scale));
+        b = Math.floor(Math.min(255, b + inv_luma_scale));
 
         return Math.floor(r | (g << 8) | (b << 16));
     }
