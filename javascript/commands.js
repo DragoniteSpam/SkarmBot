@@ -1671,7 +1671,7 @@ module.exports = {
             {command: "e@soap", effect: "Will remove the last thing that skarm parroted to chat from his quote archives."},
             {command: "e@soap --text", effect: "Deletes the text logs for the guild."},
             {command: "e@soap --action", effect: "Deletes the action logs for the guild."},
-            {command: "e@soap --global", effect: "Deletes tboth the text and action logs for the guild."}
+            {command: "e@soap --global", effect: "Deletes both the text and action logs for the guild."}
         ],
         ignoreHidden: false,
         perms: Permissions.MOD,
