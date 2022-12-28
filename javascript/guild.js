@@ -506,7 +506,17 @@ const linkFunctions = function(guild) {
     guild.soap = function () {
         if(this.lastSendLine) delete this.lines[this.lastSendLine];
         this.lastSendLine = undefined;
-    }
+    };
+
+    guild.soapText = function() {
+        this.lines = { };
+        this.lastSendLine = undefined;
+    };
+
+    guild.soapActions = function() {
+        this.actions = { };
+        this.lastSendLine = undefined;
+    };
 
     guild.toggleMayhem = function(id) {
         this.mayhemRoles[id] = this.mayhemRoles[id] ? undefined : id;
@@ -1219,7 +1229,7 @@ class Guild {
     
     static saveDebug() {
         fs.writeFile("debug/guilds.butt",
-            JSON.stringify(Guild.guilds),
+            JSON.stringify(Guild.guilds, null, 3),
             "utf8",
             function(err) {
                 if (err) console.log("something went wrong: " + err);
