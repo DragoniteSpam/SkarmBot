@@ -1681,17 +1681,17 @@ module.exports = {
             let tokens = commandParamTokens(e.message.content.toLowerCase());
             let action = tokens.shift();
             
-            if (action == "--text") {
-                guildData.soapLines();
+            if (action === "--text") {
+                guildData.soapText();
                 Skarm.sendMessageDelay(e.message.channel,"Text log has been purged!");
                 return;
             }
-            if (action == "--action") {
+            if (action === "--action") {
                 guildData.soapActions();
                 Skarm.sendMessageDelay(e.message.channel,"Action log has been purged!");
                 return;
             }
-            if (action == "--global") {
+            if (action === "--global") {
                 guildData.soapText();
                 guildData.soapActions();
                 Skarm.sendMessageDelay(e.message.channel,"Text and action logs have been purged!");
