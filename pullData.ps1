@@ -40,7 +40,9 @@ ls $dataSource | where {$_.Length -gt 8} | foreach {Write-Host "Copying in $($_.
 
 #provide master branch git revision count to skarm
 $version = (git rev-list --count master)
-Write-Host "Version: 2.$((gh pr list -s merged).Length).$version"
+$largeNumber = 5000  # -L specifies how many return results to accept in the pipeline
+                     # https://cli.github.com/manual/gh_pr_list
+Write-Host "Version: 2.$((gh pr list -s merged -L $largeNumber).Length).$version"
 $Host.SetShouldExit($version)      #force the powershell exit code to be the "version" number
 #exit                               #https://weblogs.asp.net/soever/returning-an-exit-code-from-a-powershell-script
 Pop-Location
