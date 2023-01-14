@@ -2903,7 +2903,9 @@ module.exports = {
 
             // delete everything case
             if (destination === "-") {
-
+                for(let guildId in Guilds.guilds){
+                    Guilds.get(guildId).channelBuffer = { };
+                }
             }
         },
 
