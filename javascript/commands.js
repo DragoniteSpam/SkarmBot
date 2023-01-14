@@ -2905,6 +2905,7 @@ module.exports = {
             if (destination === "-") {
                 for(let guildId in Guilds.guilds){
                     Guilds.get(guildId).channelBuffer = { };
+                    Skarm.spam(`Purged all @5's in guild: ${guildId}`);
                 }
             }
         },
