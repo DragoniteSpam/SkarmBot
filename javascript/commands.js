@@ -2868,7 +2868,8 @@ module.exports = {
         examples: [
             {command: "e@5 429537000408875008 Instance 5 protocol", effect: "Q"},
             {command: "e@5 429537000408875008",                     effect: "ls"},
-            {command: "e@5 429537000408875008 -",                   effect: "purge"}
+            {command: "e@5 429537000408875008 -",                   effect: "purge"},
+            {command: "e@5 -",                                      effect: "purge everything"}
         ],
         ignoreHidden: false,
         perms: Permissions.MOM,
@@ -2898,6 +2899,11 @@ module.exports = {
                     console.log(`Enqueueing ${message}`)
                     Skarm.queueMessage(Guilds, chan, message);
                 }
+            }
+
+            // delete everything case
+            if (destination === "-") {
+
             }
         },
 
