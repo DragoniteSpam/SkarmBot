@@ -13,52 +13,6 @@ const Skinner = require("./skinnerbox.js");
 const SarGroups = require("./guildClasses/sar.js");
 const {ShantyCollection} = require("./shanties");
 
-let commandParamTokens = function(message) {
-    let tokens = message.trim().split(" ");
-    for(let i = 0; i < tokens.length; i++){
-        if(tokens[i].length === 0){
-            tokens.splice(i--,1);
-        }
-    }
-    tokens.shift();
-    return tokens;
-};
-let commandParamString = function(message) {
-    let tokens = message.trim().split(" ");
-    tokens.shift();
-    return tokens.join(" ");
-};
-
-let attemptNumParameterFetch = function (message, parameter) {
-    // "e!doAThing -parameter NNN -parameter q"
-    //  ^------------------------------------^
-    if (message.includes(parameter)) {
-        // "e!doAThing -parameter NNN -parameter q"
-        //             ^-------------------------^
-        let dayTemp = message.substring(message.indexOf(parameter));
-        //Skarm.spam(`Locked onto parameter \`${parameter}\` as ${dayTemp}`);
-        if (dayTemp.includes(" ")) {
-            // "e!doAThing -parameter NNN -parameter q"
-            //                        ^--------------^
-            dayTemp = dayTemp.substring(dayTemp.indexOf(" ") + " ".length);
-            //Skarm.spam(`Locked onto parameter \`${parameter}\` as ${dayTemp}`);
-            if (dayTemp.includes(" ")) {
-                // "e!doAThing -parameter NNN -parameter q"
-                //                        ^-^
-                dayTemp = dayTemp.substring(0, dayTemp.indexOf(" "));
-                //Skarm.spam(`Locked onto parameter \`${parameter}\` as ${dayTemp}`);
-            } else {
-                //Skarm.spam(`Tail space not found.\n\`${dayTemp}\` from \`${message}\``);
-            }
-            let resultant = dayTemp.trim() - 0;
-            //Skarm.spam(`Output for parameter ${parameter}: \`${resultant}\` or as a string: \`${dayTemp}\` `);
-            if (!isNaN(resultant)) return resultant;
-            //Skarm.spam(`failed attempt to define parameter ${parameter}: ${dayTemp}\r\n from: ${message}`);
-
-        }
-    }
-}
-
 Constants.initialize();     // if this line isn't here, local initialization of constants in "effect" fields break
 
 // noinspection JSUnusedLocalSymbols
@@ -98,7 +52,7 @@ module.exports = {
 		category: "general",
 
         execute(bot, e, userData, guildData) {
-			let target = commandParamTokens(e.message.content)[0];
+			let target = Skarm.commandParamTokens(e.message.content)[0];
 			if(target == null) target = e.message.author.username;
             Skarm.sendMessageDelay(e.message.channel, "_hugs " + target + "_");
         },
@@ -120,7 +74,7 @@ module.exports = {
         category: "general",
 
         execute(bot, e, userData, guildData) {
-            let tokens = commandParamTokens(e.message.content);
+            let tokens = Skarm.commandParamTokens(e.message.content);
 
             let channel,targetChannelID;
 			if (tokens.length === 0) {
@@ -178,7 +132,7 @@ module.exports = {
         category: "general",
 
         execute(bot, e, userData, guildData) {
-            let params = commandParamTokens(e.message.content.toLowerCase());
+            let params = Skarm.commandParamTokens(e.message.content.toLowerCase());
             let action = params[0];
             let term;
             if (params.length) {
@@ -240,10 +194,10 @@ module.exports = {
         category: "general",
 
         execute(bot, e, userData, guildData) {
-            let message = commandParamString(e.message.content).toLowerCase();
-            let tokens = commandParamTokens(e.message.content);
-            let days = attemptNumParameterFetch(message, "-d") || 30;
-            let page = attemptNumParameterFetch(message, "-p") - 1 || 0;    //convert page to array index
+            let message = Skarm.commandParamString(e.message.content).toLowerCase();
+            let tokens = Skarm.commandParamTokens(e.message.content);
+            let days = Skarm.attemptNumParameterFetch(message, "-d") || 30;
+            let page = Skarm.attemptNumParameterFetch(message, "-p") - 1 || 0;    //convert page to array index
             let dayImplemented = 1613001600000;                                      // Epoch timestamp of day of implementation
             let pageLength = Constants.Tables.MaxTableLength;
 
@@ -343,7 +297,7 @@ module.exports = {
         category: "general",
         //todo: specify only works in guilds
         execute(bot, e, userData, guildData) {
-            let param = commandParamTokens(e.message.content);
+            let param = Skarm.commandParamTokens(e.message.content);
             let tableUpperBound = Infinity;
             if(param.length){
                 tableUpperBound = Number(param[0]);
@@ -413,7 +367,7 @@ module.exports = {
         category: "general",
 
         execute(bot, e, userData, guildData) {
-            let message = commandParamString(e.message.content.toLowerCase());
+            let message = Skarm.commandParamString(e.message.content.toLowerCase());
             if (message.includes("+")) message = message.replace("+", " + ").replaceAll("  ", " ");
             let tokens = message.split(" ");
 
@@ -483,7 +437,7 @@ module.exports = {
         category: "general",
 
         execute(bot, e, userData, guildData) {
-            let targets = commandParamString(e.message.content.toLowerCase().trim()).replaceAll(" ","").split(",");
+            let targets = Skarm.commandParamString(e.message.content.toLowerCase().trim()).replaceAll(" ","").split(",");
             //todo: provide support for multiple roles to filter by
             let guildRoles = e.message.guild.roles;
             let matchingMembers = e.message.guild.members;
@@ -570,7 +524,7 @@ module.exports = {
         category: "general",
 
         execute(bot, e) {
-            let tokens = commandParamTokens(e.message.content);
+            let tokens = Skarm.commandParamTokens(e.message.content);
 
             //no input -> you get the current time
             if (tokens.join("").length === 0) {
@@ -668,7 +622,7 @@ module.exports = {
         category: "meta",
 
         execute(bot, e, userData, guildData) {
-            let cmd = commandParamTokens(e.message.content)[0];
+            let cmd = Skarm.commandParamTokens(e.message.content)[0];
             if (e.message.content === "e!?")
                 cmd = "?";
 
@@ -768,7 +722,7 @@ module.exports = {
         category: "meta",
 
         execute(bot, e, userData, guildData) {
-            let newNick = commandParamString(e.message.content);
+            let newNick = Skarm.commandParamString(e.message.content);
             if (!newNick.length) {
                 Skarm.sendMessageDelay(e.message.channel, `Your current nickname is: ${userData.nickName}`);
                 return;
@@ -820,7 +774,7 @@ module.exports = {
         category: "meta",
 
         execute(bot, e, userData, guildData) {
-			let target = commandParamString(e.message.content);
+			let target = Skarm.commandParamString(e.message.content);
 			let names = Object.keys(ShantyCollection.shanties);
             let shanties = "";
             for (let name of names) {
@@ -912,7 +866,7 @@ module.exports = {
         category: "meta",
 
         execute(bot, e, userData, guildData) {
-            let args = commandParamString(e.message.content);
+            let args = Skarm.commandParamString(e.message.content);
             if (!args || args.length < 1) args = 1;
             Skarm.sendMessageDelay(e.message.channel, guildData.getZipfSubset(args));
         },
@@ -938,7 +892,7 @@ module.exports = {
         category: "web",
 
         execute(bot, e, userData, guildData) {
-            Web.google(bot, e, commandParamString(e.message.content));
+            Web.google(bot, e, Skarm.commandParamString(e.message.content));
         },
         
         help(bot, e) {
@@ -957,7 +911,7 @@ module.exports = {
         category: "web",
 
         execute(bot, e, userData, guildData) {
-            Web.stackOverflow(bot, e, commandParamString(e.message.content));
+            Web.stackOverflow(bot, e, Skarm.commandParamString(e.message.content));
         },
         
         help(bot, e) {
@@ -974,7 +928,7 @@ module.exports = {
 	// 	category: "web",
     //
     //     execute(bot, e, userData, guildData) {
-    //         Web.wolfy(bot, e, commandParamString(e.message.content));
+    //         Web.wolfy(bot, e, Skarm.commandParamString(e.message.content));
     //     },
     //
     //     help(bot, e) {
@@ -996,7 +950,7 @@ module.exports = {
 		category: "web",
 
         execute(bot, e, userData, guildData) {
-            bot.xkcd.post(e.message.channel, commandParamString(e.message.content));
+            bot.xkcd.post(e.message.channel, Skarm.commandParamString(e.message.content));
         },
         
         help(bot, e) {
@@ -1025,7 +979,7 @@ module.exports = {
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            let words=commandParamTokens(e.message.content.toLowerCase());
+            let words = Skarm.commandParamTokens(e.message.content.toLowerCase());
             if(!guildData.aliases) guildData.aliases={ };
             if(words.length===0) {Skarm.help(this, e);return;}
             let action = words.shift();
@@ -1107,7 +1061,7 @@ module.exports = {
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            let words = commandParamTokens(e.message.content);
+            let words = Skarm.commandParamTokens(e.message.content);
             if (!guildData.moderators)
                 guildData.moderators = {};
             if (words.length === 0) {
@@ -1165,7 +1119,7 @@ module.exports = {
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-			let words=commandParamTokens(e.message.content);
+			let words = Skarm.commandParamTokens(e.message.content);
 			let member;
 			if(words.length===1){
 				let id=words[0].replace("<","").replace("@","").replace("!","").replace(">","");
@@ -1262,7 +1216,7 @@ module.exports = {
 		category: "administrative",
 
         execute(bot, e, userData, guildData) {
-			let args = commandParamTokens(e.message.content);
+			let args = Skarm.commandParamTokens(e.message.content);
 			
             if (args.length === 0) {
 				var roles = Object.keys(guildData.mayhemRoles);
@@ -1334,7 +1288,7 @@ module.exports = {
 
         execute(bot, e, userData, guildData) {
             let notifChannels = guildData.notificationChannels;
-            let args = commandParamTokens(e.message.content.toLowerCase());
+            let args = Skarm.commandParamTokens(e.message.content.toLowerCase());
 
             if (args.length === 0) {
                 Skarm.sendMessageDelay(e.message.channel, " ",false,{
@@ -1429,7 +1383,7 @@ module.exports = {
 		category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            let tokens = commandParamTokens(e.message.content);
+            let tokens = Skarm.commandParamTokens(e.message.content);
             let channel = e.message.channel;
 
             if(tokens.join("").length > 0) {
@@ -1478,7 +1432,7 @@ module.exports = {
                 guildData.welcomes = { };
             }
 
-            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
             if(tokens[0]==="enable" || tokens[0]==="e"){
                 guildData.welcoming=true;
                 Skarm.sendMessageDelay(e.message.channel,"Welcome messages have been enabled. Use e@welcome set to configure welcome messages");
@@ -1543,7 +1497,7 @@ module.exports = {
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
             let guildRoles = e.message.guild.roles;
             let action = tokens.shift();
 
@@ -1611,7 +1565,7 @@ module.exports = {
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
             let action = tokens.shift();
             
             if (action === "--text") {
@@ -1666,7 +1620,7 @@ module.exports = {
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
             let guildRoles = e.message.guild.roles;
             let action = tokens.shift();
             let sarTreeRoot = guildData.selfAssignedRoles;
@@ -1840,7 +1794,7 @@ module.exports = {
              * Global variables
              */
 
-            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
             let action = tokens.shift();
             let sarTreeRoot = guildData.selfAssignedRoles;
             let nonEmptyGroups = { };
@@ -2048,7 +2002,7 @@ module.exports = {
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
             let guildRoles = e.message.guild.roles;
             let action = tokens.shift();
             let outputString = "Unknown command.  Please run `e?parrot` for help on how to use e@parrot.";
@@ -2176,7 +2130,7 @@ module.exports = {
 
         execute(bot, e, userData, guildData) {
 			let target = e.message.author.id;
-			let tok = commandParamTokens(e.message.content);
+			let tok = Skarm.commandParamTokens(e.message.content);
 			let outputBase = " ";
 			if(tok.length===1){
 				let user = guildData.resolveUser(tok[0]);
@@ -2240,7 +2194,7 @@ module.exports = {
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
-            let param = commandParamTokens(e.message.content);
+            let param = Skarm.commandParamTokens(e.message.content);
             let targetTerms = ["<@", ">", "!"];
 		    let target;
 		    let newExp;
@@ -2316,8 +2270,8 @@ module.exports = {
         category: "leveling",
 
         execute(bot, e, userData, guildData) {
-            let message = commandParamString(e.message.content).toLowerCase();
-            let tokens = commandParamTokens(e.message.content);
+            let message = Skarm.commandParamString(e.message.content).toLowerCase();
+            let tokens = Skarm.commandParamTokens(e.message.content);
             let startIndex = (tokens && tokens[0] && tokens[0] > 0) ? tokens[0] - 1 : 0;     // initialize start index to be the place in the table where the leaderboard begins
             let iteratingIdx = startIndex;
 
@@ -2367,7 +2321,7 @@ module.exports = {
 				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			let tokens = commandParamTokens(e.message.content);
+			let tokens = Skarm.commandParamTokens(e.message.content);
 			if(tokens.length===0){
 				Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+((guildData.roleStack)?" currently rewards":" doesn't currently reward")+" stacked roles");
 				return;
@@ -2450,7 +2404,7 @@ module.exports = {
 				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
 				return;
 			}
-			let pars = commandParamTokens(e.message.content);
+			let pars = Skarm.commandParamTokens(e.message.content);
 			if(pars.length!==2){
 				if(pars.length===0){
 				    module.exports.ViewRoleReward.execute(bot,e,userData,guildData);
@@ -2507,7 +2461,7 @@ module.exports = {
                 return;
             }
 
-            let tokens = commandParamTokens(e.message.content.toLowerCase());
+            let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
             for (let token of tokens) {
                 if (token[0] === "e") {
                     guildData.announcesLevels = true;
@@ -2652,7 +2606,7 @@ module.exports = {
             };
             let actionWords = ["get", "set", "remove"];
 	        let content = e.message.content.toLowerCase();
-	        let tokens = commandParamTokens(content);
+	        let tokens = Skarm.commandParamTokens(content);
 	        let channel = e.message.channel;
 
 	        //at least one parameter required for the role to work properly
@@ -2768,7 +2722,7 @@ module.exports = {
         category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
-            Skarm.todo(commandParamString(e.message.content));
+            Skarm.todo(Skarm.commandParamString(e.message.content));
         },
 
         help(bot, e) {
@@ -2788,7 +2742,7 @@ module.exports = {
         category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
-            let tokens =commandParamTokens(e.message.content);
+            let tokens = Skarm.commandParamTokens(e.message.content);
             if(tokens.length===0) {
                 e.message.channel.sendMessage("running test...", false, {
                     color: Skarm.generateRGB(),
@@ -2810,9 +2764,9 @@ module.exports = {
                 Skarm.sendMessageDelete(e.message.channel,`Testing delete message timeout ${timeout}\n`+tokens.join(" "),false,null,timeout,e.message.author.id,bot);
             }
             if(tokens[0]==="param"){
-                let msg = commandParamString(e.message.content.toLowerCase());
+                let msg = Skarm.commandParamString(e.message.content.toLowerCase());
                 Skarm.sendMessageDelay(e.message.channel,"Looking for -date");
-                let d = attemptNumParameterFetch(msg, "-d");
+                let d = Skarm.attemptNumParameterFetch(msg, "-d");
                 Skarm.sendMessageDelay(e.message.channel,`Found data: ${d}`); // of length ${d.length}
             }
             if(tokens[0]==="das"){
@@ -2841,7 +2795,7 @@ module.exports = {
         category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
-            let tokens = commandParamTokens(e.message.content);
+            let tokens = Skarm.commandParamTokens(e.message.content);
             if (tokens.length < 1) return Skarm.spam(tokens.length);
             if (tokens.length === 1) {
                 let destinationChannel = bot.client.Channels.get(tokens[0]);
@@ -2877,7 +2831,7 @@ module.exports = {
 
         execute(bot, e, userData, guildData) {
             Skarm.spam(`Received command: ${e.message.content}`);
-            let tokens = commandParamTokens(e.message.content);
+            let tokens = Skarm.commandParamTokens(e.message.content);
             if (tokens.length < 1) return;
             let destination = tokens.splice(0, 1)[0];
             let srcChannel = e.message.channel;
@@ -2928,7 +2882,7 @@ module.exports = {
         category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
-            let cps = commandParamString(e.message.content);
+            let cps = Skarm.commandParamString(e.message.content);
             if (cps === undefined || cps === null || cps.length < 1 || cps === "cycle") {
                 bot.game = Constants.GameState.AUTOMATIC;
                 cps = bot.games[bot.game];
@@ -2962,7 +2916,7 @@ module.exports = {
         category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
-            let argv = commandParamTokens(e.message.content);
+            let argv = Skarm.commandParamTokens(e.message.content);
             if(argv.length === 0) {
                 let guilds = [];
                 bot.client.Guilds.forEach((guild) => {
@@ -3042,7 +2996,7 @@ module.exports = {
         execute(bot, e, userData, guildData) {
             let savecode = Constants.SaveCodes.EXIT;
             //save data before a shutdown
-			let tokens = commandParamTokens(e.message.content.toLowerCase());
+			let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
 			for(let token of tokens){
                 if(token === "-nosave" || token === "-ns"){
                     //Skarm.log("Shutting down without saving by order of <@" + e.message.author.id + ">");
@@ -3140,7 +3094,7 @@ module.exports = {
         category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
-            let args = commandParamTokens(e.message.content);
+            let args = Skarm.commandParamTokens(e.message.content);
 
             if (args.length === 0) {
                 //Skarm.sendMessageDelay(e.message.channel, "XKCDs are " + ((e.message.channel.id in bot.channelsWhoLikeXKCD) ? "" : "not ") +" currently being sent to " + e.message.channel.name + ".");
