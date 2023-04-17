@@ -17,7 +17,8 @@
 
 ### Setup
 Param(
-    [switch]$Force = $false
+    [switch]$Force = $false,
+    [switch]$test  = $false
 )
 
 # Global variable set in case of errors to be able to pass back up to launcher file
@@ -179,18 +180,27 @@ if(-not $missingFiles){
 ### 4. all required tokens exist
 $privateTokens = @{}
 $privateTokens["aes.txt"] = "This token must be given to you by an admin.  Please contact Drago or Argo for a copy."
-$privateTokens["descrution.txt"] = "This token is used when testing the bot outside of the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
-$privateTokens["token.txt"] = "This token is used to connect the bot to the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
-$privateTokens["wolfram.txt"] = "Acquire a Wolfram Alpha API key here: https://products.wolframalpha.com/api/"
+if($test){
+    $privateTokens["descrution.txt"] = "This token is used when testing the bot outside of the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
+} else {
+    $privateTokens["token.txt"] = "This token is used to connect the bot to the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
+}
+# $privateTokens["wolfram.txt"] = "Acquire a Wolfram Alpha API key here: https://products.wolframalpha.com/api/"
 
 
 $missingTokens = $false
 $privateTokens.Keys | foreach {
     $tokenPath = "$PSScriptRoot/../$_"
+    $boxTokenPath = "~/Box/skarmData/tokens/$_"
     if(-not (Test-Path $tokenPath)){
-        reportWarn "The following token is missing: $tokenPath"
-        $privateTokens[$_]
-        $missingTokens = $true
+        if(Test-Path $boxTokenPath){
+            Copy-Item -Path $boxTokenPath -Destination $tokenPath -Verbose
+        } else {
+            reportWarn "The following token is missing: $tokenPath"
+            reportWarn $privateTokens[$_]
+            Write-Host ""
+            $missingTokens = $true
+        }
     }
 }
 if(-not $missingTokens){

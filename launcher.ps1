@@ -32,6 +32,8 @@ param(
     [switch] $stopOnError = $false
 )
 
+$test = $operationMode -eq "test"
+
 $host.ui.RawUI.WindowTitle = "Definitely not SkarmBot"
 $windowTitle = "SkarmBot live"
 
@@ -46,7 +48,7 @@ $host.ui.RawUI.WindowTitle = $windowTitle
 Push-Location
 cd $PSScriptRoot
 Write-Host "Checking dependencies..."
-$failure = . @("$PSScriptRoot\initialize-Dependencies.ps1")
+$failure = . "$PSScriptRoot\initialize-Dependencies.ps1" -test:$test
 
 # Reset window title as it may have gotten wiped when starting the dependency initializer
 $host.ui.RawUI.WindowTitle = $windowTitle
