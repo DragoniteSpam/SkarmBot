@@ -5,7 +5,7 @@
 		"good":         0.02,
 		"evil":         0.05,
 		"domination":   0.10,
-		"world":        0.07,
+		"world":        0.07
 	},
 	"everythingWeight": 0.25
 }

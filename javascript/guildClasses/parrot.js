@@ -19,6 +19,7 @@
 "use strict";
 const fs = require("fs");
 const Guilds = require("../guild.js");
+const Skarm = require("../skarm.js");
 const {ShantyCollection, Shanty, ShantyIterator} = require("../shanties");
 
 const quoteReposRoot = "./data/dynamicQuotes/";
@@ -35,9 +36,15 @@ let linkVariables = function (parrot) {
     // initialize weights and `everything` weights for each dynamic quote repo
     for(let repo in Parrot.quoteRepos){
         let accessPath = quoteReposRoot + repo + triggerDataSuffix;
-        triggerData[repo] ??= JSON.parse(fs.readFileSync(accessPath).toString());                                        // load in JSON data if it hasn't already been loaded in by another process thread
-        parrot.repoWeights[repo] ??= triggerData[repo].triggerWeights;
-        parrot.everythingWeights[repo] ??= triggerData[repo].everythingWeight;
+        try {
+            triggerData[repo] ??= JSON.parse(fs.readFileSync(accessPath).toString());                                        // load in JSON data if it hasn't already been loaded in by another process thread
+            parrot.repoWeights[repo] ??= triggerData[repo].triggerWeights;
+            parrot.everythingWeights[repo] ??= triggerData[repo].everythingWeight;
+        } catch (e) {
+            console.log(`Encountered error reading file: ${accessPath}: `, e);
+            Skarm.logError(`Encountered error reading file as JSON: ${accessPath}: `);
+            Skarm.logError(e);
+        }
     }
 
     // externally handle special cases: skarm and shanties

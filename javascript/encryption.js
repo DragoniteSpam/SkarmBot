@@ -9,7 +9,9 @@ class Encrypt {
     }
     
     static read(filename, callback) {
+        console.log("Loading in encrypted file:", filename);
         fs.readFile(filename, function(err, data) {
+            console.log("Loaded encrypted file:", filename);
             if (err) return Skarm.logError(err);
             callback(
                 crypto.AES.decrypt(data.toString(), Encrypt.dataToken).toString(crypto.enc.Utf8),
