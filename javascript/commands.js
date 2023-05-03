@@ -635,14 +635,14 @@ module.exports = {
             Argo:
             <https://github.com/ArgoTheNaut>
             
-            Extra ideas came from SuperDragonite2172, willofd2011, and probably other people.
+            Extra ideas came from SuperDragonite2172, willofd2011, haileycopter, and probably other people.
             
             Thanks to basically everyone on the Kingdom of Zeal server for testing this bot, as well as all of the people who Argo somehow tricked into worshipping him as their god-king.
             
             Wolfram-Alpha is awesome:
             <https://www.npmjs.com/package/node-wolfram>
             
-            Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Carlin, Terry Pratchett, Arthur C. Clark, Rick Cook, and The Elder Scrolls V: Skyrim.`
+            Random quotes are from Douglas Adams, Sean Dagher, The Longest Johns, George Carlin, Terry Pratchett, Arthur C. Clark, Rick Cook, Civ 5, and The Elder Scrolls V: Skyrim.`
             );
         },
         
