@@ -31,6 +31,15 @@ module.exports = {
         },
     },
     Balance: {
+        aliases: ["whats up kiddies"],
+        standalone: false,
+        odds: 0.25,
+
+        execute(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "whats up kitties");
+        },
+    },
+    Balance: {
         aliases: ["perfectly balanced", "perfect balance"],
         standalone: false,
         odds: 0.5,
