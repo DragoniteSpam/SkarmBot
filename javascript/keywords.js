@@ -93,6 +93,24 @@ module.exports = {
             Skarm.sendMessageDelay(e.message.channel, "it is critical that we send an attack group there immediately. it is a system we cannot afford to lose.");
         },
     },
+    Cake: {
+        aliases: ["cake", "dessert"],
+        standalone: true,
+        odds: 0.25,
+
+        execute(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "here have some cake from nova");
+        },
+    },
+    Nova: {
+        aliases: ["gummy belle"],
+        standalone: false,
+        odds: 0.25,
+
+        execute(bot, e) {
+            Skarm.sendMessageDelay(e.message.channel, "i love nova");
+        },
+    },
     FightClub1: {
         aliases: ["first*rule*fight*club"],
         standalone: true,
