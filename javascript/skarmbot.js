@@ -235,7 +235,7 @@ class Bot {
         }
 
         let userData = Users.get(e.message.author.id);
-        let guildData = Guilds.get(e.message.channel.guild_id);
+        let guildData = Guilds.get(e.message.channel.guild.id);
 
         this.summons(e);
 

@@ -261,7 +261,11 @@ let linkFunctions = function (parrot){
 
             case "shanty":
                 // console.log("Acquiring shanty line...");
-                return guildData.shantyIterator.next();
+                if(!guildData.shantyIterator){
+                    Skarm.spam(`For some reason, the shanty iterator for guild ${guildData.id} is `, guildData.shantyIterator);
+                } else {
+                    return guildData.shantyIterator.next();
+                }
                 break;
 
             default:
