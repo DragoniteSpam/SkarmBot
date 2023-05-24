@@ -1323,7 +1323,12 @@ module.exports = {
         aliases: ["notify"],
         params: ["#"],
         usageChar: "@",
-        helpText: "Toggles the notifications of various information for this channel.  Use without a number input to view current state of channel.",
+        helpText: "Toggles the notifications of various information for this channel.  Use without a number input to view current state of channel. Available aliases:\r\n" +
+            "1, join, leave" + "\r\n" +
+            "2, ban" + "\r\n" +
+            "3, name" + "\r\n" +
+            "4, voice, vox" + "\r\n" +
+            "5, xkcd" + "\r\n",
         examples: [
             {command: "e@notify", effect: "Will cause Skarm to list all available notification settings to toggle."},
             {command: "e@notify 4", effect: "Will cause Skarm to toggle announcing all voice channel join and leave activity in the guild to the channel in which the command was sent."}
@@ -2972,7 +2977,8 @@ module.exports = {
                             `Guild ID: ${guild.id}\r\n`+
                             `Owner: ${guild.owner.username} \r\n` +
                             "<@" + guild.owner.id + ">" + "\r\n" +
-                            "Member Count: " + guild.members.length,
+                            "Member Count: " + guild.members.length + "\r\n" +
+                            "Database Size (bytes): " + JSON.stringify(Guilds.get(guild.id)).length,
                         inline: true,
                         members: guild.members.length
                     });
@@ -2997,7 +3003,7 @@ module.exports = {
                 Skarm.sendMessageDelay(e.message.channel, " ", false, embedobj);
             }
 
-            if(argv.length ===1) {
+            if(argv.length === 1) {
                 let guild = bot.client.Guilds.get(argv[0]);
                 if(!guild){
                     Skarm.sendMessageDelay(e.message.channel, "Guild not found");
