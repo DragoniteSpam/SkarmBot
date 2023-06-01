@@ -197,6 +197,7 @@ $privateTokens.Keys | foreach {
             Copy-Item -Path $boxTokenPath -Destination $tokenPath -Verbose
         } else {
             reportWarn "The following token is missing: $tokenPath"
+            reportWarn "    Not found at $boxTokenPath"
             reportWarn $privateTokens[$_]
             Write-Host ""
             $missingTokens = $true
