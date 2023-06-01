@@ -10,6 +10,7 @@ const SUMMON_COOLDOWN = 60000;
 
 const linkVariables = function(user) {
     if (user.actionState === undefined) user.actionState = { };
+    if (user.ignoreSummons === undefined) user.ignoreSummons = { };
     user.transcientActionStateData = { };    // clear on reboot
 }
 
@@ -22,12 +23,23 @@ const linkFunctions = function(user) {
         User.save();
         return true;
     }
+
+    user.ignoreSummon = function(term) {
+        if (term in this.ignoreSummons) {
+            return false;
+        }
+        this.ignoreSummons[term] = true;
+        User.save();
+        return true;
+    }
     
     user.removeSummon = function(term) {
-        if (!(term in this.summons)) {
+        let removedTerm = (term in this.summons) || (term in this.ignoreSummons);
+        if (!removedTerm) {
             return false;
         }
         delete this.summons[term];
+        delete this.ignoreSummons[term];
         User.save();
         return true;
     }
@@ -42,7 +54,18 @@ const linkFunctions = function(user) {
         }
         return terms.sort().join(", ");
     }
-    
+
+    user.listIgnores = function(v) {
+		v = v || "";
+        let terms = [];
+        for (let term in this.ignoreSummons) {
+			if(term.includes(v)){
+				terms.push(term);
+			}
+        }
+        return terms.sort().join(", ");
+    }
+
     user.attemptSummon = function(e, term) {
         let userData = User.getData(this.id);
         // you must be in the same channel
@@ -58,8 +81,7 @@ const linkFunctions = function(user) {
             return;
         }
         // can't spam summons
-        if (this.summonsLastTime &&
-                (Date.now() - this.summonsLastTime) < SUMMON_COOLDOWN) {
+        if (this.summonsLastTime && (Date.now() - this.summonsLastTime) < SUMMON_COOLDOWN) {
             return;
         }
         // issue the summons
@@ -110,7 +132,6 @@ const linkFunctions = function(user) {
             }, timeout * 1000)
         };
     };
-
 
     user.deleteTransientMessagePrev = function(channelID){
         let transientData = this.transcientActionStateData[channelID];

@@ -461,10 +461,16 @@ class Bot {
     
     //checks if anyone's summons are triggered by the message and sends them out
     summons(e) {
+        let content = e.message.content.toLowerCase();
         for (let user in Users.users) {
             let userData = Users.get(user);
-            for (let term in userData.summons) {
-                if (e.message.content.includes(term)) {
+            for (let term in userData.summons) {     // look for the summons in the message
+                if (content.includes(term)) {
+                    for (let ignoreTerm in userData.ignoreSummons) {  // make sure there's no ignore terms in the message
+                        if (content.includes(ignoreTerm)) {
+                            return;
+                        }
+                    }
                     userData.attemptSummon(e, term);
                     break;
                 }
