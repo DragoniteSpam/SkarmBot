@@ -537,7 +537,29 @@ class Skarm {
     }
 
     static commandParamTokens = function(message) {
-        let tokens = message.trim().split(" ");
+        let tokens = [];
+    
+        // if an even amount of quotes exist in the message, segment by quotes first
+        let quoteCount = (message.match(/"/g) || []).length;
+        if (quoteCount % 2 === 0 && quoteCount > 0) {
+            firstLayerTokens = message.split('"');
+        } else {
+            firstLayerTokens = [message];
+        }
+    
+        // segment the first layer tokens that are outside of quotes into space-separated words
+        for(let i in firstLayerTokens) {
+            if(i%2 == 1){  // inside of quotes.  Paired -> successive swaps, starting at out
+                tokens.push(firstLayerTokens[i]);
+            } else {       // outside of quotes
+                let words = firstLayerTokens[i].split(" ");
+                for(let word of words) {
+                    tokens.push(word);
+                }
+            }
+        }
+    
+        // prune empty tokens
         for(let i = 0; i < tokens.length; i++){
             if(tokens[i].length === 0){
                 tokens.splice(i--,1);
@@ -546,6 +568,7 @@ class Skarm {
         tokens.shift();
         return tokens;
     }
+    
     static commandParamString = function(message) {
         let tokens = message.trim().split(" ");
         tokens.shift();
