@@ -549,7 +549,8 @@ class Bot {
         let lines = 0;
         let dirPaths = [
             "./javascript/",
-            "./javascript/guildClasses/"
+            "./javascript/guildClasses/",
+            "./javascript/commands/"
         ];
         for(let dirPath of dirPaths) {
             let files = fs.readdirSync(dirPath);
