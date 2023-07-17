@@ -1,44 +1,3 @@
-"use strict";
-const os = require("os");
-const request = require("request");
-
-const Skarm = require("./skarm.js");
-const Constants = require("./constants.js");
-const Web = require("./web.js");
-const Users = require("./user.js");
-const Guilds = require("./guild.js");
-const Permissions = require("./permissions.js");
-const Skinner = require("./skinnerbox.js");
-
-const SarGroups = require("./guildClasses/sar.js");
-const {ShantyCollection} = require("./shanties");
-
-Constants.initialize();     // if this line isn't here, local initialization of constants in "effect" fields break
-
-// noinspection JSUnusedLocalSymbols
-module.exports = {
-    /** 
-	*	general
-	*/
-	Drago: {
-        aliases: ["drago", "dragonite"],
-        params: [],
-        usageChar: "!",
-        helpText: "reminds the bot author to get some sunshine once in a while",
-        examples: [
-            {command: "e!drago", effect: "Instructs the lead spaghetti chef to acquire vitamin D."}
-        ],
-        ignoreHidden: true,
-		category: "general",
-		
-        execute(bot, e, userData, guildData) {
-            Skarm.sendMessageDelay(e.message.channel, "go play outside dragonite");
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
     Hug: {
         aliases: ["hug"],
         params: ["<victim>"],
@@ -49,11 +8,11 @@ module.exports = {
             {command: "e!hug Dragonite#7992", effect: "Will cause Skarm to hug the user named Dragonite#7992."}
         ],
         ignoreHidden: true,
-		category: "general",
+        category: "general",
 
         execute(bot, e, userData, guildData) {
-			let target = Skarm.commandParamTokens(e.message.content)[0];
-			if(target == null) target = e.message.author.username;
+            let target = Skarm.commandParamTokens(e.message.content)[0];
+            if(target == null) target = e.message.author.username;
             Skarm.sendMessageDelay(e.message.channel, "_hugs " + target + "_");
         },
         
@@ -62,10 +21,10 @@ module.exports = {
         },
     },
     Pinned: {
-		aliases: ["fetchpinned", "pinned"],
-		params: ["#channel"],
-		usageChar: "!",
-		helpText: "First shalt thou take out the Holy Pin. Then shalt thou count to three, no more, no less. Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in My sight, shall snuff it.",
+        aliases: ["fetchpinned", "pinned"],
+        params: ["#channel"],
+        usageChar: "!",
+        helpText: "First shalt thou take out the Holy Pin. Then shalt thou count to three, no more, no less. Three shall be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in My sight, shall snuff it.",
         examples: [
             {command: "e!pinned", effect: "Will cause Skarm to report the amount of pinned messages in the channel that it is run in."},
             {command: "e!fetchpinned #general", effect: "Will cause Skarm to report the amount of pinned messages in the channel #general."}
@@ -77,9 +36,9 @@ module.exports = {
             let tokens = Skarm.commandParamTokens(e.message.content);
 
             let channel,targetChannelID;
-			if (tokens.length === 0) {
-			    channel = e.message.channel;
-			    targetChannelID=channel.id;
+            if (tokens.length === 0) {
+                channel = e.message.channel;
+                targetChannelID=channel.id;
             } else {
                 channel = null;
                 targetChannelID = tokens[0].substring(2, tokens[0].length - 1);
@@ -91,20 +50,20 @@ module.exports = {
                 }
             }
             
-			if (channel === null) {
-				return Skarm.sendMessageDelay(e.message.channel, "failed to find channel id");
-			}
+            if (channel === null) {
+                return Skarm.sendMessageDelay(e.message.channel, "failed to find channel id");
+            }
             
-			channel.fetchPinned().then(ex => {
+            channel.fetchPinned().then(ex => {
                 Skarm.sendMessageDelay(e.message.channel,"<#" + targetChannelID + "> has " + ex.messages.length + " pinned message" + ((ex.messages.length === 1) ? "" : "s"));
             });
-		},
-		
-		help(bot,e) {
-			Skarm.help(this, e);
-		},
-	},
-	Summon: {
+        },
+        
+        help(bot,e) {
+            Skarm.help(this, e);
+        },
+    },
+    Summon: {
         aliases: ["summon", "summons"],
         params: ["add|remove|list", "term"],
         usageChar: "!",
@@ -541,35 +500,16 @@ module.exports = {
 
 
     /**
-	*	meta
-	*/
-	Actions: {
-        aliases: ["action", "actions", "actioncount"],
-        params: [],
-        usageChar: "!",
-        helpText: "Returns the number of actions in Skarm's log for the current server.",
-        examples: [{command: "e!action", effect: "Reports the amount of action lines recorded for this server."}],
-        ignoreHidden: true,
-        category: "meta",
-
-        execute(bot, e, userData, guildData) {
-            let guild = e.message.guild;
-            Skarm.sendMessageDelay(e.message.channel, "Actions known for **" +
-                guild.name + "**: " + Guilds.get(guild.id).getActionCount());
-        },
-        
-        help(bot, e) {
-            Skarm.help(this, e);
-        },
-    },
-	Credits: {
+    *    meta
+    */
+    Credits: {
         aliases: ["credits"],
         params: [""],
         usageChar: "!",
         helpText: "It's literally just the credits. Why do you need help with this?",
         examples: [{command: "e!credits", effect: "Shows the credits."}],
         ignoreHidden: true,
-		category: "meta",
+        category: "meta",
 
         execute(bot, e, userData, guildData) {
             let version = bot.version;
@@ -604,7 +544,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Help: {
+    Help: {
         aliases: ["help", "man", "?"],
         params: ["[term]"],
         usageChar: "!",
@@ -686,7 +626,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Lines: {
+    Lines: {
         aliases: ["line", "lines", "linecount"],
         params: [],
         usageChar: "!",
@@ -761,7 +701,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Shanties: {
+    Shanties: {
         aliases: ["shanties", "shanty"],
         params: ["query..."],
         usageChar: "!",
@@ -774,26 +714,26 @@ module.exports = {
         category: "meta",
 
         execute(bot, e, userData, guildData) {
-			let target = Skarm.commandParamString(e.message.content);
-			let names = Object.keys(ShantyCollection.shanties);
+            let target = Skarm.commandParamString(e.message.content);
+            let names = Object.keys(ShantyCollection.shanties);
             let shanties = "";
             for (let name of names) {
-				if (name.includes(target))
-    				shanties += name + ", ";
-			}
-			if (shanties.length === 0) {
-				Skarm.sendMessageDelay(e.message.channel, "I can't recall any shanties with that in the title ヽ( ｡ ヮﾟ)ノ");
-				return;
-			}
-			
-			Skarm.sendMessageDelay(e.message.channel, "I recall the following shanties:\n" + shanties.substring(0,shanties.trim().length - 1));
+                if (name.includes(target))
+                    shanties += name + ", ";
+            }
+            if (shanties.length === 0) {
+                Skarm.sendMessageDelay(e.message.channel, "I can't recall any shanties with that in the title ヽ( ｡ ヮﾟ)ノ");
+                return;
+            }
+            
+            Skarm.sendMessageDelay(e.message.channel, "I recall the following shanties:\n" + shanties.substring(0,shanties.trim().length - 1));
         },
         
         help(bot, e) {
             Skarm.help(this, e);
         },
     },
-	Stats: {
+    Stats: {
         aliases: ["bot"],
         params: [""],
         usageChar: "!",
@@ -878,9 +818,9 @@ module.exports = {
 
 
     /**
-	*	web
-	*/
-	Google: {
+    *    web
+    */
+    Google: {
         aliases: ["google", "cosia"],
         params: ["query..."],
         usageChar: "!",
@@ -918,23 +858,6 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    //Unsecure
-    // Wolfy: {
-    //     aliases: ["wolfram", "wolfy"],
-    //     params: ["query..."],
-    //     usageChar: "!",
-    //     helpText: "Returns a Wolfram|Alpha API request for the given query.",
-    //     ignoreHidden: true,
-	// 	category: "web",
-    //
-    //     execute(bot, e, userData, guildData) {
-    //         Web.wolfy(bot, e, Skarm.commandParamString(e.message.content));
-    //     },
-    //
-    //     help(bot, e) {
-    //         Skarm.help(this, e);
-    //     },
-    // },
     XKCD: {
         aliases: ["xkcd"],
         params: ["[id]"],
@@ -947,7 +870,7 @@ module.exports = {
             {command: "e!xkcd web", effect: "Provides a link for every xkcd containing `web` in its title."}
         ],
         ignoreHidden: true,
-		category: "web",
+        category: "web",
 
         execute(bot, e, userData, guildData) {
             bot.xkcd.post(e.message.channel, Skarm.commandParamString(e.message.content));
@@ -958,10 +881,10 @@ module.exports = {
         },
     },
     
-	
-	/**
-	*administrative
-	*/
+    
+    /**
+    *administrative
+    */
     Alias: {
         aliases: ["alias", "trigger"],
         params: ["add | remove | list | clear"],
@@ -1106,7 +1029,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Sudo: {
+    Sudo: {
         aliases: ["sudo", "su"],
         params: ["mention"],
         usageChar: "!",
@@ -1119,18 +1042,18 @@ module.exports = {
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-			let words = Skarm.commandParamTokens(e.message.content);
-			let member;
-			if(words.length===1){
-				let id=words[0].replace("<","").replace("@","").replace("!","").replace(">","");
-				member=Guilds.client.Users.get(id).memberOf(e.message.guild);
-				userData=Users.get(id);
-				if(member==null){
-					Skarm.sendMessageDelay("Failed to find mentioned member. Please try again using the format `e!su <@userID>`");
-					return;
-				}
-			}else{
-				member = e.message.author.memberOf(e.message.guild);
+            let words = Skarm.commandParamTokens(e.message.content);
+            let member;
+            if(words.length===1){
+                let id=words[0].replace("<","").replace("@","").replace("!","").replace(">","");
+                member=Guilds.client.Users.get(id).memberOf(e.message.guild);
+                userData=Users.get(id);
+                if(member==null){
+                    Skarm.sendMessageDelay("Failed to find mentioned member. Please try again using the format `e!su <@userID>`");
+                    return;
+                }
+            }else{
+                member = e.message.author.memberOf(e.message.guild);
             }
             let permissions = guildData.getPermissions(userData);
             let permNames = [ ];
@@ -1142,7 +1065,7 @@ module.exports = {
             if (permissions & Permissions.ADMIN) permNames.push("ADMIN");
             if (permissions === Permissions.SUDO) permNames.push("DEVELOPER");
             
-			
+            
             Skarm.sendMessageDelay(e.message.channel, "Current permissions of **" +
                 member.name + "** in **" + e.message.guild.name + ":**\n" +
                 permNames.join(", ")
@@ -1213,13 +1136,13 @@ module.exports = {
         ],
         ignoreHidden: false,
         perms: Permissions.MOD,
-		category: "administrative",
+        category: "administrative",
 
         execute(bot, e, userData, guildData) {
-			let args = Skarm.commandParamTokens(e.message.content);
-			
+            let args = Skarm.commandParamTokens(e.message.content);
+            
             if (args.length === 0) {
-				var roles = Object.keys(guildData.mayhemRoles);
+                var roles = Object.keys(guildData.mayhemRoles);
                 for (let i = 0; i < roles.length; i++) {
                     let found = false;
                     for (let role of e.message.guild.roles) {
@@ -1246,9 +1169,9 @@ module.exports = {
                 } else {
                     Skarm.sendMessageDelay(e.message.channel, "**Current mayhem roles:**\n" + roles.join(", "));
                 }
-				return;
-			}
-			
+                return;
+            }
+            
             let roleData = undefined;
             for (let role of e.message.guild.roles) {
                 if (role.id === args[0]) {
@@ -1380,7 +1303,7 @@ module.exports = {
         ],
         ignoreHidden: true,
         perms: Permissions.MOD,
-		category: "administrative",
+        category: "administrative",
 
         execute(bot, e, userData, guildData) {
             let tokens = Skarm.commandParamTokens(e.message.content);
@@ -1549,7 +1472,7 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-	Soap: {
+    Soap: {
         aliases: ["soap"],
         params: ["[scope]"],
         usageChar: "@",
@@ -1587,7 +1510,7 @@ module.exports = {
             
             // fallback soap behavior
             guildData.soap();
-			Skarm.sendMessageDelay(e.message.channel,"sorry...");
+            Skarm.sendMessageDelay(e.message.channel,"sorry...");
         },
         
         help(bot, e) {
@@ -2113,11 +2036,11 @@ module.exports = {
         },
     },
 
-	/**
-	*	leveling
-	*/
-	Rank: {
-		aliases: ["level","rank"],
+    /**
+    *    leveling
+    */
+    Rank: {
+        aliases: ["level","rank"],
         params: ["[<@guild member>]"],
         usageChar: "!",
         helpText: "Reports how much exp a member has with the guild, what level that equates to, how much exp is needed to get to the next level, and the member's position on the guild leaderboard.",
@@ -2126,37 +2049,37 @@ module.exports = {
             {command: "e!rank @Dragonite", effect: "Will report how much experience `@Dragonite` has."},
         ],
         ignoreHidden: true,
-		category: "leveling",
+        category: "leveling",
 
         execute(bot, e, userData, guildData) {
-			let target = e.message.author.id;
-			let tok = Skarm.commandParamTokens(e.message.content);
-			let outputBase = " ";
-			if(tok.length===1){
-				let user = guildData.resolveUser(tok[0]);
-				if(Array.isArray(user)){
-				    outputBase =`Multiple users (${user.length}) identified as potential matches.  Please refine query.`;
-				    user = user[0];
+            let target = e.message.author.id;
+            let tok = Skarm.commandParamTokens(e.message.content);
+            let outputBase = " ";
+            if(tok.length===1){
+                let user = guildData.resolveUser(tok[0]);
+                if(Array.isArray(user)){
+                    outputBase =`Multiple users (${user.length}) identified as potential matches.  Please refine query.`;
+                    user = user[0];
                 }
-				if(!user || !(user.id in guildData.expTable)){
-					Skarm.sendMessageDelay(e.message.channel,"Error: this user may have not talked at all or you didn't mention them properly.");
-					return;
-				}
-				target = user.id;
-			}
-
-			let user = guildData.expTable[target];
-			let exp = user.exp - 0;
-			let lvl = user.level;
-			let toNextLvl = user.nextLevelEXP - exp;
-			let targetEntity = bot.client.Users.get(target);
-			let guildMembers = e.message.guild.members;
-			let targetNick;
-			for(let member of guildMembers){
-			    if(member.id === target) targetNick = member.nick;
+                if(!user || !(user.id in guildData.expTable)){
+                    Skarm.sendMessageDelay(e.message.channel,"Error: this user may have not talked at all or you didn't mention them properly.");
+                    return;
+                }
+                target = user.id;
             }
 
-			//https://discordjs.guide/popular-topics/embeds.html#embed-preview
+            let user = guildData.expTable[target];
+            let exp = user.exp - 0;
+            let lvl = user.level;
+            let toNextLvl = user.nextLevelEXP - exp;
+            let targetEntity = bot.client.Users.get(target);
+            let guildMembers = e.message.guild.members;
+            let targetNick;
+            for(let member of guildMembers){
+                if(member.id === target) targetNick = member.nick;
+            }
+
+            //https://discordjs.guide/popular-topics/embeds.html#embed-preview
             e.message.channel.sendMessage(outputBase, false, {
                 color: Skarm.generateRGB(),
                 author: {name: Users.get(target).nickName || targetNick || targetEntity.username || target},
@@ -2177,9 +2100,9 @@ module.exports = {
         help(bot, e) {
             Skarm.help(this, e);
         },
-	},
-	SRank: {
-		aliases: ["srank","slevel"],
+    },
+    SRank: {
+        aliases: ["srank","slevel"],
         params: ["<@targetID>, exp"],
         usageChar: "@",
         helpText: "Sets how much exp you have in the guild\r\n",
@@ -2190,22 +2113,22 @@ module.exports = {
             {command: "e@srank @Dragonite#7992 -",   effect: "Removes dragonite's record from the exp table.  Future message by dragonite will re-add him to the table."},
         ],
         ignoreHidden: true,
-		category: "leveling",
+        category: "leveling",
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
             let param = Skarm.commandParamTokens(e.message.content);
             let targetTerms = ["<@", ">", "!"];
-		    let target;
-		    let newExp;
+            let target;
+            let newExp;
 
-		    //dont mess up the data if no input params are given or too many are given
-		    if(param.length === 0 || param.length > 2){
+            //dont mess up the data if no input params are given or too many are given
+            if(param.length === 0 || param.length > 2){
                 Skarm.help(this,e);
-		        return;
+                return;
             }
 
-		    if(param.length === 1){
+            if(param.length === 1){
                 newExp = param[0];
             }
 
@@ -2224,15 +2147,15 @@ module.exports = {
             }
 
             if (!guildData.hasPermissions(userData, Permissions.MOD)) {
-				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
-				return;
-			}
+                Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+                return;
+            }
 
-			//if no target is specified, assume self-targetted
-			target = target || e.message.author.id;
-			let user = guildData.expTable[target];
-			if(user) {
-			    if(newExp === "-"){
+            //if no target is specified, assume self-targetted
+            target = target || e.message.author.id;
+            let user = guildData.expTable[target];
+            if(user) {
+                if(newExp === "-"){
                     delete guildData.expTable[target];
                     Skarm.sendMessageDelay(e.message.channel, "User data purged.");
                 }else {
@@ -2249,14 +2172,14 @@ module.exports = {
                     }
                 }
             }else{
-			    Skarm.sendMessageDelay(e.message.channel, `Failed to find guild record for user with ID ${target}`);
+                Skarm.sendMessageDelay(e.message.channel, `Failed to find guild record for user with ID ${target}`);
             }
         },
         
         help(bot, e) {
             Skarm.help(this, e);
         },
-	},
+    },
     Leaderboard: {
         aliases: ["leaderboard","levels"],
         params: ["start position"],
@@ -2302,7 +2225,7 @@ module.exports = {
         },
     },
     RoleStack: {
-		aliases: ["rolestack"],
+        aliases: ["rolestack"],
         params: ["enable | disable"],
         usageChar: "@",
         helpText: "Toggles whether or not to keep previous roles when rewarding a new level up role.",
@@ -2312,59 +2235,59 @@ module.exports = {
             {command: "e@rolestack disable",         effect: "Configures skarm to reward only the highest level role reward for the server."},
         ],
         ignoreHidden: true,
-		category: "leveling",
+        category: "leveling",
         perms: Permissions.MOD,
 
 
         execute(bot, e, userData, guildData) {
-			if (!guildData.hasPermissions(userData, Permissions.MOD)) {
-				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
-				return;
-			}
-			let tokens = Skarm.commandParamTokens(e.message.content);
-			if(tokens.length===0){
-				Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+((guildData.roleStack)?" currently rewards":" doesn't currently reward")+" stacked roles");
-				return;
-			}
-			if(tokens[0]==="enable" || tokens[0]==="e"){
-				guildData.roleStack=true;
-				Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+" will now reward stacked roles");
-				return;
-			}
-			if(tokens[0]==="disable" || tokens[0]==="d"){
-				guildData.roleStack=false;
-				Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+" will not reward stacked roles");
-				return;
-			}
-			Skarm.help(this,e);
+            if (!guildData.hasPermissions(userData, Permissions.MOD)) {
+                Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+                return;
+            }
+            let tokens = Skarm.commandParamTokens(e.message.content);
+            if(tokens.length===0){
+                Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+((guildData.roleStack)?" currently rewards":" doesn't currently reward")+" stacked roles");
+                return;
+            }
+            if(tokens[0]==="enable" || tokens[0]==="e"){
+                guildData.roleStack=true;
+                Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+" will now reward stacked roles");
+                return;
+            }
+            if(tokens[0]==="disable" || tokens[0]==="d"){
+                guildData.roleStack=false;
+                Skarm.sendMessageDelay(e.message.channel,e.message.guild.name+" will not reward stacked roles");
+                return;
+            }
+            Skarm.help(this,e);
         },
         
         help(bot, e) {
             Skarm.help(this, e);
         },
-	},
-	ViewRoleReward: {
-		aliases: ["rolerewards","rr"],
-		params: [],
-		usageChar: "!",
-		helpText: "Displays roles rewarded for leveling up.",
+    },
+    ViewRoleReward: {
+        aliases: ["rolerewards","rr"],
+        params: [],
+        usageChar: "!",
+        helpText: "Displays roles rewarded for leveling up.",
         examples: [
             {command: "e!rolerewards", effect: "Reports the roles that are rewarded for leveling up in this guild."},
         ],
-		ignoreHidden:true,
-		category: "leveling",
+        ignoreHidden:true,
+        category: "leveling",
 
         execute(bot, e, userData, guildData) {
-			let roles = guildData.rolesTable;
-			if(Object.keys(roles).length===0){
-				Skarm.sendMessageDelay(e.message.channel,"No roles configured to be rewarded from leveling up in "+e.message.guild.name);
-				return;
-			}
+            let roles = guildData.rolesTable;
+            if(Object.keys(roles).length===0){
+                Skarm.sendMessageDelay(e.message.channel,"No roles configured to be rewarded from leveling up in "+e.message.guild.name);
+                return;
+            }
 
-			let fields = [];
-			for(let i in roles){
-				fields.push({name: "Level " + i, value: "<@&"+roles[i]+">", inline: true});
-			}
+            let fields = [];
+            for(let i in roles){
+                fields.push({name: "Level " + i, value: "<@&"+roles[i]+">", inline: true});
+            }
 
             e.message.channel.sendMessage(" ", false, {
                 color: Skarm.generateRGB(),
@@ -2376,55 +2299,55 @@ module.exports = {
                 },
             });
 
-		},
-		help(bot, e) {
+        },
+        help(bot, e) {
             Skarm.help(this, e);
         },
-	},
-	SetRoleReward: {
-		aliases: ["setlevelreward","levelreward","reward","slr"],
-		params: ["level","@role | unbind"],
-		usageChar:"@",
-		helpText: "Configures a role reward for reaching a certain level. Only one role can be assigned to be granted at any given level. Current maximum level is: "+Skinner.EXPREQ.length,
+    },
+    SetRoleReward: {
+        aliases: ["setlevelreward","levelreward","reward","slr"],
+        params: ["level","@role | unbind"],
+        usageChar:"@",
+        helpText: "Configures a role reward for reaching a certain level. Only one role can be assigned to be granted at any given level. Current maximum level is: "+Skinner.EXPREQ.length,
         examples: [
             {command: "e@slr",                    effect: "Reports the roles that are rewarded for leveling up in this guild"},
             {command: "e@setlevelreward 2 @lvl2", effect: "Configures skarm to reward the role `@lvl2` for achieving level 2."},
             {command: "e@setlevelreward 2 -",     effect: "Configures skarm to not reward any role for achieving level 2."}
         ],
-		ignoreHidden: true,
-		category: "leveling",
+        ignoreHidden: true,
+        category: "leveling",
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
-			if(e.message.guild === null){
-				Skarm.sendMessageDelay(e.message.channel, "Error: guild not found.");
-				return;
-			}
-			if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)) {
-				Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
-				return;
-			}
-			let pars = Skarm.commandParamTokens(e.message.content);
-			if(pars.length!==2){
-				if(pars.length===0){
-				    module.exports.ViewRoleReward.execute(bot,e,userData,guildData);
-					return;
-				}
-				Skarm.help(this,e);
-				return;
-			}
+            if(e.message.guild === null){
+                Skarm.sendMessageDelay(e.message.channel, "Error: guild not found.");
+                return;
+            }
+            if (!Guilds.get(e.message.channel.guild_id).hasPermissions(Users.get(e.message.author.id), Permissions.MOD)) {
+                Skarm.log("unauthorized edit detected. Due to finite storage, this incident will not be reported.");
+                return;
+            }
+            let pars = Skarm.commandParamTokens(e.message.content);
+            if(pars.length!==2){
+                if(pars.length===0){
+                    module.exports.ViewRoleReward.execute(bot,e,userData,guildData);
+                    return;
+                }
+                Skarm.help(this,e);
+                return;
+            }
 
-			let level = pars[0]-0;
-			if(!(level<Skinner.EXPREQ.length && level>=0 && Math.floor(level)===level)){
-				Skarm.help(this,e);
-				return;
-			}
-			if(pars[1]==="unbind" || pars[1]==="-"){
-				delete Guilds.get(e.message.guild.id).rolesTable[pars[0]-0];
+            let level = pars[0]-0;
+            if(!(level<Skinner.EXPREQ.length && level>=0 && Math.floor(level)===level)){
+                Skarm.help(this,e);
+                return;
+            }
+            if(pars[1]==="unbind" || pars[1]==="-"){
+                delete Guilds.get(e.message.guild.id).rolesTable[pars[0]-0];
                 module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
-				return;
-			}
-			pars[1] = pars[1].replace("<","").replace("@","").replace("&","").replace(">","");
+                return;
+            }
+            pars[1] = pars[1].replace("<","").replace("@","").replace("&","").replace(">","");
             let allGuildRoles = Guilds.getData(guildData.id).roles;
             for(let role of allGuildRoles){
                 if(role.id === pars[1]){
@@ -2434,15 +2357,15 @@ module.exports = {
                 }
             }
 
-			Skarm.help(bot,e);
+            Skarm.help(bot,e);
         },
         
         help(bot, e) {
             Skarm.help(this, e);
         },
-	},
-	GuildAnnouncementSwitch: {
-		aliases: ["levelannounce", "announce"],
+    },
+    GuildAnnouncementSwitch: {
+        aliases: ["levelannounce", "announce"],
         params: ["enable | disable"],
         usageChar: "@",
         helpText: "Toggles the state of announcing when a user levels up in the guild",
@@ -2452,7 +2375,7 @@ module.exports = {
             {command: "e@announce disable", effect: "Configures skarm to not announce level-ups in this guild."},
         ],
         ignoreHidden: true,
-		category: "leveling",
+        category: "leveling",
         perms: Permissions.MOD,
 
         execute(bot, e, userData, guildData) {
@@ -2482,7 +2405,7 @@ module.exports = {
         help(bot, e) {
             Skarm.help(this, e);
         },
-	},
+    },
     RoleRefresh: {
         aliases: ["rolerefresh","role","refresh"],
         params: [],
@@ -2571,8 +2494,8 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-    ConfigBuffRole:{
-	    aliases: ["configurebuffrole", "configbuff", "buffconfig", "buffconf", "cbr"],
+    ConfigBuffRole: {
+        aliases: ["configurebuffrole", "configbuff", "buffconfig", "buffconf", "cbr"],
         params: ["[action (get,set,remove)]", "[role(ping or id)]", "[stat(base,bonus,cooldown,luck)]", "[modifier(num 0 - 1000)]"],
         usageChar: "@",
         helpText: "This command configures a role to give buffs for leveling up in the server.",
@@ -2605,34 +2528,34 @@ module.exports = {
                 lb:       "luckBuff"
             };
             let actionWords = ["get", "set", "remove"];
-	        let content = e.message.content.toLowerCase();
-	        let tokens = Skarm.commandParamTokens(content);
-	        let channel = e.message.channel;
+            let content = e.message.content.toLowerCase();
+            let tokens = Skarm.commandParamTokens(content);
+            let channel = e.message.channel;
 
-	        //at least one parameter required for the role to work properly
-	        if(tokens.length < 1) return this.help(bot, e);
+            //at least one parameter required for the role to work properly
+            if(tokens.length < 1) return this.help(bot, e);
 
-	        let action, role, stat, modifier;
+            let action, role, stat, modifier;
 
-	        //determine action
-	        for(let actionWord of actionWords){
-	            for(let t in tokens){
-	                if(tokens[t].includes(actionWord)){
-	                    action = actionWord;
-	                    tokens.splice(t,1); //remove the token from the array
+            //determine action
+            for(let actionWord of actionWords){
+                for(let t in tokens){
+                    if(tokens[t].includes(actionWord)){
+                        action = actionWord;
+                        tokens.splice(t,1); //remove the token from the array
                         break;
                     }
                 }
             }
 
-	        if(tokens.length === 0){
-	            if(action === "get"){
+            if(tokens.length === 0){
+                if(action === "get"){
                     // return list of roles that exist in the guild buff list
-	                let buffedRoles = Object.keys(guildData.expBuffRoles);
+                    let buffedRoles = Object.keys(guildData.expBuffRoles);
                     let roles = [ ];
-			        for(let i in buffedRoles){
-			        	roles.push("<@&"+buffedRoles[i]+">");
-			        }
+                    for(let i in buffedRoles){
+                        roles.push("<@&"+buffedRoles[i]+">");
+                    }
                     if(roles.length) {
                         e.message.channel.sendMessage(" ", false, {
                             color: Skarm.generateRGB(),
@@ -2655,12 +2578,12 @@ module.exports = {
             }
 
             //acquire role
-	        let roles = e.message.guild.roles;
-	        for(let t = 0; t < tokens.length; t++){
-	            for(let guildRole of roles){
-	                if(tokens[t].includes(guildRole.id)){   //must be ping or ID of role for this to work
-	                    role = guildRole.id;
-	                    tokens.splice(t,1);     //remove token from array
+            let roles = e.message.guild.roles;
+            for(let t = 0; t < tokens.length; t++){
+                for(let guildRole of roles){
+                    if(tokens[t].includes(guildRole.id)){   //must be ping or ID of role for this to work
+                        role = guildRole.id;
+                        tokens.splice(t,1);     //remove token from array
                         t = tokens.length;                //break out of both loops
                         break;
                     }
@@ -2668,9 +2591,9 @@ module.exports = {
             }
 
 
-	        //acquire stat and modifier if they must be set
-	        if(action === "set"){
-	            // acquire stat
+            //acquire stat and modifier if they must be set
+            if(action === "set"){
+                // acquire stat
                 for(let t = 0; t < tokens.length; t++){
                     if(tokens[t] in statAliases){
                         stat = statAliases[tokens[t]];
@@ -2689,11 +2612,11 @@ module.exports = {
                 }
             }
 
-	        if(role === undefined) {
-	            Skarm.sendMessageDelay(channel, "Error: failed to find the role to apply action to.");
-	            return;
+            if(role === undefined) {
+                Skarm.sendMessageDelay(channel, "Error: failed to find the role to apply action to.");
+                return;
             }
-	        guildData.modifyExpBuffRoles(channel, action, role, stat, modifier);
+            guildData.modifyExpBuffRoles(channel, action, role, stat, modifier);
         },
 
         help(bot, e) {
@@ -2703,13 +2626,13 @@ module.exports = {
 
 
     /**
-	*	infrastructure
-	*/
+    *    infrastructure
+    */
 
     /*
      * {    color: 0x3498db,    author: {name: "author name"},    title: "This is an embed",    url: "http://google.com",    timestamp: "2016-11-13T03:43:32.127Z",    fields: [{name: "some field", value: "some value"}],    footer: {text: "footer text"}  }
      */
-	Todo: {
+    Todo: {
         aliases: ["todo"],
         params: ["create the todo command"],
         usageChar: "@",
@@ -2726,8 +2649,8 @@ module.exports = {
         },
 
         help(bot, e) {
-			Skarm.help(this, e);
-		},
+            Skarm.help(this, e);
+        },
     },
     Test: {
         aliases: ["test"],
@@ -2991,13 +2914,13 @@ module.exports = {
         ],
         ignoreHidden: false,
         perms: Permissions.MOM,
-		category: "infrastructure",
+        category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
             let savecode = Constants.SaveCodes.EXIT;
             //save data before a shutdown
-			let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
-			for(let token of tokens){
+            let tokens = Skarm.commandParamTokens(e.message.content.toLowerCase());
+            for(let token of tokens){
                 if(token === "-nosave" || token === "-ns"){
                     //Skarm.log("Shutting down without saving by order of <@" + e.message.author.id + ">");
                     savecode=(Constants.SaveCodes.NOSAVE);
@@ -3008,15 +2931,15 @@ module.exports = {
                     return;
                 }
             }
-			bot.save(savecode);
-			Skarm.log("Shutting down by order of <@" + e.message.author.id + ">");
+            bot.save(savecode);
+            Skarm.log("Shutting down by order of <@" + e.message.author.id + ">");
         },
         
         help(bot, e) {
             Skarm.help(this, e);
         },
     },
-	Restart: {
+    Restart: {
         aliases: ["restart","reboot"],
         params: [],
         usageChar: "@",
@@ -3025,39 +2948,39 @@ module.exports = {
             {command: "e@reboot", effect: "Save and reboot."}
         ],ignoreHidden: false,
         perms: Permissions.MOM,
-		category: "infrastructure",
+        category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
             Skarm.log("Restarting by order of <@" + e.message.author.id + ">");
             //save memory before a restart
-			bot.save(Constants.SaveCodes.REBOOT);
+            bot.save(Constants.SaveCodes.REBOOT);
         },
         
         help(bot, e) {
             Skarm.help(this, e);
         },
     },
-	Save: {
-		aliases: ["save","quicksave","s","f5"],
-		params: [],
-		usageChar: "@",
-		helpText: "Save skarm's data in memory to storage. Saving data will automatically run during a restart or shutdown command",
+    Save: {
+        aliases: ["save","quicksave","s","f5"],
+        params: [],
+        usageChar: "@",
+        helpText: "Save skarm's data in memory to storage. Saving data will automatically run during a restart or shutdown command",
         examples: [
             {command: "e@save", effect: "Saves data."}
         ],
         ignoreHidden: false,
         perms: Permissions.MOM,
-		category: "infrastructure",
+        category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
-			bot.save(Constants.SaveCodes.DONOTHING);
-			Skarm.sendMessageDelay(e.message.channel, "Data has been saved.");
-		},
-		
-		help(bot, e){
-			Skarm.help(this, e);
-		},
-	},
+            bot.save(Constants.SaveCodes.DONOTHING);
+            Skarm.sendMessageDelay(e.message.channel, "Data has been saved.");
+        },
+        
+        help(bot, e){
+            Skarm.help(this, e);
+        },
+    },
     Write: {
         aliases: ["write"],
         params: [],
@@ -3068,7 +2991,7 @@ module.exports = {
         ],
         ignoreHidden: false,
         perms: Permissions.MOM,
-		category: "infrastructure",
+        category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
             bot.saveDebug();
@@ -3081,7 +3004,7 @@ module.exports = {
         },
     },
     Munroe: {
-	    //TODO: double check what isn't useless here
+        //TODO: double check what isn't useless here
         aliases: ["munroe"],
         params: ["push | lockcheck"],
         usageChar: "@",
@@ -3126,4 +3049,3 @@ module.exports = {
             Skarm.help(this, e);
         },
     },
-}
