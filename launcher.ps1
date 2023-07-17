@@ -19,14 +19,20 @@
 .OUTPUTS
     Hosts skarmbot indefinitely
 
+.PARAMETER stopOnError
+    Stop before execution if any dependencies are missing
+
 .NOTES
    TODO
 #>
 
 
 param(
-    [Parameter(Mandatory=$true)] [string][ValidateSet("live", "test")] $operationMode
+    [Parameter(Mandatory=$true)] [string][ValidateSet("live", "test")] $operationMode,
+    [switch] $stopOnError = $false
 )
+
+$test = $operationMode -eq "test"
 
 $host.ui.RawUI.WindowTitle = "Definitely not SkarmBot"
 $windowTitle = "SkarmBot live"
@@ -42,12 +48,15 @@ $host.ui.RawUI.WindowTitle = $windowTitle
 Push-Location
 cd $PSScriptRoot
 Write-Host "Checking dependencies..."
-Start-Process -Wait powershell.exe -ArgumentList @("$PSScriptRoot\initialize-Dependencies.ps1")
+$failure = . "$PSScriptRoot\initialize-Dependencies.ps1" -test:$test
 
 # Reset window title as it may have gotten wiped when starting the dependency initializer
 $host.ui.RawUI.WindowTitle = $windowTitle
 
-
+if($Global:warnings -and $stopOnError){
+    Write-Host "Failed dependency check.  Skarmbot will not start."
+    exit
+}
 Write-Host "Starting Skarmbot bootloop"
 if($operationMode -eq "live"){
     do{

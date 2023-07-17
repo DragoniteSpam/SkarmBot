@@ -20,19 +20,23 @@ const Guilds = require("./guild.js");
 class Bot {
     /**
      * timer30min: tasks skarm will perform once every half hour. Write additional scheduled tasks here.
-     * version: the count of how many git commits skarm is currently sitting on.
-     * pid: a random number generated and bound to a given version of the Bot class for the sake of being able to terminate a specific instance of skarm when multiple are running during testing or accidental forks occur
-     * client: pointer to Discordie object used to access all discord data not supplied by the event skarm has to handle
-     *
-     * Referneces: Skarm will speak if these are mentioned
-     *
-     *
+     * @param {discordie} client: pointer to Discordie object used to access all discord data not supplied by the event skarm has to handle
+     * @param {number} version: the count of how many git commits skarm is currently sitting on.
      **/
     constructor(client, version) {
         this.version = `${version}`;
 
-        //upper bits: randomly generated.  Lower bits: mod of version number
+        /**
+         * Process ID - the unique identifier for this particular instance if multiple instances of skarmbot are running.
+         * 
+         * upper bits: randomly generated.  Lower bits: mod of version number
+         * 
+         * a random number generated and bound to a given version of the Bot class for the sake of being able to terminate a specific instance of skarm when multiple are running during testing or accidental forks occur
+         * 
+         * @type int 
+         */
         this.pid = Math.floor(Math.random()*Constants.processIdMax)<<Constants.versionOffsetBits + this.version%Constants.versionOffsetBits;
+
         this.client = client;
 
         this.nick = "Skarm";
@@ -48,7 +52,7 @@ class Bot {
          * keeps a short lifespan cache of messages sent by skarm which are going to be deleted,
          * and provides a fast lane for the author who triggered the message or a moderator to remove the message without waiting for the timer.
          * This hashmap is modified by OnMessageReactionAdd and Skarm.sendMessageDelete
-         * @structure MessageID:String: -> {senderID:String,self:Boolean,timeout:JStimeout}
+         * @type Hashmap:  (MessageID:String) -> Object {senderID:String, self:Boolean, timeout:JStimeout}
          */
         this.toBeDeletedCache = {};
 
@@ -235,7 +239,7 @@ class Bot {
         }
 
         let userData = Users.get(e.message.author.id);
-        let guildData = Guilds.get(e.message.channel.guild_id);
+        let guildData = Guilds.get(e.message.channel.guild.id);
 
         this.summons(e);
 
@@ -461,10 +465,16 @@ class Bot {
     
     //checks if anyone's summons are triggered by the message and sends them out
     summons(e) {
+        let content = e.message.content.toLowerCase();
         for (let user in Users.users) {
             let userData = Users.get(user);
-            for (let term in userData.summons) {
-                if (e.message.content.includes(term)) {
+            for (let term in userData.summons) {     // look for the summons in the message
+                if (content.includes(term)) {
+                    for (let ignoreTerm in userData.ignoreSummons) {  // make sure there's no ignore terms in the message
+                        if (content.includes(ignoreTerm)) {
+                            return;
+                        }
+                    }
                     userData.attemptSummon(e, term);
                     break;
                 }
@@ -483,7 +493,6 @@ class Bot {
     mentions(e, references) {
         let text = e.message.content.toLowerCase();
 
-        
         for (let keyword of Object.keys(references)) {
             if (text.includes(keyword)) {
                 return (Math.random() < references[keyword]);

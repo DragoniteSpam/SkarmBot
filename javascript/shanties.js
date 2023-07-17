@@ -43,6 +43,11 @@ class ShantyCollection {
         }
         return totalLines;
     }
+
+    static getRandomShantyName() {
+        let shantyNames = Object.keys(ShantyCollection.shanties);
+        return shantyNames[Math.floor(shantyNames.length * Math.random())];
+    }
 }
 
 class Shanty {
@@ -83,11 +88,10 @@ class ShantyIterator {
     static linkFunctions(iterator){
         iterator.resetIterator = function (){
             // reset the iterator to a new shanty
-            let shantyNames = Object.keys(ShantyCollection.shanties);
             let oldShanty = iterator.shantyName;
-            let newShanty = shantyNames[Math.floor(shantyNames.length * Math.random())];
+            let newShanty = ShantyCollection.getRandomShantyName();
             while(oldShanty === newShanty){
-                newShanty = shantyNames[Math.floor(shantyNames.length * Math.random())];
+                newShanty = ShantyCollection.getRandomShantyName();
             }
             iterator.shantyName = newShanty;
             iterator.resetBlock();

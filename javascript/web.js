@@ -2,7 +2,6 @@
 // load discordie object
 //skarm
 const fs = require("fs");
-
 const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 

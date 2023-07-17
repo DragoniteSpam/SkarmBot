@@ -20,7 +20,11 @@ class Skarm {
 	/**Mass data output stream which can be freely used for spam and during debugging.
     * @param message the message to be sent to the spam channel
     */
-	static spam(message) {this.spamBuffer(message);}
+	static spam(...message) {
+        for(let m of message) {
+            this.spamBuffer(m);
+        }
+    }
 	static STDERR(data) {this.spamBuffer(data);  console.error(data);}
 
     static spamNoBuffer(message) {

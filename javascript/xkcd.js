@@ -18,6 +18,8 @@ class XKCD {
 		this.interval = null;
 		this.lock = 0;
 		this.enabled = true;
+		this.discoveryDelay_ms = 1000 * 60 * 15; // delay between when a new XKCD is discovered and when it is posted in channels
+		this.pollingInterval_ms = 1000 * 60 * 30;  // how often skarm pokes xkcd.com for new comics
 		try {
 			this.references = JSON.parse(fs.readFileSync(xkcdlib).toString().toLowerCase());
 			this.schedule();
@@ -45,7 +47,7 @@ class XKCD {
 		if (!this.enabled) return;
 		if (this.interval) {clearInterval(this.interval);}
 		let tis = this;
-		this.interval = setInterval(function(){tis.checkForNewXKCDs();}, 1000 * 60 * 30);
+		this.interval = setInterval(function(){tis.checkForNewXKCDs();}, tis.pollingInterval_ms);
 	}
 
 	checkForNewXKCDs() {
@@ -76,7 +78,9 @@ class XKCD {
 				tis.references.alphabetized.push([title,newXkcdId]);
 				tis.references.alphabetized.sort((a, b) => {return (a[0] > b[0]) ? 1 : -1;});
 				for(let guild in Guild.guilds) {
-					Guild.guilds[guild].notify(tis.bot.client, Constants.Notifications.XKCD, params.uri);
+					setTimeout(()=>{
+						Guild.guilds[guild].notify(tis.bot.client, Constants.Notifications.XKCD, params.uri);
+					}, tis.discoveryDelay_ms);
 				}
 				tis.bot.save(Constants.SaveCodes.DONOTHING);
 			}

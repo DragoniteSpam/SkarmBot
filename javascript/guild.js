@@ -1174,6 +1174,7 @@ class Guild {
 		
 		Guild.add(this);
         
+        linkVariables(this);
         linkFunctions(this);
     }
     

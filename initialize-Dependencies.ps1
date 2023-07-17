@@ -17,8 +17,12 @@
 
 ### Setup
 Param(
-    [switch]$Force = $false
+    [switch]$Force = $false,
+    [switch]$test  = $false
 )
+
+# Global variable set in case of errors to be able to pass back up to launcher file
+$Global:warnings = $false
 
 Function reportGood($value){
     Write-Host -Object $value -ForegroundColor Green
@@ -26,6 +30,7 @@ Function reportGood($value){
 
 Function reportWarn($value){
     Write-Host -Object $value -ForegroundColor Red -BackgroundColor Black
+    $Global:warnings = $true
 }
 
 $npmRoot = "$PSScriptRoot\node_modules"
@@ -40,58 +45,67 @@ if($Force){
 }
 
 ### 1. node.js is installed
-#initialize webclient and temp directory (not checked into git)
-$webClient = New-Object System.Net.WebClient
-$webPageFilePath = "$PSScriptRoot/temp/site.html"
-if(-not (Test-Path "$PSScriptRoot/temp")){
-    $tempDir = mkdir temp
-}
+$softwareName = "Node.js"
 
-#Fetch latest version number of nodejs
-$VersionSite = "https://nodejs.org/en/"
-Remove-Item -Force $webPageFilePath -ErrorAction SilentlyContinue
-$webClient.DownloadFile($VersionSite, $webPageFilePath)
-
-#typecasting
-$fileData = (Get-Content -Path $webPageFilePath) | where {$_.Contains("nodejs.org/dist/v")}
-if($fileData.GetType().BaseType.Name -eq "Array"){
-    $fileData = $fileData[0]
-}
-
-#isolate version number from file data
-$fileData = $fileData.Substring($fileData.IndexOf("dist/v")+"dist/v".Length)
-$fileData = $fileData.Substring(0,$fileData.IndexOf("/"))
-$nodejsVersion = $fileData
-
-#construct node download URLs
-$nodejsDownloadBase = 'https://nodejs.org/dist/v'+$nodejsVersion+'/'
-$nodejsFile = 'node-v'+$nodejsVersion+'-x64.msi'
-$nodejsDownloadLink = $nodejsDownloadBase+$nodejsFile
-$nodejsFileFull = "$PSScriptRoot/temp/$nodejsFile"
-
-#check currently installed version in registry
-$nodeProducts = Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | where {$_.DisplayName -and $_.DisplayName.Contains("Node")}
+Function get-LatestVersionData {
+    # Returns an object containing the current version and download URL for the software
+    $VersionSite     = "https://nodejs.org/en/"
+    $content = Invoke-WebRequest -UseBasicParsing -Uri $VersionSite
+    $downloadBlock = @($content.Links | where {$_ -like "*LTS*"})[0]
+    $cv = $downloadBlock."data-version".Replace("v","")
+    
 
 
-if(!$nodeProducts -or ($nodeProducts.DisplayVersion -ne $nodejsVersion)){
-    Write-Host "Installing node.js version $nodejsVersion..."
-    #SRC: https://gist.github.com/manuelbieh/4178908#file-win32-node-installer
-    Remove-Item -Force $nodejsFileFull
-    $webClient.DownloadFile($nodejsDownloadLink, $nodejsFileFull)
-    if([Security.Principal.WindowsIdentity]::GetCurrent().Groups -contains 'S-1-5-32-544'){                     #https://megamorf.gitlab.io/2020/05/26/check-if-powershell-is-running-as-administrator/
-        msiexec /passive /log "$nodejsVersion.log" /package $nodejsFileFull
-    }else{
-        reportWarn "Session is not running as admin.  Unable to install the latest version of node js"
-        
-        if($nodeProducts){
-            reportWarn ("Rolling with existing version: " + $nodeProducts.DisplayVersion)
-        }else{
-            exit        #don't bother checking NPM packages if node is not installed
-        }
+    [PSCustomObject]@{
+        currentVersion = $cv
+        downloadUrl = "https://nodejs.org/dist/v$cv/node-v$cv-x64.msi"
     }
-}else{
-    reportGood "the latest version of node is installed $nodejsVersion"
 }
+
+Function get-InstalledVersion {
+    <#
+        Returns the version data if the software is installed, and no value otherwise
+    #>
+    Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | where {$_.DisplayName -and $_.DisplayName.Contains("Node")} | foreach {$_.DisplayVersion}
+}
+
+Function get-upToDateStatus {
+    (get-LatestVersionData).currentVersion -in (get-InstalledVersion) 
+}
+
+Function install-LatestVersion {
+    param($currentVersion, $downloadUrl)
+    $webPageFilePath = "C:\Users\$env:username\AppData\Local\Temp\$softwareName-$currentVersion.msi"
+    $logFilePath = "C:\Users\$env:username\AppData\Local\Temp\$softwareName-$currentVersion.log"
+    $webClient.DownloadFile($downloadUrl, $webPageFilePath)
+
+    start-process msiexec.exe -Wait -ArgumentList @("/passive", "/log", "$logFilePath.log", "/package", $webPageFilePath)
+}
+
+<# EXECUTION #>
+
+$webClient = (New-Object System.Net.WebClient)
+$latestData = get-LatestVersionData
+$currentVersion = $latestData.currentVersion
+
+if(get-upToDateStatus){
+    reportGood "Latest version is already installed: $softwareName - $currentVersion"
+} else {
+    Write-Host "Installing $softwareName $currentVersion"
+    install-LatestVersion -currentVersion $currentVersion -downloadUrl $latestData.downloadUrl
+
+    # Verify installation was successful
+    if(get-upToDateStatus){
+        reportGood "Latest version has been installed: $softwareName - $currentVersion"
+
+        # Refresh Environment Variable after the install
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+    } else {
+        reportWarn "Failed to install latest version of $softwareName - $currentVersion"
+    }
+}
+
+
 
 
 
@@ -166,18 +180,28 @@ if(-not $missingFiles){
 ### 4. all required tokens exist
 $privateTokens = @{}
 $privateTokens["aes.txt"] = "This token must be given to you by an admin.  Please contact Drago or Argo for a copy."
-$privateTokens["descrution.txt"] = "This token is used when testing the bot outside of the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
-$privateTokens["token.txt"] = "This token is used to connect the bot to the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
-$privateTokens["wolfram.txt"] = "Acquire a Wolfram Alpha API key here: https://products.wolframalpha.com/api/"
+if($test){
+    $privateTokens["descrution.txt"] = "This token is used when testing the bot outside of the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
+} else {
+    $privateTokens["token.txt"] = "This token is used to connect the bot to the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
+}
+# $privateTokens["wolfram.txt"] = "Acquire a Wolfram Alpha API key here: https://products.wolframalpha.com/api/"
 
 
 $missingTokens = $false
 $privateTokens.Keys | foreach {
     $tokenPath = "$PSScriptRoot/../$_"
+    $boxTokenPath = "~/Box/skarmData/tokens/$_"
     if(-not (Test-Path $tokenPath)){
-        reportWarn "The following token is missing: $tokenPath"
-        $privateTokens[$_]
-        $missingTokens = $true
+        if(Test-Path $boxTokenPath){
+            Copy-Item -Path $boxTokenPath -Destination $tokenPath -Verbose
+        } else {
+            reportWarn "The following token is missing: $tokenPath"
+            reportWarn "    Not found at $boxTokenPath"
+            reportWarn $privateTokens[$_]
+            Write-Host ""
+            $missingTokens = $true
+        }
     }
 }
 if(-not $missingTokens){
@@ -186,4 +210,4 @@ if(-not $missingTokens){
 
 Pop-Location
 
-Start-Sleep 1
+$Global:warnings
