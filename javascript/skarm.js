@@ -535,6 +535,53 @@ class Skarm {
         }
         return userMention;
     }
+
+    static commandParamTokens = function(message) {
+        let tokens = message.trim().split(" ");
+        for(let i = 0; i < tokens.length; i++){
+            if(tokens[i].length === 0){
+                tokens.splice(i--,1);
+            }
+        }
+        tokens.shift();
+        return tokens;
+    }
+    static commandParamString = function(message) {
+        let tokens = message.trim().split(" ");
+        tokens.shift();
+        return tokens.join(" ");
+    }
+
+    static attemptNumParameterFetch = function (message, parameter) {
+        // "e!doAThing -parameter NNN -parameter q"
+        //  ^------------------------------------^
+        if (message.includes(parameter)) {
+            // "e!doAThing -parameter NNN -parameter q"
+            //             ^-------------------------^
+            let dayTemp = message.substring(message.indexOf(parameter));
+            //Skarm.spam(`Locked onto parameter \`${parameter}\` as ${dayTemp}`);
+            if (dayTemp.includes(" ")) {
+                // "e!doAThing -parameter NNN -parameter q"
+                //                        ^--------------^
+                dayTemp = dayTemp.substring(dayTemp.indexOf(" ") + " ".length);
+                //Skarm.spam(`Locked onto parameter \`${parameter}\` as ${dayTemp}`);
+                if (dayTemp.includes(" ")) {
+                    // "e!doAThing -parameter NNN -parameter q"
+                    //                        ^-^
+                    dayTemp = dayTemp.substring(0, dayTemp.indexOf(" "));
+                    //Skarm.spam(`Locked onto parameter \`${parameter}\` as ${dayTemp}`);
+                } else {
+                    //Skarm.spam(`Tail space not found.\n\`${dayTemp}\` from \`${message}\``);
+                }
+                let resultant = dayTemp.trim() - 0;
+                //Skarm.spam(`Output for parameter ${parameter}: \`${resultant}\` or as a string: \`${dayTemp}\` `);
+                if (!isNaN(resultant)) return resultant;
+                //Skarm.spam(`failed attempt to define parameter ${parameter}: ${dayTemp}\r\n from: ${message}`);
+
+            }
+        }
+    }
+
 }
 
 module.exports = Skarm;
