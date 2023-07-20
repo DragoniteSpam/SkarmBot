@@ -1,5 +1,7 @@
 let commandParamTokens = function(message) {
     let tokens = [];
+
+    // if an even amount of quotes exist in the message, segment by quotes first
     let quoteCount = (message.match(/"/g) || []).length;
     if (quoteCount % 2 === 0 && quoteCount > 0) {
         firstLayerTokens = message.split('"');
@@ -7,7 +9,7 @@ let commandParamTokens = function(message) {
         firstLayerTokens = [message];
     }
 
-
+    // segment the first layer tokens that are outside of quotes into space-separated words
     for(let i in firstLayerTokens) {
         if(i%2 == 1){  // inside of quotes.  Paired -> successive swaps, starting at out
             tokens.push(firstLayerTokens[i]);
