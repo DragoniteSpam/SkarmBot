@@ -605,6 +605,17 @@ class Skarm {
         }
     }
 
+    static extract = function (message) {
+        return message.replace("<","").replace(">","").replace("!","").trim();
+    }
+
+    static extractChannel = function (message) {
+        let channelId =  Skarm.extract(message).replace("#","");
+        // todo: validate ID maps back to channel that skarm knows exists.
+        // Return false if channel does not successfully resolve
+        return channelId;
+    }
+
 }
 
 module.exports = Skarm;

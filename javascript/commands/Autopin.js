@@ -50,10 +50,28 @@ module.exports = {
                 });
                 return;
             }
+
+            let arg0 = tokens.shift();
+            if (arg0 === "clear") {
+                // todo
+                return;
+            }
+
+            if (arg0 === "disable") {
+                // todo
+                return;
+            }
+
+            let channelID = Skarm.extractChannel(arg0);
+            if (channelID) {
+                // todo
+                return;
+            }
+
+            Skarm.sendMessageDelay(e.message.channel, "Invalid argument is not channel, `clear`, or `disable`:" + arg0);
         },
 
         help(bot, e) {
             Skarm.help(this, e);
         },
 }
-
