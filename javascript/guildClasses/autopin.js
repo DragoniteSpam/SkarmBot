@@ -37,7 +37,8 @@ let linkFunctions = function (autoPin){
 
     autoPin.enable = function () {autoPin.enabled = true;};
     autoPin.disable = function () {autoPin.enabled = false;};
-
+    autoPin.isEnabled = function () {return autoPin.enabled};
+    
     autoPin.setDefaultForward = function(channelID) {
         autoPin.defaultForward = channelID;
     };
@@ -55,9 +56,7 @@ let linkFunctions = function (autoPin){
     };
 
     autoPin.getFullForwardingTable = function () {
-        return Object.assign({ }, 
-                autoPin.directForwarding, 
-                {"default": autoPin.defaultForward});
+        return Object.assign({ }, autoPin.directForwarding);
     }
 
     autoPin.cyclePins = function (channelObj) {
