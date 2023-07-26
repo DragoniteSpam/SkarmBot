@@ -85,19 +85,19 @@ const linkFunctions = function(guild) {
     Parrot.initialize(guild.parrot);
     AutoPin.initialize(guild.autoPin);
 
-    /**
-     * Fetch the IUser object(s) representing a user in the current server
-     * Examples:
-     *      guild.resolveMember("137336478291329024")
-     *          -> IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... }
-     *      guild.resolveMember("Dragonite#7992")
-     *          -> IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... }
-     *      guild.resolveMember("drago")
-     *          -> [ IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... } ]
-     * @param {string} userid The id, server nickname, or Discord username of the member you want to look up
-     * @returns An IUser corresponding to the userid it's an ID or Discord username, or an array of users if more than one user matches the userid if it's a server nickname
-     */
     guild.resolveUser = function(userid) {
+        /**
+        * Fetch the IUser object(s) representing a user in the current server
+        * Examples:
+        *      guild.resolveMember("137336478291329024")
+        *          -> IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... }
+        *      guild.resolveMember("Dragonite#7992")
+        *          -> IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... }
+        *      guild.resolveMember("drago")
+        *          -> [ IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... } ]
+        * @param {string} userid The id, server nickname, or Discord username of the member you want to look up
+        * @returns An IUser corresponding to the userid it's an ID or Discord username, or an array of users if more than one user matches the userid if it's a server nickname
+        */
         let members = this.resolveMember(userid);
         if (members === null) return null;
         if (Array.isArray(members)) {
@@ -109,19 +109,19 @@ const linkFunctions = function(guild) {
         return Guild.client.Users.get(members.id);
     };
 
-    /**
-     * Fetch the IGuildMember object(s) representing a user in the current server
-     * Examples:
-     *      guild.resolveMember("137336478291329024")
-     *          -> IGuildMember { id: "137336478291329024", nick: "drago", ... }
-     *      guild.resolveMember("Dragonite#7992")
-     *          -> IGuildMember { id: "137336478291329024", nick: "drago", ... }
-     *      guild.resolveMember("drago")
-     *          -> [ IGuildMember { id: "137336478291329024", nick: "drago", ... } ]
-     * @param {string} userid The id, server nickname, or Discord username of the member you want to look up
-     * @returns An IGuildMember corresponding to the userid if it's an ID or Discord username, or an array of members if more than one member matches the userid if it's a server nickname
-     */
     guild.resolveMember = function(userid) {
+        /**
+         * Fetch the IGuildMember object(s) representing a user in the current server
+         * Examples:
+         *      guild.resolveMember("137336478291329024")
+         *          -> IGuildMember { id: "137336478291329024", nick: "drago", ... }
+         *      guild.resolveMember("Dragonite#7992")
+         *          -> IGuildMember { id: "137336478291329024", nick: "drago", ... }
+         *      guild.resolveMember("drago")
+         *          -> [ IGuildMember { id: "137336478291329024", nick: "drago", ... } ]
+         * @param {string} userid The id, server nickname, or Discord username of the member you want to look up
+         * @returns An IGuildMember corresponding to the userid if it's an ID or Discord username, or an array of members if more than one member matches the userid if it's a server nickname
+         */
         userid = userid.trim().replace("<","").replace("@","").replace(">","").replace("!","").toLowerCase();    // clean up data
         let server = Guild.client.Guilds.get(this.id);
         let members = server.members;
@@ -141,19 +141,19 @@ const linkFunctions = function(guild) {
         return potential;
     };
 
-    /**
-     * Prints the list of self-assignable roles that a member of a guild is allowed to equip
-     *
-     * TODO: add state information for whether selecting this option will add or remove the role
-     * TODO: add 'c' to cancel option
-     *
-     * @param groupStr - the name of the group the user requested
-     * @param userData - user data object for the member
-     * @param channel - channel in which modifications are happening
-     * @params member - Discordie guild member object
-     * @returns {{num -> roleID}}
-     */
     guild.printRolesInGroup = function (groupStr, userData, channel, member) {
+        /**
+         * Prints the list of self-assignable roles that a member of a guild is allowed to equip
+         *
+         * TODO: add state information for whether selecting this option will add or remove the role
+         * TODO: add 'c' to cancel option
+         *
+         * @param groupStr - the name of the group the user requested
+         * @param userData - user data object for the member
+         * @param channel - channel in which modifications are happening
+         * @params member - Discordie guild member object
+         * @returns {{num -> roleID}}
+         */
         let outputString = "Available Roles:\n";
         outputString += "c: cancel\n";
 
