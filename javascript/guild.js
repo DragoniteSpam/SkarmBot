@@ -10,6 +10,7 @@ const { ShantyCollection, Shanty, ShantyIterator } = require("./shanties.js");
 
 const SarGroups = require("./guildClasses/sar.js");
 const Parrot = require("./guildClasses/parrot.js");
+const AutoPin = require("./guildClasses/autopin.js");
 
 
 const guilddb = "../skarmData/guilds.penguin";
@@ -70,6 +71,7 @@ const linkVariables = function(guild) {
     if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
     if (guild.selfAssignedRoles === undefined) guild.selfAssignedRoles = { };
     guild.parrot ??= new Parrot(guild.id);
+    guild.autoPin ??= new AutoPin(guild.id);
     guild.shantyIterator = new ShantyIterator(guild.shantyIterator);
 };
 
@@ -81,6 +83,7 @@ const linkFunctions = function(guild) {
 
     guild.parrot ??= new Parrot(guild.id);
     Parrot.initialize(guild.parrot);
+    AutoPin.initialize(guild.autoPin);
 
     /**
      * Fetch the IUser object(s) representing a user in the current server

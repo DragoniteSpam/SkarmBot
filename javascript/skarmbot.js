@@ -258,6 +258,11 @@ class Bot {
         let text = e.message.content.toLowerCase();
         let first = text.split(" ")[0];
 
+        // zero-length messages are usually pins
+        if (text.length === 0) {
+            guildData.autoPin.cyclePins(e.message.channel);
+        }
+
         // check if message has prior commitments to attend to in the channel
         let userChannelState = userData.actionState[e.message.channel.id];
         if(userChannelState){
