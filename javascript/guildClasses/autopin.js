@@ -14,7 +14,7 @@ const Constants = require("../constants.js");
 const Guilds = require("../guild.js");
 
 const DISABLED_FLAG = "DISABLED";
-const MAX_PIN_COUNT = 50;
+const MAX_PIN_COUNT = 5;
 
 let linkVariables = function (autoPin) {
     autoPin.directForwarding ??= { };
@@ -86,18 +86,41 @@ let linkFunctions = function (autoPin){
 
         channelObj.fetchPinned().then(response => {
             let pins = response.messages;
-            if(pins.length < MAX_PIN_COUNT) return console.log(`${pins.length}/${MAX_PIN_COUNT} pins in channel ${channelObj.name}`); 
+            console.log(`${pins.length}/${MAX_PIN_COUNT} pins in channel ${channelObj.name}`);
+            if(pins.length < MAX_PIN_COUNT) return; 
             let oldestPin = pins[pins.length-1];
-
             oldestPin.unpin();
+
+            let messageLink = `https://discord.com/channels/${oldestPin.guild.id}/${oldestPin.channel.id}/${oldestPin.id}`;
+            let description = `Link: ${messageLink}\n\n${oldestPin.content}\n`;
+
+            let imageUrl = undefined;
+            if(oldestPin.attachments){
+                let attachmentStr = "\n\nAttachments:\n";
+                for(let attachment of oldestPin.attachments) {
+                    console.log(attachment);
+                    attachmentStr += attachment.url + "\n";
+                    if (attachment.content_type.includes("image")) {
+                        imageUrl = attachment.url;
+                    }
+                }
+                description += attachmentStr;
+            }
+
             Skarm.sendMessage(destination, " ", false, {
                 // todo: elegant pinned message body
                 // https://discordjs.guide/popular-topics/embeds.html#embed-preview
-                description: oldestPin.content,
+                description: description,
                 author: {
-                    name: `<@${oldestPin.author.id}>`,
+                    name: oldestPin.author.username,
                 },
-                footer: `<#${channelObj.id}>`,
+                thumbnail: {
+                    url: oldestPin.author.avatarURL,
+                },
+                image: {
+                    url: imageUrl,
+                },
+                timestamp: oldestPin.timestamp,
             });
         });
     }

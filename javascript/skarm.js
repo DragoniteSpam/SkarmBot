@@ -121,11 +121,11 @@ class Skarm {
     }
 
     static sendMessageDelay(channel, text, tts, obj, promiseHandler) {
-        if(!this.hasMessageAccess(channel))return;
-
         if (typeof (channel) === "string") {
             channel = Constants.client.Channels.get(channel);
         }
+
+        if(!this.hasMessageAccess(channel))return;
 
         channel.sendTyping();
         setTimeout(function () {
@@ -133,13 +133,12 @@ class Skarm {
         }, Math.random() * 2000 + 1500);
     }
 
-    static sendMessage(channel, text,tts,obj, promiseHandler) {
-        if(!this.hasMessageAccess(channel))return;
-
+    static sendMessage(channel, text, tts, obj, promiseHandler) {
         if (typeof (channel) === "string") {
             channel = Constants.client.Channels.get(channel);
         }
 
+        if(!this.hasMessageAccess(channel)) return;
 
         try {
             let promise = channel.sendMessage(text, tts, obj);
