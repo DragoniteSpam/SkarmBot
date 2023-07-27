@@ -35,7 +35,7 @@ module.exports = {
                         forwardsString += `<#${src}> --> <#${forwards[src]}>\n`;
                     }
                     if(defaultFwd) {
-                        forwardsString += `All other channels forward to: <#${defaultFwd}>`;
+                        forwardsString += `All other channels forward to: <#${defaultFwd}>\n`;
                     }
                 } else {
                     forwardsString += "No channels are currently configured.\n";
