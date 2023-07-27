@@ -14,7 +14,7 @@ const Constants = require("../constants.js");
 const Guilds = require("../guild.js");
 
 const DISABLED_FLAG = "DISABLED";
-const MAX_PIN_COUNT = 5;
+const MAX_PIN_COUNT = 50;
 
 let linkVariables = function (autoPin) {
     autoPin.directForwarding ??= { };
@@ -77,7 +77,14 @@ let linkFunctions = function (autoPin){
 
     autoPin.getFullForwardingTable = function () {
         return Object.assign({ }, autoPin.directForwarding);
-    }
+    };
+
+    autoPin.cycleAll = function () {
+        let iGuild = Constants.client.Guilds.get(autoPin.guildId);
+        for(let channel of iGuild.textChannels) {
+            autoPin.cyclePins(channel);
+        }
+    };
 
     autoPin.cyclePins = function (channelObj) {
         if (!autoPin.enabled) return;
@@ -86,8 +93,8 @@ let linkFunctions = function (autoPin){
 
         channelObj.fetchPinned().then(response => {
             let pins = response.messages;
-            console.log(`${pins.length}/${MAX_PIN_COUNT} pins in channel ${channelObj.name}`);
-            if(pins.length < MAX_PIN_COUNT) return; 
+            // console.log(`${pins.length}/${MAX_PIN_COUNT} pins in channel ${channelObj.name}`);
+            if(pins.length < MAX_PIN_COUNT) return;
             let oldestPin = pins[pins.length-1];
             oldestPin.unpin();
 
@@ -98,7 +105,7 @@ let linkFunctions = function (autoPin){
             if(oldestPin.attachments){
                 let attachmentStr = "\n\nAttachments:\n";
                 for(let attachment of oldestPin.attachments) {
-                    console.log(attachment);
+                    // console.log(attachment);
                     attachmentStr += attachment.url + "\n";
                     if (attachment.content_type.includes("image")) {
                         imageUrl = attachment.url;
@@ -108,7 +115,7 @@ let linkFunctions = function (autoPin){
             }
 
             Skarm.sendMessage(destination, " ", false, {
-                // todo: elegant pinned message body
+                // Create elegant pinned message body
                 // https://discordjs.guide/popular-topics/embeds.html#embed-preview
                 description: description,
                 author: {
@@ -123,9 +130,8 @@ let linkFunctions = function (autoPin){
                 timestamp: oldestPin.timestamp,
             });
         });
-    }
+    };
 }
-
 
 class AutoPin {
 

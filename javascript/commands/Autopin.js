@@ -65,10 +65,8 @@ module.exports = {
             let arg0 = tokens.shift();
             if (arg0 === "enable") {
                 ap.enable();
+                ap.cycleAll();
                 sendDefaultResponse();
-                // TODO; cycle all channels
-                // for(let channelId in )
-                // cyclePins
                 return;
             }
 
@@ -104,12 +102,12 @@ module.exports = {
                 }
                 if (flag === "-u") {
                     ap.setDefaultForward(destinationChannelID);
-                    // TODO: cyclePins on all
+                    ap.cycleAll();
                 }
                 if (flag === "-a") {
                     ap.setDefaultForward(destinationChannelID);
                     ap.clearForwardingTable();
-                    // TODO: cyclePins on all
+                    ap.cycleAll();
                 }
                 sendDefaultResponse();
                 return;
