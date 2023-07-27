@@ -25,20 +25,35 @@ let linkVariables = function (autoPin) {
 
 let linkFunctions = function (autoPin){
     autoPin.getForward = function(channelId){
-        let forward = autoPin.enabled && autoPin.directForwarding[channelId] || autoPin.getDefaultForward();
+        let forward = autoPin.enabled && autoPin.getDirectForward(channelId) || autoPin.getDefaultForward();
         if (forward !== disabledFlag){
             return forward;
         }
     };
 
-    autoPin.setForward = function (source, destination) {
+    autoPin.setDirectForward = function (source, destination) {
         autoPin.directForwarding[source] = destination;
     };
+
+    autoPin.getDirectForward = function(channelId) {
+        return autoPin.directForwarding[channelId];
+    }
+
+    autoPin.disableDirectForward = function (channelId) {
+        let fwd = autoPin.getDirectForward(channelId);
+        if (!fwd) {
+            autoPin.directForwarding[channelId] = disabledFlag;
+        }
+        if (fwd && fwd !== disabledFlag) {
+            delete autoPin.directForwarding[channelId];
+        }
+
+    }
 
     autoPin.enable = function () {autoPin.enabled = true;};
     autoPin.disable = function () {autoPin.enabled = false;};
     autoPin.isEnabled = function () {return autoPin.enabled};
-    
+
     autoPin.setDefaultForward = function(channelID) {
         autoPin.defaultForward = channelID;
     };

@@ -3,7 +3,7 @@ const {os, request, Skarm, Constants, Web, Users, Guilds, Permissions, Skinner, 
 
 module.exports = {
         aliases: ["autopin"],
-        params: ["[#destination-channel | disable | clear]", "[-u]", "[-a]"],
+        params: ["[#destination-channel | enable | disable | clear]", "[-u(nassigned)]", "[-a(ll)]"],
         usageChar: "@",
         helpText: "Configuration for AutoPin feature.  When a channel reaches the maximum amount of pinned messages (50), the oldest pin in the channel will be removed from the pins collection, and a copy of it with a link to the original will be sent in a destination channel.  This command configures the AutoPin utility.",
         examples: [
@@ -14,6 +14,7 @@ module.exports = {
             {command: "e@autopin disable", effect: "Deletes the destination set for this channel.  If a destination already did not exist, disables forwarding to the default pinning channel."},
             {command: "e@autopin disable -u", effect: "Deletes the default destination for ALL channels.  Specialized mappings will not be affected."},
             {command: "e@autopin disable -a", effect: "Disables this utility without erasing any existing mappings."},
+            {command: "e@autopin enable", effect: "Re-enables this utility without erasing any existing mappings."},
             {command: "e@autopin clear", effect: "Deletes all specialized destinations and the default destination.  WARNING: this will destroy all previously existing configurations.  This cannot be reverted."},
         ],
         ignoreHidden: false,
@@ -21,12 +22,14 @@ module.exports = {
         category: "administrative",
 
         execute(bot, e, userData, guildData) {
-            let tokens = Skarm.commandParamString(e.message.content);
+            let tokens = Skarm.commandParamTokens(e.message.content);
+            let ap = guildData.autoPin;
+            let srcChannel = e.message.channel;
 
-            if (tokens.length === 0) {
+            function sendDefaultResponse () {
                 let forwardsString = "";
-                let forwards = guildData.autoPin.getFullForwardingTable();
-                let defaultFwd = guildData.autoPin.getDefaultForward();
+                let forwards = ap.getFullForwardingTable();
+                let defaultFwd = ap.getDefaultForward();
                 if(Object.keys(forwards).length || defaultFwd){
                     for(let src in forwards){
                         forwardsString += `<#${src}> --> <#${forwards[src]}>\n`;
@@ -38,9 +41,9 @@ module.exports = {
                     forwardsString += "No channels are currently configured.\n";
                 }
 
-                forwardsString += `Enabled: \`${guildData.autoPin.isEnabled()}\``;
+                forwardsString += `Enabled: \`${ap.isEnabled()}\``;
                 // https://discordjs.guide/popular-topics/embeds.html#embed-preview
-                Skarm.sendMessageDelay(e.message.channel, " ", false, {
+                Skarm.sendMessageDelay(srcChannel, " ", false, {
                     title: "Autopin Configuration",
                     description: forwardsString,
                     footer: {
@@ -48,27 +51,60 @@ module.exports = {
                         icon_url: e.message.guild.iconURL,
                     },
                 });
+            }
+
+            if (tokens.length === 0) {
+                sendDefaultResponse();
                 return;
             }
 
             let arg0 = tokens.shift();
             if (arg0 === "clear") {
-                // todo
+                ap.clearDefaultForward();
+                ap.clearForwardingTable();
+                sendDefaultResponse();
                 return;
             }
 
             if (arg0 === "disable") {
-                // todo
+                let flag = tokens.shift();
+                if (flag === undefined) {
+                    ap.disableDirectForward(srcChannel);
+                }
+                if (flag === "-u") {
+                    ap.clearDefaultForward();
+                }
+                if (flag === "-a") {
+                    ap.disable();
+                }
+                sendDefaultResponse();
                 return;
             }
 
-            let channelID = Skarm.extractChannel(arg0);
-            if (channelID) {
-                // todo
+            if (arg0 === "enable") {
+                ap.enable();
+                sendDefaultResponse();
                 return;
             }
 
-            Skarm.sendMessageDelay(e.message.channel, "Invalid argument is not channel, `clear`, or `disable`:" + arg0);
+            let destinationChannelID = Skarm.extractChannel(arg0);
+            if (destinationChannelID) {
+                let flag = tokens.shift();
+                if (flag === undefined) {
+                    ap.setDirectForward(srcChannel.id, destinationChannelID);
+                }
+                if (flag === "-u") {
+                    ap.setDefaultForward(destinationChannelID);
+                }
+                if (flag === "-a") {
+                    ap.setDefaultForward(destinationChannelID);
+                    ap.clearForwardingTable();
+                }
+                sendDefaultResponse();
+                return;
+            }
+
+            Skarm.sendMessageDelay(srcChannel, "Invalid argument is not channel, `clear`, `enable`, or `disable`:" + arg0);
         },
 
         help(bot, e) {

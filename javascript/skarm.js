@@ -539,14 +539,13 @@ class Skarm {
     static commandParamTokens = function(message) {
         let tokens = [];
     
+        let firstLayerTokens = [message];
         // if an even amount of quotes exist in the message, segment by quotes first
         let quoteCount = (message.match(/"/g) || []).length;
         if (quoteCount % 2 === 0 && quoteCount > 0) {
             firstLayerTokens = message.split('"');
-        } else {
-            firstLayerTokens = [message];
         }
-    
+        
         // segment the first layer tokens that are outside of quotes into space-separated words
         for(let i in firstLayerTokens) {
             if(i%2 == 1){  // inside of quotes.  Paired -> successive swaps, starting at out
@@ -604,16 +603,17 @@ class Skarm {
             }
         }
     }
-
-    static extract = function (message) {
-        return message.replace("<","").replace(">","").replace("!","").trim();
-    }
-
     static extractChannel = function (message) {
-        let channelId =  Skarm.extract(message).replace("#","");
-        // todo: validate ID maps back to channel that skarm knows exists.
-        // Return false if channel does not successfully resolve
-        return channelId;
+        // validate ID maps back to channel that skarm knows exists.
+        // Return null if channel does not successfully resolve
+        let regex = /\d+/g; // all sequences of integers (potential channel IDs)
+        let channelIdCandidates = [...message.matchAll(regex)];
+        for (let candidate of channelIdCandidates){
+            let id = candidate[0];
+            let channelObj = Constants.client.Channels.get(id);
+            if (channelObj) return id;
+        }
+        return null;
     }
 
 }
