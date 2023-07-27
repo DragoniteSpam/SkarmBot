@@ -11,11 +11,11 @@ module.exports = {
             {command: "e@autopin #pins-to-the-past", effect: "Sets the destination channel for overflow pins to be sent to when overflowing in this channel."},
             {command: "e@autopin #pins-to-the-past -a", effect: "Sets the default destination channel for overflow pins to be sent to when overflowing for ALL channels in the server. WARNING: this includes private channels that Skarm has access to.  Any previously existing overrides will be cleared."},
             {command: "e@autopin #pins-to-the-past -u", effect: "Sets the default destination channel for overflow pins to be sent to when overflowing for all unassigned channels in the server.  This will not clear previously existing overrides including `disable`."},
-            {command: "e@autopin disable", effect: "Deletes the destination set for this channel.  If a destination already did not exist, disables forwarding to the default pinning channel."},
-            {command: "e@autopin disable -u", effect: "Deletes the default destination for ALL channels.  Specialized mappings will not be affected."},
-            {command: "e@autopin disable -a", effect: "Disables this utility without erasing any existing mappings."},
+            {command: "e@autopin clear", effect: "Deletes the destination set for this channel.  If a destination already did not exist, disables forwarding to the default pinning channel."},
+            {command: "e@autopin clear -u", effect: "Deletes the default destination for ALL channels.  Specialized mappings will not be affected."},
+            {command: "e@autopin clear -a", effect: "Deletes all specialized destinations and the default destination.  WARNING: this will destroy all previously existing configurations.  This cannot be reverted."},
+            {command: "e@autopin disable", effect: "Disables this utility without erasing any existing mappings."},
             {command: "e@autopin enable", effect: "Re-enables this utility without erasing any existing mappings."},
-            {command: "e@autopin clear", effect: "Deletes all specialized destinations and the default destination.  WARNING: this will destroy all previously existing configurations.  This cannot be reverted."},
         ],
         ignoreHidden: false,
         perms: Permissions.MOD,
@@ -32,7 +32,11 @@ module.exports = {
                 let defaultFwd = ap.getDefaultForward();
                 if(Object.keys(forwards).length || defaultFwd){
                     for(let src in forwards){
-                        forwardsString += `<#${src}> --> <#${forwards[src]}>\n`;
+                        if(ap.isChannelEnabled(src)) {
+                            forwardsString += `<#${src}> --> <#${forwards[src]}>\n`;
+                        } else {
+                            forwardsString += `<#${src}> will not auto-archive messages\n`;
+                        }
                     }
                     if(defaultFwd) {
                         forwardsString += `All other channels forward to: <#${defaultFwd}>\n`;
@@ -59,33 +63,34 @@ module.exports = {
             }
 
             let arg0 = tokens.shift();
-            if (arg0 === "clear") {
-                ap.clearDefaultForward();
-                ap.clearForwardingTable();
-                sendDefaultResponse();
-                return;
-            }
-
-            if (arg0 === "disable") {
-                let flag = tokens.shift();
-                if (flag === undefined) {
-                    ap.disableDirectForward(srcChannel);
-                }
-                if (flag === "-u") {
-                    ap.clearDefaultForward();
-                }
-                if (flag === "-a") {
-                    ap.disable();
-                }
-                sendDefaultResponse();
-                return;
-            }
-
             if (arg0 === "enable") {
                 ap.enable();
                 sendDefaultResponse();
                 return;
             }
+
+            if (arg0 === "disable") {
+                ap.disable();
+                sendDefaultResponse();
+                return;
+            }
+            
+            if (arg0 === "clear") {
+                let flag = tokens.shift();
+                if (flag === undefined) {
+                    ap.disableDirectForward(srcChannel.id);
+                }
+                if (flag === "-u") {
+                    ap.clearDefaultForward();
+                }
+                if (flag === "-a") {
+                    ap.clearDefaultForward();
+                    ap.clearForwardingTable();
+                }
+                sendDefaultResponse();
+                return;
+            }
+
 
             let destinationChannelID = Skarm.extractTextChannel(arg0);
             if (destinationChannelID) {

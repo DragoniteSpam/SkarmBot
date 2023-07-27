@@ -13,7 +13,7 @@ const Skarm = require("../skarm.js");
 const Constants = require("../constants.js");
 const Guilds = require("../guild.js");
 
-const disabledFlag = "DISABLED";
+const DISABLED_FLAG = "DISABLED";
 const MAX_PIN_COUNT = 50;
 
 let linkVariables = function (autoPin) {
@@ -26,7 +26,7 @@ let linkVariables = function (autoPin) {
 let linkFunctions = function (autoPin){
     autoPin.getForward = function(channelId){
         let forward = autoPin.enabled && autoPin.getDirectForward(channelId) || autoPin.getDefaultForward();
-        if (forward !== disabledFlag){
+        if (forward !== DISABLED_FLAG){
             return forward;
         }
     };
@@ -39,12 +39,17 @@ let linkFunctions = function (autoPin){
         return autoPin.directForwarding[channelId];
     }
 
+    autoPin.isChannelEnabled = function (channelId) {
+        let dst = autoPin.directForwarding[channelId];
+        return dst && dst !== DISABLED_FLAG;
+    }
+
     autoPin.disableDirectForward = function (channelId) {
         let fwd = autoPin.getDirectForward(channelId);
         if (!fwd) {
-            autoPin.directForwarding[channelId] = disabledFlag;
+            autoPin.directForwarding[channelId] = DISABLED_FLAG;
         }
-        if (fwd && fwd !== disabledFlag) {
+        if (fwd && fwd !== DISABLED_FLAG) {
             delete autoPin.directForwarding[channelId];
         }
 
@@ -100,6 +105,7 @@ let linkFunctions = function (autoPin){
 
 
 class AutoPin {
+
     constructor(guildId) {
         /**
          * A table that maps source channels to destination channels or "disabled"
