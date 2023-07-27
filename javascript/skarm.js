@@ -603,7 +603,7 @@ class Skarm {
             }
         }
     }
-    static extractChannel = function (message) {
+    static extractTextChannel = function (message) {
         // validate ID maps back to channel that skarm knows exists.
         // Return null if channel does not successfully resolve
         let regex = /\d+/g; // all sequences of integers (potential channel IDs)
@@ -611,7 +611,7 @@ class Skarm {
         for (let candidate of channelIdCandidates){
             let id = candidate[0];
             let channelObj = Constants.client.Channels.get(id);
-            if (channelObj) return id;
+            if (channelObj.isGuildText) return id;
         }
         return null;
     }

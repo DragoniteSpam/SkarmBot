@@ -87,7 +87,7 @@ module.exports = {
                 return;
             }
 
-            let destinationChannelID = Skarm.extractChannel(arg0);
+            let destinationChannelID = Skarm.extractTextChannel(arg0);
             if (destinationChannelID) {
                 let flag = tokens.shift();
                 if (flag === undefined) {
@@ -104,7 +104,7 @@ module.exports = {
                 return;
             }
 
-            Skarm.sendMessageDelay(srcChannel, "Invalid argument is not channel, `clear`, `enable`, or `disable`:" + arg0);
+            Skarm.sendMessageDelay(srcChannel, "Invalid argument is not text channel, `clear`, `enable`, or `disable`:" + arg0);
         },
 
         help(bot, e) {
