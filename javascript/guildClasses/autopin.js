@@ -80,7 +80,6 @@ let linkFunctions = function (autoPin){
     autoPin.cycleAll = function () {
         let iGuild = Constants.client.Guilds.get(autoPin.guildId);
         for(let channel of iGuild.textChannels) {
-            console.log("Cycling channel:", channel.name);
             autoPin.cyclePins(channel);
         }
     };
