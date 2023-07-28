@@ -46,13 +46,11 @@ let linkFunctions = function (autoPin){
 
     autoPin.disableDirectForward = function (channelId) {
         let fwd = autoPin.getDirectForward(channelId);
-        if (!fwd) {
+        if (fwd) {
+            delete autoPin.directForwarding[channelId];
+        } else {
             autoPin.directForwarding[channelId] = DISABLED_FLAG;
         }
-        if (fwd && fwd !== DISABLED_FLAG) {
-            delete autoPin.directForwarding[channelId];
-        }
-
     }
 
     autoPin.enable = function () {autoPin.enabled = true;};
@@ -87,9 +85,10 @@ let linkFunctions = function (autoPin){
     };
 
     autoPin.cyclePins = function (channelObj) {
+        if (!Skarm.hasMessageAccess(channelObj)) return;
         if (!autoPin.enabled) return;
         let destination = autoPin.getForward(channelObj.id);
-        if(!destination) return;
+        if (!destination) return;
 
         channelObj.fetchPinned().then(response => {
             let pins = response.messages;
@@ -102,7 +101,7 @@ let linkFunctions = function (autoPin){
             let description = `Link: ${messageLink}\n\n${oldestPin.content}\n`;
 
             let imageUrl = undefined;
-            if(oldestPin.attachments){
+            if(oldestPin.attachments && oldestPin.attachments.length){
                 let attachmentStr = "\n\nAttachments:\n";
                 for(let attachment of oldestPin.attachments) {
                     // console.log(attachment);
