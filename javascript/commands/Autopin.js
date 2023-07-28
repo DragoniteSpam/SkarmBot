@@ -11,7 +11,7 @@ module.exports = {
             {command: "e@autopin #pins-to-the-past", effect: "Sets the destination channel for overflow pins to be sent to when overflowing in this channel."},
             {command: "e@autopin #pins-to-the-past -a", effect: "Sets the default destination channel for overflow pins to be sent to when overflowing for ALL channels in the server. WARNING: this includes private channels that Skarm has access to.  Any previously existing overrides will be cleared."},
             {command: "e@autopin #pins-to-the-past -u", effect: "Sets the default destination channel for overflow pins to be sent to when overflowing for all unassigned channels in the server.  This will not clear previously existing overrides including `disable`."},
-            {command: "e@autopin clear", effect: "Deletes the destination set for this channel.  If a destination already did not exist, disables forwarding to the default pinning channel."},
+            {command: "e@autopin clear", effect: "Deletes the destination set for this channel.  If a destination already did not exist, disables forwarding to the default pinning channel.  If all forwarding is already disabled, removes this local disable."},
             {command: "e@autopin clear -u", effect: "Deletes the default destination for ALL channels.  Specialized mappings will not be affected."},
             {command: "e@autopin clear -a", effect: "Deletes all specialized destinations and the default destination.  WARNING: this will destroy all previously existing configurations.  This cannot be reverted."},
             {command: "e@autopin disable", effect: "Disables this utility without erasing any existing mappings."},
