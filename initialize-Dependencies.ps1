@@ -49,7 +49,7 @@ $softwareName = "Node.js"
 
 Function get-LatestVersionData {
     # Returns an object containing the current version and download URL for the software
-    $VersionSite     = "https://nodejs.org/en/"
+    $VersionSite = "https://nodejs.org/en"
     $content = Invoke-WebRequest -UseBasicParsing -Uri $VersionSite
     $downloadBlock = @($content.Links | where { $_ -like "*LTS*" })[0]
     $cv = $downloadBlock."data-version".Replace("v", "")
