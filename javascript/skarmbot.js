@@ -65,8 +65,6 @@ class Bot {
 
         this.timer30min = setInterval(function() {
             this.save(Constants.SaveCodes.DONOTHING);
-            this.xkcd.lock--;
-            console.log("XKCD Lock state: "+this.xkcd.lock);
         }.bind(this), 30 * 60 * 1000);
 
         this.timer1min = setInterval(function() {
