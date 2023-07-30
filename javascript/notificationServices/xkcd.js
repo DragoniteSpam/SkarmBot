@@ -67,8 +67,6 @@ class XKCD {
 			if(!response) return Skarm.spam("Failed to receive a response object when attempting to request "+JSON.stringify(params));
 			if(response.statusCode!==200) return;
 			if (!error){
-
-				//acquire title (src: /fun/xkcdSweeper.js)
 				let startTarget="<title>";
 				let arguo=body.indexOf(startTarget);
 				let title = body.substring(arguo+startTarget.length);
@@ -141,29 +139,6 @@ class XKCD {
 		}
 
 		return;
-	}
-
-	/**
-	 * Broadcast XKCD's to all Munroe channels
-	 * @param force broadcast immediately override of Any truthy type
-	 */
-	// I don't think this does anything in the current implementation.
-	//TODO: Please delete this function and make sure that it doesn't break anything at a later date.
-	// I'm not doing this now because I'm making a bunch of other changes in the current commit.
-	// Argo 52/02/05
-	sweep(force) {
-		if (!this.enabled) return;
-		let d = new Date(); // for now
-		let datetext = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-		console.log("Running xkcd.sweep function.\tCurrent time: " + datetext);
-		let now = new Date();
-		if (this.lock < 1 && (force || now.getHours() === 22 && (now.getDay() & 1))) {
-			this.lock = 3 + (force ? 10 : 0);
-			for (let channel in this.bot.channelsWhoLikeXKCD) {
-				this.post(this.bot.client.Channels.get(channel));
-			}
-			console.log("pushed out xkcds");
-		}
 	}
 }
 
