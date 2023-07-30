@@ -18,17 +18,17 @@
 ### Setup
 Param(
     [switch]$Force = $false,
-    [switch]$test  = $false
+    [switch]$test = $false
 )
 
 # Global variable set in case of errors to be able to pass back up to launcher file
 $Global:warnings = $false
 
-Function reportGood($value){
+Function reportGood($value) {
     Write-Host -Object $value -ForegroundColor Green
 }
 
-Function reportWarn($value){
+Function reportWarn($value) {
     Write-Host -Object $value -ForegroundColor Red -BackgroundColor Black
     $Global:warnings = $true
 }
@@ -39,7 +39,7 @@ Push-Location
 
 cd $PSScriptRoot
 
-if($Force){
+if ($Force) {
     Write-Host "Purging $npmRoot"
     Remove-Item -Recurse -Force $npmRoot -ErrorAction Stop
 }
@@ -51,14 +51,14 @@ Function get-LatestVersionData {
     # Returns an object containing the current version and download URL for the software
     $VersionSite     = "https://nodejs.org/en/"
     $content = Invoke-WebRequest -UseBasicParsing -Uri $VersionSite
-    $downloadBlock = @($content.Links | where {$_ -like "*LTS*"})[0]
-    $cv = $downloadBlock."data-version".Replace("v","")
+    $downloadBlock = @($content.Links | where { $_ -like "*LTS*" })[0]
+    $cv = $downloadBlock."data-version".Replace("v", "")
     
 
 
     [PSCustomObject]@{
         currentVersion = $cv
-        downloadUrl = "https://nodejs.org/dist/v$cv/node-v$cv-x64.msi"
+        downloadUrl    = "https://nodejs.org/dist/v$cv/node-v$cv-x64.msi"
     }
 }
 
@@ -66,7 +66,7 @@ Function get-InstalledVersion {
     <#
         Returns the version data if the software is installed, and no value otherwise
     #>
-    Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | where {$_.DisplayName -and $_.DisplayName.Contains("Node")} | foreach {$_.DisplayVersion}
+    Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | where { $_.DisplayName -and $_.DisplayName.Contains("Node") } | foreach { $_.DisplayVersion }
 }
 
 Function get-upToDateStatus {
@@ -88,19 +88,21 @@ $webClient = (New-Object System.Net.WebClient)
 $latestData = get-LatestVersionData
 $currentVersion = $latestData.currentVersion
 
-if(get-upToDateStatus){
+if (get-upToDateStatus) {
     reportGood "Latest version is already installed: $softwareName - $currentVersion"
-} else {
+}
+else {
     Write-Host "Installing $softwareName $currentVersion"
     install-LatestVersion -currentVersion $currentVersion -downloadUrl $latestData.downloadUrl
 
     # Verify installation was successful
-    if(get-upToDateStatus){
+    if (get-upToDateStatus) {
         reportGood "Latest version has been installed: $softwareName - $currentVersion"
 
         # Refresh Environment Variable after the install
         $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
-    } else {
+    }
+    else {
         reportWarn "Failed to install latest version of $softwareName - $currentVersion"
     }
 }
@@ -117,28 +119,30 @@ $PackageList | foreach {
     $item = $_
     
     #NPM package paths ignore @ suffix
-    if($_.contains("@")){
-        $item = $item.Substring(0,$item.indexOf("@"))
+    if ($_.contains("@")) {
+        $item = $item.Substring(0, $item.indexOf("@"))
     }
     
     
-    if(Test-Path $npmRoot\$item){
+    if (Test-Path $npmRoot\$item) {
         return;
-    }else{
+    }
+    else {
         reportWarn("installing package: $_")
         npm install $_ >>$null 2>$Null
     }
 
 
-    if(Test-Path $npmRoot\$item){
+    if (Test-Path $npmRoot\$item) {
         reportGood("Initialized $item package")
-    }else{
+    }
+    else {
         $allPackagesInsatlled = $false
         reportWarn("Failed to find package: $npmRoot\$item")
         reportWarn("Please run 'npm install $_'")
     }
 }
-if($allPackagesInsatlled){
+if ($allPackagesInsatlled) {
     reportGood "All NPM packages are installed"
 }
 
@@ -147,7 +151,7 @@ if($allPackagesInsatlled){
 $skarmDataPath = "$PSScriptRoot/../skarmData"
 $skarmDataBox = "~/Box/skarmData"
 
-if(-not(Test-Path $skarmDataPath)){
+if (-not(Test-Path $skarmDataPath)) {
     $skarmDataDir = mkdir $skarmDataPath
 }
 
@@ -164,25 +168,26 @@ $skarmDataFiles = @(
 
 $missingFiles = $false
 $skarmDataFiles | foreach {
-    if(-not (Test-Path "$skarmDataPath/$_") -and -not (Test-Path "$skarmDataBox/$_")){
+    if (-not (Test-Path "$skarmDataPath/$_") -and -not (Test-Path "$skarmDataBox/$_")) {
         reportWarn "$_ is missing from skarmData on both Box and locally"
         $missingFiles = $true
     }
-    if(     (Test-Path "$skarmDataPath/$_") -and -not (Test-Path "$skarmDataBox/$_")){
+    if (     (Test-Path "$skarmDataPath/$_") -and -not (Test-Path "$skarmDataBox/$_")) {
         reportWarn "$_ is missing from skarmData on Box"
         $missingFiles = $true
     }
 }
-if(-not $missingFiles){
+if (-not $missingFiles) {
     reportGood "All data files present"
 }
 
 ### 4. all required tokens exist
 $privateTokens = @{}
 $privateTokens["aes.txt"] = "This token must be given to you by an admin.  Please contact Drago or Argo for a copy."
-if($test){
+if ($test) {
     $privateTokens["descrution.txt"] = "This token is used when testing the bot outside of the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
-} else {
+}
+else {
     $privateTokens["token.txt"] = "This token is used to connect the bot to the main instance. `n Go to https://discord.com/developers/applications. `n Select your application. `n Select the bot tab. `n Click 'Copy' on the TOKEN field. `n Paste the contents into the file path."
 }
 # $privateTokens["wolfram.txt"] = "Acquire a Wolfram Alpha API key here: https://products.wolframalpha.com/api/"
@@ -192,10 +197,11 @@ $missingTokens = $false
 $privateTokens.Keys | foreach {
     $tokenPath = "$PSScriptRoot/../$_"
     $boxTokenPath = "~/Box/skarmData/tokens/$_"
-    if(-not (Test-Path $tokenPath)){
-        if(Test-Path $boxTokenPath){
+    if (-not (Test-Path $tokenPath)) {
+        if (Test-Path $boxTokenPath) {
             Copy-Item -Path $boxTokenPath -Destination $tokenPath -Verbose
-        } else {
+        }
+        else {
             reportWarn "The following token is missing: $tokenPath"
             reportWarn "    Not found at $boxTokenPath"
             reportWarn $privateTokens[$_]
@@ -204,7 +210,7 @@ $privateTokens.Keys | foreach {
         }
     }
 }
-if(-not $missingTokens){
+if (-not $missingTokens) {
     reportGood "All required tokens present"
 }
 
