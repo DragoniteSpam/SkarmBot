@@ -20,9 +20,14 @@ class ComicsCollection {
         for (let file of dir) {
             this.comicClasses[file] = require("./notificationServices/" + file);
             this.comics[file] = new this.comicClasses[file](bot);
+            console.log(`Initialized comic: ${file} (${this.comics[file].signature})`);
         }
 
         console.log(`Initialized ${Object.keys(this.comicClasses).length} notification services.`);
+    }
+
+    getAvailableSubscriptions() {
+        return Object.keys(this.comics);
     }
 
     get (target) {

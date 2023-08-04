@@ -1,5 +1,6 @@
 const Skarm = require("../skarm.js");
 const Guild = require("../guild.js");
+const Constants = require("../constants.js");
 
 class ComicNotifier {
     constructor(bot) {
@@ -7,13 +8,15 @@ class ComicNotifier {
 		this.interval = null;
 		this.enabled = true;
 		this.setSignature();
-		this.initialize();
+		this.initialize();   // override this.initialize instead of the constructor itself
 		this.setTimePattern();
 		this.schedule();
     }
 
 	setSignature () {
-		this.signature = "BASE";
+		// automatic constant tracking the class of an object
+		// this method should not be overwritten
+		this.signature = this.constructor.name;
 	}
 
     setTimePattern () {
@@ -59,7 +62,7 @@ class ComicNotifier {
 		let tis = this;
 		for(let guild in Guild.guilds) {
 			setTimeout(()=>{
-				Guild.guilds[guild].notify(tis.bot.client, Constants.Notifications.COMICS[tis.signature], publishingData);
+				Guild.guilds[guild].comicNotify(tis.bot.client, tis.signature, publishingData);
 			}, tis.discoveryDelay_ms);
 		}
 		tis.bot.save(Constants.SaveCodes.DONOTHING);

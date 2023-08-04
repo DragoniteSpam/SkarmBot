@@ -43,10 +43,14 @@ const linkVariables = function(guild) {
 
         MEMBER_JOIN_LEAVE:  {},
         ASYNC_HANDLER:      {},
-        XKCD:               {},
     };
     if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
-    if (guild.notificationChannels.XKCD === undefined) guild.notificationChannels.XKCD = {};
+    guild.comicChannels ??= { };
+    if (guild.notificationChannels.XKCD) {
+        guild.comicChannels["XKCD"] = guild.notificationChannels["XKCD"];
+        delete guild.notificationChannels["XKCD"];
+    };
+
     if (guild.activityTable === undefined) guild.activityTable = [ ];
     if (guild.flexActivityTable === undefined) {
         guild.flexActivityTable = {};
@@ -965,14 +969,17 @@ const linkFunctions = function(guild) {
             }
             return 0;
         }
-        if (notification === Constants.Notifications.XKCD) {//TODO: MAY NOT BE FULLY OPERATIONAL
-            for (let channelID in guild.notificationChannels.XKCD) {
-                Skarm.spam(`Sending XKCD message to <#${channelID}>`);
-                Skarm.sendMessageDelay(client.Channels.get(channelID), eventObject);
-            }
-            return 0;
-        }
 
+        Skarm.STDERR(`UNKNOWN NOTIFICATION ${notification}`);
+    };
+
+    guild.comicNotify = function(client, comicClass, publishingData) {
+        guild.notificationChannels[comicClass] ??= { };
+        for (let channelID in guild.notificationChannels[comicClass]) {
+            Skarm.spam(`Sending ${comicClass} message to <#${channelID}>`);
+            Skarm.sendMessageDelay(client.Channels.get(channelID), publishingData);
+        }
+        return 0;
     };
 
 	//TODO: make this into timsort if the runtime is bad
@@ -1143,6 +1150,17 @@ class Guild {
              */
             XKCD:                   {},
         };
+
+        /**
+         * The collection of channels which have been selected 
+         *   by the moderators to receive various notifications about comics.
+         * Content structure:
+         *      this.comicChannels["XKCD"] = { }
+         *      this.comicChannels["XKCD"]["CHANNEL_ID"] = Date.now()  // the time that the channel was added to the collection
+         * 
+         * All comics are dynamically loaded in from the ComicsCollection object.
+         */
+        this.comicChannels = { };
 
         /**
          * A set of IDs associated with roles in the guild that are assigned upon joining the server.
