@@ -31,8 +31,7 @@ module.exports = {
                         `1: **${(e.message.channel.id in notifChannels.MEMBER_JOIN_LEAVE) ? "Disable":"Enable"}** member join/leave notifications\n`+
                         `2: **${(e.message.channel.id in notifChannels.BAN)               ? "Disable":"Enable"}** ban notifications\n`+
                         `3: **${(e.message.channel.id in notifChannels.NAME_CHANGE)       ? "Disable":"Enable"}** name change notifications\n`+
-                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL)     ? "Disable":"Enable"}** voice channel join/change/leave notifications\n`+
-                        `5: **${(e.message.channel.id in notifChannels.XKCD)              ? "Disable":"Enable"}** posting new XKCDs upon their release \n`,
+                        `4: **${(e.message.channel.id in notifChannels.VOICE_CHANNEL)     ? "Disable":"Enable"}** voice channel join/change/leave notifications\n`,
                     timestamp: new Date(),
                 });
                 return;
@@ -79,16 +78,6 @@ module.exports = {
                     }else{
                         notifChannels.VOICE_CHANNEL[e.message.channel.id] = Date.now();
                         Skarm.sendMessageDelay(e.message.channel, "Voice channel activity notifications will now be sent to **" + e.message.channel.name + "!**");
-                    }
-                    break;
-                case "xkcd":
-                case "5":
-                    if (e.message.channel.id in notifChannels.XKCD) {
-                        delete notifChannels.XKCD[e.message.channel.id];
-                        Skarm.sendMessageDelay(e.message.channel, "New XKCDs will no longer be sent to **" + e.message.channel.name + "!**");
-                    }else{
-                        notifChannels.XKCD[e.message.channel.id] = Date.now();
-                        Skarm.sendMessageDelay(e.message.channel, "New XKCDs will now be sent to **" + e.message.channel.name + "!**");
                     }
                     break;
                 case "debug":

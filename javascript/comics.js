@@ -13,6 +13,7 @@ class ComicsCollection {
     constructor (bot) {
         this.comicClasses = { };
         this.comics = { };
+        this.signatures = [ ];
         let dir = fs.readdirSync("./javascript/notificationServices/")
                     .filter(filename => filename[0] != "_")
                     .map(f => f.split(".")[0]);
@@ -20,14 +21,16 @@ class ComicsCollection {
         for (let file of dir) {
             this.comicClasses[file] = require("./notificationServices/" + file);
             this.comics[file] = new this.comicClasses[file](bot);
-            console.log(`Initialized comic: ${file} (${this.comics[file].signature})`);
+            let signature = this.comics[file].signature;
+            console.log(`Initialized comic: ${file} (${signature})`);
+            this.signatures.push(signature);
         }
 
         console.log(`Initialized ${Object.keys(this.comicClasses).length} notification services.`);
     }
 
     getAvailableSubscriptions() {
-        return Object.keys(this.comics);
+        return this.signatures;
     }
 
     get (target) {
