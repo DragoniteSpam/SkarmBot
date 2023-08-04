@@ -2,27 +2,17 @@
 const fs = require("fs");
 const request = require("request");
 
-const Skarm = require("./skarm.js");
-const Encrypt = require("./encryption.js");
-const Guild = require("./guild.js");
-const Constants = require("./constants.js");
+const Skarm = require("../skarm.js");
+const Encrypt = require("../encryption.js");
+const Constants = require("../constants.js");
+const ComicNotifier = require("./_comic_base_class.js");
 
-
-const xkcddb = "..\\skarmData\\xkcd.penguin";
-const xkcdlib = "..\\skarmData\\xkcd-log.penguin";
-
-class XKCD {
-	constructor(bot) {
-		this.bot = bot;
-		this.initialize();
-		this.interval = null;
-		this.lock = 0;
-		this.enabled = true;
-		this.discoveryDelay_ms = 1000 * 60 * 15; // delay between when a new XKCD is discovered and when it is posted in channels
-		this.pollingInterval_ms = 1000 * 60 * 30;  // how often skarm pokes xkcd.com for new comics
+class XKCD extends ComicNotifier {
+	initialize() {
+		this.xkcddb = "..\\skarmData\\xkcd.penguin";
+		this.xkcdlib = "..\\skarmData\\xkcd-log.penguin";
 		try {
-			this.references = JSON.parse(fs.readFileSync(xkcdlib).toString().toLowerCase());
-			this.schedule();
+			this.references = JSON.parse(fs.readFileSync(this.xkcdlib).toString().toLowerCase());
 		} catch (e) {
 			this.enabled = false;
 			this.references = { };
@@ -30,27 +20,14 @@ class XKCD {
 		}
 	}
 
-	initialize() {this.enabled = true;}
-
 	save() {
 		if (!this.enabled) return;
-		Encrypt.write(xkcddb, JSON.stringify(this.bot.channelsWhoLikeXKCD));
-		fs.writeFileSync(xkcdlib,JSON.stringify(this.references));
+		Encrypt.write(this.xkcddb, JSON.stringify(this.bot.channelsWhoLikeXKCD));
+		fs.writeFileSync(this.xkcdlib, JSON.stringify(this.references));
 		console.log("Saved XKCD Data");
 	}
 
-	poisonPill() {
-		clearInterval(this.interval);
-	}
-
-	schedule() {
-		if (!this.enabled) return;
-		if (this.interval) {clearInterval(this.interval);}
-		let tis = this;
-		this.interval = setInterval(function(){tis.checkForNewXKCDs();}, tis.pollingInterval_ms);
-	}
-
-	checkForNewXKCDs() {
+	poll () {
 		if (!this.enabled) return;
 		let tis = this;
 		let newXkcdId = this.references.ordered.length;
@@ -65,7 +42,7 @@ class XKCD {
 		request.get(params, function(error, response, body){
 			//Skarm.spam(JSON.stringify(response));return;
 			if(!response) return Skarm.spam("Failed to receive a response object when attempting to request "+JSON.stringify(params));
-			if(response.statusCode!==200) return;
+			if(response.statusCode !== 200) return;
 			if (!error){
 				let startTarget="<title>";
 				let arguo=body.indexOf(startTarget);
@@ -75,12 +52,7 @@ class XKCD {
 				tis.references.ordered.push(title);
 				tis.references.alphabetized.push([title,newXkcdId]);
 				tis.references.alphabetized.sort((a, b) => {return (a[0] > b[0]) ? 1 : -1;});
-				for(let guild in Guild.guilds) {
-					setTimeout(()=>{
-						Guild.guilds[guild].notify(tis.bot.client, Constants.Notifications.XKCD, params.uri);
-					}, tis.discoveryDelay_ms);
-				}
-				tis.bot.save(Constants.SaveCodes.DONOTHING);
+				tis.publishRelease(params.uri);
 			}
 		});
 	}

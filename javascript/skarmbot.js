@@ -8,7 +8,7 @@ const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 const Commands = require("./commands.js");
 const Keywords = require("./keywords.js");
-const XKCD = require("./xkcd.js");
+const ComicsCollection = require("./comics.js");
 const Skinner = require("./skinnerbox.js");
 const { spawn } = require("child_process");
 const Permissions = require("./permissions.js");
@@ -45,7 +45,7 @@ class Bot {
 
         this.shanties = new ShantyCollection();
 
-        this.xkcd = new XKCD(this);
+        this.comics = new ComicsCollection(this);
 
 
         /**
@@ -406,7 +406,7 @@ class Bot {
 	poisonPill(){
 		clearInterval(this.timer30min);
 		clearInterval(this.timer1min);
-		this.xkcd.poisonPill();
+		this.comics.poisonPill();
 	}
 	
     // functionality
@@ -506,7 +506,7 @@ class Bot {
     }
 
     /**
-     * Gives skarm the order to save all guild, user, and xkcd data
+     * Gives skarm the order to save all guild, user, and ComicsCollection data
      * @param saveCode specifying the behavior of the save from Constants.SaveCodes
      */
     save(saveCode) {
@@ -520,7 +520,7 @@ class Bot {
 
         Guilds.save();
         Users.save();
-        this.xkcd.save();
+        this.comics.save();
 
         Skarm.saveLog("Beginning push to cloud storage...");
 

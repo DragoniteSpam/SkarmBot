@@ -5,7 +5,12 @@ module.exports = {
         aliases: ["notify"],
         params: ["#"],
         usageChar: "@",
-        helpText: "Toggles the notifications of various information for this channel.  Use without a number input to view current state of channel.",
+        helpText: "Toggles the notifications of various information for this channel.  Use without a number input to view current state of channel.\nAliases:\n" + 
+                    "1: join, leave\n" + 
+                    "2: ban\n" + 
+                    "3: name\n" + 
+                    "4: voice, vox\n" + 
+                    "",
         examples: [
             {command: "e@notify", effect: "Will cause Skarm to list all available notification settings to toggle."},
             {command: "e@notify 4", effect: "Will cause Skarm to toggle announcing all voice channel join and leave activity in the guild to the channel in which the command was sent."}

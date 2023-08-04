@@ -1,5 +1,5 @@
-const Skarm = require("../javascript/skarm.js");
-const Guild = require("../javascript/guilds.js");
+const Skarm = require("../skarm.js");
+const Guild = require("../guild.js");
 
 class ComicNotifier {
     constructor(bot) {
