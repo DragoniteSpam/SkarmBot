@@ -13,7 +13,7 @@ module.exports = {
             {command: "e!help help",    effect: "Shows the documentation for usage of `e!help` (hey, this is it!)"},
             {command: "e!?",            effect: "Shows the documentation for usage of `e!help` (hey, this is it!)"},
             {command: "e!man activity", effect: "Shows the documentation for usage of `e!activity`"},
-            {command: "e?xkcd",         effect: "Shows the documentation for usage of `e!xkcd`"},
+            {command: "e?comics",         effect: "Shows the documentation for usage of `e@comics`"},
         ],
         ignoreHidden: false,
         category: "meta",

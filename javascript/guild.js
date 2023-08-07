@@ -1116,7 +1116,7 @@ class Guild {
          * The collection of channels which have been opted by the moderators to receive various notifications:
          * The contents of each inner object are of the form {channel:String -> timestamp:Float}
          * timestamp correlates to when the value was added to the hashset.
-         * @type {{NAME_CHANGE: {}, KICK_BAN: {}, VOICE_CHANNEL: {}, MEMBER_LEAVE: {}, XKCD: {}}}
+         * @type {{NAME_CHANGE: {}, KICK_BAN: {}, VOICE_CHANNEL: {}, MEMBER_LEAVE: {}}}
          */
 		this.notificationChannels = {
             /**
@@ -1143,12 +1143,6 @@ class Guild {
              * @type{channel:String -> timestamp:Float}
              */
             MEMBER_JOIN_LEAVE:      {},
-
-            /**
-             * set of channels which receive xkcds in this guild.
-             * @type{channel:String -> timestamp:Float}
-             */
-            XKCD:                   {},
         };
 
         /**
