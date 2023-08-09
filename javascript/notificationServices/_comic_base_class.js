@@ -67,7 +67,7 @@ class ComicNotifier {
 				Guild.guilds[guild].comicNotify(tis.bot.client, tis.signature, publishingData);
 			}, tis.discoveryDelay_ms);
 		}
-		tis.bot.save(Constants.SaveCodes.DONOTHING);
+		tis.save(Constants.SaveCodes.DONOTHING);
 	}
 
 	post (channel, comicID) {
