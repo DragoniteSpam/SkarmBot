@@ -6,6 +6,8 @@
 class Constants {
     // safe to run even when not yet connected
     static initialize(){
+        Constants.MAX_MESSAGE_LENGTH = 2000;
+        
         Constants.Tables = {
             MaxTableLength: 15              // maximum amount of objects to print in a table
         }
