@@ -37,6 +37,17 @@ class ComicsCollection {
         return this.comics[target];
     }
 
+    poll (target=undefined) {
+        let comic = this.get(target);
+        if(comic) {
+            comic.poll();
+        } else {
+            for(let c in this.comics){
+                this.comics[c].poll();
+            }
+        }
+    }
+
     poisonPill (target = undefined) {
         if(target) {
             return this.comics[target].poisonPill();
