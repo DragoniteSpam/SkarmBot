@@ -8,28 +8,21 @@ const Constants = require("../constants.js");
 const ComicNotifier = require("./_comic_base_class.js");
 
 class XKCD extends ComicNotifier {
-	initialize() {
-		this.xkcdlib = "..\\skarmData\\xkcd-log.penguin";
-		try {
-			this.references = JSON.parse(fs.readFileSync(this.xkcdlib).toString().toLowerCase());
-			console.log("Loaded in", this.references.ordered.length, "XKCDs.");
-		} catch (e) {
-			this.enabled = false;
-			this.references = { };
-			console.log("Could not initialize the XKCD log.");
-		}
+	length () {
+		return this.comicArchive.ordered.length;
 	}
 
-	save() {
-		if (!this.enabled) return;
-		fs.writeFileSync(this.xkcdlib, JSON.stringify(this.references));
-		console.log("Saved XKCD Data");
+	createComicArchive () {
+		return {
+			ordered: [],
+			alphabetized: []
+		};
 	}
 
 	poll () {
 		if (!this.enabled) return;
 		let tis = this;
-		let newXkcdId = this.references.ordered.length;
+		let newXkcdId = this.comicArchive.ordered.length;
 
 		let params={
 			timeout: 2000,
@@ -48,9 +41,9 @@ class XKCD extends ComicNotifier {
 				let title = body.substring(arguo+startTarget.length);
 				title = title.substring(0,title.indexOf("<"));
 				title = title.replace("xkcd: ","");
-				tis.references.ordered.push(title);
-				tis.references.alphabetized.push([title,newXkcdId]);
-				tis.references.alphabetized.sort((a, b) => {return (a[0] > b[0]) ? 1 : -1;});
+				tis.comicArchive.ordered.push(title);
+				tis.comicArchive.alphabetized.push([title,newXkcdId]);
+				tis.comicArchive.alphabetized.sort((a, b) => {return (a[0] > b[0]) ? 1 : -1;});
 				tis.publishRelease(params.uri);
 			}
 		});
@@ -69,8 +62,8 @@ class XKCD extends ComicNotifier {
 		}
 		// the name IDs have already been loaded in lower case
 		let results = [];
-		for (let i in this.references.alphabetized) {
-			let data = this.references.alphabetized[i];
+		for (let i in this.comicArchive.alphabetized) {
+			let data = this.comicArchive.alphabetized[i];
 			// is an exact match?
 			if (data[0] === id) {
 				results = [[data[0], "https://xkcd.com/" + data[1] + "/"]];

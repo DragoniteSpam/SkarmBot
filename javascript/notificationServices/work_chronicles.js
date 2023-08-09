@@ -8,24 +8,6 @@ const Constants = require("../constants.js");
 const ComicNotifier = require("./_comic_base_class.js");
 
 class WorkChronicles extends ComicNotifier {
-	initialize() {
-		this.dataSrc = "..\\skarmData\\work-chronicles.penguin";
-		try {
-			this.knownEntries = JSON.parse(fs.readFileSync(this.dataSrc).toString().toLowerCase());
-			console.log("Loaded in", Object.keys(this.knownEntries).length, "Work Chronicles.");
-		} catch (e) {
-			// this.enabled = false;
-			this.knownEntries = { };
-			console.log("Could not initialize the Work Chronicles log.  Starting from empty.");
-		}
-	}
-
-	save() {
-		if (!this.enabled) return;
-		fs.writeFileSync(this.dataSrc, JSON.stringify(this.knownEntries));
-		console.log("Saved Work Chronicles Data");
-	}
-
 	setTimePattern () {
 		// This is set in a separate function to allow for easy inheritence overrides
 		this.discoveryDelay_ms = 0; // delay between when a new comic is discovered and when it is posted in channels
@@ -56,8 +38,8 @@ class WorkChronicles extends ComicNotifier {
 				let rssComics = entries.map((ent) => {return {title: ent.title[0], link: ent.link[0]}});
 				console.log(rssComics);
 				for(let comic of rssComics){
-					if(tis.knownEntries[comic.title]) continue;
-					tis.knownEntries[comic.title] = comic.link;
+					if(tis.comicArchive[comic.title]) continue;
+					tis.comicArchive[comic.title] = comic.link;
 					tis.publishRelease(comic.link);
 				}
 			});
@@ -78,15 +60,15 @@ class WorkChronicles extends ComicNotifier {
 
 		let results = [];
 
-		for(let reference in this.knownEntries){
+		for(let reference in this.comicArchive){
 			// halt on exact matches
 			if (reference === id) {
-				results = [{reference:reference, link: this.knownEntries[reference]}];
+				results = [{reference:reference, link: this.comicArchive[reference]}];
 				break;
 			}
 
 			if (reference.includes(id)) {
-				results.push({reference:reference, link: this.knownEntries[reference]});
+				results.push({reference:reference, link: this.comicArchive[reference]});
 			}
 		}
 

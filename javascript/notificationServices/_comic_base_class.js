@@ -1,3 +1,4 @@
+const fs = require("fs");
 const Skarm = require("../skarm.js");
 const Guild = require("../guild.js");
 const Constants = require("../constants.js");
@@ -8,10 +9,34 @@ class ComicNotifier {
 		this.interval = null;
 		this.enabled = true;
 		this.setSignature();
+		this.comicArchivePath = "..\\skarmData\\" + this.signature + ".penguin";
+
 		this.initialize();   // override this.initialize instead of the constructor itself
+		this.loadComics();
 		this.setTimePattern();
 		this.schedule();
     }
+
+	loadComics () {
+		try {
+			this.comicArchive = JSON.parse(fs.readFileSync(this.comicArchivePath).toString().toLowerCase());
+			console.log("Loaded in", this.length(), this.signature, "comics.");
+		} catch (e) {
+			// this.enabled = false;
+			this.comicArchive = this.createComicArchive();
+			console.log("Could not initialize the " + this.signature + " archive.", this.comicArchivePath, e);
+		}
+	}
+
+	length () {
+		// Returns the number of comics currently in the collection
+		return Object.keys(this.comicArchive).length;
+	}
+
+	createComicArchive () {
+		// The data structure to store comics
+		return {};
+	}
 
 	setSignature () {
 		// automatic constant tracking the class of an object
@@ -31,8 +56,9 @@ class ComicNotifier {
 	}
 
 	save () {
-		// This should be overriden by extending classes to save any necessary database files on a scheduled cadence
-		;
+		if (!this.enabled) return;
+		fs.writeFileSync(this.comicArchivePath, JSON.stringify(this.comicArchive));
+		console.log("Saved " + this.signature + " Data");
 	}
 
 	poisonPill () {
