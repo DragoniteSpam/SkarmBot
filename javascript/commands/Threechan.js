@@ -31,11 +31,14 @@ module.exports = {
 
                 let response = JSON.stringify(struct, null, 3);
                 if(response && response.length > Constants.MAX_MESSAGE_LENGTH) {
-                    response = "Message is too long, keys: " + JSON.stringify(Object.keys(struct),null,3);
+                    let summary = struct.length || Object.keys(struct); 
+                    response = "Message is too long, keys: " + JSON.stringify(summary, null, 3);
                 }
 
                 if(response && response.length > Constants.MAX_MESSAGE_LENGTH) {
-                    response = "Message is too long, type: " + typeof(struct);
+                    let type = typeof(struct);
+                    if(struct.length){ type = "array of length" + struct.length;}
+                    response = "Message is too long, type: " + type;
                 }
 
                 Skarm.sendMessageDelay(e.message.channel, response);
