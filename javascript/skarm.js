@@ -100,7 +100,7 @@ class Skarm {
 
     static hasMessageAccess(channel){
         if (channel === null) {
-            console.log("null channel target with message: " + text);
+            console.log("null channel target: ", channel);
             return;
         }
 
@@ -144,7 +144,7 @@ class Skarm {
             let promise = channel.sendMessage(text, tts, obj);
             if (promiseHandler) promise.then(promiseHandler);
         } catch {
-            console.log("failed to send message: " + text + " to channel " + channel.id);
+            console.log("failed to send message:", text, "to channel", channel.id);
         }
     }
 
@@ -160,7 +160,7 @@ class Skarm {
      */
     static sendMessageDelete(channel, text, tts, obj, timerMS = 1000 * 60 * 60 * 24, senderID, skarmbotObject) {
         if (channel == null) {
-            console.log("null channel target with message: " + text);
+            console.log("null channel target with message: ", text);
             return;
         }
 
