@@ -14,7 +14,6 @@ const events = discordie.Events;
 // we made these
 const Skarm = require("./javascript/skarm.js");
 const SkarmBot = require("./javascript/skarmbot.js");
-const XKCD = require("./javascript/xkcd.js");
 const Encrypt = require("./javascript/encryption.js");
 const Constants = require("./javascript/constants.js");
 const Users = require("./javascript/user.js");

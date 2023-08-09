@@ -16,7 +16,7 @@ module.exports = {
         category: "web",
 
         execute(bot, e, userData, guildData) {
-            bot.xkcd.post(e.message.channel, Skarm.commandParamString(e.message.content));
+            bot.comics.get("xkcd").post(e.message.channel, Skarm.commandParamString(e.message.content));
         },
         
         help(bot, e) {

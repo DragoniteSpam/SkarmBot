@@ -64,7 +64,6 @@ class Constants {
             MEMBER_JOIN:    0x0080,
             MEMBER_LEAVE:   0x0100,
             ROLE_CHANGE:    0x0200,
-            XKCD:           0x0400,
         };
 
         //The standard RGB color palette skarm uses in embedded messages
