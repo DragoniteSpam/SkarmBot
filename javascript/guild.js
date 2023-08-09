@@ -47,7 +47,6 @@ const linkVariables = function(guild) {
     if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
     guild.comicChannels ??= { };
     if (guild.notificationChannels.XKCD) {
-        // console.log("Transfering values", guild.notificationChannels.XKCD, "of guild", guild.id, "to comic channel values");
         guild.comicChannels["XKCD"] = guild.notificationChannels["XKCD"];
         delete guild.notificationChannels["XKCD"];
     };
@@ -975,7 +974,6 @@ const linkFunctions = function(guild) {
     };
 
     guild.comicNotify = function(client, comicClass, publishingData) {
-        // console.log("Comic subscriptions for guild", guild.id, ":", guild.comicChannels, guild.notificationChannels);
         guild.comicChannels[comicClass] ??= { };
         for (let channelID in guild.comicChannels[comicClass]) {
             Skarm.spam(`Sending ${comicClass} message to <#${channelID}>`);
