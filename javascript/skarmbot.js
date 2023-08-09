@@ -66,11 +66,14 @@ class Bot {
             this.save(Constants.SaveCodes.DONOTHING);
         }.bind(this), 30 * 60 * 1000);
 
-        this.timer1min = setInterval(function() {
+        this.gameChanger = function() {
             if(this.game > Constants.GameState.MANUAL) {
                 this.client.User.setGame({name: this.games[(++this.game) % this.games.length], type: 0});
             }
-        }.bind(this), 60*1000);
+        }
+
+        this.timer1min = setInterval(this.gameChanger, 60*1000);
+        this.gameChanger();
     }
 
     // events
@@ -557,22 +560,25 @@ class Bot {
     // javascript devs would be happier if you did this with promises and async.
     // i can't say i care enough to deal with promises and async.
     getSpaghetti() {
-        let lines = 0;
-        let dirPaths = [
-            "./javascript/",
-            "./javascript/guildClasses/",
-            "./javascript/commands/"
-        ];
-        for(let dirPath of dirPaths) {
-            let files = fs.readdirSync(dirPath);
-            for (let i in files) {
-                if (files[i].includes(".js"))
-                    lines = lines + this.lineCount(dirPath + files[i]);
-            }
-        }
-        return lines + this.lineCount("./bot.js");
+        return this.getSpaghettiAt(".");
     }
     
+    getSpaghettiAt(basePath) {
+        let localSum = 0;
+        let files = fs.readdirSync(basePath).map(f => `${basePath}/${f}`);
+        for(let file of files) {
+            if(file.includes("node_module")) continue;
+            if(fs.lstatSync(file).isDirectory()) {
+                localSum += this.getSpaghettiAt(file);
+            } else {
+                if (file.includes(".js")){
+                    localSum += this.lineCount(file);
+                }
+            }
+        }
+        return localSum;
+    }
+
     lineCount(file) {
         return fs.readFileSync(file).toString().split("\n").length;
     }
