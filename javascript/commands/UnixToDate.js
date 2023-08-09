@@ -2,7 +2,7 @@
 const {os, request, Skarm, Constants, Web, Users, Guilds, Permissions, Skinner, SarGroups, ShantyCollection} = require("./_imports.js");
 
 module.exports = {
-        aliases: ["unixtodate", "utd", "time"],
+        aliases: ["unixtodate", "utd", "time", "unix"],
         params: ["#"],
         usageChar: "!",
         helpText: "Converts a unix timestamp to a date",
