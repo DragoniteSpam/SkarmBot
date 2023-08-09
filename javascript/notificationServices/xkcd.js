@@ -9,7 +9,6 @@ const ComicNotifier = require("./_comic_base_class.js");
 
 class XKCD extends ComicNotifier {
 	initialize() {
-		this.xkcddb = "..\\skarmData\\xkcd.penguin";
 		this.xkcdlib = "..\\skarmData\\xkcd-log.penguin";
 		try {
 			this.references = JSON.parse(fs.readFileSync(this.xkcdlib).toString().toLowerCase());
@@ -22,7 +21,6 @@ class XKCD extends ComicNotifier {
 
 	save() {
 		if (!this.enabled) return;
-		Encrypt.write(this.xkcddb, JSON.stringify(this.bot.channelsWhoLikeXKCD));
 		fs.writeFileSync(this.xkcdlib, JSON.stringify(this.references));
 		console.log("Saved XKCD Data");
 	}
