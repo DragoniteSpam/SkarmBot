@@ -47,7 +47,6 @@ class Bot {
 
         this.comics = new ComicsCollection(this);
 
-
         /**
          * keeps a short lifespan cache of messages sent by skarm which are going to be deleted,
          * and provides a fast lane for the author who triggered the message or a moderator to remove the message without waiting for the timer.
@@ -71,7 +70,7 @@ class Bot {
             if(this.game > Constants.GameState.MANUAL) {
                 this.client.User.setGame({name: this.games[(++this.game) % this.games.length], type: 0});
             }
-        }.bind(this),60*1000);
+        }.bind(this), 60*1000);
     }
 
     // events
