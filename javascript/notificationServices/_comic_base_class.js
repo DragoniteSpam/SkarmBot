@@ -51,6 +51,7 @@ class ComicNotifier {
 	poll () {
 		// Implements the necessary web requesting and handling to find new releases.
 		// This should always be overriden by extending classes to implement core behavior.
+		// Once the desired data is retrieved, it should be sent to publishRelease() for publication to channels.
 	}
 
 	get (comicID) {
