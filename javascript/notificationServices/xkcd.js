@@ -12,6 +12,7 @@ class XKCD extends ComicNotifier {
 		this.xkcdlib = "..\\skarmData\\xkcd-log.penguin";
 		try {
 			this.references = JSON.parse(fs.readFileSync(this.xkcdlib).toString().toLowerCase());
+			console.log("Loaded in", this.references.ordered.length, "XKCDs.");
 		} catch (e) {
 			this.enabled = false;
 			this.references = { };

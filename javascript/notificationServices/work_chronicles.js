@@ -71,6 +71,11 @@ class WorkChronicles extends ComicNotifier {
 		if (!this.enabled) return;
 		id = id || "";
 
+		if (id === "") {
+			Skarm.sendMessageDelay(channel, "No comic specified");
+			return;
+		}
+
 		let results = [];
 
 		for(let reference in this.knownEntries){
