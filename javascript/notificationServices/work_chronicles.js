@@ -99,3 +99,18 @@ class WorkChronicles extends ComicNotifier {
 }
 
 module.exports = WorkChronicles;
+
+/**
+ * Powershell script for regenerating the archive in the event of a catastrophic loss:
+ * 
+```
+$collection = 1..22 | foreach {
+    $r = Invoke-WebRequest -UseBasicParsing  "https://workchronicles.com/comics/page/$_/"
+    $r.Content.Split("<") | where {$_ -like "*data-a2a-title*"} | foreach {[xml]"<$_</div>"} | foreach div
+}
+
+$a = @{}
+$collection | foreach {$a[$_.'data-a2a-title'] = $_.'data-a2a-url'}
+$a | ConvertTo-Json | Set-Content .\WorkChronicles.penguin
+```
+ */
