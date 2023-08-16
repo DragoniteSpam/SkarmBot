@@ -51,7 +51,11 @@ class Skarm {
         Skarm.spamBufferString+=message+"\r\n";
     }
 
-    // Same implementation as spam above, but for save logs
+    /**
+     * Standard output to channel for save logs
+     * @param {string} message 
+     * @returns Promise
+     */
     static saveNoBuffer(message) {
         if(message.length > 0)
             return Constants.Channels.SAVELOG.sendMessage(message);
