@@ -40,6 +40,7 @@ class WorkChronicles extends ComicNotifier {
 				for(let comic of rssComics){
 					if(tis.comicArchive[comic.title]) continue;
 					tis.comicArchive[comic.title] = comic.link;
+					Skarm.spam("Found new Work Chronicle not in the feed:", comic);
 					tis.publishRelease(comic.link);
 				}
 			});
