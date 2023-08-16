@@ -59,8 +59,11 @@ class Bot {
 
         this.keywords = Skarm.addKeywords(Keywords);
 
-        this.games = ["e!help", this.getSpaghetti() + " lines of spaghetti"];
-        this.game=0;
+        this.games = [
+            "e!help", 
+            this.getSpaghetti() + " lines of spaghetti"
+        ];
+        this.game = 0;
 
         this.timer30min = setInterval(function() {
             this.save(Constants.SaveCodes.DONOTHING);
