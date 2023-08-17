@@ -392,7 +392,7 @@ class Bot {
 
     OnPresenceMemberUpdate(e){
         if(e.old.username !== e.new.username){
-            Users.get(e.new.id).previousName = e.old.username+"#"+e.old.discriminator;
+            Users.get(e.new.id).previousName = e.old.username;
             console.log(`Old username ${e.old.username} updated to new username ${e.new.username}`);
             //Skarm.spam(`Username update set to user object:  ${Users.get(e.new.id).previousName} is now ${e.new.username}`);
             //Skarm.spam("OnPresenceMemberUpdate JSON object for user: "+JSON.stringify(Users.get(e.new.id)));

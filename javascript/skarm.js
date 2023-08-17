@@ -524,15 +524,16 @@ class Skarm {
         return "```" + nl + tableHeader+ nl+ tableEntries.join("\r\n") + nl +"```";   // return the table formatted as a string
     }
 
-    /**
-     * Input: user ID
-     * Output: string mention of the user to the best of Skarm's ability
+   /**
+    * @param {skarmbot} bot 
+    * @param {string} userID 
+    * @returns {string} mention of the user to the best of Skarm's ability
      */
     static getUserMention = function (bot, userID) {
         let userMention;
         try {
             let user = bot.client.Users.get(userID);
-            userMention = `${user.username.replaceAll("`", "'")}#${user.discriminator}`;
+            userMention = Skarm.escapeMarkdown(user.username);
         } catch (e) {
             userMention = `<@${userID}>`;
         }
@@ -606,19 +607,55 @@ class Skarm {
             }
         }
     }
-    static extractTextChannel = function (message) {
-        // validate ID maps back to channel that skarm knows exists.
-        // Return null if channel does not successfully resolve
+
+    static extractGUIDs = function (message) {
         let regex = /\d+/g; // all sequences of integers (potential channel IDs)
-        let channelIdCandidates = [...message.matchAll(regex)];
-        for (let candidate of channelIdCandidates){
-            let id = candidate[0];
-            let channelObj = Constants.client.Channels.get(id);
-            if (channelObj.isGuildText) return id;
+        return [...message.matchAll(regex)].map(entry => entry[0]);
+    }
+
+    static extractUser = function (message) {
+        let userCandidates = Skarm.extractGUIDs(message);
+        for(let id of userCandidates) {
+            let user = Constants.client.Users.get(id);
+            if(user) return id;
         }
         return null;
     }
 
+    static extractTextChannel = function (message) {
+        let channelIdCandidates = Skarm.extractGUIDs(message);
+        // validate ID maps back to channel that skarm knows exists.
+        // Return null if channel does not successfully resolve
+        for (let id of channelIdCandidates){
+            let channelObj = Constants.client.Channels.get(id);
+            if (channelObj && channelObj.isGuildText) return id;
+        }
+        return null;
+    }
+
+    static extractRole = function (message, iGuild) {
+        let roleIdCandidates = Skarm.extractGUIDs(message);
+        let roles = iGuild.roles.map(r =>r.id);
+        for (let id of roleIdCandidates){
+            if (roles.includes(id)) return id;
+        }
+        return null;
+    }
+
+    static escapeMarkdown = function (text) {
+        let replacements = {
+            '`' : '\`',
+            '*' : '\*',
+            '_' : '\_',
+            '~' : '\~',
+            '||' : '\|\|',
+            '\\' : '\\\\',
+        };
+        for(let r in replacements) {
+            text = text.replaceAll(r, replacements[r]);
+        }
+        return text;
+    }
 }
 
 module.exports = Skarm;

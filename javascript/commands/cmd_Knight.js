@@ -43,7 +43,7 @@ module.exports = {
             }
 
             //mention => toggle
-            let member = words[0].replace("<", "").replace("@", "").replace("!", "").replace(">", "");
+            let member = Skarm.extractUser(words[0]);
 
             Skarm.log("Toggling state of: " + member);
 

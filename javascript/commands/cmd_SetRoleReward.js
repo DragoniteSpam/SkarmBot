@@ -1,5 +1,6 @@
 "use strict";
 const {os, request, Skarm, Constants, Web, Users, Guilds, Permissions, Skinner, SarGroups, ShantyCollection} = require("./_imports.js");
+const ViewRoleReward = require("./cmd_ViewRoleReward.js");
 
 module.exports = {
         aliases: ["setlevelreward","levelreward","reward","slr"],
@@ -27,7 +28,7 @@ module.exports = {
             let pars = Skarm.commandParamTokens(e.message.content);
             if(pars.length!==2){
                 if(pars.length===0){
-                    module.exports.ViewRoleReward.execute(bot,e,userData,guildData);
+                    ViewRoleReward.execute(bot,e,userData,guildData);
                     return;
                 }
                 Skarm.help(this,e);
@@ -41,15 +42,17 @@ module.exports = {
             }
             if(pars[1]==="unbind" || pars[1]==="-"){
                 delete Guilds.get(e.message.guild.id).rolesTable[pars[0]-0];
-                module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
+                ViewRoleReward.execute(bot, e, userData, guildData);
                 return;
             }
-            pars[1] = pars[1].replace("<","").replace("@","").replace("&","").replace(">","");
+            
+            let targetRoleId = Skarm.extractRole(pars[1], e.message.guild);
+
             let allGuildRoles = Guilds.getData(guildData.id).roles;
             for(let role of allGuildRoles){
-                if(role.id === pars[1]){
-                    Guilds.get(e.message.guild.id).rolesTable[pars[0]-0]=pars[1];
-                    module.exports.ViewRoleReward.execute(bot, e, userData, guildData);
+                if(role.id === targetRoleId){
+                    Guilds.get(e.message.guild.id).rolesTable[level] = targetRoleId;
+                    ViewRoleReward.execute(bot, e, userData, guildData); // todo: fix
                     return;
                 }
             }

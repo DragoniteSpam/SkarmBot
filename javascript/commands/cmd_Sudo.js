@@ -17,7 +17,7 @@ module.exports = {
             let words = Skarm.commandParamTokens(e.message.content);
             let member;
             if(words.length===1){
-                let id=words[0].replace("<","").replace("@","").replace("!","").replace(">","");
+                let id=Skarm.extractUser(words[0]); 
                 member=Guilds.client.Users.get(id).memberOf(e.message.guild);
                 userData=Users.get(id);
                 if(member==null){

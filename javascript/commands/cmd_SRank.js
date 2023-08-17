@@ -18,7 +18,6 @@ module.exports = {
 
         execute(bot, e, userData, guildData) {
             let param = Skarm.commandParamTokens(e.message.content);
-            let targetTerms = ["<@", ">", "!"];
             let target;
             let newExp;
 
@@ -34,16 +33,15 @@ module.exports = {
 
             if(param.length === 2) {
                 let p0 = param.shift();
-                if(p0.includes(targetTerms[0])){    //target first
+                if(p0.includes("@")){    //target first
                     target = p0;
                     newExp = param[0];
                 }else{                              //exp first
                     newExp = p0;
                     target = param[0];
                 }
-                for(let tt of targetTerms){
-                    target = target.replace(tt,"");
-                }
+
+                target = Skarm.extractUser(target);
             }
 
             if (!guildData.hasPermissions(userData, Permissions.MOD)) {
@@ -53,6 +51,7 @@ module.exports = {
 
             //if no target is specified, assume self-targetted
             target = target || e.message.author.id;
+            
             let user = guildData.expTable[target];
             if(user) {
                 if(newExp === "-"){

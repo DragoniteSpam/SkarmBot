@@ -94,11 +94,9 @@ const linkFunctions = function(guild) {
         * Fetch the IUser object(s) representing a user in the current server
         * Examples:
         *      guild.resolveMember("137336478291329024")
-        *          -> IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... }
-        *      guild.resolveMember("Dragonite#7992")
-        *          -> IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... }
+        *          -> IUser { id: "137336478291329024", username: "dragonite", ... }
         *      guild.resolveMember("drago")
-        *          -> [ IUser { id: "137336478291329024", username: "Dragonite", discriminator: "7992" ... } ]
+        *          -> [ IUser { id: "137336478291329024", username: "dragonite", ... } ]
         * @param {string} userid The id, server nickname, or Discord username of the member you want to look up
         * @returns An IUser corresponding to the userid it's an ID or Discord username, or an array of users if more than one user matches the userid if it's a server nickname
         */
@@ -115,18 +113,16 @@ const linkFunctions = function(guild) {
 
     guild.resolveMember = function(userid) {
         /**
-         * Fetch the IGuildMember object(s) representing a user in the current server
-         * Examples:
-         *      guild.resolveMember("137336478291329024")
-         *          -> IGuildMember { id: "137336478291329024", nick: "drago", ... }
-         *      guild.resolveMember("Dragonite#7992")
-         *          -> IGuildMember { id: "137336478291329024", nick: "drago", ... }
-         *      guild.resolveMember("drago")
-         *          -> [ IGuildMember { id: "137336478291329024", nick: "drago", ... } ]
-         * @param {string} userid The id, server nickname, or Discord username of the member you want to look up
-         * @returns An IGuildMember corresponding to the userid if it's an ID or Discord username, or an array of members if more than one member matches the userid if it's a server nickname
-         */
-        userid = userid.trim().replace("<","").replace("@","").replace(">","").replace("!","").toLowerCase();    // clean up data
+        * Fetch the IGuildMember object(s) representing a user in the current server
+        * Examples:
+        *      guild.resolveMember("137336478291329024")
+        *          -> IGuildMember { id: "137336478291329024", nick: "drago", ... }
+        *      guild.resolveMember("drago")
+        *          -> [ IGuildMember { id: "137336478291329024", nick: "drago", ... } ]
+        * @param {string} userid The id, server nickname, or Discord username of the member you want to look up
+        * @returns An IGuildMember corresponding to the userid if it's an ID or Discord username, or an array of members if more than one member matches the userid if it's a server nickname
+        */
+        userid = Skarm.extractUser(userid);    // clean up data
         let server = Guild.client.Guilds.get(this.id);
         let members = server.members;
         for (let member of members) {
@@ -831,7 +827,7 @@ const linkFunctions = function(guild) {
             for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.RED,
-                    description: `**${user.username}#${user.discriminator}** has left the server. (${user.id})`,
+                    description: `**${user.username}** has left the server. (${user.id})`,
                     timestamp: new Date(),
                     footer: {text: "User Leave"}
                 });
@@ -843,7 +839,7 @@ const linkFunctions = function(guild) {
             for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.GREEN,
-                    description: `**${member.username}#${member.discriminator}** has joined the server. (${member.id})`,
+                    description: `**${member.username}** has joined the server. (${member.id})`,
                     timestamp: new Date(),
                     footer: {text: "User Join"}
                 });
@@ -855,7 +851,7 @@ const linkFunctions = function(guild) {
             for (let channelID in guild.notificationChannels.BAN) {
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.RED,
-                    description: `**${member.username}#${member.discriminator}** has been banned from the server. (${member.id})`,
+                    description: `**${member.username}** has been banned from the server. (${member.id})`,
                     timestamp: new Date(),
                     footer: {text: "User Banned"}
                 });
@@ -867,7 +863,7 @@ const linkFunctions = function(guild) {
             for (let channelID in guild.notificationChannels.BAN) {
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.GREEN,
-                    description: `**${member.username}#${member.discriminator}** has been unbanned from the server. (${member.id})`,
+                    description: `**${member.username}** has been unbanned from the server. (${member.id})`,
                     timestamp: new Date(),
                     footer: {text: "Ban Removed"}
                 });
@@ -878,13 +874,13 @@ const linkFunctions = function(guild) {
             let member = eventObject.user;
             for (let channelID in guild.notificationChannels.VOICE_CHANNEL) {
                 //console.log("notify loop: " + JSON.stringify(eventObject));
-                let dsc = `**${member.username}#${member.discriminator}** has joined the voice channel. **${eventObject.channel.name}**`;
+                let dsc = `**${member.username}** has joined the voice channel. **${eventObject.channel.name}**`;
                 if(guild.notificationChannels.ASYNC_HANDLER[member.id]===eventObject.channelId){
                     //console.log(`Previous state is equal to current state: ${guild.notificationChannels.ASYNC_HANDLER[member.id]}`);
                     return 2;
                 }else {
                     if (guild.notificationChannels.ASYNC_HANDLER[member.id] != null) {
-                        dsc = `**${member.username}#${member.discriminator}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.channelId).name}**`;
+                        dsc = `**${member.username}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.channelId).name}**`;
                     }
                     guild.notificationChannels.ASYNC_HANDLER[member.id] = eventObject.channelId;
                 }
@@ -901,7 +897,7 @@ const linkFunctions = function(guild) {
         if (notification === Constants.Notifications.VOICE_LEAVE) {
             let member = eventObject.user;
             for (let channelID in guild.notificationChannels.VOICE_CHANNEL) {
-                let dsc = `**${member.username}#${member.discriminator}** has left the voice channel. **${eventObject.channel.name}**`;
+                let dsc = `**${member.username}** has left the voice channel. **${eventObject.channel.name}**`;
 
                 if (eventObject.newChannelId != null) {
                     if(guild.notificationChannels.ASYNC_HANDLER[member.id]===eventObject.newChannelId){
@@ -910,7 +906,7 @@ const linkFunctions = function(guild) {
                         if(!guild.notificationChannels.ASYNC_HANDLER[member.id]){
                             Skarm.logError("User channel swap data was lost during downtime.");
                         }else {
-                            dsc = `**${member.username}#${member.discriminator}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.newChannelId).name}**`;
+                            dsc = `**${member.username}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.newChannelId).name}**`;
                             guild.notificationChannels.ASYNC_HANDLER[member.id] = eventObject.newChannelId;
                         }
                     }
@@ -957,7 +953,7 @@ const linkFunctions = function(guild) {
                 return 3;
             }
             for (let channelID in guild.notificationChannels.NAME_CHANGE) {
-                let dsc = `**${oldName}** is now known as **${member.username}#${member.discriminator}**!  (<@${member.id}>)`;
+                let dsc = `**${oldName}** is now known as **${member.username}**!  (<@${member.id}>)`;
                 Skarm.spam(`Sending message to <#${channelID}> regarding name change of ${oldName}:\n`);
                 Skarm.spam(dsc);
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
