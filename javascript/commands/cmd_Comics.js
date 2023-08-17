@@ -20,17 +20,24 @@ module.exports = {
             let notifChannels = guildData.comicChannels;
             let args = Skarm.commandParamTokens(e.message.content);
 
+
+            for(let i in topics) {
+                let comicName = topics[i];
+                notifChannels[comicName] ??= { };  // make sure all comic channel lists exist before accessing them
+            }
+
             function constructStatusBody() {
                 let body = "";
                 for(let i in topics) {
                     let comicName = topics[i];
-                    notifChannels[comicName] ??= { };  // make sure all comic channel lists exist before accessing them
                     body += `[${i}] **${comicName}** posts are currently set to: **${(e.message.channel.id in notifChannels[comicName]) ? "Enabled":"Disabled"}**\n`;
                 }
                 // console.log("Notification channels:", notifChannels);
                 // console.log("Current comic topics:", topics);
                 return body;
             }
+
+            constructStatusBody();
 
             if (args.length === 0) {
                 Skarm.sendMessageDelay(e.message.channel, " ",false,{
