@@ -19,7 +19,7 @@ class ComicNotifier {
 
 	loadComics () {
 		try {
-			this.comicArchive = JSON.parse(fs.readFileSync(this.comicArchivePath).toString().toLowerCase());
+			this.comicArchive = JSON.parse(fs.readFileSync(this.comicArchivePath).toString());
 			console.log("Loaded in", this.length(), this.signature, "comics.");
 		} catch (e) {
 			// this.enabled = false;
@@ -71,10 +71,12 @@ class ComicNotifier {
 		if (!this.enabled) return;
 		if (this.interval) {clearInterval(this.interval);}
 		let tis = this;
-		this.interval = setInterval(function(){
-			console.log("Polling comic:", tis.signature); 
-			tis.poll();
-		}, tis.pollingInterval_ms);
+		this.interval = setInterval(tis._poll, tis.pollingInterval_ms);
+	}
+
+	_poll () {
+		console.log("Polling comic:", this.signature); 
+		this.poll();
 	}
 
 	poll () {

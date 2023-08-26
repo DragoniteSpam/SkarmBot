@@ -40,10 +40,10 @@ class ComicsCollection {
     poll (target=undefined) {
         let comic = this.get(target);
         if(comic) {
-            comic.poll();
+            comic._poll();
         } else {
             for(let c in this.comics){
-                this.comics[c].poll();
+                this.comics[c]._poll();
             }
         }
     }

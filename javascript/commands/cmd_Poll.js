@@ -12,6 +12,7 @@ module.exports = {
         category: "infrastructure",
 
         execute(bot, e, userData, guildData) {
+            Skarm.spam("Polling:", e.message.content);
             bot.comics.poll(Skarm.commandParamString(e.message.content));
         },
         

@@ -36,12 +36,16 @@ class WorkChronicles extends ComicNotifier {
 			parseString(response.body, (err, res) => {
 				let entries = res.rss.channel[0].item;
 				let rssComics = entries.map((ent) => {return {title: ent.title[0], link: ent.link[0]}});
-				console.log(rssComics);
+				// console.log("Existing Work Chronicles Archive:", tis.comicArchive);
+				// console.log("All RSS entries", rssComics);
 				for(let comic of rssComics){
-					if(tis.comicArchive[comic.title]) continue;
-					tis.comicArchive[comic.title] = comic.link;
-					Skarm.spam("Found new Work Chronicle not in the feed:", comic);
-					tis.publishRelease(comic.link);
+					if(comic.title in tis.comicArchive) {
+						console.log(comic.title, "is already in collection");
+					} else {
+						tis.comicArchive[comic.title] = comic.link;
+						console.log("Found new Work Chronicle not in the feed:", comic);
+						tis.publishRelease(comic.link);
+					}
 				}
 			});
 			// console.log(response.body);

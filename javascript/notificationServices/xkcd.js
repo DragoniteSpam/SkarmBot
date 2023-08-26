@@ -33,10 +33,10 @@ class XKCD extends ComicNotifier {
 		let params={
 			timeout: 2000,
 			followAllRedirects: true,
-			uri: "https://xkcd.com/"+newXkcdId+"/ ",
+			uri: "https://xkcd.com/"+newXkcdId+"/",
 		};
 
-		//Skarm.spam("Requesting: "+JSON.stringify(params));
+		console.log("Requesting:", JSON.stringify(params));
 		request.get(params, function(error, response, body){
 			//Skarm.spam(JSON.stringify(response));return;
 			if(!response) return Skarm.spam("Failed to receive a response object when attempting to request "+JSON.stringify(params));
