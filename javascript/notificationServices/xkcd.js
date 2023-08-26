@@ -19,11 +19,11 @@ class XKCD extends ComicNotifier {
 		};
 	}
 
-	// setTimePattern () {
-	// 	// Uncomment during testing for faster polling
-	// 	this.discoveryDelay_ms = 0; // delay between when a new comic is discovered and when it is posted in channels
-	// 	this.pollingInterval_ms = 1000 * 30 * 1;  // how often skarm pokes the source feed for new comics
-	// }
+	setTimePattern () {
+		// Uncomment during testing for faster polling
+		this.discoveryDelay_ms = 0; // delay between when a new comic is discovered and when it is posted in channels
+		this.pollingInterval_ms = 1000 * 60 * 30;  // how often skarm pokes the source feed for new comics
+	}
 
 	poll () {
 		if (!this.enabled) return;
@@ -50,6 +50,7 @@ class XKCD extends ComicNotifier {
 				tis.comicArchive.ordered.push(title);
 				tis.comicArchive.alphabetized.push([title,newXkcdId]);
 				tis.comicArchive.alphabetized.sort((a, b) => {return (a[0] > b[0]) ? 1 : -1;});
+				console.log("Publishing release:", params.uri);
 				tis.publishRelease(params.uri);
 			}
 		});

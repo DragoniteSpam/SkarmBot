@@ -970,6 +970,7 @@ const linkFunctions = function(guild) {
     };
 
     guild.comicNotify = function(client, comicClass, publishingData) {
+        console.log("Comic channels for guild:", guild.id, guild.comicChannels);
         guild.comicChannels[comicClass] ??= { };
         for (let channelID in guild.comicChannels[comicClass]) {
             Skarm.spam(`Sending ${comicClass} message to <#${channelID}>`);

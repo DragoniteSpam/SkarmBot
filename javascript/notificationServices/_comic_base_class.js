@@ -94,7 +94,7 @@ class ComicNotifier {
 		let tis = this;
 		for(let guild in Guild.guilds) {
 			setTimeout(()=>{
-				// console.log("Notifying guild", guild, "of new release:", publishingData);
+				console.log("Notifying guild", guild, "of new release:", publishingData);
 				Guild.guilds[guild].comicNotify(tis.bot.client, tis.signature, publishingData);
 			}, tis.discoveryDelay_ms);
 		}
@@ -104,7 +104,7 @@ class ComicNotifier {
 	post (channel, comicID) {
 		let results = this.get(comicID);
 		if (results.length === 0) {
-			Skarm.sendMessageDelay(channel, "I couldn't find any comics matchin **" + id + "** \nヽ( ｡ ヮﾟ)ノ");
+			Skarm.sendMessageDelay(channel, "I couldn't find any comics matching **" + id + "** \nヽ( ｡ ヮﾟ)ノ");
 			return;
 		}
 
