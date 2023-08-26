@@ -19,6 +19,12 @@ class XKCD extends ComicNotifier {
 		};
 	}
 
+	// setTimePattern () {
+	// 	// Uncomment during testing for faster polling
+	// 	this.discoveryDelay_ms = 0; // delay between when a new comic is discovered and when it is posted in channels
+	// 	this.pollingInterval_ms = 1000 * 30 * 1;  // how often skarm pokes the source feed for new comics
+	// }
+
 	poll () {
 		if (!this.enabled) return;
 		let tis = this;
