@@ -22,7 +22,7 @@ class XKCD extends ComicNotifier {
 	poll () {
 		if (!this.enabled) return;
 		let tis = this;
-		let newXkcdId = this.comicArchive.ordered.length;
+		let newXkcdId = this.length();
 
 		let params={
 			timeout: 2000,
