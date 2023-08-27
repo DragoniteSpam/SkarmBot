@@ -71,7 +71,7 @@ class ComicNotifier {
 		if (!this.enabled) return;
 		if (this.interval) {clearInterval(this.interval);}
 		let tis = this;
-		this.interval = setInterval(tis._poll, tis.pollingInterval_ms);
+		this.interval = setInterval(() =>{tis._poll}, tis.pollingInterval_ms);
 	}
 
 	_poll () {
