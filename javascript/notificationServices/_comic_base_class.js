@@ -68,14 +68,18 @@ class ComicNotifier {
 
 	schedule () {
 		// Creates the interval-based scanner to poll the website for new releases
-		if (!this.enabled) return;
+		if (!this.enabled) {
+			Skarm.spam("Service is not enabled:", this.signature);
+			return;
+		}
 		if (this.interval) {clearInterval(this.interval);}
 		let tis = this;
 		this.interval = setInterval(() =>{tis._poll}, tis.pollingInterval_ms);
+		Skarm.spam("Scheduled comic:", this.signature);
 	}
 
 	_poll () {
-		console.log("Polling comic:", this.signature); 
+		Skarm.spam("Polling comic:", this.signature); 
 		this.poll();
 	}
 
