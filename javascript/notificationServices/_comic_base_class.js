@@ -74,7 +74,7 @@ class ComicNotifier {
 		}
 		if (this.interval) {clearInterval(this.interval);}
 		let tis = this;
-		this.interval = setInterval(() =>{tis._poll}, tis.pollingInterval_ms);
+		this.interval = setInterval(() =>{tis._poll();}, tis.pollingInterval_ms);
 		Skarm.spam("Scheduled comic:", this.signature, "at interval (ms):", tis.pollingInterval_ms);
 	}
 
