@@ -244,6 +244,8 @@ class Bot {
         let userData = Users.get(e.message.author.id);
         let guildData = Guilds.get(e.message.channel.guild.id);
 
+        this.checkForDeceptiveMarkdown(e.message, guildData);
+
         this.summons(e);
 
         // in the event that we eventually add PM responses, it would probably
@@ -416,6 +418,47 @@ class Bot {
 	
     // functionality
 
+    checkForDeceptiveMarkdown(message, guildData){
+        // do nothing if the guild has disabled this utility
+        if(!guildData.deceptiveMarkdownLinkAlert) return;
+
+        // check if there are any markdown links in the regex
+        let markdownLinkRegex = /\[.*?]\(.*?\)/gm;
+        let segments = message.content.match(markdownLinkRegex);
+        if(!segments || !segments.length) return;
+        let badData = [];
+        let text, link;
+
+        // detect bad redirects
+        // Each segment is structured as [*](*)
+        // e.g. [click me!](https://xkcd.com/405)
+        // or [google.com](https://scam-website.com/giveMeYourWallet)
+        for(let segment of segments){
+            [text, link] = segment.split("](");
+            text = text.replace("[","").trim();
+            link = link.replace(")","").trim();
+            if(Skarm.ContainsUrl(text) && Skarm.ContainsUrl(link) && text !== link){
+                badData.push(`${text} --> ${link}`);
+            }
+        }
+
+        // report bad redirects
+        if(badData.length){
+            Skarm.sendMessageDelay(message.channel, " ", false, {
+                color: Constants.Colors.RED,
+                description: [
+                    `Warning! The message above has markdown links which redirect to unexpected websites.`,
+                    "```",
+                    ...badData,
+                    "```",
+                    "To disable this alert, please run `e@markdownalert disable`",
+                ].join("\r\n"),
+                timestamp: new Date(),
+                footer: {text: `Message from @${message.author.username}`},
+            }); // throw back the found data
+        }
+    }
+
     /**
      * Learning and reciting lines
      * @param e
@@ -444,7 +487,7 @@ class Bot {
 
 
     attemptLearnLine(e) {
-        if (e.message.content.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/)) return;
+        if (Skarm.ContainsUrl(e.message.content)) return;
         let hash = (this.messageHash(e) / 10) % 1;
         if (hash < Constants.Vars.LEARN_MESSAGE_ODDS) {
             Guilds.get(e.message.guild.id).learnLine(e);

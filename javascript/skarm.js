@@ -608,6 +608,11 @@ class Skarm {
         }
     }
 
+    static ContainsUrl(string){
+        let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+        return string && string.match(urlRegex);
+    }
+
     static extractGUIDs = function (message) {
         let regex = /\d+/g; // all sequences of integers (potential channel IDs)
         return [...message.matchAll(regex)].map(entry => entry[0]);

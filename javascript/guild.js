@@ -77,6 +77,7 @@ const linkVariables = function(guild) {
     guild.parrot ??= new Parrot(guild.id);
     guild.autoPin ??= new AutoPin(guild.id);
     guild.shantyIterator = new ShantyIterator(guild.shantyIterator);
+    guild.deceptiveMarkdownLinkAlert ??= true;
 };
 
 // since de/serialized objects don't keep their functions
