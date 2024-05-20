@@ -38,7 +38,7 @@ module.exports = {
                 footer: {text: `Page ${Math.floor(startIndex / Constants.Tables.MaxTableLength) + 1}/${Math.ceil(fullTableLen / Constants.Tables.MaxTableLength)}`},
             };
 
-            Skarm.sendMessageDelete(e.message.channel, " ", false, messageObject, Constants.someBigNumber, e.message.author, bot);
+            Skarm.sendMessageDelay(e.message.channel, " ", false, messageObject);
         },
 
         help(bot,e) {
