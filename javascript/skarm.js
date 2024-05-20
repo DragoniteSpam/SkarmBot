@@ -533,10 +533,9 @@ class Skarm {
         let userMention;
         try {
             let user = bot.client.Users.get(userID);
-            userMention = Skarm.escapeMarkdown(user.username);
+            userMention = Skarm.escapeMarkdown(user.username);  // user.username may be undefined if this user is lost to time.
         } catch (e) {
-            Skarm.spam(e);
-            userMention = `<@${userID}>`;
+            userMention = `<@${userID}>`;                       // in those cases, just log their GUID
         }
         return userMention;
     }
@@ -651,11 +650,10 @@ class Skarm {
     static escapeMarkdown = function (text) {
         let replacements = {
             '`' : '\`',
-            '*' : '\*',
             '_' : '\_',
             '~' : '\~',
-            '||' : '\|\|',
-            '\\' : '\\\\',
+            // '||' : '\|\|',
+            // '\\' : '\\\\',
         };
         for(let r in replacements) {
             text = text.replaceAll(r, replacements[r]);
