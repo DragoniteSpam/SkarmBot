@@ -527,7 +527,7 @@ class Skarm {
    /**
     * @param {skarmbot} bot 
     * @param {string} userID 
-    * @returns {string} mention of the user to the best of Skarm's ability
+    * @returns {string} username of the user to the best of Skarm's ability
      */
     static getUserMention = function (bot, userID) {
         let userMention;
@@ -535,6 +535,7 @@ class Skarm {
             let user = bot.client.Users.get(userID);
             userMention = Skarm.escapeMarkdown(user.username);
         } catch (e) {
+            Skarm.spam(e);
             userMention = `<@${userID}>`;
         }
         return userMention;
