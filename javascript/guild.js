@@ -571,17 +571,17 @@ const linkFunctions = function(guild) {
     }
 
     guild.assignNewMemberRoles = function (member, discord_guild, bot){
-        let roles = discord_guild.roles;
-        let validRoles = {};
-        for (let role of roles) validRoles[role.id] = true;
-        let t = 3;  // delay after join to assign roles
-        for (let role in guild.serverJoinRoles){
-            if(role in validRoles && guild.botCanEditRole(role, bot)){
-                setTimeout(()=>{
-                    member.assignRole(role);
-                }, 250 * t++);
-            }
-        }
+        let validRoles = discord_guild.roles.map(role=>role.id);
+        let roleList = guild.serverJoinRoles
+            .filter(role => validRoles.includes(role))
+            .filter(role => guild.botCanEditRole(role, bot))
+        ;
+
+        // debugging spam    
+        Skarm.spam("Joining member role list:", roleList);
+        Skarm.spam("All valid role IDs:", validRoles);
+
+        member.setRoles(roleList);
     }
 
     //functions that are subroutines of parrot
