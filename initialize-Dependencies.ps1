@@ -49,16 +49,16 @@ $softwareName = "Node.js"
 
 Function get-LatestVersionData {
     # Returns an object containing the current version and download URL for the software
-    $VersionSite = "https://nodejs.org/en"
+    $VersionSite     = "https://github.com/nodejs/node/releases?q=lts&expanded=true"
+    $ProgressPreference = "SilentlyContinue"
     $content = Invoke-WebRequest -UseBasicParsing -Uri $VersionSite
-    $downloadBlock = @($content.Links | where { $_ -like "*LTS*" })[0]
-    $cv = $downloadBlock."data-version".Replace("v", "")
+    $path = $content.Links | % href | ? {$_ -like "*/releases/tag/v*"} | select -first 1
+    $vversion = $path.split("/")[-1]
+    $cv = $vversion.Replace("v","")
     
-
-
     [PSCustomObject]@{
         currentVersion = $cv
-        downloadUrl    = "https://nodejs.org/dist/v$cv/node-v$cv-x64.msi"
+        downloadUrl = "https://nodejs.org/dist/v$cv/node-v$cv-x64.msi"
     }
 }
 
@@ -66,11 +66,17 @@ Function get-InstalledVersion {
     <#
         Returns the version data if the software is installed, and no value otherwise
     #>
-    Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | where { $_.DisplayName -and $_.DisplayName.Contains("Node") } | foreach { $_.DisplayVersion }
+    Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | where {$_.DisplayName -and $_.DisplayName.Contains("Node.js")} | foreach {$_.DisplayVersion}
 }
 
 Function get-upToDateStatus {
-    (get-LatestVersionData).currentVersion -in (get-InstalledVersion) 
+    $latest = (get-LatestVersionData).currentVersion
+    $installed = get-InstalledVersion
+    [pscustomobject]@{
+        IsInstalled = $latest -in $installed 
+        Latest = $latest
+        Installed = $installed
+    }
 }
 
 Function install-LatestVersion {
@@ -83,29 +89,34 @@ Function install-LatestVersion {
 }
 
 <# EXECUTION #>
-
 $webClient = (New-Object System.Net.WebClient)
 $latestData = get-LatestVersionData
 $currentVersion = $latestData.currentVersion
 
-if (get-upToDateStatus) {
-    reportGood "Latest version is already installed: $softwareName - $currentVersion"
-}
-else {
-    Write-Host "Installing $softwareName $currentVersion"
-    install-LatestVersion -currentVersion $currentVersion -downloadUrl $latestData.downloadUrl
-
-    # Verify installation was successful
-    if (get-upToDateStatus) {
-        reportGood "Latest version has been installed: $softwareName - $currentVersion"
-
-        # Refresh Environment Variable after the install
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
-    }
-    else {
-        reportWarn "Failed to install latest version of $softwareName - $currentVersion"
+$status = get-upToDateStatus
+if($status.IsInstalled){
+    Write-Host -ForegroundColor Green "Latest version is already installed: $softwareName - $currentVersion"
+    exit
+} else {
+    Write-Host "Not already installed: $softwareName - $currentVersion"
+    if($status.Installed){
+        Write-Host "Currently installed version:" $status.Installed
     }
 }
+
+Write-Host "Installing $softwareName $currentVersion"
+install-LatestVersion -currentVersion $currentVersion -downloadUrl $latestData.downloadUrl
+
+# Verify installation was successful
+if(get-upToDateStatus){
+    Write-Host -ForegroundColor Green "Latest version has been installed: $softwareName - $currentVersion"
+
+	# Refresh Environment Variable after the install
+	$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+} else {
+    Write-Error "Failed to install latest version of $softwareName - $currentVersion"
+}
+
 
 
 
