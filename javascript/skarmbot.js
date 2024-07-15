@@ -235,6 +235,14 @@ class Bot {
             return false;
         }
 
+        // don't respond to messages with no content and no body.  
+        // Usually happens when there is a new member joining announcement message.
+        if(!e.message.content && !e.message.attachments){
+            Skarm.spam("Received an empty message.  Probably someone joining.");
+            console.log(e.message);
+            return;  // take no further action with this
+        }
+
         // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate) {
             e.message.channel.sendMessage("private message responses not yet implemented");
