@@ -7,11 +7,11 @@ const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 const Users = require("./user.js");
 const { ShantyCollection, Shanty, ShantyIterator } = require("./shanties.js");
-const {Zipf} = require("./zipf.js")
 
 const SarGroups = require("./guildClasses/sar.js");
 const Parrot = require("./guildClasses/parrot.js");
 const AutoPin = require("./guildClasses/autopin.js");
+const {Zipf} = require("./guildClasses/zipf.js");
 
 
 const guilddb = "../skarmData/guilds.penguin";
