@@ -10,20 +10,20 @@ const Permissions = require("../permissions.js");
 const Skinner = require("../skinnerbox.js");
 
 const SarGroups = require("../guildClasses/sar.js");
-const {ShantyCollection} = require("../shanties");
+const { ShantyCollection } = require("../shanties");
 
 Constants.initialize();     // if this line isn't here, local initialization of constants in "effect" fields break
 
 module.exports = {
-    os:os,
-    request:request,
-    Skarm:Skarm,
-    Constants:Constants,
-    Web:Web,
-    Users:Users,
-    Guilds:Guilds,
-    Permissions:Permissions,
-    Skinner:Skinner,
-    SarGroups:SarGroups,
-    ShantyCollection:ShantyCollection
+    os: os,
+    request: request,
+    Skarm: Skarm,
+    Constants: Constants,
+    Web: Web,
+    Users: Users,
+    Guilds: Guilds,
+    Permissions: Permissions,
+    Skinner: Skinner,
+    SarGroups: SarGroups,
+    ShantyCollection: ShantyCollection
 }
