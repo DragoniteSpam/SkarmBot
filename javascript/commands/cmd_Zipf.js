@@ -5,7 +5,10 @@ module.exports = {
         aliases: ["zipf"],
         params: ["<startIndex>"],
         usageChar: "!",
-        helpText: "Queries a list of words sent in the server by their relative frequencies. Optional integer parameter for offsetting the 10 displayed words.",
+        helpText: [
+            "Queries a list of words sent in the server by their relative frequencies. Optional integer parameter for offsetting the 10 displayed words.",
+            "This feature is inspired as a case study of [the zipf mystery](https://www.youtube.com/watch?v=fCn8zs912OE)"
+        ].join("\n"),
         examples: [
             {command: "e!zipf", effect: "Lists the top 10 most frequent words said in the server."},
             {command: "e!zipf 11", effect: "Lists the 11th through 20th most frequent words said in the server."}

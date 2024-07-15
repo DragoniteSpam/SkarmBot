@@ -21,6 +21,11 @@ class Zipf {
         this.zipfMap = (self && self.zipfMap) || zipfMap || {}; // reimport the map either from the origin or the new source
     }
 
+    /**
+     * queries a fixed-size limited subset of the table to see what the n'th through n+10'th most popular words in the server are.
+     * @param {uint} startIndex 
+     * @returns 
+     */
     getZipfSubset(startIndex) {
         let uniqueWordCount = Object.keys(this.zipfMap).length;
         if (!isFinite(startIndex)) {
@@ -85,6 +90,10 @@ class Zipf {
     }
 
 
+    /**
+     * Processes the incoming data stream to update the stored table this.zipfMap
+     * @param {string} content 
+     */
     appendZipfData(content) {
         //Skarm.spam(`Received content: ${content}`);
         //filter sentence structure
