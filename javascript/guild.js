@@ -572,7 +572,7 @@ const linkFunctions = function(guild) {
 
     guild.assignNewMemberRoles = function (member, discord_guild, bot){
         let validRoles = discord_guild.roles.map(role=>role.id);
-        let roleList = guild.serverJoinRoles
+        let roleList = Object.keys(guild.serverJoinRoles)
             .filter(role => validRoles.includes(role))
             .filter(role => guild.botCanEditRole(role, bot))
         ;
