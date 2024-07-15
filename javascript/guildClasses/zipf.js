@@ -1,14 +1,16 @@
 "use strict";
 const fs = require("fs");
-const Skarm = require("./skarm.js");
-const Constants = require("./constants.js");
+const Skarm = require("../skarm.js");
+const Constants = require("../constants.js");
 
 class Zipf {
     constructor(zipfMap, self){
         /**
          *  takes two arguments from the parent guild constructor object
          * @param zipfMap - The original zipfMap object before Class encapsulation
+         *                - may be null
          * @param self - A serialized copy without methods of this object, containing all the latest data after the transfer
+         *             - will be null when the object is first created
          * 
          * In all three cases, zipfMap is:
          * 
@@ -16,7 +18,7 @@ class Zipf {
          * @type [key][string]word -> [value][int]instances
          * 
          */
-        this.zipfMap = self.zipfMap || zipfMap || {}; // reimport the map either from the origin or the new source
+        this.zipfMap = (self && self.zipfMap) || zipfMap || {}; // reimport the map either from the origin or the new source
     }
 
     getZipfSubset (startIndex) {
