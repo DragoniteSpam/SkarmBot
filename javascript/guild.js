@@ -496,12 +496,6 @@ const linkFunctions = function(guild) {
         return !!this.mayhemRoles[id];
     };
 
-    guild.sendWoeMessage = function() {
-        // for best results, the woe message should be formatted something like:
-        // "Yo, {user.username}! If you can see this, it means you've been
-        // restricted from using the server."
-        Skarm.sendMessageDelay(this.woe.channel, this.woe.message);
-    };
 
     guild.getLineCount = function() {
         return Object.keys(this.lines).length;
@@ -1012,11 +1006,6 @@ const linkFunctions = function(guild) {
 class Guild {
     constructor(id) {
         this.id = id;
-        
-        this.woe = {
-            message: "",
-            channel: null,
-        };
         
         this.mayhemRoles = { };
         
