@@ -7,6 +7,7 @@ const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
 const Users = require("./user.js");
 const { ShantyCollection, Shanty, ShantyIterator } = require("./shanties.js");
+const {Zipf} = require("./zipf.js")
 
 const SarGroups = require("./guildClasses/sar.js");
 const Parrot = require("./guildClasses/parrot.js");
@@ -70,13 +71,16 @@ const linkVariables = function(guild) {
         }
     }
     if (guild.hiddenChannels === undefined) {guild.hiddenChannels = {};}
-    if (guild.zipfMap === undefined) {guild.zipfMap = { };}
     if (guild.expBuffRoles === undefined) {guild.expBuffRoles = { };}
     if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
     if (guild.selfAssignedRoles === undefined) guild.selfAssignedRoles = { };
     guild.parrot ??= new Parrot(guild.id);
     guild.autoPin ??= new AutoPin(guild.id);
+
+    // regenerate the object from previously serialized data
     guild.shantyIterator = new ShantyIterator(guild.shantyIterator);
+    guild.zipf = new Zipf(guild.zipfMap, guild.zipf);
+
     guild.deceptiveMarkdownLinkAlert ??= true;
 };
 
@@ -427,54 +431,6 @@ const linkFunctions = function(guild) {
 
     };
 
-    guild.appendZipfData = function (content) {
-        //Skarm.spam(`Received content: ${content}`);
-        //filter sentence structure
-        content = content.toLowerCase();
-
-
-        //purge special characters
-        let replaceWithSpaceChars  = '.,/\r\n:()<>@"`#$%^&*_+={}[]\\|?!;';
-        for(let i in replaceWithSpaceChars){
-            let repl = replaceWithSpaceChars[i];
-            while(content.includes(repl)){
-                content = content.replace(repl," ");
-            }
-        }
-
-        while(content.includes("  ")){
-            content = content.replace("  "," ");
-        }
-
-
-        let words = content.split(" ");
-
-        //Skarm.spam(`Generated array: ${words}`);
-
-        for(let i in words){
-            let word = words[i];
-
-
-
-            //filter word structure
-            if(word.includes("http"))   continue;
-            if(word.includes("="))      continue;
-            if(word[0] === "-")         continue;
-            if(word[0] === "!")         continue;
-            if(word.length > 1 && word[1] === "!")         continue;
-
-            if(!(word in guild.zipfMap))
-                guild.zipfMap[word] = 0;
-            guild.zipfMap[word]++;
-        }
-
-        if ("" in guild.zipfMap){
-            delete guild.zipfMap[""];
-        }
-
-
-    };
-
     //functions corresponding to commands
     guild.soap = function () {
         if(this.lastSendLine) delete this.lines[this.lastSendLine];
@@ -500,69 +456,6 @@ const linkFunctions = function(guild) {
     guild.getLineCount = function() {
         return Object.keys(this.lines).length;
     };
-
-    guild.getZipfSubset = function (startIndex){
-        let uniqueWordCount = Object.keys(guild.zipfMap).length;
-        if(!isFinite(startIndex)){
-            return `Inappropriate input parameter: \`${startIndex}\`. Expected a number 1 - ${uniqueWordCount}`;
-        }else{
-            startIndex = startIndex-0;
-        }
-
-        //convert hashmap to array
-        let zipfArray = [ ];
-        for(let word in guild.zipfMap){
-            zipfArray.push({word:word, occurrences:guild.zipfMap[word]});
-        }
-        zipfArray.sort((a,b) => {return b.occurrences - a.occurrences});
-
-        let maxZipfWordLen = 0;
-        let maxZipfIdxLen = 0;
-
-        let idxAlignFlag = "%iaf";
-        let freqAlignFlag = "%faf";
-        let includedWords = [];
-
-        let printData = ["Frequency of values starting at " + startIndex + "```"];
-        for(let i = -1; i<9 && startIndex+i < zipfArray.length; i++){
-            let wordObj = zipfArray[startIndex+i];
-            includedWords.push(wordObj);
-            maxZipfWordLen = Math.max(maxZipfWordLen, wordObj.word.length);
-            let pushString = ""+(1+startIndex+i) + ":" + idxAlignFlag + wordObj.word + freqAlignFlag+" - " + wordObj.occurrences + "";
-            printData.push(pushString);
-            maxZipfIdxLen = Math.max(maxZipfIdxLen, pushString.indexOf(":"));
-        }
-
-        //Skarm.spam(`maxZipfWordLen: ${maxZipfWordLen}`);
-
-        for(let i in printData){
-            let lineText = printData[i];
-            if(lineText.includes(freqAlignFlag)){
-                let replacementString = "";
-                let spaceBufferWidth = 2 + maxZipfWordLen -  includedWords[i-1].word.length;
-                //Skarm.spam(`Assigning ${spaceBufferWidth} spaces for ${lineText}`);
-                for(let j=0; j<spaceBufferWidth; j++){
-                    replacementString+= " ";
-                }
-                while(replacementString.includes("    "))
-                    replacementString = replacementString.replace("    ","\t");
-                lineText = lineText.replace(freqAlignFlag,replacementString)
-            }
-
-            let indexEndFlag = ":";
-            let idxAlignText = "  ";
-            if(lineText.includes(indexEndFlag)){
-                if(lineText.indexOf(":") < maxZipfIdxLen)
-                    idxAlignText+= " ";
-                lineText = lineText.replace(idxAlignFlag, idxAlignText);
-            }
-
-            printData[i] = lineText;
-        }
-
-        printData.push("```");
-        return printData.join("\r\n");
-    }
 
     guild.assignNewMemberRoles = function (member, iGuild, bot){
         let validRoles = iGuild.roles.map(role=>role.id);
@@ -1136,13 +1029,6 @@ class Guild {
          * }
          */
 		this.selfAssignedRoles = { };
-
-
-        /**
-         * A hash map of words that have been observed to occur in the server.  Maps a word string to a
-         * @type [string]word -> [int]instances
-         */
-		this.zipfMap = { };
 
 		this.welcoming = true;
 		this.welcomes = { };

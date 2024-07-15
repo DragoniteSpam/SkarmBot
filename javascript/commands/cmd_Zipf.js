@@ -16,7 +16,7 @@ module.exports = {
         execute(bot, e, userData, guildData) {
             let args = Skarm.commandParamString(e.message.content);
             if (!args || args.length < 1) args = 1;
-            Skarm.sendMessageDelay(e.message.channel, guildData.getZipfSubset(args));
+            Skarm.sendMessageDelay(e.message.channel, guildData.zipf.getZipfSubset(args));
         },
 
         help(bot, e) {
