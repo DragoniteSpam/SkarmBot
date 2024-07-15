@@ -145,8 +145,11 @@ class Bot {
     
     OnMemberAdd(e) {
         let guildData = Guilds.get(e.guild.id);
-        guildData.assignNewMemberRoles(e.member, e.guild, this.client.User);
-		guildData.roleCheck(e.member,guildData.expTable[e.member.id]);
+        guildData.assignNewMemberRoles(e.member, e.guild, this.client.User).then(
+            ()=>{
+                guildData.roleCheck(e.member, guildData.expTable[e.member.id]);       // re-assign any leveled roles
+            }
+        )
 		guildData.notify(this.client,Constants.Notifications.MEMBER_JOIN,e);
 		if(guildData.welcoming){
 			for(let channel in guildData.welcomes){

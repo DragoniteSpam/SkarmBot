@@ -581,7 +581,13 @@ const linkFunctions = function(guild) {
         Skarm.spam("Joining member role list:", roleList);
         Skarm.spam("All valid role IDs:", validRoles);
 
-        member.setRoles(roleList);
+        if(roleList.length === 0){
+            return new Promise((resolve, reject) => {
+                resolve();  // instantly returns
+            })
+        }
+
+        return member.setRoles(roleList);  // returns the promise from the parent object
     }
 
     //functions that are subroutines of parrot
