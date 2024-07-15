@@ -620,11 +620,13 @@ class Skarm {
 
     static extractUser = function (message) {
         let userCandidates = Skarm.extractGUIDs(message);
+        let lastId = null;
         for(let id of userCandidates) {
             let user = Constants.client.Users.get(id);
             if(user) return id;
+            lastId = id;
         }
-        return null;
+        return lastId;         // if an active ID isn't found, it may belong to a former user 
     }
 
     static extractTextChannel = function (message) {

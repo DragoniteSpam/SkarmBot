@@ -33,10 +33,10 @@ module.exports = {
 
             if(param.length === 2) {
                 let p0 = param.shift();
-                if(p0.includes("@")){    //target first
+                if(p0.includes("@")){     //target first
                     target = p0;
                     newExp = param[0];
-                }else{                              //exp first
+                }else{                    //exp first
                     newExp = p0;
                     target = param[0];
                 }
