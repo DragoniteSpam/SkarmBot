@@ -142,37 +142,6 @@ const linkFunctions = function(guild) {
         return potential;
     };
 
-    guild.printRolesInGroup = function (groupStr, userData, channel, member) {
-        /**
-         * Prints the list of self-assignable roles that a member of a guild is allowed to equip
-         *
-         * TODO: add state information for whether selecting this option will add or remove the role
-         * TODO: add 'c' to cancel option
-         *
-         * @param groupStr - the name of the group the user requested
-         * @param userData - user data object for the member
-         * @param channel - channel in which modifications are happening
-         * @params member - Discordie guild member object
-         * @returns {{num -> roleID}}
-         */
-        let outputString = "Available Roles:\n";
-        outputString += "c: cancel\n";
-
-        Skarm.sendMessageDelay(channel," ",false,
-            {
-                color: Skarm.generateRGB(),
-                description: outputString,
-                timestamp: new Date(),
-                footer: {text: "SAR"}
-            },
-            // Add next-state instruction to delete prior message
-            (message, err) => {
-                userData.transcientActionStateData[channel.id].deleteMessage = message.id;
-            }
-        );
-        return returnHash;
-    }
-
     guild.botCanEditRole = function(roleID, botAccount) {
         let apiGuildData = Guild.getData(this.id);
 

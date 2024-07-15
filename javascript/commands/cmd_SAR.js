@@ -114,7 +114,7 @@ module.exports = {
                     userData.transcientActionStateData[channel.id] = { };
 
                 let vr = sarTreeRoot[group].getAvailableRoles(e.message.member);
-                userData.transcientActionStateData[channel.id].validRoles = vr; //guildData.printRolesInGroup(group, userData, channel, e.message.member);      // sends message containing available roles, returns those roles as a hashmap of valid entities
+                userData.transcientActionStateData[channel.id].validRoles = vr;    // sends message containing available roles, returns those roles as a hashmap of valid entities
                 userData.transcientActionStateData[channel.id].group = group;
 
                 // set state to role selection
