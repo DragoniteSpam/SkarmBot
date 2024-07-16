@@ -266,7 +266,7 @@ class Bot {
             guildData.executeMayhem(this.client.User);
             guildData.updateEXP(e);
             guildData.updateActivity(e);
-            guildData.appendZipfData(e.message.content);
+            guildData.zipf.appendZipfData(e.message.content);
         }
 
         // now we can start doing stuff
