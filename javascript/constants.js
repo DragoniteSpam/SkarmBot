@@ -1,5 +1,11 @@
 "use strict";
 
+let MILLIS = 1;
+let SECONDS = 1000 * MILLIS;
+let MINUTES = 60 * SECONDS;
+let HOURS = 60 * MINUTES;
+let DAYS = 24 * HOURS;
+
 // these aren't actually constants, since JS doesn't allow us to have nice
 // things, but they're in capital letters so if you try to modify any of them
 // I'm going to come to your house and whack you with a spoon.
@@ -8,6 +14,10 @@ class Constants {
     static initialize(){
         Constants.MAX_MESSAGE_LENGTH = 2000;
         
+        Constants.Time = {
+            MILLIS, SECONDS, MINUTES, HOURS, DAYS
+        }
+
         Constants.Tables = {
             MaxTableLength: 15              // maximum amount of objects to print in a table
         }
