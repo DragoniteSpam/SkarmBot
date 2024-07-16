@@ -9,9 +9,10 @@ const ComicNotifier = require("./_comic_base_class.js");
 
 class WorkChronicles extends ComicNotifier {
 	setTimePattern () {
+		Constants.initialize();
 		// This is set in a separate function to allow for easy inheritence overrides
 		this.discoveryDelay_ms = 0; // delay between when a new comic is discovered and when it is posted in channels
-		this.pollingInterval_ms = 1000 * 60 * 30;  // how often skarm pokes the source feed for new comics
+		this.pollingInterval_ms = 30 * Constants.Time.HOURS;  // how often skarm pokes the source feed for new comics
 	}
 
 	poll () {
