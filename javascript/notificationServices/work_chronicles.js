@@ -8,50 +8,63 @@ const Constants = require("../constants.js");
 const ComicNotifier = require("./_comic_base_class.js");
 
 class WorkChronicles extends ComicNotifier {
-	setTimePattern () {
-		Constants.initialize();
+	setTimePattern() {
 		// This is set in a separate function to allow for easy inheritence overrides
 		this.discoveryDelay_ms = 0; // delay between when a new comic is discovered and when it is posted in channels
 		this.pollingInterval_ms = 30 * Constants.Time.HOURS;  // how often skarm pokes the source feed for new comics
 	}
 
-	poll () {
+	poll() {
 		if (!this.enabled) return;
 		let tis = this;
 
-		let params={
-			timeout: 2000,
-			followAllRedirects: true,
-			uri: "https://workchronicles.com/feed/",
-		};
-
-		//Skarm.spam("Requesting: "+JSON.stringify(params));
-		request.get(params, function(error, response, body){
-			// Skarm.spam(JSON.stringify(response));return;
-			if(!response) return Skarm.spam("Failed to receive a response object when attempting to request "+JSON.stringify(params));
-			if(response.statusCode !== 200) return;
-			if (error) {
-				console.log(error);
+		let target = `https://workchronicles.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=50`;
+		console.log("Executing fetch on target", target);
+		fetch(target, {
+			"body": null,
+			"method": "GET"
+		}).then((response) => {
+			return response.json();
+		}).then((comics) => {
+			// fail gracefully in the event of a network error
+			if (!comics) {
+				Skarm.spam("Failed to retrieve comics array from work chronicles");
 				return;
 			}
-			parseString(response.body, (err, res) => {
-				let entries = res.rss.channel[0].item;
-				let rssComics = entries.map((ent) => {return {title: ent.title[0], link: ent.link[0]}});
-				// console.log("Existing Work Chronicles Archive:", tis.comicArchive);
-				// console.log("All RSS entries", rssComics);
-				for(let comic of rssComics){
-					if(comic.title in tis.comicArchive) {
-						console.log(comic.title, "is already in collection");
-					} else {
-						tis.comicArchive[comic.title] = comic.link;
-						console.log("Found new Work Chronicle not in the feed:", comic);
-						tis.publishRelease(comic.link);
-					}
-				}
-			});
-			// console.log(response.body);
-			// Skarm.spam(JSON.stringify(response.body));
-			return;
+
+			// seek out the new ones from the response
+			comics = comics.filter(c => c.title.includes("(comic)"));
+			console.log("Received", comics.length, "results from", target);
+			for(let fullComicObj of comics){
+				
+				// reduce the object down to just these properties for saving
+				let { title, slug, post_date, canonical_url, cover_image } = fullComicObj;
+				let smallC = { title, slug, post_date, canonical_url, cover_image }; 
+
+				// check if we already have an entry with that slug
+				let existingC = tis.comicArchive.filter(entry=>entry.slug === smallC.slug);
+				if(existingC.length > 0) continue; // don't republish existing comics
+				console.log("Found new comic:", smallC);
+
+				// add the comic to the collection
+				tis.comicArchive.push(smallC);
+
+				// make sure things remain sorted by publication date
+				tis.comicArchive.sort((a,b) => {
+					let ad = (new Date(a.post_date)).getTime();
+					let bd = (new Date(b.post_date)).getTime();
+					let comparison = ad - bd;
+					console.log("Comparing", ad, bd, "-->", comparison);
+					return comparison;
+				});
+
+				// publish
+				tis.publishRelease(cover_image);
+
+				// perish
+				// that is, only publish one comic per polling cycle to not spam channels
+				break;
+			}
 		});
 	}
 
@@ -66,15 +79,15 @@ class WorkChronicles extends ComicNotifier {
 
 		let results = [];
 
-		for(let reference in this.comicArchive){
+		for (let reference in this.comicArchive) {
 			// halt on exact matches
 			if (reference === id) {
-				results = [{reference:reference, link: this.comicArchive[reference]}];
+				results = [{ reference: reference, link: this.comicArchive[reference] }];
 				break;
 			}
 
 			if (reference.includes(id)) {
-				results.push({reference:reference, link: this.comicArchive[reference]});
+				results.push({ reference: reference, link: this.comicArchive[reference] });
 			}
 		}
 
@@ -111,8 +124,8 @@ module.exports = WorkChronicles;
  * 
 ```
 $collection = 1..22 | foreach {
-    $r = Invoke-WebRequest -UseBasicParsing  "https://workchronicles.com/comics/page/$_/"
-    $r.Content.Split("<") | where {$_ -like "*data-a2a-title*"} | foreach {[xml]"<$_</div>"} | foreach div
+	$r = Invoke-WebRequest -UseBasicParsing  "https://workchronicles.com/comics/page/$_/"
+	$r.Content.Split("<") | where {$_ -like "*data-a2a-title*"} | foreach {[xml]"<$_</div>"} | foreach div
 }
 
 $a = @{}
