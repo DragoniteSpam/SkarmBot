@@ -31,7 +31,7 @@ module.exports = {
                 }
             }
             
-            if (channel === null) {
+            if (!channel || !channel.fetchPinned) {
                 return Skarm.sendMessageDelay(e.message.channel, "failed to find channel id");
             }
             

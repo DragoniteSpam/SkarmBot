@@ -129,6 +129,11 @@ class Skarm {
             channel = Constants.client.Channels.get(channel);
         }
 
+        if(!channel){
+            console.log("channel argument is falsey");
+            return;
+        }
+
         if(!this.hasMessageAccess(channel))return;
 
         channel.sendTyping();
