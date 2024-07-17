@@ -5,6 +5,7 @@ const Constants = require("../constants.js");
 
 class ComicNotifier {
     constructor(bot) {
+		Constants.initialize();
 		this.bot = bot;
 		this.interval = null;
 		this.enabled = true;
@@ -35,7 +36,7 @@ class ComicNotifier {
 
 	createComicArchive () {
 		// The data structure to store comics
-		return {};
+		return [];
 	}
 
 	setSignature () {
@@ -46,8 +47,8 @@ class ComicNotifier {
 
     setTimePattern () {
 		// This is set in a separate function to allow for easy inheritence overrides
-		this.discoveryDelay_ms = 1000 * 60 * 15; // delay between when a new comic is discovered and when it is posted in channels
-		this.pollingInterval_ms = 1000 * 60 * 30;  // how often skarm pokes the source feed for new comics
+		this.discoveryDelay_ms  = Constants.Time.MINUTES * 15; // delay between when a new comic is discovered and when it is posted in channels
+		this.pollingInterval_ms = Constants.Time.MINUTES * 30;  // how often skarm pokes the source feed for new comics
 	}
 
 	initialize () {
@@ -79,6 +80,7 @@ class ComicNotifier {
 	}
 
 	_poll () {
+		console.log("Polling comic:", this.signature);
 		Skarm.spam("Polling comic:", this.signature); 
 		this.poll();
 	}
