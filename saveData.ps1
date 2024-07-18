@@ -23,8 +23,29 @@ if(-not(Test-Path $dataDestination)){
     exit
 }
 
-# Purge clones
+### Purge clones
 ls $dataRemoval | Remove-Item -Verbose
 
-# Save data to Box
-ls $dataSource | where {$_.Length -gt 8} | foreach {Write-Host "Saving $($_.Name) of size $($_.Length) to the cloud..."; Copy-Item -Path $_ -Destination $dataDestination -Force}
+
+### Save data to Box
+ls $dataSource | where {$_.Length -gt ".penguin".Length} |    # Take all the local penguin files
+foreach {
+    Write-Host "Saving $($_.Name) of size $($_.Length) to the cloud..."; 
+    Copy-Item -Path $_ -Destination $dataDestination -Force
+}
+
+
+### Save data backups based on timestamp
+# using '-format "yyyy/MM/dd"' does not have consistently 
+# correct behavior based on regional format
+$d = (Get-Date -format "yyyy-MM-dd") -replace "-","/"
+$backupPath = Join-Path  $dataDestination $d                  # use cmdlet for clean/reliable path merging
+mkdir $backupPath -ErrorAction SilentlyContinue | Out-Null    # make the date-based folder if it hasn't already been made
+
+# repeat save to data backup destination
+ls $dataSource | 
+where {$_.Length -gt ".penguin".Length} | 
+foreach {
+    Write-Host "Saving $($_.Name) of size $($_.Length) to the backup path $backupPath`..."; 
+    Copy-Item -Path $_ -Destination $backupPath -Force
+}
