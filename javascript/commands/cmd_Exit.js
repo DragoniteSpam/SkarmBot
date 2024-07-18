@@ -5,7 +5,12 @@ module.exports = {
         aliases: ["exit","shutdown"],
         params: ["-nosave", "vPID"],
         usageChar: "@",
-        helpText: "Terminates the process running the bot safely. Use this to ensure that data is saved before restarting for maintainance or any other reasons. Use the extension -nosave to prevent commiting to skarmData.",
+        helpText: [
+            "Terminates the process running the bot safely. Use this to ensure that data is saved before restarting for maintainance or any other reasons.",
+            "Use the extension -nosave to prevent commiting to skarmData.",
+            "",
+            "Virtual process IDs (vPIDs) for only terminating a specific instance are retrieved via e!bot"
+        ].join("\n"),
         examples: [
             {command: "e@exit", effect: "Save and shut down."},
             {command: "e@exit -nosave", effect: "Shut down without saving."},
