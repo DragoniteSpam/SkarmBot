@@ -101,7 +101,7 @@ class ComicNotifier {
 		for(let guild in Guild.guilds) {
 			setTimeout(()=>{
 				console.log("Notifying guild", guild, "of new release:", publishingData);
-				Guild.guilds[guild].comicNotify(tis.bot.client, tis.signature, publishingData);
+				Guild.guilds[guild].comicSubscriptions.notify(tis.bot.client, tis.signature, publishingData);
 			}, tis.discoveryDelay_ms);
 		}
 		tis.save(Constants.SaveCodes.DONOTHING);
