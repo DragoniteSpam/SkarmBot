@@ -55,23 +55,8 @@ const linkVariables = function(guild) {
     // this property no longer exists after 2.56.1280
     if (guild.activityTable) delete guild["activityTable"];
 
-    if (guild.flexActivityTable === undefined) {
-        guild.flexActivityTable = {};
-        for(let i in guild.activityTable){
-            let prevObj = guild.activityTable[i];
-            guild.flexActivityTable[prevObj.userID] = {
-                days: {},
-                totalWordCount:0,
-                totalMessageCount:1
-            };
+    guild.flexActivityTable ??= {};
 
-            for(let day in prevObj.days){
-                guild.flexActivityTable[prevObj.userID].totalWordCount += prevObj.days[day];
-                guild.flexActivityTable[prevObj.userID].days[day]= {wordCount:prevObj.days[day], messageCount: 1};
-            }
-
-        }
-    }
     if (guild.hiddenChannels === undefined) {guild.hiddenChannels = {};}
     if (guild.expBuffRoles === undefined) {guild.expBuffRoles = { };}
     if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
@@ -647,7 +632,7 @@ const linkFunctions = function(guild) {
 		if(Object.keys(guild.rolesTable).length === 0) return;
 
 		if(userEXPData === undefined){
-		    return
+		    return;
         }
 
 		//give users the role achieved at their level or the next one available bellow it
