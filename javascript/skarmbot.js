@@ -35,7 +35,7 @@ class Bot {
          * 
          * @type int 
          */
-        this.pid = Math.floor(Math.random()*Constants.processIdMax)<<Constants.versionOffsetBits + this.version%Constants.versionOffsetBits;
+        this.pid = Math.floor(Math.random() * Constants.processIdMax) << Constants.versionOffsetBits + this.version % Constants.versionOffsetBits;
 
         this.client = client;
 
@@ -60,37 +60,37 @@ class Bot {
         this.keywords = Skarm.addKeywords(Keywords);
 
         this.games = [
-            "e!help", 
+            "e!help",
             this.getSpaghetti() + " lines of spaghetti"
         ];
         this.game = 0;
 
-        this.timer30min = setInterval(function() {
+        this.timer30min = setInterval(function () {
             this.save(Constants.SaveCodes.DONOTHING);
-        }.bind(this), 30 * 60 * 1000);
+        }.bind(this), 30 * Constants.Time.MINUTES);
 
-        this.gameChanger = function() {
-            if(this.game > Constants.GameState.MANUAL) {
-                this.client.User.setGame({name: this.games[(++this.game) % this.games.length], type: 0});
+        this.gameChanger = function () {
+            if (this.game > Constants.GameState.MANUAL) {
+                this.client.User.setGame({ name: this.games[(++this.game) % this.games.length], type: 0 });
             }
         }
 
-        this.timer1min = setInterval(this.gameChanger, 60*1000);
+        this.timer1min = setInterval(this.gameChanger, 1 * Constants.Time.MINUTES);
         this.gameChanger();
     }
 
     // events
     OnMessageDelete(message) {
         let string = "";
-        if (message){
-            if (!message.author.bot){
-                if (!message){
-                    string = "<message not cached>"; 
+        if (message) {
+            if (!message.author.bot) {
+                if (!message) {
+                    string = "<message not cached>";
                 } else {
                     string = message.content + " by " + message.author.username;
                 }
                 fs.appendFile("../skarmData/deleted.txt", string + "\r\n", (err) => {
-                    if (err){
+                    if (err) {
                         Skarm.logError(err);
                     }
                 });
@@ -98,22 +98,22 @@ class Bot {
             }
         }
     }
-    
+
     OnMessageReactionAdd(e) {
         const UPVOTE = 0x2b06;
         const REDX = '\u274c';
 
-		if(!e)
-			return Skarm.spam("encountered null event in OnMessageReactionAdd");
-		if(e.message==null)
-			return Skarm.spam("encountered null message in onMessageReactionAdd");
-		if(!e.message.guild)
-			return Skarm.spam("encountered null guild in OnMessageReactionAdd");
+        if (!e)
+            return Skarm.spam("encountered null event in OnMessageReactionAdd");
+        if (e.message == null)
+            return Skarm.spam("encountered null message in onMessageReactionAdd");
+        if (!e.message.guild)
+            return Skarm.spam("encountered null guild in OnMessageReactionAdd");
 
         let guildData = Guilds.get(e.message.guild.id);
         const REQUIRED_UPVOTES = guildData.channelsPinUpvotes[e.message.channel.id];
 
-		if(e.message.id in this.toBeDeletedCache) {
+        if (e.message.id in this.toBeDeletedCache) {
             for (let i in e.message.reactions) {
                 let reaction = e.message.reactions[i];
                 //Skarm.log(JSON.stringify(reaction));
@@ -136,78 +136,78 @@ class Bot {
             for (let i in e.message.reactions) {
                 let reaction = e.message.reactions[i];
                 if (reaction.emoji.name.charCodeAt(0) === UPVOTE && ++upvotes === REQUIRED_UPVOTES) {
-                    e.message.pin().catch(_ => {console.log('Failed to pin');});
+                    e.message.pin().catch(_ => { console.log('Failed to pin'); });
                     break;
                 }
             }
         }
     }
-    
+
     OnMemberAdd(e) {
         let guildData = Guilds.get(e.guild.id);
         guildData.assignNewMemberRoles(e.member, e.guild, this.client.User).then(
-            ()=>{
+            () => {
                 guildData.roleCheck(e.member, guildData.expTable[e.member.id]);       // re-assign any leveled roles
             }
         )
-		guildData.notify(this.client,Constants.Notifications.MEMBER_JOIN,e);
-		if(guildData.welcoming){
-			for(let channel in guildData.welcomes){
-				let sms = guildData.welcomes[channel];
-				while(sms.indexOf("<newmember>")>-1){
-					sms=sms.replace("<newmember>","<@"+e.member.id+">");
-				}
-				Skarm.sendMessageDelay(this.client.Channels.get(channel),sms);
-			}
-		}
-    }
-    
-	OnMemberUpdate(e) {
-		if(e.rolesRemoved.length > 0){
-			let changes = "Roles removed for " + e.member.username + " in " + e.guild.name + ": ";
-			for (let i in e.rolesRemoved) {
-				changes += e.rolesRemoved[i].name;
-				if (i < e.rolesRemoved.length - 1) {
-					changes += ", ";
+        guildData.notify(this.client, Constants.Notifications.MEMBER_JOIN, e);
+        if (guildData.welcoming) {
+            for (let channel in guildData.welcomes) {
+                let sms = guildData.welcomes[channel];
+                while (sms.indexOf("<newmember>") > -1) {
+                    sms = sms.replace("<newmember>", "<@" + e.member.id + ">");
                 }
-			}
-			Skarm.spam(changes);
-		}
-		if (e.rolesAdded.length > 0){
-			let changes = "Roles added for " + e.member.username + " in " + e.guild.name + ": ";
-			for (let i in e.rolesAdded) {
-				changes += e.rolesAdded[i].name;
-				if (i < e.rolesAdded.length - 1) {
-					changes += ", ";
-                }
-			}
-			Skarm.spam(changes);
-		}
-		if(e.member){
-		    if(e.previousNick !== e.member.nick) {
-                Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.NICK_CHANGE, e);
+                Skarm.sendMessageDelay(this.client.Channels.get(channel), sms);
             }
-        }else{
-		    Skarm.spam(Constants.Moms.MASTER.mention);
-		    Skarm.spam(JSON.stringify(e));
         }
     }
 
-	OnMemberRemove(e) {
-        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.MEMBER_LEAVE, e);
+    OnMemberUpdate(e) {
+        if (e.rolesRemoved.length > 0) {
+            let changes = "Roles removed for " + e.member.username + " in " + e.guild.name + ": ";
+            for (let i in e.rolesRemoved) {
+                changes += e.rolesRemoved[i].name;
+                if (i < e.rolesRemoved.length - 1) {
+                    changes += ", ";
+                }
+            }
+            Skarm.spam(changes);
+        }
+        if (e.rolesAdded.length > 0) {
+            let changes = "Roles added for " + e.member.username + " in " + e.guild.name + ": ";
+            for (let i in e.rolesAdded) {
+                changes += e.rolesAdded[i].name;
+                if (i < e.rolesAdded.length - 1) {
+                    changes += ", ";
+                }
+            }
+            Skarm.spam(changes);
+        }
+        if (e.member) {
+            if (e.previousNick !== e.member.nick) {
+                Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.NICK_CHANGE, e);
+            }
+        } else {
+            Skarm.spam(Constants.Moms.MASTER.mention);
+            Skarm.spam(JSON.stringify(e));
+        }
+    }
+
+    OnMemberRemove(e) {
+        Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.MEMBER_LEAVE, e);
     }
 
     OnGuildBanAdd(e) {
-        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.BAN, e);
+        Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.BAN, e);
     }
 
     OnGuildBanRemove(e) {
-        Guilds.get(e.guild.id).notify(this.client,Constants.Notifications.BAN_REMOVE, e);
+        Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.BAN_REMOVE, e);
     }
 
-    OnVoiceChannelJoin(e){
+    OnVoiceChannelJoin(e) {
         //console.log("Voice join event: "+JSON.stringify(e));
-        Guilds.get(e.guildId).notify(this.client,Constants.Notifications.VOICE_JOIN, e);
+        Guilds.get(e.guildId).notify(this.client, Constants.Notifications.VOICE_JOIN, e);
     }
 
     OnVoiceChannelLeave(e) {
@@ -240,7 +240,7 @@ class Bot {
 
         // don't respond to messages with no content and no body.  
         // Usually happens when there is a new member joining announcement message.
-        if(!e.message.content && !e.message.attachments){
+        if (!e.message.content && !e.message.attachments) {
             Skarm.spam("Received an empty message.  Probably someone joining.");
             console.log(e.message);
             return;  // take no further action with this
@@ -281,7 +281,7 @@ class Bot {
 
         // check if message has prior commitments to attend to in the channel
         let userChannelState = userData.actionState[e.message.channel.id];
-        if(userChannelState){
+        if (userChannelState) {
             let handler = userChannelState.handler;              // save handler
             clearTimeout(userChannelState.timeout);              // destroy timeout
             delete userData.actionState[e.message.channel.id];   // destroy state remnant
@@ -300,10 +300,10 @@ class Bot {
                 // functions called in this way in the object's own scope and
                 // you don't otherwise have a way to reference it
                 if (guildData.hasPermissions(userData, data.perms)) {
-                    if(cmdData) {
+                    if (cmdData) {
                         data.execute(this, e, userData, guildData);
                     }
-                    if(helpData) {
+                    if (helpData) {
                         data.help(this, e);
                     }
                 } else {
@@ -313,15 +313,13 @@ class Bot {
                         " stocking this year, " + author.username + ".");
                 }
                 return true;
-            }else{
+            } else {
                 Skarm.spam(`Attempted to use command \`${e.message.content}\` in channel: \`${e.message.channel.id}\``);
             }
         }
 
         // ignore messages that mention anyone or anything
-        if (e.message.mentions.length > 0 ||
-            e.message.mention_roles.length > 0 ||
-            e.message.mention_everyone) {
+        if (e.message.mentions.length > 0 || e.message.mention_roles.length > 0 || e.message.mention_everyone) {
             return false;
         }
 
@@ -336,14 +334,14 @@ class Bot {
             let partial = text;
             let allComponentsMatch = true;
             let components = word.split("*");
-            if(components.length===0) continue;
+            if (components.length === 0) continue;
             //make sure every component exists in sequence for matches with multiple parts.
-            for(let c in components){
+            for (let c in components) {
                 let component = components[c];
-                if(partial.includes(component)){
-                    partial = partial.substring(partial.indexOf(component)+component.length);
-                }else{
-                    allComponentsMatch=false;
+                if (partial.includes(component)) {
+                    partial = partial.substring(partial.indexOf(component) + component.length);
+                } else {
+                    allComponentsMatch = false;
                     break;
                 }
             }
@@ -380,63 +378,63 @@ class Bot {
 
 
         // parrot module - all large scale quote repos and dynamic data acquired from the guild
-        if(this.isValidResponse(e)){
+        if (this.isValidResponse(e)) {
             this.parrot(e, guildData);
         }
 
         return false;
     }
 
-    OnPresenceUpdate(e){
+    OnPresenceUpdate(e) {
 
         let proceed = (n) => {
-            if(Users.get(e.user.id).previousName) {
+            if (Users.get(e.user.id).previousName) {
                 return Guilds.get(e.guild.id).notify(this.client, Constants.Notifications.NAME_CHANGE, e);
             }
-            if(n>0){
-                return setTimeout(()=>{proceed(n-1);},25);
+            if (n > 0) {
+                return setTimeout(() => { proceed(n - 1); }, 25);
             }
         };
-        
-        if(e.user.bot)return;
+
+        if (e.user.bot) return;
         //Skarm.spam("Presence Update detected for User : "+ (e.user.id));
         proceed(100);
     }
 
-    OnPresenceMemberUpdate(e){
-        if(e.old.username !== e.new.username){
+    OnPresenceMemberUpdate(e) {
+        if (e.old.username !== e.new.username) {
             Users.get(e.new.id).previousName = e.old.username;
             console.log(`Old username ${e.old.username} updated to new username ${e.new.username}`);
             //Skarm.spam(`Username update set to user object:  ${Users.get(e.new.id).previousName} is now ${e.new.username}`);
             //Skarm.spam("OnPresenceMemberUpdate JSON object for user: "+JSON.stringify(Users.get(e.new.id)));
-            setTimeout(() =>{
+            setTimeout(() => {
                 Users.get(e.new.id).previousName = undefined;
                 //Skarm.spam("Username update timeout");
-            },10000);
-        }else{
+            }, 10000);
+        } else {
             //Skarm.spam("No change detected: "+e.old.username+" -> "+ e.new.username);
         }
     }
 
     /**
-	* Deletes anything that may not be picked up by garbage collection upon the termination of this object.
-	*/
-	poisonPill(){
-		clearInterval(this.timer30min);
-		clearInterval(this.timer1min);
-		this.comics.poisonPill();
-	}
-	
+    * Deletes anything that may not be picked up by garbage collection upon the termination of this object.
+    */
+    poisonPill() {
+        clearInterval(this.timer30min);
+        clearInterval(this.timer1min);
+        this.comics.poisonPill();
+    }
+
     // functionality
 
-    checkForDeceptiveMarkdown(message, guildData){
+    checkForDeceptiveMarkdown(message, guildData) {
         // do nothing if the guild has disabled this utility
-        if(!guildData.deceptiveMarkdownLinkAlert) return;
+        if (!guildData.deceptiveMarkdownLinkAlert) return;
 
         // check if there are any markdown links in the regex
         let markdownLinkRegex = /\[.*?]\(.*?\)/gm;
         let segments = message.content.match(markdownLinkRegex);
-        if(!segments || !segments.length) return;
+        if (!segments || !segments.length) return;
         let badData = [];
         let text, link;
 
@@ -444,17 +442,17 @@ class Bot {
         // Each segment is structured as [*](*)
         // e.g. [click me!](https://xkcd.com/405)
         // or [google.com](https://scam-website.com/giveMeYourWallet)
-        for(let segment of segments){
+        for (let segment of segments) {
             [text, link] = segment.split("](");
-            text = text.replace("[","").trim();
-            link = link.replace(")","").trim();
-            if(Skarm.ContainsUrl(text) && Skarm.ContainsUrl(link) && text !== link){
+            text = text.replace("[", "").trim();
+            link = link.replace(")", "").trim();
+            if (Skarm.ContainsUrl(text) && Skarm.ContainsUrl(link) && text !== link) {
                 badData.push(`${text} --> ${link}`);
             }
         }
 
         // report bad redirects
-        if(badData.length){
+        if (badData.length) {
             Skarm.sendMessageDelay(message.channel, " ", false, {
                 color: Constants.Colors.RED,
                 description: [
@@ -465,7 +463,7 @@ class Bot {
                     "To disable this alert, please run `e@markdownalert disable`",
                 ].join("\r\n"),
                 timestamp: new Date(),
-                footer: {text: `Message from @${message.author.username}`},
+                footer: { text: `Message from @${message.author.username}` },
             }); // throw back the found data
         }
     }
@@ -491,7 +489,7 @@ class Bot {
         this.attemptLearnLine(e);
     }
 
-    
+
     getRandomLine(e) {
         return Guilds.get(e.message.guild.id).getRandomLine(e);
     }
@@ -514,17 +512,17 @@ class Bot {
         if (e.message.content.length === 0) {
             return 0;
         }
-        
+
         let hash = e.message.author.id % Constants.Vars.USER_OFFSET_MOD;
         let str = e.message.content.toLowerCase();
         for (let i = 0; i < str.length; i++) {
-          hash = (((hash << 5) - hash) + str.charCodeAt(i)) | 0;
+            hash = (((hash << 5) - hash) + str.charCodeAt(i)) | 0;
         }
 
         // console.log(e.message.content, hash);
         return hash;
     }
-    
+
     //checks if anyone's summons are triggered by the message and sends them out
     summons(e) {
         let content = e.message.content.toLowerCase();
@@ -543,7 +541,7 @@ class Bot {
             }
         }
     }
-    
+
     // helpers
 
 
@@ -560,7 +558,7 @@ class Bot {
                 return (Math.random() < references[keyword]);
             }
         }
-        
+
         return false;
     }
 
@@ -585,13 +583,13 @@ class Bot {
 
         let savior = spawn('powershell.exe', [Constants.skarmRootPath + 'saveData.ps1']);
         savior.stdout.on("data", (data) => {
-            data = data.toString().replaceAll("\r","").replaceAll("\n","");
-            if(data.length > 1)
+            data = data.toString().replaceAll("\r", "").replaceAll("\n", "");
+            if (data.length > 1)
                 Skarm.saveLog(data);
         });
         savior.stderr.on("data", (data) => {
-            data = data.toString().replaceAll("\r","").replaceAll("\n","");
-            if(data.length > 1)
+            data = data.toString().replaceAll("\r", "").replaceAll("\n", "");
+            if (data.length > 1)
                 Skarm.saveLog(data);
         });
         savior.on('exit', (code) => {
@@ -607,28 +605,28 @@ class Bot {
         });
 
     }
-    
+
     saveDebug() {
         Guilds.saveDebug();
         Users.saveDebug();
     }
-    
+
 
     // javascript devs would be happier if you did this with promises and async.
     // i can't say i care enough to deal with promises and async.
     getSpaghetti() {
         return this.getSpaghettiAt(".");
     }
-    
+
     getSpaghettiAt(basePath) {
         let localSum = 0;
         let files = fs.readdirSync(basePath).map(f => `${basePath}/${f}`);
-        for(let file of files) {
-            if(file.includes("node_module")) continue;
-            if(fs.lstatSync(file).isDirectory()) {
+        for (let file of files) {
+            if (file.includes("node_module")) continue;
+            if (fs.lstatSync(file).isDirectory()) {
                 localSum += this.getSpaghettiAt(file);
             } else {
-                if (file.includes(".js")){
+                if (file.includes(".js")) {
                     localSum += this.lineCount(file);
                 }
             }
