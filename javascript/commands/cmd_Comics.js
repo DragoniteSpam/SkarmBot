@@ -23,22 +23,20 @@ module.exports = {
         execute(bot, e, userData, guildData) {
             let comicCollection = bot.comics;
             let topics = comicCollection.getAvailableSubscriptions();
-            let notifChannels = guildData.comicChannels;
             let args = Skarm.commandParamTokens(e.message.content);
-
 
             for(let i in topics) {
                 let comicName = topics[i];
-                notifChannels[comicName] ??= { };  // make sure all comic channel lists exist before accessing them
+                guildData.comicChannels[comicName] ??= { };  // make sure all comic channel lists exist before accessing them
             }
 
             function constructStatusBody() {
                 let body = "";
                 for(let i in topics) {
                     let comicName = topics[i];
-                    body += `[${i}] **${comicName}** posts are currently set to: **${(e.message.channel.id in notifChannels[comicName]) ? "Enabled":"Disabled"}**\n`;
+                    body += `[${i}] **${comicName}** posts are currently set to: **${(e.message.channel.id in guildData.comicChannels[comicName]) ? "Enabled":"Disabled"}**\n`;
                 }
-                // console.log("Notification channels:", notifChannels);
+                // console.log("Notification channels:", guildData.comicChannels);
                 // console.log("Current comic topics:", topics);
                 return body;
             }
@@ -60,13 +58,13 @@ module.exports = {
                 Skarm.sendMessageDelay(e.message.channel, `Invalid input: \`${idx}\``);
                 return;
             }
-            
+
             let topic = topics[idx];
-            if (e.message.channel.id in notifChannels[topic]) {
-                delete notifChannels[topic][e.message.channel.id];
+            if (e.message.channel.id in guildData.comicChannels[topic]) {
+                delete guildData.comicChannels[topic][e.message.channel.id];
                 Skarm.sendMessageDelay(e.message.channel, `New releases of ${topic} will no longer be sent to **${e.message.channel.name}!**`);
             }else{
-                notifChannels[topic][e.message.channel.id] = Date.now();
+                guildData.comicChannels[topic][e.message.channel.id] = Date.now();
                 Skarm.sendMessageDelay(e.message.channel, `New releases of ${topic} will be sent to **${e.message.channel.name}!**`);
             }
         },

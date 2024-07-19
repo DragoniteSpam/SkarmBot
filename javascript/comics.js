@@ -4,7 +4,7 @@
  * Comics
  * 
  * An intermediate interface like Commands 
- * that allows for scalable onboarding of many puzzle classes
+ * that allows for scalable onboarding of many comic classes
  */
 
 const fs = require("fs");
