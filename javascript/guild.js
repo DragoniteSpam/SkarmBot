@@ -52,7 +52,9 @@ const linkVariables = function(guild) {
         delete guild.notificationChannels["XKCD"];
     };
 
-    if (guild.activityTable === undefined) guild.activityTable = [ ];
+    // this property no longer exists after 2.56.1280
+    if (guild.activityTable) delete guild["activityTable"];
+
     if (guild.flexActivityTable === undefined) {
         guild.flexActivityTable = {};
         for(let i in guild.activityTable){
@@ -842,43 +844,6 @@ const linkFunctions = function(guild) {
         return 0;
     };
 
-	//TODO: make this into timsort if the runtime is bad
-	guild.sortActivityTable = function (){
-	    for(let i in guild.activityTable){
-	        guild.minSortActivityTable(i);
-        }
-	    return guild.activityTable.sort((a,b)=>{return b.totalWords-a.totalWords;});
-    };
-
-    //I'm throwing in -0 at the end of various things to make sure that any numbers stored as strings are cast properly
-    //aggregates and cleans up total words then performs a single swap if appropriate
-    guild.minSortActivityTable = function (i) {
-        //Skarm.spam("Partially sorting at index "+i);
-        i=i-0;
-        let updatedTotal=0;
-        for(let day in guild.activityTable[i].days){
-            if(((day-0) + 365*24*60*60*1000)<Date.now()){
-                //keep activity data for 1 year
-                delete guild.activityTable[i].days[day];
-            }else{
-                //Skarm.spam(guild.activityTable[i].da)
-                updatedTotal += guild.activityTable[i].days[day]-0;
-            }
-        }
-        //Skarm.spam("Updated total: "+updatedTotal);
-        guild.activityTable[i].totalWords=updatedTotal;
-        //Skarm.spam(`new total words for ${JSON.stringify(guild.activityTable[i])}`);
-
-        if(i===0)return;
-        //Skarm.spam(i);
-        //Skarm.spam(JSON.stringify(guild.activityTable));
-        if(guild.activityTable[i].totalWords > guild.activityTable[i-1].totalWords){
-            let temp = guild.activityTable[i];
-            guild.activityTable[i]=guild.activityTable[i-1];
-            guild.activityTable[i-1]=temp;
-        }
-    };
-
 	guild.toggleHiddenChannel = function (channelID) {
         this.hiddenChannels[channelID] = !this.hiddenChannels[channelID];
         return this.hiddenChannels[channelID];
@@ -933,8 +898,6 @@ class Guild {
 
 		this.aliases = { };  //Other names that skarm will respond to, changed through the Alias command
 
-		//[{userID: String -> {Date:Long -> wordCount:Int},totalWords -> Int}]
-		this.activityTable = [];
         /**
          *
          *  All properties should update per-message.  All days older than a year should be purged from the days hashtable.
