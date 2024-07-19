@@ -23,7 +23,7 @@ class Subscription {
         if (!this.live()) {
             console.log("Set up catch-up publisher for comic:", this.channel, this.comic);
             let tis = this;
-            this.interval = setInterval(()=>{tis.postCatchup();}, 1 * Constants.Time.DAYS);
+            this.interval = setInterval(() => { tis.postCatchup(); }, 1 * Constants.Time.DAYS);
         }
     }
 
@@ -32,7 +32,7 @@ class Subscription {
         if (this.live()) return;
 
         let comic = ComicsCollection.get(this.comic);
-        if(!comic){
+        if (!comic) {
             console.log("Failed to retrieve comic", this.comic, "from comic collection.  Got:", comic);
             return;
         }
@@ -127,7 +127,7 @@ class ComicSubscriptions {
 
     unsubscribe(channel, comic) {
         let unsub = this.get(channel, comic);
-        if(unsub.interval){
+        if (unsub.interval) {
             clearInterval(unsub.interval);
         }
 
