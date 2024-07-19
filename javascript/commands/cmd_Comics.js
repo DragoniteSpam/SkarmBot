@@ -5,10 +5,16 @@ module.exports = {
         aliases: ["comics"],
         params: ["#"],
         usageChar: "@",
-        helpText: "Toggles the notifications of comic strips for this channel.  Use without a number input to view current state of channel.",
+        helpText: [
+            "Toggles the notifications of comic strips for this channel.",
+            "Use without a number input to view current state of channel.",
+            "Use the parameter -s (starting point) to indicate an alternative point from which skarm should start publishing comics.",
+            "Once the early start point catches up with the current release, skarm will switch to just publishing new releases."
+        ].join("\n"),
         examples: [
             {command: "e@comics", effect: "Will cause Skarm to list all available comic subscriptions to toggle."},
             {command: "e@comics 1", effect: "Will cause Skarm to toggle announcing all new releases of comic 1 from the list."},
+            {command: "e@comics 1 -s 0", effect: "Starts the comic subscription feed at entry 0, publishing the next entry in the sequence once per day."},
         ],
         ignoreHidden: false,
         perms: Permissions.MOD,
@@ -50,19 +56,19 @@ module.exports = {
             }
 
             let idx = args[0];
-            if (idx in topics) {
-                let topic = topics[idx];
-                if (e.message.channel.id in notifChannels[topic]) {
-                    delete notifChannels[topic][e.message.channel.id];
-                    Skarm.sendMessageDelay(e.message.channel, `New releases of ${topic} will no longer be sent to **${e.message.channel.name}!**`);
-                }else{
-                    notifChannels[topic][e.message.channel.id] = Date.now();
-                    Skarm.sendMessageDelay(e.message.channel, `New releases of ${topic} will be sent to **${e.message.channel.name}!**`);
-                }
+            if (!(idx in topics)) {
+                Skarm.sendMessageDelay(e.message.channel, `Invalid input: \`${idx}\``);
                 return;
             }
-
-            Skarm.sendMessageDelay(e.message.channel, `Invalid input: \`${idx}\``);
+            
+            let topic = topics[idx];
+            if (e.message.channel.id in notifChannels[topic]) {
+                delete notifChannels[topic][e.message.channel.id];
+                Skarm.sendMessageDelay(e.message.channel, `New releases of ${topic} will no longer be sent to **${e.message.channel.name}!**`);
+            }else{
+                notifChannels[topic][e.message.channel.id] = Date.now();
+                Skarm.sendMessageDelay(e.message.channel, `New releases of ${topic} will be sent to **${e.message.channel.name}!**`);
+            }
         },
 
         help(bot, e) {
