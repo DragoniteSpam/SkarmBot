@@ -31,7 +31,11 @@ class ComicNotifier {
 
 	length () {
 		// Returns the number of comics currently in the collection
-		return Object.keys(this.comicArchive).length;
+		if(Array.isArray(this.comicArchive)){
+			return this.comicArchive.length;
+		} else {
+			return Object.keys(this.comicArchive).length;
+		}
 	}
 
 	createComicArchive () {

@@ -44,7 +44,7 @@ class Bot {
 
         this.shanties = new ShantyCollection();
 
-        this.comics = new ComicsCollection(this);
+        this.comics = ComicsCollection.initialize(this);
 
         /**
          * keeps a short lifespan cache of messages sent by skarm which are going to be deleted,

@@ -108,6 +108,9 @@ class Skarm {
             return;
         }
 
+        // debugging
+        // console.log("evaluating permissions for channel", channel);
+
         let requiredTextPermissions = [
             "READ_MESSAGES",
             "SEND_MESSAGES"

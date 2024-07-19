@@ -10,59 +10,61 @@
 const fs = require("fs");
 
 class ComicsCollection {
-    constructor (bot) {
-        this.comicClasses = { };
-        this.comics = { };
-        this.signatures = [ ];
+    static initialize (bot) {
+        ComicsCollection.comicClasses = { };
+        ComicsCollection.comics = { };
+        ComicsCollection.signatures = [ ];
         let dir = fs.readdirSync("./javascript/notificationServices/")
                     .filter(filename => filename[0] != "_")
                     .map(f => f.split(".")[0]);
         
         for (let file of dir) {
-            this.comicClasses[file] = require("./notificationServices/" + file);
-            this.comics[file] = new this.comicClasses[file](bot);
-            let signature = this.comics[file].signature;
+            ComicsCollection.comicClasses[file] = require("./notificationServices/" + file);
+            ComicsCollection.comics[file] = new ComicsCollection.comicClasses[file](bot);
+            let signature = ComicsCollection.comics[file].signature;
             console.log(`Initialized comic: ${file} (${signature})`);
-            this.signatures.push(signature);
+            ComicsCollection.signatures.push(signature);
         }
 
-        console.log(`Initialized ${Object.keys(this.comicClasses).length} notification services.`);
+        console.log(`Initialized ${Object.keys(ComicsCollection.comicClasses).length} notification services.`);
+        return ComicsCollection;
     }
 
-    getAvailableSubscriptions() {
-        return this.signatures;
+    static getAvailableSubscriptions() {
+        return ComicsCollection.signatures;
     }
 
-    get (target) {
-        return this.comics[target];
+    static get (target) {
+        // console.log("Requested", target, "from comics collection:", Object.keys(ComicsCollection.comics));
+        return ComicsCollection.comics[target];
     }
 
-    poll (target=undefined) {
-        let comic = this.get(target);
+    static poll (target=undefined) {
+        let comic = ComicsCollection.get(target);
         if(comic) {
             comic._poll();
         } else {
-            for(let c in this.comics){
-                this.comics[c]._poll();
+            for(let c in ComicsCollection.comics){
+                ComicsCollection.comics[c]._poll();
             }
         }
     }
 
-    poisonPill (target = undefined) {
+    static poisonPill (target = undefined) {
         if(target) {
-            return this.comics[target].poisonPill();
+            return ComicsCollection.comics[target].poisonPill();
         }
-        for (let comic in this.comics) {
-            this.comics[comic].poisonPill();
+        for (let comic in ComicsCollection.comics) {
+            ComicsCollection.comics[comic].poisonPill();
         }
     }
 
-    save (target = undefined) {
+    static save (target = undefined) {
         if(target) {
-            return this.comics[target].save();
+            return ComicsCollection.comics[target].save();
         }
-        for (let comic in this.comics) {
-            this.comics[comic].save();
+        for (let comic in ComicsCollection.comics) {
+            ComicsCollection.comics[comic].save();
         }
     }
 }

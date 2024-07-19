@@ -70,26 +70,24 @@ class WorkChronicles extends ComicNotifier {
 
 	post(channel, id) {
 		if (!this.enabled) return;
-		id = id || "";
-
-		if (id === "") {
+		if(!id && id != 0){
 			Skarm.sendMessageDelay(channel, "No comic specified");
+			console.log("empty ID field");
+			Skarm.spam("empty ID field");
 			return;
+		}
+
+		if(Math.floor(id) in this.comicArchive){
+			Skarm.sendMessageDelay(channel, this.comicArchive[id].cover_image);
+			return;
+		} else {
+			console.log("ID", id, "was not in the comic archive", Object.keys(this), Object.keys(this.comicArchive));
 		}
 
 		let results = [];
 
-		for (let reference in this.comicArchive) {
-			// halt on exact matches
-			if (reference === id) {
-				results = [{ reference: reference, link: this.comicArchive[reference] }];
-				break;
-			}
+		// todo: name-based matching
 
-			if (reference.includes(id)) {
-				results.push({ reference: reference, link: this.comicArchive[reference] });
-			}
-		}
 
 		if (results.length === 0) {
 			Skarm.sendMessageDelay(channel, "I couldn't find any work chronicles containing **" + id + "** in the title\nヽ( ｡ ヮﾟ)ノ");

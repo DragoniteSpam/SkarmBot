@@ -64,12 +64,11 @@ if ($operationMode -eq "live") {
 }
 
 
+# no persistence through failures during testing
 if ($operationMode -eq "test") {
-    do {
-        node $PSScriptRoot\bot.js
-        $LEC = $LASTEXITCODE
-        Write-Host "Process exited with code $LEC"
-    }while ($LEC -ne 0 -and $LEC -ne 42)
+    node $PSScriptRoot\bot.js
+    $LEC = $LASTEXITCODE
+    Write-Host "Process exited with code $LEC"
 }
 
 Pop-Location
