@@ -19,7 +19,6 @@ const Guilds = require("./guild.js");
 
 class Bot {
     /**
-     * timer30min: tasks skarm will perform once every half hour. Write additional scheduled tasks here.
      * @param {discordie} client: pointer to Discordie object used to access all discord data not supplied by the event skarm has to handle
      * @param {number} version: the count of how many git commits skarm is currently sitting on.
      **/
@@ -65,6 +64,7 @@ class Bot {
         ];
         this.game = 0;
 
+        // timer30min: tasks skarm will perform once every half hour. Write additional scheduled tasks here.
         this.timer30min = setInterval(function () {
             this.save(Constants.SaveCodes.DONOTHING);
         }.bind(this), 30 * Constants.Time.MINUTES);
