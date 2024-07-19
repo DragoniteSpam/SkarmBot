@@ -162,7 +162,6 @@ const linkFunctions = function(guild) {
     }
 
     //functions executed after every message
-
     guild.executeMayhem = function(botAccount) {
         let apiGuildData = Guild.getData(this.id);
         for (let roleID in this.mayhemRoles) {
@@ -1008,7 +1007,7 @@ class Guild {
     }
     
     static remove(guild) {
-        if (!(guild in Guild.guilds)) {
+        if (!(guild.id in Guild.guilds)) {
             return false;
         }
         delete Guild.guilds[guild.id];
