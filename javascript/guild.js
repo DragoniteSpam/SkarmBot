@@ -12,6 +12,7 @@ const SarGroups = require("./guildClasses/sar.js");
 const Parrot = require("./guildClasses/parrot.js");
 const AutoPin = require("./guildClasses/autopin.js");
 const {Zipf} = require("./guildClasses/zipf.js");
+const { ComicSubscriptions } = require("./guildClasses/comicSubscriptions.js");
 
 
 const guilddb = "../skarmData/guilds.penguin";
@@ -46,11 +47,6 @@ const linkVariables = function(guild) {
         ASYNC_HANDLER:      {},
     };
     if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
-    guild.comicChannels ??= { };
-    if (guild.notificationChannels.XKCD) {
-        guild.comicChannels["XKCD"] = guild.notificationChannels["XKCD"];
-        delete guild.notificationChannels["XKCD"];
-    };
 
     // this property no longer exists after 2.56.1280
     if (guild.activityTable) delete guild["activityTable"];
@@ -66,8 +62,13 @@ const linkVariables = function(guild) {
 
     // regenerate the object from previously serialized data
     guild.shantyIterator = new ShantyIterator(guild.shantyIterator);
-    guild.zipf = new Zipf(guild.zipfMap, guild.zipf);
 
+    guild.zipf = new Zipf(guild.zipfMap, guild.zipf);
+    if(guild.zipfMap) delete guild.zipfMap;
+
+    guild.comicSubscriptions = new ComicSubscriptions(guild.comicChannels, guild.comicSubscriptions);
+    if(guild.comicChannels) delete guild.comicChannels;
+    
     guild.deceptiveMarkdownLinkAlert ??= true;
 };
 
@@ -818,16 +819,6 @@ const linkFunctions = function(guild) {
         Skarm.STDERR(`UNKNOWN NOTIFICATION ${notification}`);
     };
 
-    guild.comicNotify = function(client, comicClass, publishingData) {
-        console.log("Comic channels for guild:", guild.id, guild.comicChannels);
-        guild.comicChannels[comicClass] ??= { };
-        for (let channelID in guild.comicChannels[comicClass]) {
-            Skarm.spam(`Sending ${comicClass} message to <#${channelID}>`);
-            Skarm.sendMessageDelay(client.Channels.get(channelID), publishingData);
-        }
-        return 0;
-    };
-
 	guild.toggleHiddenChannel = function (channelID) {
         this.hiddenChannels[channelID] = !this.hiddenChannels[channelID];
         return this.hiddenChannels[channelID];
@@ -946,17 +937,6 @@ class Guild {
              */
             MEMBER_JOIN_LEAVE:      {},
         };
-
-        /**
-         * The collection of channels which have been selected 
-         *   by the moderators to receive various notifications about comics.
-         * Content structure:
-         *      this.comicChannels["XKCD"] = { }
-         *      this.comicChannels["XKCD"]["CHANNEL_ID"] = Date.now()  // the time that the channel was added to the collection
-         * 
-         * All comics are dynamically loaded in from the ComicsCollection object.
-         */
-        this.comicChannels = { };
 
         /**
          * A set of IDs associated with roles in the guild that are assigned upon joining the server.

@@ -8,3 +8,4 @@ package-lock.json
 temp
 *.log
 .vscode/launch.json
+work_chronicles.json

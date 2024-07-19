@@ -58,6 +58,7 @@ class XKCD extends ComicNotifier {
 
 	post(channel, id) {
 		if (!this.enabled) return;
+		if(Number.isInteger(id)){id = `${id}`;} // cast int -> str
 		id = (id || "").toLowerCase();
 		if (id.match(/^\d+$/)) {
 			Skarm.sendMessageDelay(channel, "https://xkcd.com/" + id + "/");
