@@ -6,6 +6,15 @@ const ComicsCollection = require("../comics.js");
 
 Constants.initialize();
 
+/**
+ * since the two classes are serialized for Guilds.save, 
+ *  setInterval cannot be attached to the object without
+ *  causing circular serialization issues.
+ */
+let subIntervals = {
+
+};
+
 class Subscription {
     /**
      * An instance of a subscription object, tracking a comic-channel pair and their tracking configuration 
@@ -23,7 +32,7 @@ class Subscription {
         if (!this.live()) {
             console.log("Set up catch-up publisher for comic:", this.channel, this.comic);
             let tis = this;
-            this.interval = setInterval(() => { tis.postCatchup(); }, 1 * Constants.Time.DAYS);
+            subIntervals[channel + comic] = setInterval(() => { tis.postCatchup(); }, 1 * Constants.Time.DAYS);
         }
     }
 
