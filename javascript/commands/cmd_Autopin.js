@@ -46,7 +46,7 @@ module.exports = {
                     forwardsString += "No channels are currently configured.\n";
                 }
 
-                forwardsString += `Maximum pin count: \`${ap.maxPinCount}\``;
+                forwardsString += `Maximum pin count: \`${ap.maxPinCount}\`\n`;
                 forwardsString += `Enabled: \`${ap.isEnabled()}\``;
                 // https://discordjs.guide/popular-topics/embeds.html#embed-preview
                 Skarm.sendMessageDelay(srcChannel, " ", false, {
