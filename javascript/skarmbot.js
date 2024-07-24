@@ -274,15 +274,15 @@ class Bot {
         let text = e.message.content.toLowerCase();
         let first = text.split(" ")[0];
 
-        guildData.autoPin.cycleAll();
+        // guildData.autoPin.cycleAll();
         // zero-length messages are usually pins
-        // if (text.length === 0) {
-        //     guildData.autoPin.cyclePins(e.message.channel);
-        //     if (!e.message.channel) {
-        //         console.log("Received a message event without a channel object");
-        //         console.log(e.message);
-        //     }
-        // }
+        if (text.length === 0) {
+            guildData.autoPin.cyclePins(e.message.channel);
+            if (!e.message.channel) {
+                console.log("Received a message event without a channel object");
+                console.log(e.message);
+            }
+        }
 
         // check if message has prior commitments to attend to in the channel
         let userChannelState = userData.actionState[e.message.channel.id];
