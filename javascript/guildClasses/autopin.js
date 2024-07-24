@@ -89,6 +89,7 @@ let linkFunctions = function (autoPin){
         if (!autoPin.enabled) return;
         let destination = autoPin.getForward(channelObj.id);
         if (!destination) return;
+        if (!channelObj) return;
 
         channelObj.fetchPinned().then(response => {
             let pins = response.messages;

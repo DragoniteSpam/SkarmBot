@@ -277,6 +277,10 @@ class Bot {
         // zero-length messages are usually pins
         if (text.length === 0) {
             guildData.autoPin.cyclePins(e.message.channel);
+            if(!e.message.channel){
+                console.log("Received a message event without a channel object");
+                console.log(e.message);
+            }
         }
 
         // check if message has prior commitments to attend to in the channel
