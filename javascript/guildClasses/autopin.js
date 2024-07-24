@@ -14,11 +14,12 @@ const Constants = require("../constants.js");
 const Guilds = require("../guild.js");
 
 const DISABLED_FLAG = "DISABLED";
-const MAX_PIN_COUNT = 50;
+const MAX_PIN_COUNT = 50; // default max mins
 
 let linkVariables = function (autoPin) {
     autoPin.directForwarding ??= { };
     autoPin.defaultForward   ??= undefined;
+    autoPin.maxPinCount      ??= MAX_PIN_COUNT;
     autoPin.enabled          ??= true;
     autoPin.guildId          ??= "object recovered by linker.  Field unrecoverable.";
 }
@@ -93,8 +94,8 @@ let linkFunctions = function (autoPin){
 
         channelObj.fetchPinned().then(response => {
             let pins = response.messages;
-            // console.log(`${pins.length}/${MAX_PIN_COUNT} pins in channel ${channelObj.name}`);
-            if(pins.length < MAX_PIN_COUNT) return;
+            // console.log(`${pins.length}/${autoPin.maxPinCount} pins in channel ${channelObj.name}`);
+            if(pins.length < autoPin.maxPinCount) return;
             let oldestPin = pins[pins.length-1];
             oldestPin.unpin();
 
@@ -131,6 +132,14 @@ let linkFunctions = function (autoPin){
             });
         });
     };
+
+    autoPin.setMaxPins = function (pinMax){
+        // returns true only if the operation succeeds
+        if(!Number.isInteger(pinMax)) return false; // invalid input
+        if(pinMax < 0 || pinMax > MAX_PIN_COUNT) return false; // invalid input
+        autoPin.maxPinCount = Math.floor(pinMax);
+        return true;
+    };
 }
 
 class AutoPin {
@@ -146,6 +155,13 @@ class AutoPin {
          *  if a direct forwarding doesn't exist for that channel
          */
         this.defaultForward = undefined;
+
+        /**
+         * maxPinCount
+         *  The maximum number of pins in this guild before 
+         *  they are redirected to the overflow channel
+         */
+        this.maxPinCount = MAX_PIN_COUNT;
 
         /**
          * Global enable/disable for the class instance.

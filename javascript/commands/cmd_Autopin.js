@@ -16,6 +16,7 @@ module.exports = {
             {command: "e@autopin clear -a", effect: "Deletes all specialized destinations and the default destination.  WARNING: this will destroy all previously existing configurations.  This cannot be reverted."},
             {command: "e@autopin disable", effect: "Disables this utility without erasing any existing mappings."},
             {command: "e@autopin enable", effect: "Re-enables this utility without erasing any existing mappings."},
+            {command: "e@autopin max 10", effect: "Sets the maximum pin count to 10.  All channels with more than 10 pinned messages will have their overflow pins transferred."},
         ],
         ignoreHidden: false,
         perms: Permissions.MOD,
@@ -45,6 +46,7 @@ module.exports = {
                     forwardsString += "No channels are currently configured.\n";
                 }
 
+                forwardsString += `Maximum pin count: \`${ap.maxPinCount}\``;
                 forwardsString += `Enabled: \`${ap.isEnabled()}\``;
                 // https://discordjs.guide/popular-topics/embeds.html#embed-preview
                 Skarm.sendMessageDelay(srcChannel, " ", false, {
@@ -92,6 +94,18 @@ module.exports = {
                 return;
             }
 
+            if (arg0 === "max"){
+                let success;
+                if(tokens.length === 1){
+                    success = ap.setMaxPins(tokens[0]);
+                }
+                if(success){
+                    sendDefaultResponse();
+                } else {
+                    Skarm.sendMessageDelay(srcChannel, `Invalid input: ${tokens}`);
+                }
+                return;
+            }
 
             let destinationChannelID = Skarm.extractTextChannel(arg0);
             if (destinationChannelID) {
@@ -113,7 +127,7 @@ module.exports = {
                 return;
             }
 
-            Skarm.sendMessageDelay(srcChannel, "Invalid argument is not text channel, `clear`, `enable`, or `disable`:" + arg0);
+            Skarm.sendMessageDelay(srcChannel, "Invalid argument is not text channel, `clear`, `max #`, `enable`, or `disable`:" + arg0);
         },
 
         help(bot, e) {
