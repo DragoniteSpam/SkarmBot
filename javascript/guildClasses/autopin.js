@@ -130,6 +130,11 @@ let linkFunctions = function (autoPin){
                 },
                 timestamp: oldestPin.timestamp,
             });
+
+            // wait 30 seconds to try again in case still over the upper bound
+            setTimeout(()=>{
+                autoPin.cyclePins(channelObj);
+            }, 1000 * 30); 
         });
     };
 
