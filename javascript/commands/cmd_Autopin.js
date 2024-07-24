@@ -3,7 +3,7 @@ const {os, request, Skarm, Constants, Web, Users, Guilds, Permissions, Skinner, 
 
 module.exports = {
         aliases: ["autopin"],
-        params: ["[#destination-channel | enable | disable | clear]", "[-u(nassigned)]", "[-a(ll)]"],
+        params: ["[#destination-channel | enable | disable | clear | max #]", "[-u(nassigned)]", "[-a(ll)]"],
         usageChar: "@",
         helpText: "Configuration for AutoPin feature.  When a channel reaches the maximum amount of pinned messages (50), the oldest pin in the channel will be removed from the pins collection, and a copy of it with a link to the original will be sent in a destination channel.  This command configures the AutoPin utility.",
         examples: [

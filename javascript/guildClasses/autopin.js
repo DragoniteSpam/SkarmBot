@@ -135,6 +135,7 @@ let linkFunctions = function (autoPin){
 
     autoPin.setMaxPins = function (pinMax){
         // returns true only if the operation succeeds
+        pinMax = Number(pinMax);
         if(!Number.isInteger(pinMax)) return false; // invalid input
         if(pinMax < 0 || pinMax > MAX_PIN_COUNT) return false; // invalid input
         autoPin.maxPinCount = Math.floor(pinMax);
