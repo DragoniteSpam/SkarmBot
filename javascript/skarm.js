@@ -139,7 +139,7 @@ class Skarm {
 
         if(!this.hasMessageAccess(channel))return;
 
-        channel.sendTyping();
+        if(channel && channel.sendTyping) channel.sendTyping(); // null guard
         setTimeout(function () {
             Skarm.sendMessage(channel, text, tts, obj, promiseHandler);
         }, Math.random() * 2000 + 1500);
