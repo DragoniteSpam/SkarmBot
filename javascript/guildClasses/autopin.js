@@ -108,7 +108,7 @@ let linkFunctions = function (autoPin){
                 for(let attachment of oldestPin.attachments) {
                     // console.log(attachment);
                     attachmentStr += attachment.url + "\n";
-                    if (attachment.content_type.includes("image")) {
+                    if (attachment.content_type && attachment.content_type.includes("image")) {
                         imageUrl = attachment.url;
                     }
                 }
