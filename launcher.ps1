@@ -57,7 +57,10 @@ if ($Global:warnings -and $stopOnError) {
 Write-Host "Starting Skarmbot bootloop"
 if ($operationMode -eq "live") {
     do {
-        node $PSScriptRoot\bot.js beta
+        node $PSScriptRoot\bot.js beta | foreach {
+            $t = (get-date -format o).split(".")[0].Replace("T"," ")
+            "[$t] $_"
+        }
         $LEC = $LASTEXITCODE
         Write-Host "Process exited with code $LEC"
     }while ($LEC -ne 0 -and $LEC -ne 42)
@@ -66,7 +69,10 @@ if ($operationMode -eq "live") {
 
 # no persistence through failures during testing
 if ($operationMode -eq "test") {
-    node $PSScriptRoot\bot.js
+    node $PSScriptRoot\bot.js | foreach {
+        $t = (get-date -format o).split(".")[0].Replace("T"," ")
+        "[$t] $_"
+    }
     $LEC = $LASTEXITCODE
     Write-Host "Process exited with code $LEC"
 }
