@@ -222,6 +222,8 @@ class Bot {
     OnMessageCreate(e) {
         // don't respond to other bots (or yourself)
         if (e.message.author.bot) {
+
+            // special case: when the bot itself sent the message "sorry...", delete it after a short duration
             if (e.message.author.id === Constants.ID) {
                 if (e.message.content === "sorry...") {
                     setTimeout(function () {
@@ -249,9 +251,13 @@ class Bot {
         // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate) {
             e.message.channel.sendMessage("private message responses not yet implemented");
-            return false;
+            this.OnDirectMessage(e);
+        } else {
+            this.OnGuildMessage(e);
         }
+    }
 
+    OnGuildMessage(e) {
         let userData = Users.get(e.message.author.id);
         let guildData = Guilds.get(e.message.channel.guild.id);
 
@@ -388,6 +394,10 @@ class Bot {
         }
 
         return false;
+    }
+
+    OnDirectMessage(e) {
+
     }
 
     OnPresenceUpdate(e) {
