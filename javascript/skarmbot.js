@@ -392,10 +392,6 @@ class Bot {
     OnDirectMessage(e) {
         let userData = Users.get(e.message.author.id);
 
-        console.log(e.message.content);
-        console.log(e.message.attachments);
-
-
         // basic commands
         switch(e.message.content.toLowerCase()){
             case "help":
