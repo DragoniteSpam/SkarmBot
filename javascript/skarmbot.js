@@ -250,7 +250,6 @@ class Bot {
 
         // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate) {
-            e.message.channel.sendMessage("private message responses not yet implemented");
             this.OnDirectMessage(e);
         } else {
             this.OnGuildMessage(e);
@@ -391,7 +390,53 @@ class Bot {
     }
 
     OnDirectMessage(e) {
+        let userData = Users.get(e.message.author.id);
 
+        console.log(e.message.content);
+        console.log(e.message.attachments);
+
+
+        // basic commands
+        switch(e.message.content.toLowerCase()){
+            case "help":
+                e.message.channel.sendMessage("The direct messages interface is still in its early stages.  The currently available commands are: `help`, `staged`, `clear`.  To submit an image, just send me an image.");
+                return;
+                break;
+
+            case "staged":
+                if(userData.stagedImage){
+                    e.message.channel.sendMessage(`Currently staged image submission: ${userData.stagedImage}\nTo clear this staged image, use the command \`clear\``);
+                    return;
+                } else {
+                    e.message.channel.sendMessage(`Your profile currently has no staged image to submit.`);
+                    return;
+                }
+                break;
+
+            case "clear":
+                if(userData.stagedImage){
+                    userData.stagedImage = undefined;
+                    e.message.channel.sendMessage(`Cleared staged image.`);
+                    return;
+                } else {
+                    e.message.channel.sendMessage(`Your profile did not have a staged image to clear.`);
+                    return;
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        if(e.message.attachments.length === 1){
+            let receivedImage = e.message.attachments[0].url;
+            userData.stagedImage = receivedImage;   // save the image to the user's data frame to be assigned to a guild with the next command
+
+            e.message.channel.sendMessage(`Received image for submission: ${receivedImage}`);
+            return;
+        }
+
+        e.message.channel.sendMessage("private message responses not yet implemented");
     }
 
     OnPresenceUpdate(e) {
