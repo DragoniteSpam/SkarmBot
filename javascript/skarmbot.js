@@ -267,20 +267,13 @@ class Bot {
 
         // in the event that we eventually add PM responses, it would probably
         // be a bad idea to try to execute the mayhem colors on it
-        if (!e.message.isPrivate) {
-            //always run these per-guild functions
-            guildData.executeMayhem(this.client.User);
-            guildData.updateEXP(e);
-            guildData.updateActivity(e);
-            guildData.zipf.appendZipfData(e.message.content);
-        }
+        guildData.onMessage(e, this);
 
         // now we can start doing stuff
         let author = e.message.author;
         let text = e.message.content.toLowerCase();
         let first = text.split(" ")[0];
 
-        // guildData.autoPin.cycleAll();
         // zero-length messages are usually pins
         if (text.length === 0) {
             guildData.autoPin.cyclePins(e.message.channel);
@@ -288,6 +281,7 @@ class Bot {
                 console.log("Received a message event without a channel object");
                 console.log(e.message);
             }
+            // guildData.autoPin.cycleAll(); // warning: this command wil cause things to lag massively due to exceeding rate limits
         }
 
         // check if message has prior commitments to attend to in the channel

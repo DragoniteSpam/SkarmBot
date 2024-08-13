@@ -82,6 +82,13 @@ const linkFunctions = function(guild) {
     Parrot.initialize(guild.parrot);
     AutoPin.initialize(guild.autoPin);
 
+    guild.onMessage = function (e,bot){
+        guild.executeMayhem(bot.client.User);
+        guild.updateEXP(e);
+        guild.updateActivity(e);
+        guild.zipf.appendZipfData(e.message.content);
+    };
+
     guild.resolveUser = function(userid) {
         /**
         * Fetch the IUser object(s) representing a user in the current server
