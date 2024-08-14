@@ -44,26 +44,29 @@ class Poll {
                 image: {
                     url: submission.url,
                 },
-                timestamp: new Date(),
                 footer: { text: `${submission.submissionId}` }
             });
         }
+        this.posted = true;
     }
 
-    reveal(channel) {
+    async reveal(channel) {
         // Reveals the authors of all of the submissions
-        // TODO
+        await Skarm.sendMessageDelay(channel, " ", false, {
+            color: Skarm.generateRGB(),
+            description: this.submissions.map(sub => `${sub.submissionId} -> <@${sub.userId}>`).join("\n"),
+        });
     }
 
     rename(newName) {
         this.name = newName;
     }
 
-    submit(user, url){
+    submit(user, url) {
         // calculate the submission ID dynamically as either:
         //  the length of the array or 
         //  the next new unique ID not yet taken (if elements have been removed and shortened the array)
-        let sId = Math.max(this.submissions.length + 1, ...this.submissions.map(s=>1+s.submissionId));
+        let sId = Math.max(this.submissions.length + 1, ...this.submissions.map(s => 1 + s.submissionId));
         this.submissions.push(new Submission(user.id || user, url, sId));
     }
 
@@ -104,7 +107,7 @@ class AnonymousPoll {
     create(pollName) {
         // data validation
         let error = this.validateName(pollName);
-        if(error) return error;
+        if (error) return error;
 
         // entry
         try {
@@ -127,9 +130,9 @@ class AnonymousPoll {
         this.polls.splice(idx, 1);
     }
 
-    rename(idx, newName){
+    rename(idx, newName) {
         let error = this.validateName(newName);
-        if(error) return error;
+        if (error) return error;
 
         this.polls[idx].rename(newName);
     }

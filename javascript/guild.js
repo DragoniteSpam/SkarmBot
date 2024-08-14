@@ -91,6 +91,11 @@ const linkFunctions = function(guild) {
         guild.zipf.appendZipfData(e.message.content);
     };
 
+
+    guild.getName = function(){
+        return Guild.client.Guilds.get(guild.id).name;
+    }
+
     guild.resolveUser = function(userid) {
         /**
         * Fetch the IUser object(s) representing a user in the current server

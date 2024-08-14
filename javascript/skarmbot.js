@@ -391,9 +391,10 @@ class Bot {
 
     OnDirectMessage(e) {
         let userData = Users.get(e.message.author.id);
+        let msg = e.message.content.toLowerCase();
 
         // basic commands
-        switch (e.message.content.toLowerCase()) {
+        switch (msg) {
             case "help":
                 e.message.channel.sendMessage("The direct messages interface is still in its early stages.  The currently available commands are: `help`, `staged`, `clear`.  To submit an image, just send me an image.");
                 return;
@@ -424,25 +425,37 @@ class Bot {
                 break;
         }
 
+        // gets all the guilds that this user is in, and the open polls in each one
+        let openPolls = userData.getGuilds()                    // get all guilds the user is in
+            .flatMap(g => g.anonPoll.polls.filter(p => p.open)  // filter down the polls in each of those guilds to just the ones that are open to new submissions
+                .map((p) => { return { guild: g, poll: p } })); // return pairs of guild and poll to be able to print out the source guild of each poll
+
         if (e.message.attachments.length === 1) {
             let receivedImage = e.message.attachments[0].url;
             userData.stagedImage = receivedImage;   // save the image to the user's data frame to be assigned to a guild with the next command
-
-            // gets all the guilds that this user is in, and the open polls in each one
-            let openPolls = userData.getGuilds()                    // get all guilds the user is in
-                .flatMap(g => g.anonPoll.polls.filter(p => p.open)  // filter down the polls in each of those guilds to just the ones that are open to new submissions
-                    .map((p) => { return { guild: g, poll: p } })); // return pairs of guild and poll to be able to print out the source guild of each poll
 
             if (openPolls.length === 0) {
                 e.message.channel.sendMessage(`Received image for submission.\n\n **There are currently no open polls to submit this image to.**`);
             } else {
                 e.message.channel.sendMessage([
-                    `Received image for submission: ${receivedImage}`,
-                    `Please select an open poll to submit this image to:`,
-                    ...openPolls.map((gp, idx) => `[${idx + 1}] -> ${gp.poll.name}`)
+                    `Received image for submission.`,
+                    `Please type the open poll to submit this image to:`,
+                    '```',
+                    ...openPolls.map((gp, idx) => `[${idx + 1}] -> [Server: ${gp.guild.getName()}] Poll: ${gp.poll.name}`),
+                    '```',
                 ].join("\n"));
             }
 
+            return;
+        }
+
+
+        let idx = (Number(msg) - 1);
+        if(idx in openPolls){ // validity check
+            let {guild, poll} = openPolls[idx];
+            poll.submit(userData.id, userData.stagedImage);
+            e.message.channel.sendMessage(`Submitted the image ${userData.stagedImage} to the poll ${poll.name} (${guild.getName()})`);
+            userData.stagedImage = undefined; // drop the staged image from the user once it is pushed to the poll
             return;
         }
 
