@@ -78,6 +78,7 @@ class Poll {
 
         p.submissions = poll.submissions.map(sub => new Submission(sub.userId, sub.url, sub.submissionId));
 
+        return p;
     }
 }
 
