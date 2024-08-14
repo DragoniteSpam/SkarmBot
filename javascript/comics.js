@@ -35,7 +35,7 @@ class ComicsCollection {
     }
 
     static get (target) {
-        // console.log("Requested", target, "from comics collection:", Object.keys(ComicsCollection.comics));
+        console.log("Requested", target, "from comics collection:", Object.keys(ComicsCollection.comics));
         return ComicsCollection.comics[target];
     }
 
