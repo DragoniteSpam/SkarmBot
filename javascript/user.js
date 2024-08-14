@@ -4,6 +4,7 @@ const Encrypt = require("./encryption.js");
 const Skarm = require("./skarm.js");
 const Discordie = require("discordie");
 const Constants = require("./constants");
+const Guild = require("./guild.js");
 
 const userdb = "../skarmData/users.penguin";
 const SUMMON_COOLDOWN = 60000;
@@ -145,6 +146,14 @@ const linkFunctions = function(user) {
         }
 
     };
+
+    user.getGuilds = function(){
+        // Retrieves all guild objects that this user is in
+        let u = User.client.Users.get(user.id);
+        return User.client.Guilds
+            .filter(g => u.memberOf(g))
+            .map(g => Guild.get(g.id));
+    }
 }
 
 class User {

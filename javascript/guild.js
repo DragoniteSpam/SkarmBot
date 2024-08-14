@@ -13,6 +13,7 @@ const Parrot = require("./guildClasses/parrot.js");
 const AutoPin = require("./guildClasses/autopin.js");
 const {Zipf} = require("./guildClasses/zipf.js");
 const { ComicSubscriptions } = require("./guildClasses/comicSubscriptions.js");
+const { AnonymousPoll } = require("./guildClasses/anonymousPoll.js");
 
 
 const guilddb = "../skarmData/guilds.penguin";
@@ -62,6 +63,7 @@ const linkVariables = function(guild) {
 
     // regenerate the object from previously serialized data
     guild.shantyIterator = new ShantyIterator(guild.shantyIterator);
+    guild.anonPoll = new AnonymousPoll(guild.anonPoll);
 
     guild.zipf = new Zipf(guild.zipfMap, guild.zipf);
     if(guild.zipfMap) delete guild.zipfMap;
@@ -88,6 +90,11 @@ const linkFunctions = function(guild) {
         guild.updateActivity(e);
         guild.zipf.appendZipfData(e.message.content);
     };
+
+
+    guild.getName = function(){
+        return Guild.client.Guilds.get(guild.id).name;
+    }
 
     guild.resolveUser = function(userid) {
         /**

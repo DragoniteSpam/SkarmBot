@@ -127,7 +127,7 @@ class Skarm {
         return true;
     }
 
-    static sendMessageDelay(channel, text, tts, obj, promiseHandler) {
+    static async sendMessageDelay(channel, text, tts, obj, promiseHandler) {
         if (typeof (channel) === "string") {
             channel = Constants.client.Channels.get(channel);
         }
@@ -140,9 +140,12 @@ class Skarm {
         if(!this.hasMessageAccess(channel))return;
 
         if(channel && channel.sendTyping) channel.sendTyping(); // null guard
-        setTimeout(function () {
-            Skarm.sendMessage(channel, text, tts, obj, promiseHandler);
-        }, Math.random() * 2000 + 1500);
+        return new Promise((resolve, reject) => {
+            setTimeout(function () {
+                Skarm.sendMessage(channel, text, tts, obj, promiseHandler);
+                resolve();
+            }, Math.random() * 2000 + 1500);
+        })
     }
 
     static sendMessage(channel, text, tts, obj, promiseHandler) {
@@ -213,6 +216,7 @@ class Skarm {
         let fields = [{name: "Aliases", value: cmd.aliases.join(", "), inline: true}];
         if (cmd.examples) {
             fields.push({name: "\u200B", value: "\u200B", inline: false});
+            fields.push({name: "Example Usage", value: "\u200B", inline: false});
             for (let example of cmd.examples) {
                 fields.push({name: example.command, value: example.effect, inline: false});
             }
