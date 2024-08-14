@@ -19,7 +19,8 @@ module.exports = {
         { command: "e@anonpoll post 1", effect: "Posts the submissions sent to skarm by each user to the poll with ID 1" },
         { command: "e@anonpoll reveal 1", effect: "Reveals the authors of all of the submissions to the poll with ID 1" },
         { command: "e@anonpoll delete 1", effect: "Deletes the poll with ID 1" },
-        { command: "e@anonpoll delete all", effect: "Deletes all polls listed in `e@anonpoll`" },
+        // { command: "e@anonpoll delete all", effect: "Deletes all polls listed in `e@anonpoll`" },
+        { command: "e@anonpoll rename 1 Favorite carbon arrangement", effect: "Renames the first poll to `Favorite carbon arrangement`" },
     ],
     ignoreHidden: false,
     perms: Permissions.MOD,
@@ -65,19 +66,56 @@ module.exports = {
             args.splice(0, 1); // drop the `new`
             let pollName = args.join(" ");
             let err = guildData.anonPoll.create(pollName);
-            if(err){
+            if (err) {
                 Skarm.sendMessageDelay(e.message.channel, `Failed to create poll: ${err}`);
             } else {
                 Skarm.sendMessageDelay(e.message.channel, `Created poll: ${pollName}`);
             }
+            return;
         }
 
-        // TODO        { command: "e@anonpoll close 1", effect: "Closes off submissions to the first poll listed in `e@anonpoll`" },
-        // TODO        { command: "e@anonpoll open 1", effect: "Re-opens submissions to the first poll listed in `e@anonpoll`. Polls are open by default." },
-        // TODO        { command: "e@anonpoll post 1", effect: "Posts the submissions sent to skarm by each user to the first poll listed in `e@anonpoll`" },
-        // TODO        { command: "e@anonpoll reveal 1", effect: "Reveals the authors of all of the submissions to the first poll listed in `e@anonpoll`" },
-        // TODO        { command: "e@anonpoll delete 1", effect: "Deletes the first poll listed in `e@anonpoll`" },
+        if (args.length >= 2) {
+            // validate args[1] is a valid index
+            let idx = Number(args[1]) - 1;
+            if (!(idx in guildData.anonPoll.polls)) {
+                Skarm.sendMessageDelay(e.message.channel, `Invalid identifier for the poll: ${args[1]}`);
+                return;
+            }
 
+            let poll = guildData.anonPoll.polls[idx];
+
+            // act based on sub-command options
+            switch (args[0]) {
+                case "close":  // { command: "e@anonpoll close 1", effect: "Closes off submissions to the first poll listed in `e@anonpoll`" },
+                    poll.close();
+                    Skarm.sendMessageDelay(e.message.channel, `Poll \`${poll.name}\` closed!`);
+                    break;
+
+                case "open":   // { command: "e@anonpoll open 1", effect: "Re-opens submissions to the first poll listed in `e@anonpoll`. Polls are open by default." },
+                    poll.reopen();
+                    Skarm.sendMessageDelay(e.message.channel, `Poll \`${poll.name}\` re-opened!`);
+                    break;
+
+                case "post":   // { command: "e@anonpoll post 1", effect: "Posts the submissions sent to skarm by each user to the first poll listed in `e@anonpoll`" },
+                    poll.post(e.message.channel);
+                    break;
+
+                case "reveal": // { command: "e@anonpoll reveal 1", effect: "Reveals the authors of all of the submissions to the first poll listed in `e@anonpoll`" },
+                    poll.reveal(e.message.channel);
+                    break;
+
+                case "delete": // { command: "e@anonpoll delete 1", effect: "Deletes the first poll listed in `e@anonpoll`" },
+                    guildData.anonPoll.delete(idx);
+                    break;
+
+                case "rename": // { command: "e@anonpoll rename 1 Favorite carbon arrangement", effect: "Renames the first poll to `Favorite carbon arrangement`" },
+                    poll.rename(args.slice(2).join(" "));
+                    break;
+
+                default:
+                    Skarm.sendMessageDelay(e.message.channel, `Unknown command: \`${args[0]}\``);
+            }
+        }
     },
 
     help(bot, e) {
