@@ -439,7 +439,7 @@ class Bot {
             } else {
                 e.message.channel.sendMessage([
                     `Received image for submission.`,
-                    `Please type the open poll to submit this image to:`,
+                    `Please send me the poll number to submit this image to:`,
                     '```',
                     ...openPolls.map((gp, idx) => `[${idx + 1}] -> [Server: ${gp.guild.getName()}] Poll: ${gp.poll.name}`),
                     '```',
@@ -459,7 +459,7 @@ class Bot {
             return;
         }
 
-        e.message.channel.sendMessage("private message responses not yet implemented");
+        e.message.channel.sendMessage("Unexpected direct message recieved.");
     }
 
     OnPresenceUpdate(e) {
