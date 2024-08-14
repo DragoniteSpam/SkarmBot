@@ -248,7 +248,6 @@ class Bot {
             return;  // take no further action with this
         }
 
-        // don't respond to private messages (yet) //TODO
         if (e.message.isPrivate) {
             this.OnDirectMessage(e);
         } else {
