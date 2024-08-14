@@ -58,22 +58,7 @@ class Poll {
     }
 
     rename(newName) {
-        let error = Poll.validateName(newName);
-        if(error) return error;
-
         this.name = newName;
-    }
-
-    static validateName(pollName) {
-        let alreadyExists = this.polls.filter(p => p.name === pollName).length !== 0;
-        if (alreadyExists) {
-            return "A poll with this name already exists";
-        }
-
-        if (pollName.length === 0) {
-            return "poll name has to be more than 0 characters.";
-        }
-
     }
 
     static reconstruct(poll) { // reloads a poll from a json serialized version of itself
@@ -94,6 +79,18 @@ class AnonymousPoll {
         this.polls = this.polls.map(poll => Poll.reconstruct(poll)); // reconstruct poll class from json
     }
 
+    validateName(pollName) {
+        let alreadyExists = this.polls.filter(p => p.name === pollName).length !== 0;
+        if (alreadyExists) {
+            return "A poll with this name already exists";
+        }
+
+        if (pollName.length === 0) {
+            return "poll name has to be more than 0 characters.";
+        }
+
+    }
+
     /**
      * 
      * @param {String} pollName 
@@ -101,7 +98,7 @@ class AnonymousPoll {
      */
     create(pollName) {
         // data validation
-        let error = Poll.validateName(pollName);
+        let error = this.validateName(pollName);
         if(error) return error;
 
         // entry
@@ -123,6 +120,13 @@ class AnonymousPoll {
         }
 
         this.polls.splice(idx, 1);
+    }
+
+    rename(idx, newName){
+        let error = this.validateName(newName);
+        if(error) return error;
+
+        this.polls[idx].rename(newName);
     }
 }
 

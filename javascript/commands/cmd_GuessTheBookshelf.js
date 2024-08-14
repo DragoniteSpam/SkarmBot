@@ -109,9 +109,18 @@ module.exports = {
                     break;
 
                 case "rename": // { command: "e@anonpoll rename 1 Favorite carbon arrangement", effect: "Renames the first poll to `Favorite carbon arrangement`" },
-                    poll.rename(args.slice(2).join(" "));
+                    let error = guildData.anonPoll.rename(idx, args.slice(2).join(" "));
+                    if(error){
+                        Skarm.sendMessageDelay(e.message.channel, error);
+                    } else {
+                        Skarm.sendMessageDelay(e.message.channel, "Rename successful!");
+                    }
                     break;
 
+                case "42":
+                    Skarm.sendMessageDelay(e.message.channel, "*explodes*");
+                    break;
+                    
                 default:
                     Skarm.sendMessageDelay(e.message.channel, `Unknown command: \`${args[0]}\``);
             }
