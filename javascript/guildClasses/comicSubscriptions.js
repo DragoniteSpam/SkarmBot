@@ -113,13 +113,34 @@ class ComicSubscriptions {
     }
 
     getSubsTo(comic) {
-        return this.subscriptions.filter(sub => sub.comic === comic);
+        return this.subscriptions.filter(sub => sub.comic.toLowerCase() === comic.toLowerCase());
+    }
+
+    next(channel, comic){
+        let subscription = this.get(channel, comic);
+        if(subscription){
+            // console.log("Posting catch-up for", subscription);
+            subscription.postCatchup();
+        } else {
+            console.error("No matching subscriptions for", channel, comic);
+        }
+        // this._get(channel, comic).map(c => c.postCatchup());
+    }
+
+    _get(channel, comic) {
+        // returns as array with 0 or 1 elements
+        return this.subscriptions
+        .filter(sub => sub.channel === channel)
+        .filter(sub => sub.comic.toLowerCase() === comic.toLowerCase());
     }
 
     get(channel, comic) {
-        return this.subscriptions
-            .filter(sub => sub.channel === channel)
-            .filter(sub => sub.comic === comic)[0];
+        // returns as object or null
+        return this._get(channel, comic)[0];
+    }
+
+    isLive(channel, comic){
+        return this._get(channel, comic).filter(c => c.live()).length > 0;
     }
 
     isSubscribed(channel, comic) {
@@ -143,7 +164,7 @@ class ComicSubscriptions {
         // remove this entity from the list
         this.subscriptions = this.subscriptions
             .filter(sub => sub.channel !== channel)
-            .filter(sub => sub.comic !== comic);
+            .filter(sub => sub.comic.toLowerCase() !== comic.toLowerCase());
     }
 }
 

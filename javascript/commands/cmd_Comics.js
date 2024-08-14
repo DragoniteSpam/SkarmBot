@@ -16,7 +16,8 @@ module.exports = {
     examples: [
         { command: "e@comics", effect: "Will cause Skarm to list all available comic subscriptions to toggle." },
         { command: "e@comics 1", effect: "Will cause Skarm to toggle announcing all new releases of comic 1 from the list." },
-        { command: "e@comics 1 0", effect: "Starts the comic subscription feed at entry 0, publishing the next entry in the sequence once per day." },
+        { command: "e@comics 1 20", effect: "Starts the comic subscription feed at entry 20, publishing the next entry in the sequence once per day." },
+        { command: "e@comics 1 next", effect: "When the comic subscription is in catch-up mode, sends the next comic in the backlog.  Does nothing when caught up." },
     ],
     ignoreHidden: false,
     perms: Permissions.MOD,
@@ -69,8 +70,13 @@ module.exports = {
 
         let comicName = topics[idx];
         if (subscriptions.isSubscribed(e.message.channel.id, comicName)) {
-            subscriptions.unsubscribe(e.message.channel.id, comicName);
-            Skarm.sendMessageDelay(e.message.channel, `${comicName} will no longer be sent to **${e.message.channel.name}!**`);
+            if(variedStart && args[1] === "next" && !subscriptions.isLive(e.message.channel.id, comicName)){
+                // Skarm.sendMessageDelay(e.message.channel, `Polling next ${comicName}!`);
+                subscriptions.next(e.message.channel.id, comicName);
+            } else {
+                subscriptions.unsubscribe(e.message.channel.id, comicName);
+                Skarm.sendMessageDelay(e.message.channel, `${comicName} will no longer be sent to **${e.message.channel.name}!**`);
+            }
         } else {
             if(!variedStart){
                 // basic subscription case: new releases

@@ -35,8 +35,9 @@ class ComicsCollection {
     }
 
     static get (target) {
+        if(!target) return null;
         console.log("Requested", target, "from comics collection:", Object.keys(ComicsCollection.comics));
-        return ComicsCollection.comics[target];
+        return ComicsCollection.comics[target] || ComicsCollection.comics[target.toLowerCase()];
     }
 
     static poll (target=undefined) {
