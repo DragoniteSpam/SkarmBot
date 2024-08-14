@@ -216,6 +216,7 @@ class Skarm {
         let fields = [{name: "Aliases", value: cmd.aliases.join(", "), inline: true}];
         if (cmd.examples) {
             fields.push({name: "\u200B", value: "\u200B", inline: false});
+            fields.push({name: "Example Usage", value: "\u200B", inline: false});
             for (let example of cmd.examples) {
                 fields.push({name: example.command, value: example.effect, inline: false});
             }
