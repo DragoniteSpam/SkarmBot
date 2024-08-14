@@ -6,9 +6,7 @@ class Submission {
     constructor(userId, url, submissionId = -1) {
         this.userId = userId;
         this.url = url;
-        if (submissionId === -1) {
-            this.submissionId = Math.random(); // todo: swap this out for something better
-        }
+        this.submissionId = submissionId;
     }
 }
 
@@ -61,6 +59,14 @@ class Poll {
         this.name = newName;
     }
 
+    submit(user, url){
+        // calculate the submission ID dynamically as either:
+        //  the length of the array or 
+        //  the next new unique ID not yet taken (if elements have been removed and shortened the array)
+        let sId = Math.max(this.submissions.length + 1, ...this.submissions.map(s=>1+s.submissionId));
+        this.submissions.push(new Submission(user.id || user, url, sId));
+    }
+
     static reconstruct(poll) { // reloads a poll from a json serialized version of itself
         let p = new Poll(poll.name);
         p.open = poll.open;
@@ -88,7 +94,6 @@ class AnonymousPoll {
         if (pollName.length === 0) {
             return "poll name has to be more than 0 characters.";
         }
-
     }
 
     /**
