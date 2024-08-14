@@ -9,7 +9,8 @@ module.exports = {
         "Sets up and manages the state of a community anonymous poll.",
         "All members of the server are able to submit images by directly messaging Skarmbot.",
         "Once the poll is closed (`e@ap close 1`), skarm can post each of the submission results (`e@ap post 1`), allowing the server members to guess on who submitted what.",
-        "Once guessing is finalized, the sources of the anonymous submissions can be revealed (`e@ap reveal 1`)."
+        "Once guessing is finalized, the sources of the anonymous submissions can be revealed (`e@ap reveal 1`).",
+        "Further note: everyone who chooses to submit images to Skarm MUST allow direct messages from other members of this server.  Because Discord says bots are not allowed to be friends with humans, locking down DM's to friends-only will prevent this feature from working.",
     ].join("\n"),
     examples: [
         { command: "e@anonpoll", effect: "Shows the currently running anonymous polls, numbered for easy access" },
@@ -120,7 +121,7 @@ module.exports = {
                 case "42":
                     Skarm.sendMessageDelay(e.message.channel, "*explodes*");
                     break;
-                    
+
                 default:
                     Skarm.sendMessageDelay(e.message.channel, `Unknown command: \`${args[0]}\``);
             }
