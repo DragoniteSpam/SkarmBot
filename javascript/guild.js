@@ -5,7 +5,7 @@ const Skarm = require("./skarm.js");
 const Constants = require("./constants.js");
 const Permissions = require("./permissions.js");
 const Skinner = require("./skinnerbox.js");
-const Users = require("./user.js");
+const User = require("./user.js");
 const { ShantyCollection, Shanty, ShantyIterator } = require("./shanties.js");
 
 const SarGroups = require("./guildClasses/sar.js");
@@ -807,8 +807,8 @@ const linkFunctions = function(guild) {
         }
         if (notification === Constants.Notifications.NAME_CHANGE) {
             let member = eventObject.member;
-            let oldName= Users.get(eventObject.user.id).previousName;
-            Users.get(eventObject.user.id).previousName = undefined;   // clear field after use
+            let oldName= User.get(eventObject.user.id).previousName;
+            User.get(eventObject.user.id).previousName = undefined;   // clear field after use
             Skarm.logError(`Might be sending out name change notification out to guild: ${JSON.stringify(guild.id)}\n Notification channel list: ${JSON.stringify(guild.notificationChannels)}`);
             console.log(eventObject);
             Skarm.spam("Notification of name change: "+oldName +" -> " + JSON.stringify(eventObject.user));
