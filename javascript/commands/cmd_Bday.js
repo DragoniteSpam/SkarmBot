@@ -23,7 +23,7 @@ module.exports = {
         let action = Skarm.commandParamString(e.message.content);
         if (action.length === 0) {
             let permitted = userData.birthdayAllowedGuilds[e.message.guild.id] ? "allowed" : "not allowed";
-            Skarm.sendMessageDelay(e.message.channel, `I currently have your birthday as: \`${userData.birthday}\`.  This server is ${permitted} to announce your birthday`);
+            Skarm.sendMessageDelay(e.message.channel, `I currently have your birthday as: \`${userData.birthday}\`.  This server is ${permitted} to announce your birthday.  You can change this with \`e!bd allow\` and \`e!bd deny\``);
             return;
         }
 
@@ -49,7 +49,8 @@ module.exports = {
         try {
             let date = (new Date(action)).toISOString().split("T")[0];
             userData.birthday = date;
-            Skarm.sendMessageDelay(e.message.channel, `Recorded your birthday as: \`${userData.birthday}\``);
+            let permitted = userData.birthdayAllowedGuilds[e.message.guild.id] ? "allowed" : "not allowed";
+            Skarm.sendMessageDelay(e.message.channel, `Recorded your birthday as: \`${userData.birthday}\` This server is ${permitted} to announce your birthday.  You can change this with \`e!bd allow\` and \`e!bd deny\``);
             return;
         } catch (error) {
             Skarm.sendMessageDelay(e.message.channel, `Something went wrong! Please try again with the format \`YYYY-MM-DD\``);
