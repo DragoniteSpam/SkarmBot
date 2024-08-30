@@ -12,6 +12,7 @@ const SUMMON_COOLDOWN = 60000;
 const linkVariables = function(user) {
     if (user.actionState === undefined) user.actionState = { };
     if (user.ignoreSummons === undefined) user.ignoreSummons = { };
+    user.birthdayAllowedGuilds ??= { };
     user.transcientActionStateData = { };    // clear on reboot
 }
 
@@ -170,6 +171,20 @@ class User {
          * @type String
          */
         this.nickName = undefined;
+
+        /**
+         * String representation of the user's birthday
+         * @type String "YYYY-MM-DD"
+         */
+        this.birthday = undefined;
+        
+        /**
+         * Guilds where the user has allowed their birthday to be announced
+         * key: guid, 
+         * value: bool - true=allowed, false=forbidden
+         */
+        this.birthdayAllowedGuilds = {};
+
 
         /**
          * A collection of per-channel states that skarm should act off of for cross-message user interaction.
