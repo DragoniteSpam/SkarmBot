@@ -423,11 +423,12 @@ class Bot {
             default:
                 break;
         }
+        
 
         // gets all the guilds that this user is in, and the open polls in each one
-        let openPolls = userData.getGuilds()                    // get all guilds the user is in
-            .flatMap(g => g.anonPoll.polls.filter(p => p.open)  // filter down the polls in each of those guilds to just the ones that are open to new submissions
-                .map((p) => { return { guild: g, poll: p } })); // return pairs of guild and poll to be able to print out the source guild of each poll
+        let openPolls = userData.getGuilds().map(g => Guild.get(g)) // get all guilds the user is in
+            .flatMap(g => g.anonPoll.polls.filter(p => p.open)      // filter down the polls in each of those guilds to just the ones that are open to new submissions
+                .map((p) => { return { guild: g, poll: p } }));     // return pairs of guild and poll to be able to print out the source guild of each poll
 
         if (e.message.attachments.length === 1) {
             let receivedImage = e.message.attachments[0].url;

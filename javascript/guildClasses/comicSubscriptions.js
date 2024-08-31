@@ -11,9 +11,7 @@ Constants.initialize();
  *  setInterval cannot be attached to the object without
  *  causing circular serialization issues.
  */
-let subIntervals = {
-
-};
+let subIntervals = {};
 
 class Subscription {
     /**
