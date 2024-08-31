@@ -21,42 +21,43 @@ module.exports = {
 
     execute(bot, e, userData, guildData) {
         let action = Skarm.commandParamString(e.message.content);
-        if (action.length === 0) {
-            let permitted = userData.birthdayAllowedGuilds[e.message.guild.id] ? "allowed" : "not allowed";
-            Skarm.sendMessageDelay(e.message.channel, `I currently have your birthday as: \`${userData.birthday}\`.  This server is ${permitted} to announce your birthday.  You can change this with \`e!bd allow\` and \`e!bd deny\``);
-            return;
-        }
+        switch (action) {
+            case "":
+                let permitted = userData.birthdayAllowedGuilds[e.message.guild.id] ? "allowed" : "not allowed";
+                Skarm.sendMessageDelay(e.message.channel, `I currently have your birthday as: \`${userData.birthday}\`.  This server is ${permitted} to announce your birthday.  You can change this with \`e!bd allow\` and \`e!bd deny\``);
+                break;
 
-        if (action.trim().toLowerCase()[0] === "a") { // shorthand support "a" for "allow"
-            userData.birthdayAllowedGuilds[e.message.guild.id] = true;
-            Skarm.sendMessageDelay(e.message.channel, `Granted permission for this server to announce your birthdays`);
-            return;
-        }
+            case "a":
+            case "allow":
+                userData.birthdayAllowedGuilds[e.message.guild.id] = true;
+                Skarm.sendMessageDelay(e.message.channel, `Granted permission for this server to announce your birthdays`);
+                break;
 
-        if (action.trim().toLowerCase()[0] === "d") { // shorthand support "d" for "deny"
-            delete userData.birthdayAllowedGuilds[e.message.guild.id];
-            Skarm.sendMessageDelay(e.message.channel, `Denied permission for this server to announce your birthdays`);
-            return;
-        }
+            case "d":
+            case "deny":
+                delete userData.birthdayAllowedGuilds[e.message.guild.id];
+                Skarm.sendMessageDelay(e.message.channel, `Denied permission for this server to announce your birthdays`);
+                break;
 
-        if (action === "-") {
-            userData.birthday = undefined;
-            Skarm.sendMessageDelay(e.message.channel, `Date deleted.`);
-            return;
-        }
+            case "-":
+                userData.birthday = undefined;
+                Skarm.sendMessageDelay(e.message.channel, `Date deleted.`);
+                break;
 
-        // default after all other cases: date format
-        try {
-            let date = (new Date(action)).toISOString().split("T")[0];
-            userData.birthday = date;
-            let permitted = userData.birthdayAllowedGuilds[e.message.guild.id] ? "allowed" : "not allowed";
-            Skarm.sendMessageDelay(e.message.channel, `Recorded your birthday as: \`${userData.birthday}\` This server is ${permitted} to announce your birthday.  You can change this with \`e!bd allow\` and \`e!bd deny\``);
-            return;
-        } catch (error) {
-            Skarm.sendMessageDelay(e.message.channel, `Something went wrong! Please try again with the format \`YYYY-MM-DD\``);
-            Skarm.logError(error);
-            Skarm.spam("Error in module: cmd_Bday - date parsing error", error, action);
-            return;            
+            default:
+                // default after all other cases: date format
+                try {
+                    let date = (new Date(action)).toISOString().split("T")[0];
+                    userData.birthday = date;
+                    let permitted = userData.birthdayAllowedGuilds[e.message.guild.id] ? "allowed" : "not allowed";
+                    Skarm.sendMessageDelay(e.message.channel, `Recorded your birthday as: \`${userData.birthday}\` This server is ${permitted} to announce your birthday.  You can change this with \`e!bd allow\` and \`e!bd deny\``);
+                    return;
+                } catch (error) {
+                    Skarm.sendMessageDelay(e.message.channel, `Something went wrong! Please try again with the format \`YYYY-MM-DD\``);
+                    Skarm.logError(error);
+                    Skarm.spam("Error in module: cmd_Bday - date parsing error", error, action);
+                    return;
+                }
         }
     },
 
