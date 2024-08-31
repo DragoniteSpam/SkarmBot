@@ -2,7 +2,9 @@
 
 ## Features
 
- - Maintains an XKCD database and notifies subscribed channels about new releases
+ - Maintains databases and notifies subscribed channels about new releases of the following comics:
+   - XKCD
+   - Work Chronicles
  - Notifies users when someone says their name (or nickname, or otherwise brings up a topic of interest)
  - Notifies channels of events including members joining and leaving, bans, and username/nickname changes
  - Keeps track of server activity, and present the data for those interested in tidbits such as "the most common words that people say"
