@@ -14,6 +14,7 @@ const AutoPin = require("./guildClasses/autopin.js");
 const {Zipf} = require("./guildClasses/zipf.js");
 const { ComicSubscriptions } = require("./guildClasses/comicSubscriptions.js");
 const { AnonymousPoll } = require("./guildClasses/anonymousPoll.js");
+const BirthdayAnnouncer = require("./guildClasses/BirthdayAnnouncer.js");
 
 
 const guilddb = "../skarmData/guilds.penguin";
@@ -64,6 +65,7 @@ const linkVariables = function(guild) {
     // regenerate the object from previously serialized data
     guild.shantyIterator = new ShantyIterator(guild.shantyIterator);
     guild.anonPoll = new AnonymousPoll(guild.anonPoll);
+    guild.birthdayAnnouncer = new BirthdayAnnouncer(guild.birthdayAnnouncer, guild.id);
 
     guild.zipf = new Zipf(guild.zipfMap, guild.zipf);
     if(guild.zipfMap) delete guild.zipfMap;
