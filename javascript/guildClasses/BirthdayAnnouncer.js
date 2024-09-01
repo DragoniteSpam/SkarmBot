@@ -31,22 +31,22 @@ class BirthdayAnnouncer {
         }, 1 * Constants.Time.HOURS);  // run every hour just to make sure we cover everyone in case of an outage
     }
 
-    enable(channelId){
+    enable(channelId) {
         /**
          * @returns true if the channel was added, false if it was already present
          */
-        if(this.channels.includes(channelId)){
+        if (this.channels.includes(channelId)) {
             return false;
         }
         this.channels.push(channelId);
         return true;
     }
 
-    disable(channelId){
+    disable(channelId) {
         /**
          * @returns true if the channel was removed, false if it wasn't there before
          */
-        if(!this.channels.includes(channelId)){
+        if (!this.channels.includes(channelId)) {
             return false;
         }
         this.channels = this.channels.filter(id => id !== channelId); // filter out the ID
@@ -55,14 +55,14 @@ class BirthdayAnnouncer {
 
     async announce() {
         console.log("Performing announcement cycle");
-        
+
         // extract the month and day from today's date
         let unix = Date.now() - (new Date()).getTimezoneOffset() * Constants.Time.MINUTES;
         let today = (new Date(unix)).toISOString().split("T")[0];
         let monthDayString = today.substring(4);
 
         // make sure you don't run twice on the same day
-        if(! (today > this.lastRun)) {
+        if (!(today > this.lastRun)) {
             // already ran today, don't need to do anything in this scenario
             console.log("Already checked for birthdays in server", this.guildId, "skipping...");
             return;
@@ -86,15 +86,19 @@ class BirthdayAnnouncer {
 
     }
 
-    getEnabledMembers(){
+    getEnabledMembers() {
         let guild = Constants.client.Guilds.get(this.guildId);
+        if (!guild) {
+            Skarm.logError(`Null guild object on ID:${this.guildId}`);
+            return;
+        }
         let members = guild.members                     // get all the members in the discord guild
             .map(member => User.get(member.id))         // match them to skarm's User class instances
             .filter(sUser => sUser.birthday && sUser.birthdayAllowedGuilds[this.guildId]);   // extract just the ones that agreed to announce their birthdays here and have actually set a date
         return members;
     }
 
-    getRandomEmojis(num){
+    getRandomEmojis(num) {
         return (new Array(num).fill("")).map(_ => this.getRandomBdayEmoji()).join(" ");
     }
 
