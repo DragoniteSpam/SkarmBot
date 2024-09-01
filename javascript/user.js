@@ -246,10 +246,30 @@ class User {
                 linkFunctions(User.users[u]);
                 linkVariables(User.users[u]);
             }
-			console.log("Initialized "+Object.keys(User.users).length + " Users");
+			console.log("Reloaded "+Object.keys(User.users).length + " Users");
         });
     }
-    
+
+    static loadFromDebug() {
+        try {
+            fs.readFile("./debug/users.butt", function (err, data){
+                data = data.toString();
+                // console.log("Received data", data);
+                let _users = JSON.parse(data);
+                for (let u in _users) {
+                    linkFunctions(_users[u]);
+                    linkVariables(_users[u]);
+                    User.users[u] = _users[u];
+                    console.log("Re-initialized user", u, _users[u]);
+                }
+                console.log("Re-initialized "+Object.keys(User.users).length + " Users");
+            });
+        } catch (error) {
+            console.trace(error);
+            Skarm.logError(error);            
+        }
+    }
+
     static save() {
         Encrypt.write(userdb, JSON.stringify(User.users));
 		console.log("Saved User Data");
@@ -257,7 +277,7 @@ class User {
     
     static saveDebug() {
         fs.writeFile("debug/users.butt",
-            JSON.stringify(User.users, null, 3),
+            JSON.stringify(User.users, null, 4),
             "utf8",
             function(err) {
                 if (err) console.log("something went wrong: " + err);

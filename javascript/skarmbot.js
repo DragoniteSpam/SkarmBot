@@ -688,6 +688,10 @@ class Bot {
         Users.saveDebug();
     }
 
+    loadDebug() {
+        Users.loadFromDebug();
+    }
+
 
     // javascript devs would be happier if you did this with promises and async.
     // i can't say i care enough to deal with promises and async.
