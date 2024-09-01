@@ -80,7 +80,7 @@ class BirthdayAnnouncer {
         let members = enMem
             .filter(sUser => sUser.birthday.includes(monthDayString));   // extract just the users whose birthday is today (matches month and day)
         console.log(`Found ${members.length} whose birthday is today from ${enMem.length} enabled guild members!`)
-        console.log(`${enMem.map(m=>m.birthday)} enabled guild members!`)
+        // console.log(`${enMem.map(m=>m.birthday)} enabled guild members!`)
 
         // send celebratory messages
         for (let bdMember of members) {

@@ -260,13 +260,13 @@ class User {
                     linkFunctions(_users[u]);
                     linkVariables(_users[u]);
                     User.users[u] = _users[u];
-                    console.log("Re-initialized user", u, _users[u]);
+                    // console.log("Re-initialized user", u, _users[u]);
                 }
                 console.log("Re-initialized "+Object.keys(User.users).length + " Users");
             });
         } catch (error) {
             console.trace(error);
-            Skarm.logError(error);            
+            Skarm.logError(error);
         }
     }
 
