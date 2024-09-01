@@ -53,6 +53,13 @@ class BirthdayAnnouncer {
         return true;
     }
 
+    /**
+     * Resets the daily lockout to avoid double-announcing birthdays
+     */
+    reset(){
+        this.lastRun = "000-00-00";
+    }
+
     async announce() {
         console.log("Performing announcement cycle for guild", this.guildId);
 
@@ -64,7 +71,7 @@ class BirthdayAnnouncer {
         // make sure you don't run twice on the same day
         if (!(today > this.lastRun)) {
             // already ran today, don't need to do anything in this scenario
-            console.log("Already checked for birthdays in server", this.guildId, "skipping...");
+            console.log("Already checked for birthdays in server", this.guildId, "for date", this.lastRun, "skipping...");
             return;
         }
 

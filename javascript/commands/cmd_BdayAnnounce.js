@@ -61,6 +61,10 @@ module.exports = {
             case "announce":
                 bda.announce();
                 break;
+
+            case "reset":
+                bda.reset();
+                break;
         }
 
     },

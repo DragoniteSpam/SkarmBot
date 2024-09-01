@@ -127,10 +127,11 @@ class Constants {
 
         //channel objects for skarm's base server which are accessible to all skarm tokens
         Constants.Channels = {
-            LOG:        client.Channels.get("430545618314985504"), // #stdout
+			ERROR: 	    client.Channels.get("1279663620208332840"),  // #stderr
+            LOG:        client.Channels.get("430545618314985504"),   // #stdout
+			SPAM: 	    client.Channels.get("678456248735367168"),   // #debug
             DELETED:    client.Channels.get("414291195028570112"),
             TODO:       client.Channels.get("766054985443311677"),
-			SPAM: 	    client.Channels.get("678456248735367168"), // #stderr
             SAVELOG:    client.Channels.get("1052777938480791572"),
         };
 

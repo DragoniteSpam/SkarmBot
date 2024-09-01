@@ -11,24 +11,24 @@ class Skarm {
         console.log(message);
         Constants.Channels.LOG.sendMessage(message);
     }
-    
+
     static todo(message) {
-		console.error(message);
-		Constants.Channels.TODO.sendMessage(message);
+        console.error(message);
+        Constants.Channels.TODO.sendMessage(message);
     }
-	
-	/**Mass data output stream which can be freely used for spam and during debugging.
+
+    /**Mass data output stream which can be freely used for spam and during debugging.
     * @param message the message to be sent to the spam channel
     */
-	static spam(...message) {
-        for(let m of message) {
+    static spam(...message) {
+        for (let m of message) {
             this.spamBuffer(m);
         }
     }
-	static STDERR(data) {this.spamBuffer(data);  console.error(data);}
+    static STDERR(data) { this.logError(data); }
 
     static spamNoBuffer(message) {
-        if(message.length>0)
+        if (message.length > 0)
             return Constants.Channels.SPAM.sendMessage(message);
         return null;
     }
@@ -39,16 +39,24 @@ class Skarm {
      // 2000: the count of milliseconds between messages sent and the max character count for a discord message
      * @param message the message to be added to the spam buffer
      */
-    static spamBuffer(message){
-        if(typeof(message)==="object") message = JSON.stringify(message);
-        if(Skarm.spamBufferString === undefined) {
+    static spamBuffer(...message) {
+        let MAX_MESSAGE_LENGTH = 1800;
+        
+        // stringify any parts that aren't strings to avoid logging objects
+        message = message.map(m => {
+            if (typeof (m) === "object") 
+                return JSON.stringify(m);
+            return m;
+        });
+
+        if (Skarm.spamBufferString === undefined) {
             Skarm.spamBufferString = "";
-            Skarm.spamBufferTimer = setInterval(function (){
-                Skarm.spamNoBuffer(Skarm.spamBufferString.substring(0,2000));
-                Skarm.spamBufferString=Skarm.spamBufferString.substring(2000);
-            },2000);
+            Skarm.spamBufferTimer = setInterval(function () {
+                Skarm.spamNoBuffer(Skarm.spamBufferString.substring(0, MAX_MESSAGE_LENGTH));
+                Skarm.spamBufferString = Skarm.spamBufferString.substring(MAX_MESSAGE_LENGTH);
+            }, 2000);
         }
-        Skarm.spamBufferString+=message+"\r\n";
+        Skarm.spamBufferString += message + "\r\n";
     }
 
     /**
@@ -57,31 +65,36 @@ class Skarm {
      * @returns Promise
      */
     static saveNoBuffer(message) {
-        if(message.length > 0)
+        if (message.length > 0)
             return Constants.Channels.SAVELOG.sendMessage(message);
     }
 
-    static saveLog (message){
-        if(typeof(message)==="object") message = JSON.stringify(message);
-        if(Skarm.saveLogBufferString === undefined) {
+    static saveLog(message) {
+        if (typeof (message) === "object") message = JSON.stringify(message);
+        if (Skarm.saveLogBufferString === undefined) {
             Skarm.saveLogBufferString = "";
             Skarm.saveLogBufferTimer = setInterval(function () {
-                Skarm.saveNoBuffer(Skarm.saveLogBufferString.substring(0,2000));
-                Skarm.saveLogBufferString=Skarm.saveLogBufferString.substring(2000);
-            },2000);
+                Skarm.saveNoBuffer(Skarm.saveLogBufferString.substring(0, 2000));
+                Skarm.saveLogBufferString = Skarm.saveLogBufferString.substring(2000);
+            }, 2000);
         }
-        Skarm.saveLogBufferString+=message+"\r\n";
+        Skarm.saveLogBufferString += message + "\r\n";
     }
 
     /**
      * standard error output stream which also sends a copy of errors to spam aka #stderr
      * @param err the error object
      */
-    static logError(err) {
-        console.error(new Date +":\t"+err);
-        Skarm.spamBuffer(err);
+    static logError(...err) {
+        console.log("========================================================================");
+        console.log("Encountered error:", ...err);
+        console.error(new Date + ":\t" + err.join(" "));
+        console.trace("Stack trace for error instance.");
+        console.log("========================================================================");
+        Skarm.spamBuffer(...err);
+        Constants.Channels.ERROR.sendMessage(err.join(" "));
     }
-    
+
     static isWeekend() {
         let day = Date.now().getDay();
         return (
@@ -89,11 +102,11 @@ class Skarm {
             day === Constants.Days.SATURDAY
         );
     }
-    
+
     static isSkyrimDay() {
         return isWeekend();
     }
-    
+
     static isPunDay() {
         let day = Date.now().getDay();
         return (
@@ -102,7 +115,7 @@ class Skarm {
         );
     }
 
-    static hasMessageAccess(channel){
+    static hasMessageAccess(channel) {
         if (channel === null) {
             console.log("null channel target: ", channel);
             return;
@@ -116,7 +129,7 @@ class Skarm {
             "SEND_MESSAGES"
         ];
 
-        for(let permission of requiredTextPermissions) {
+        for (let permission of requiredTextPermissions) {
             if (!Constants.client.User.can(discordie.Permissions.Text[permission], channel)) {
                 this.log(`Missing permission ${permission} in ${channel.name}`);
                 return;
@@ -132,14 +145,14 @@ class Skarm {
             channel = Constants.client.Channels.get(channel);
         }
 
-        if(!channel){
+        if (!channel) {
             console.log("channel argument is falsey");
             return;
         }
 
-        if(!this.hasMessageAccess(channel))return;
+        if (!this.hasMessageAccess(channel)) return;
 
-        if(channel && channel.sendTyping) channel.sendTyping(); // null guard
+        if (channel && channel.sendTyping) channel.sendTyping(); // null guard
         return new Promise((resolve, reject) => {
             setTimeout(function () {
                 Skarm.sendMessage(channel, text, tts, obj, promiseHandler);
@@ -153,7 +166,7 @@ class Skarm {
             channel = Constants.client.Channels.get(channel);
         }
 
-        if(!this.hasMessageAccess(channel)) return;
+        if (!this.hasMessageAccess(channel)) return;
 
         try {
             let promise = channel.sendMessage(text, tts, obj);
@@ -179,7 +192,7 @@ class Skarm {
             return;
         }
 
-        if(!this.hasMessageAccess(channel))return;
+        if (!this.hasMessageAccess(channel)) return;
 
         try {
             //Skarm.logError("Sending async message");
@@ -195,15 +208,15 @@ class Skarm {
                         return Skarm.logError(JSON.stringify(e));
                     }
                 }, timerMS);
-                skarmbotObject.toBeDeletedCache[message.id] = {senderID: senderID, self: false, timeout: timeout};
+                skarmbotObject.toBeDeletedCache[message.id] = { senderID: senderID, self: false, timeout: timeout };
             }));
         } catch {
             console.error("failed to send message: [REDACTED] to channel " + channel.id);
         }
     }
 
-    static queueMessage(Guilds,channel, message, tts, obj){
-        Guilds.get(channel.guild_id).queueMessage(channel,message,tts,obj);
+    static queueMessage(Guilds, channel, message, tts, obj) {
+        Guilds.get(channel.guild_id).queueMessage(channel, message, tts, obj);
     }
 
     static help(cmd, e) {
@@ -213,17 +226,17 @@ class Skarm {
             paramString += param + " ";
         }
 
-        let fields = [{name: "Aliases", value: cmd.aliases.join(", "), inline: true}];
+        let fields = [{ name: "Aliases", value: cmd.aliases.join(", "), inline: true }];
         if (cmd.examples) {
-            fields.push({name: "\u200B", value: "\u200B", inline: false});
-            fields.push({name: "Example Usage", value: "\u200B", inline: false});
+            fields.push({ name: "\u200B", value: "\u200B", inline: false });
+            fields.push({ name: "Example Usage", value: "\u200B", inline: false });
             for (let example of cmd.examples) {
-                fields.push({name: example.command, value: example.effect, inline: false});
+                fields.push({ name: example.command, value: example.effect, inline: false });
             }
         }
 
         //https://discordjs.guide/popular-topics/embeds.html#embed-preview
-        Skarm.sendMessageDelay(e.message.channel, " ",false, {
+        Skarm.sendMessageDelay(e.message.channel, " ", false, {
             color: Skarm.generateRGB(),
             //author: Constants.self,
             timestamp: new Date(),
@@ -236,8 +249,8 @@ class Skarm {
             }
         });
     }
-    
-    
+
+
     static erroneousCommandHelpPlease(channel, cmd) {
         this.sendMessageDelay(channel, "Not the correct usage for this command! " +
             "Consult the help documentation (`e!help " + cmd.aliases[0] + "`) for " +
@@ -250,11 +263,11 @@ class Skarm {
      * Help commands (without the bot prefix).
      */
     static addCommands(commands) {
-        let mapping = { };
-        let raw = { };
-        let helpMapping = { };
-        let badData = [ ];
-        
+        let mapping = {};
+        let raw = {};
+        let helpMapping = {};
+        let badData = [];
+
         for (let cmd in commands) {
             let cmdData = commands[cmd];
             if (!Array.isArray(cmdData.aliases)) {
@@ -265,19 +278,19 @@ class Skarm {
                 badData.push(cmdData.aliases[0] + " has no parameter list");
                 continue;
             }
-            if (typeof(cmdData.usageChar) !== "string") {
+            if (typeof (cmdData.usageChar) !== "string") {
                 badData.push(cmdData.aliases[0] + " has no usage character");
                 continue;
             }
-            if (typeof(cmdData.helpText) !== "string") {
+            if (typeof (cmdData.helpText) !== "string") {
                 badData.push(cmdData.aliases[0] + " has no help text");
                 continue;
             }
-            if (typeof(cmdData.execute) !== "function") {
+            if (typeof (cmdData.execute) !== "function") {
                 badData.push(cmdData.aliases[0] + " has no execution function");
                 continue;
             }
-            if (typeof(cmdData.help) !== "function") {
+            if (typeof (cmdData.help) !== "function") {
                 badData.push(cmdData.aliases[0] + " has no help function");
                 continue;
             }
@@ -295,26 +308,26 @@ class Skarm {
             // this is without the e and the usage char
             raw[cmdData.aliases[0]] = cmdData;
         }
-        
+
         if (badData.length > 0) {
             throw "Could not add commands:\n" + badData.join("\n");
         }
-        
+
         return { cmd: mapping, help: helpMapping, unaliased: raw };
     }
-    
+
     static addKeywords(keywords) {
         // keywords are similar to commands, but minus the prefix and the
         // documentation
-        let mapping = { };
-        
+        let mapping = {};
+
         for (let kwd in keywords) {
             for (let alias of keywords[kwd].aliases) {
                 mapping[alias] = keywords[kwd];
                 //Skarm.spam(`Initialized ${alias} -> ${kwd}`);
             }
         }
-        
+
         return mapping;
     }
 
@@ -324,7 +337,7 @@ class Skarm {
      *   The saturation can be (75%, 100%)
      *   The value can be (75%, 100%)
      */
-    static generateRGB(){
+    static generateRGB() {
         let h = Math.random() * 360;
         let s = Math.random() * 0.25 + 0.75;
         let v = Math.random() * 0.25 + 0.75;
@@ -381,13 +394,13 @@ class Skarm {
         return Math.floor(r | (g << 8) | (b << 16));
     }
 
-    static getRandomMapKey(map){
+    static getRandomMapKey(map) {
         let keyArray = Object.keys(map);
-        return keyArray[Math.floor(Math.random()*keyArray.length)];
+        return keyArray[Math.floor(Math.random() * keyArray.length)];
     }
-    static getRandomMapVal(map){
+    static getRandomMapVal(map) {
         let keyArray = Object.keys(map);
-        return map[keyArray[Math.floor(Math.random()*keyArray.length)]];
+        return map[keyArray[Math.floor(Math.random() * keyArray.length)]];
     }
 
     /**
@@ -397,8 +410,8 @@ class Skarm {
      *
      * @return array of objects
      */
-    static parseCSV(data){
-        while(data.includes('"')){
+    static parseCSV(data) {
+        while (data.includes('"')) {
             data = data.replaceAll('"', '');
             data = data.replaceAll('\r', '');
         }
@@ -409,10 +422,10 @@ class Skarm {
         //form structure
         let fields = lines[0].split(',');
 
-        for(let i = 1; i<lines.length; i++){
+        for (let i = 1; i < lines.length; i++) {
             let datum = {};
             let dataValues = lines[i].split(',');
-            for(let j in fields){
+            for (let j in fields) {
                 datum[fields[j]] = dataValues[j];
             }
             parsedData.push(datum);
@@ -425,26 +438,26 @@ class Skarm {
          * Replaces a random left-leaning hilt with a left-leaning lightsaber.
          * @param message
          */
-        insertLeft:function(message,layers){
+        insertLeft: function (message, layers) {
             let indexes = [];
             let temp = message.replaceAll(Constants.Lightsabers.Hilts.Left, "_");
-            for(let i = 0;i<temp.length;i++){
-                if(temp[i]==="_"){
+            for (let i = 0; i < temp.length; i++) {
+                if (temp[i] === "_") {
                     indexes.push(i);
                 }
             }
-            if(indexes.length){
-                let modificationIndex = indexes[Math.floor(indexes.length*Math.random())];
-                temp = temp.substring(0,modificationIndex) +
+            if (indexes.length) {
+                let modificationIndex = indexes[Math.floor(indexes.length * Math.random())];
+                temp = temp.substring(0, modificationIndex) +
                     Skarm.getRandomMapVal(Constants.Lightsabers.Left) +
-                    temp.substring(modificationIndex+1);
-                temp = temp.replaceAll("_",Constants.Lightsabers.Hilts.Left);
-                if(indexes.length > 2 && layers){
+                    temp.substring(modificationIndex + 1);
+                temp = temp.replaceAll("_", Constants.Lightsabers.Hilts.Left);
+                if (indexes.length > 2 && layers) {
                     //Skarm.spam("More than 2 indexes of saber.  Recursing...");
-                    return Skarm.lightsaber.insertLeft(temp,--layers);
+                    return Skarm.lightsaber.insertLeft(temp, --layers);
                 }
                 return temp;
-            }else{
+            } else {
                 return message;
             }
         },
@@ -453,27 +466,27 @@ class Skarm {
          * Replaces a random left-leaning hilt with a left-leaning lightsaber.
          * @param message
          */
-        insertRight:function(message,layers){
+        insertRight: function (message, layers) {
             let indexes = [];
             let temp = message.replaceAll(Constants.Lightsabers.Hilts.Right, "_");
-            for(let i = 0;i<temp.length;i++){
-                if(temp[i]==="_"){
+            for (let i = 0; i < temp.length; i++) {
+                if (temp[i] === "_") {
                     indexes.push(i);
                 }
             }
 
-            if(indexes.length){
-                let modificationIndex = indexes[Math.floor(indexes.length*Math.random())];
-                temp = temp.substring(0,modificationIndex) +
+            if (indexes.length) {
+                let modificationIndex = indexes[Math.floor(indexes.length * Math.random())];
+                temp = temp.substring(0, modificationIndex) +
                     Skarm.getRandomMapVal(Constants.Lightsabers.Right) +
-                    temp.substring(modificationIndex+1);
-                temp = temp.replaceAll("_",Constants.Lightsabers.Hilts.Right);
-                if(indexes.length>2 && layers){
+                    temp.substring(modificationIndex + 1);
+                temp = temp.replaceAll("_", Constants.Lightsabers.Hilts.Right);
+                if (indexes.length > 2 && layers) {
                     //Skarm.spam("More than 2 indexes of saber.  Recursing...");
-                    return Skarm.lightsaber.insertRight(temp,--layers);
+                    return Skarm.lightsaber.insertRight(temp, --layers);
                 }
                 return temp;
-            }else{
+            } else {
                 return message;
             }
         },
@@ -487,7 +500,7 @@ class Skarm {
      */
     static formatTable = function (table, fields, capitalizeTableKeys) {
         // input formatting
-        if(fields === undefined) fields = Object.keys(table[0]);    // if the fields parameter isn't specified, display all properties of the table's objects
+        if (fields === undefined) fields = Object.keys(table[0]);    // if the fields parameter isn't specified, display all properties of the table's objects
 
         // internal constants
         const space = " ";
@@ -496,17 +509,17 @@ class Skarm {
         //initialize tableEntries array
         let tableEntries = [];      // array of strings that will become the final output
         let tableHeader = "";       // header that will be prepended to the final output
-        for(let _ in table){
+        for (let _ in table) {
             tableEntries.push("");                          // initialize all entires as empty strings
         }
 
         // append each field to the table
-        for(let field of fields){
+        for (let field of fields) {
             // optionally capitalize the first letter of each word for the table header
             let fieldName = field;
-            if(capitalizeTableKeys){
+            if (capitalizeTableKeys) {
                 let fn_bits = fieldName.split(" ");
-                for (let i in fn_bits){
+                for (let i in fn_bits) {
                     let bit = fn_bits[i];
                     fn_bits[i] = bit[0].toUpperCase() + bit.substring(1);
                 }
@@ -515,32 +528,32 @@ class Skarm {
             tableHeader += fieldName;                                           // add new field to header
             let maxEntryLen = tableHeader.length;                               // set length of header as initial min length due to this entry
             // add next property to table data
-            for(let i in table){
+            for (let i in table) {
                 tableEntries[i] += table[i][field];                             // add new property
                 maxEntryLen = Math.max(maxEntryLen, tableEntries[i].length);    // track biggest string length
             }
 
             // append spaces until all entries are at max length
             maxEntryLen += 2;                                                   // add 2 as the minimum amount of spaces to append even for the longest entry to ensure space between fields
-            while(tableHeader.length < maxEntryLen) tableHeader += space;       // add space buffer to table header
-            for(let i in table){
-                while(tableEntries[i].length < maxEntryLen) tableEntries[i] += space;   // add space buffer to each table entry
+            while (tableHeader.length < maxEntryLen) tableHeader += space;       // add space buffer to table header
+            for (let i in table) {
+                while (tableEntries[i].length < maxEntryLen) tableEntries[i] += space;   // add space buffer to each table entry
             }
         }
 
         // get rid of any loose spaces after the final table entry
-        for(let i in table){
+        for (let i in table) {
             tableEntries[i] = tableEntries[i].trim();
         }
 
-        return "```" + nl + tableHeader+ nl+ tableEntries.join("\r\n") + nl +"```";   // return the table formatted as a string
+        return "```" + nl + tableHeader + nl + tableEntries.join("\r\n") + nl + "```";   // return the table formatted as a string
     }
 
-   /**
-    * @param {skarmbot} bot 
-    * @param {string} userID 
-    * @returns {string} username of the user to the best of Skarm's ability
-     */
+    /**
+     * @param {skarmbot} bot 
+     * @param {string} userID 
+     * @returns {string} username of the user to the best of Skarm's ability
+      */
     static getUserMention = function (bot, userID) {
         let userMention;
         try {
@@ -552,39 +565,39 @@ class Skarm {
         return userMention;
     }
 
-    static commandParamTokens = function(message) {
+    static commandParamTokens = function (message) {
         let tokens = [];
-    
+
         let firstLayerTokens = [message];
         // if an even amount of quotes exist in the message, segment by quotes first
         let quoteCount = (message.match(/"/g) || []).length;
         if (quoteCount % 2 === 0 && quoteCount > 0) {
             firstLayerTokens = message.split('"');
         }
-        
+
         // segment the first layer tokens that are outside of quotes into space-separated words
-        for(let i in firstLayerTokens) {
-            if(i%2 == 1){  // inside of quotes.  Paired -> successive swaps, starting at out
+        for (let i in firstLayerTokens) {
+            if (i % 2 == 1) {  // inside of quotes.  Paired -> successive swaps, starting at out
                 tokens.push(firstLayerTokens[i]);
             } else {       // outside of quotes
                 let words = firstLayerTokens[i].split(" ");
-                for(let word of words) {
+                for (let word of words) {
                     tokens.push(word);
                 }
             }
         }
-    
+
         // prune empty tokens
-        for(let i = 0; i < tokens.length; i++){
-            if(tokens[i].length === 0){
-                tokens.splice(i--,1);
+        for (let i = 0; i < tokens.length; i++) {
+            if (tokens[i].length === 0) {
+                tokens.splice(i--, 1);
             }
         }
         tokens.shift();
         return tokens;
     }
-    
-    static commandParamString = function(message) {
+
+    static commandParamString = function (message) {
         let tokens = message.trim().split(" ");
         tokens.shift();
         return tokens.join(" ");
@@ -620,7 +633,7 @@ class Skarm {
         }
     }
 
-    static ContainsUrl(string){
+    static ContainsUrl(string) {
         let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
         return string && string.match(urlRegex);
     }
@@ -633,9 +646,9 @@ class Skarm {
     static extractUser = function (message) {
         let userCandidates = Skarm.extractGUIDs(message);
         let lastId = null;
-        for(let id of userCandidates) {
+        for (let id of userCandidates) {
             let user = Constants.client.Users.get(id);
-            if(user) return id;
+            if (user) return id;
             lastId = id;
         }
         return lastId;         // if an active ID isn't found, it may belong to a former user 
@@ -645,7 +658,7 @@ class Skarm {
         let channelIdCandidates = Skarm.extractGUIDs(message);
         // validate ID maps back to channel that skarm knows exists.
         // Return null if channel does not successfully resolve
-        for (let id of channelIdCandidates){
+        for (let id of channelIdCandidates) {
             let channelObj = Constants.client.Channels.get(id);
             if (channelObj && channelObj.isGuildText) return id;
         }
@@ -654,8 +667,8 @@ class Skarm {
 
     static extractRole = function (message, iGuild) {
         let roleIdCandidates = Skarm.extractGUIDs(message);
-        let roles = iGuild.roles.map(r =>r.id);
-        for (let id of roleIdCandidates){
+        let roles = iGuild.roles.map(r => r.id);
+        for (let id of roleIdCandidates) {
             if (roles.includes(id)) return id;
         }
         return null;
@@ -663,13 +676,13 @@ class Skarm {
 
     static escapeMarkdown = function (text) {
         let replacements = {
-            '`' : '\`',
-            '_' : '\_',
-            '~' : '\~',
+            '`': '\`',
+            '_': '\_',
+            '~': '\~',
             // '||' : '\|\|',
             // '\\' : '\\\\',
         };
-        for(let r in replacements) {
+        for (let r in replacements) {
             text = text.replaceAll(r, replacements[r]);
         }
         return text;

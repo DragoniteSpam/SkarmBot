@@ -863,6 +863,9 @@ const linkFunctions = function(guild) {
 class Guild {
     constructor(id) {
         this.id = id;
+        if(id === null){
+            Skarm.logError("Attempted to create guild with null ID");
+        }
         
         this.mayhemRoles = { };
         
