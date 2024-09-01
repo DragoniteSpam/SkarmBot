@@ -13,8 +13,8 @@ module.exports = {
         { command: "e@bda", effect: "Indicates if this channel will announce birthdays" },
         { command: "e@bda enable", effect: "Configures skarm to announce birthdays in **this channel**" },
         { command: "e@bda disable", effect: "Turns off announcement of birthdays in **this channel**.  Announcements in other channels are unaffected." },
-        { command: "e@bda list", effect: "Lists all channels in this server that will announce birthdays (in case multiple are configured)" },
         { command: "e@bda count", effect: "Provides a count of how many users have allowed skarm to announce their birthday in this server" },
+        { command: "e@bda list", effect: "Provides a list of users who have allowed skarm to announce their birthday in this server" },
         { command: "e@bda announce", effect: "Sends the announcement ahead of skarm's automated schedule for the day!" },
     ],
     ignoreHidden: false,
@@ -46,11 +46,18 @@ module.exports = {
             case "list":
             case "l":
             case "":
-                if (bda.channels.length > 0) {
-                    Skarm.sendMessageDelay(channel, `Birthday announcements will be sent to: ${bda.channels.map(ch => `<#${ch}>`).join(" ")}`);
-                } else {
-                    Skarm.sendMessageDelay(channel, "Birthday announcements aren't being sent to any channels!");
-                }
+                Skarm.sendMessageDelay(channel, "", false, {
+                    timestamp: new Date(),
+                    title: "Birthdays allowed to be announced in this server",
+                    description: `Birthday announcements will be sent to: ${bda.channels.map(ch => `<#${ch}>`).join(" ") || "no channels"}`,
+                    fields: bda.getEnabledMembers().map(m => {
+                        return {
+                            name: `${m.birthday}`,
+                            value: `<@${m.id}>`,
+                            inline: true
+                        };
+                    }),
+                });
                 break;
 
             case "count":
