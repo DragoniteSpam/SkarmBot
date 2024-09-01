@@ -54,7 +54,7 @@ class BirthdayAnnouncer {
     }
 
     async announce() {
-        console.log("Performing announcement cycle");
+        console.log("Performing announcement cycle for guild", this.guildId);
 
         // extract the month and day from today's date
         let unix = Date.now() - (new Date()).getTimezoneOffset() * Constants.Time.MINUTES;
@@ -90,7 +90,7 @@ class BirthdayAnnouncer {
         let guild = Constants.client.Guilds.get(this.guildId);
         if (!guild) {
             Skarm.logError(`Null guild object on ID:${this.guildId}`);
-            return;
+            return [];
         }
         let members = guild.members                     // get all the members in the discord guild
             .map(member => User.get(member.id))         // match them to skarm's User class instances
