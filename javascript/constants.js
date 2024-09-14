@@ -137,9 +137,9 @@ class Constants {
 
         //the absolute path of the repository, formatted like "C:\Users\argo\Documents\GitHub\SkarmBot\"
         Constants.skarmRootPath = p.argv[1].substring(0, process.argv[1].lastIndexOf("\\") + "\\".length);
-        console.log("Initialized root path to: ", Constants.skarmRootPath);
+        console.log("[Constants.Dynamics] Initialized root path to: ", Constants.skarmRootPath);
 
-        console.log("Initialized constants...");
+        console.log("[Constants.Dynamics] Initialized constants...");
     }
 }
 

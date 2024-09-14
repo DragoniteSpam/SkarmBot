@@ -262,7 +262,7 @@ class User {
                     User.users[u] = _users[u];
                     // console.log("Re-initialized user", u, _users[u]);
                 }
-                console.log("Re-initialized "+Object.keys(User.users).length + " Users");
+                console.log("[Users.loadFromDebug] Re-initialized "+Object.keys(User.users).length + " Users");
             });
         } catch (error) {
             console.trace(error);

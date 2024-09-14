@@ -32,7 +32,7 @@ class ShantyCollection {
                 this.load(file);
             });
 
-            console.log("Initialized", ShantyCollection.getCumulativeLinesLength(), "lines across", Object.keys(ShantyCollection.shanties).length, "shanties");
+            console.log("[Shanties] Initialized", ShantyCollection.getCumulativeLinesLength(), "lines across", Object.keys(ShantyCollection.shanties).length, "shanties");
         });
     }
 

@@ -1036,7 +1036,7 @@ class Guild {
                 linkVariables(Guild.guilds[g]);
                 linkFunctions(Guild.guilds[g]);
             }
-			console.log("Initialized "+ Object.keys(Guild.guilds).length + " Guilds");
+			console.log("[Guilds] Initialized "+ Object.keys(Guild.guilds).length + " Guilds");
         });
     }
     

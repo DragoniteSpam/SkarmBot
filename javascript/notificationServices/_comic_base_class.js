@@ -11,6 +11,9 @@ class ComicNotifier {
 		this.enabled = true;
 		this.setSignature();
 		this.comicArchivePath = "..\\skarmData\\" + this.signature + ".penguin";
+		if(!this.bot){
+			Skarm.logError("bot object is falsey for comic base class");
+		}
 
 		this.initialize();   // override this.initialize instead of the constructor itself
 		this.loadComics();

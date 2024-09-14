@@ -9,4 +9,4 @@ let dir = fs.readdirSync("./javascript/commands/")
 for (let file of dir) {
     module.exports[file] = require("./commands/" + file);
 }
-console.log(`Initialized ${Object.keys(module.exports).length} commands.`);
+console.log(`[Commands] Initialized ${Object.keys(module.exports).length} commands.`);

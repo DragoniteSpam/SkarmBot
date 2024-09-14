@@ -22,11 +22,11 @@ class ComicsCollection {
             ComicsCollection.comicClasses[file] = require("./notificationServices/" + file);
             ComicsCollection.comics[file] = new ComicsCollection.comicClasses[file](bot);
             let signature = ComicsCollection.comics[file].signature;
-            console.log(`Initialized comic: ${file} (${signature})`);
+            console.log(`[ComicsCollection] Initialized comic: ${file} (${signature})`);
             ComicsCollection.signatures.push(signature);
         }
 
-        console.log(`Initialized ${Object.keys(ComicsCollection.comicClasses).length} notification services.`);
+        console.log(`[ComicsCollection] Initialized ${Object.keys(ComicsCollection.comicClasses).length} notification services.`);
         return ComicsCollection;
     }
 

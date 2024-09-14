@@ -13,7 +13,6 @@ const Skinner = require("./skinnerbox.js");
 const { spawn } = require("child_process");
 const Permissions = require("./permissions.js");
 
-
 const Users = require("./user.js");
 const Guilds = require("./guild.js");
 
