@@ -1,4 +1,5 @@
 "use strict";
+const ComicsCollection = require("../comics.js");
 const { os, request, Skarm, Constants, Web, Users, Guilds, Permissions, Skinner, SarGroups, ShantyCollection } = require("./_imports.js");
 
 module.exports = {
