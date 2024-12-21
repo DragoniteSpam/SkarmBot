@@ -97,7 +97,7 @@ class BirthdayAnnouncer {
     getEnabledMembers() {
         let guild = Constants.client.Guilds.get(this.guildId);
         if (!guild) {
-            Skarm.logError(`Null guild object on ID:${this.guildId}`);
+            Skarm.spam(`Null guild object on ID:${this.guildId}`);
             return [];
         }
         let members = guild.members                     // get all the members in the discord guild
