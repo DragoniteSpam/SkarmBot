@@ -7,9 +7,13 @@
 $windowTitle = "SkarmBot live"
 $host.ui.RawUI.WindowTitle = $windowTitle
 
+# Directory definitions
 $dataDestination = "~\Box\skarmData\"
-$dataRemoval = "$PSScriptRoot\..\skarmData\*(*).penguin"
-$dataSource = "$PSScriptRoot\..\skarmData\*.penguin"
+$dataLocalPath = "$PSScriptRoot\..\skarmData"
+
+# Files
+$dataRemoval = "$dataLocalPath\*(*).penguin"  # Sometimes, copies get created during testing with conflicting versions
+$dataSource = "$dataLocalPath\*.penguin"
 
 if(-not(Test-Path $dataSource)){
     Write-Error "Error: data source not found"
@@ -31,7 +35,7 @@ ls $dataRemoval | Remove-Item -Verbose
 ls $dataSource | where {$_.Length -gt ".penguin".Length} |    # Take all the local penguin files
 foreach {
     Write-Host "Saving $($_.Name) of size $($_.Length) to the cloud..."; 
-    Copy-Item -Path $_ -Destination $dataDestination -Force
+    Copy-Item -Path $_ -Destination $dataDestination -Force    
 }
 
 
@@ -39,13 +43,21 @@ foreach {
 # using '-format "yyyy/MM/dd"' does not have consistently 
 # correct behavior based on regional format
 $d = (Get-Date -format "yyyy-MM-dd") -replace "-","/"
-$backupPath = Join-Path  $dataDestination $d                  # use cmdlet for clean/reliable path merging
-mkdir $backupPath -ErrorAction SilentlyContinue | Out-Null    # make the date-based folder if it hasn't already been made
+$cloudBackupPath = Join-Path  $dataDestination $d                  # use cmdlet for clean/reliable path merging
+$localBackupPath = Join-Path $dataLocalPath $d                     # copy backups locally in the event of a cloud outage
+
+# make the date-based folder if it hasn't already been made
+mkdir $cloudBackupPath -ErrorAction SilentlyContinue | Out-Null
+mkdir $localBackupPath -ErrorAction SilentlyContinue | Out-Null
 
 # repeat save to data backup destination
 ls $dataSource | 
 where {$_.Length -gt ".penguin".Length} | 
 foreach {
-    Write-Host "Saving $($_.Name) of size $($_.Length) to the backup path $backupPath`..."; 
-    Copy-Item -Path $_ -Destination $backupPath -Force
+    Write-Host "Saving $($_.Name) of size $($_.Length) to the backup path $cloudBackupPath`..."; 
+    Copy-Item -Path $_ -Destination $cloudBackupPath -Force
+
+    Write-Host "Saving $($_.Name) of size $($_.Length) to the backup path $localBackupPath`..."; 
+    Copy-Item -Path $_ -Destination $cloudBackupPath -Force
+
 }

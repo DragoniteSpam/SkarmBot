@@ -104,8 +104,9 @@ if($status.IsInstalled){
     }
 }
 
-Write-Host "Installing $softwareName $currentVersion"
-install-LatestVersion -currentVersion $currentVersion -downloadUrl $latestData.downloadUrl
+# Disabled to let the user manage installed version instead
+# Write-Host "Installing $softwareName $currentVersion"
+# install-LatestVersion -currentVersion $currentVersion -downloadUrl $latestData.downloadUrl
 
 # Verify installation was successful
 if(get-upToDateStatus){

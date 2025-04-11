@@ -36,7 +36,7 @@ module.exports = {
                     if(subscription.live()){
                         body += `[${i}] **${comicName}** posts are currently set to: **NEW RELEASES**\n`;
                     } else {
-                        body += `[${i}] **${comicName}** posts are currently set to: **HISTORIC RELEASES** (current entry: ${subscription.index}| latest entry: ${ComicsCollection.get(comicName).length()})\n`;
+                        body += `[${i}] **${comicName}** posts are currently set to: **HISTORIC RELEASES** (current entry: ${subscription.index} | latest entry: ${ComicsCollection.get(comicName).length()})\n`;
                     }
                 } else {
                     body += `[${i}] **${comicName}** posts are currently set to: **DISABLED**\n`;
