@@ -1,4 +1,6 @@
 "use strict";
+const { parseCronExpression } = require("cron-schedule");
+const { IconRotator, Icon, isValidUrl } = require("../guildClasses/IconRotator.js");
 const { commandParamString, commandParamTokens } = require("../skarm.js");
 const { os, request, Skarm, Constants, Web, Users, Guilds, Permissions, Skinner, SarGroups, ShantyCollection } = require("./_imports.js");
 
@@ -37,6 +39,30 @@ module.exports = {
         let params = commandParamTokens(e.message.content);
         let rotator = guildData.iconRotator;
 
+        let command = params.splice(0, 1)[0];
+        args = args.replace(command, "").trim();
+        switch (command) {
+            case "enable":
+                rotator.enabled = true;
+                break;
+
+            case "disable":
+                rotator.enabled = false;
+                break;
+
+            case "add":
+                addIcon(rotator, params, args);
+                break;
+
+            case "edit":
+                editIcon(rotator, params, args);
+                break;
+
+            case "delete":
+                deleteIcon(rotator, params);
+                break;
+        }
+
         send(e, rotator);
     },
 
@@ -45,11 +71,15 @@ module.exports = {
     },
 }
 
-function send(e, rotator) {
+async function send(e, rotator) {
+    console.log("Catching up");
+    await rotator.catchUp();
+
     Skarm.sendMessageDelay(e.message.channel, " ", false, {
         title: "Server Icon Auto-rotation state",
         description: [
             rotator.enabled ? "Scheduled Rotations Enabled" : "Disabled",
+            `Last time checked (ET) ${new Date(rotator.lastUpdatedTime).toLocaleString('sv')}`
         ].join("\n"),
         fields: rotator.icons.map((icon, i) => {
             let name = icon.name || "Unnamed";
@@ -60,9 +90,74 @@ function send(e, rotator) {
                 value: [
                     `Cron: ${icon.cron}`,
                     `Next scheduled time: ${icon.nextScheduledTime()}`,
+                    `Valid: ${icon.isValidIcon()}`,
                     `Image: ${icon.url}`,
                 ].join("\n")
             };
         }),
     });
+}
+
+function addIcon(rotator, params, args) {
+    let url = extractUrl(params);
+    let cron = extractCron(params);
+    let name = args.replace(url, "").replace(cron, "").trim();
+    let icon = new Icon({ name, url, cron });
+    rotator.icons.push(icon);
+}
+
+function editIcon(rotator, params, args) {
+    let identifier = params.splice(0, 1);
+    let icon = extractIcon(rotator, identifier);
+    let url = extractUrl(params);
+    let cron = extractCron(params);
+    let name = args.replace(url, "").replace(cron, "").replace(identifier, "").trim();
+    if (url) icon.url = url;
+    if (cron) icon.cron = cron;
+    if (name) icon.name = name;
+}
+
+function deleteIcon(rotator, params) {
+    let icon = extractIcon(rotator, params[0]);
+    let index = rotator.icons
+        .map((x, i) => { return { x, i } })
+        .find(icons => icons.x.url === icon.url)?.i;
+
+    // delete the icon
+    if (index in rotator.icons) {
+        rotator.icons.splice(index, 1);
+    }
+}
+
+function extractUrl(params) {
+    let url = params.find(param => isValidUrl(param));
+    if (!url) return;
+    params.splice(params.indexOf(url), 1);
+    return url;
+}
+
+function extractIcon(rotator, identifier) {
+    return rotator.icons.find(icon => icon.name?.indexOf(identifier) === 0) ||
+        rotator.icons.find((icon, i) => i + 1 === identifier);
+}
+
+function extractCron(params) {
+    let candidateExpressions = [
+        params.slice(0, 6),    // try the first 6
+        params.slice(0, 5),    // try the first 5
+        params.slice(-6),      // try the last 6
+        params.slice(-5),      // try the last 5
+    ];
+
+    return candidateExpressions
+        .map(expr => expr.join(" "))     // convert param sequence to cron string
+        .find(expr => isValidCron(expr)) // convert to cron expression or null, stop on the first valid expression
+}
+
+function isValidCron(cron) {
+    try {
+        return parseCronExpression(cron); // truthy object
+    } catch (error) {
+        return null; // falsy null
+    }
 }

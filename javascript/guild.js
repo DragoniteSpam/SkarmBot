@@ -15,7 +15,7 @@ const {Zipf} = require("./guildClasses/zipf.js");
 const { ComicSubscriptions } = require("./guildClasses/comicSubscriptions.js");
 const { AnonymousPoll } = require("./guildClasses/anonymousPoll.js");
 const BirthdayAnnouncer = require("./guildClasses/BirthdayAnnouncer.js");
-const IconRotator = require("./guildClasses/IconRotator.js");
+const { IconRotator } = require("./guildClasses/IconRotator.js");
 
 
 const guilddb = "../skarmData/guilds.penguin";
