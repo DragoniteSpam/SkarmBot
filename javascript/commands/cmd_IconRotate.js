@@ -41,26 +41,30 @@ module.exports = {
 
         let command = params.splice(0, 1)[0];
         args = args.replace(command, "").trim();
-        switch (command) {
-            case "enable":
-                rotator.enabled = true;
-                break;
+        try {
+            switch (command) {
+                case "enable":
+                    rotator.enabled = true;
+                    break;
 
-            case "disable":
-                rotator.enabled = false;
-                break;
+                case "disable":
+                    rotator.enabled = false;
+                    break;
 
-            case "add":
-                addIcon(rotator, params, args);
-                break;
+                case "add":
+                    addIcon(rotator, params, args);
+                    break;
 
-            case "edit":
-                editIcon(rotator, params, args);
-                break;
+                case "edit":
+                    editIcon(rotator, params, args);
+                    break;
 
-            case "delete":
-                deleteIcon(rotator, params);
-                break;
+                case "delete":
+                    deleteIcon(rotator, params);
+                    break;
+            }
+        } catch (error) {
+            console.log("Failed to complete operation with error:", error);
         }
 
         send(e, rotator);
@@ -109,6 +113,9 @@ function addIcon(rotator, params, args) {
 function editIcon(rotator, params, args) {
     let identifier = params.splice(0, 1);
     let icon = extractIcon(rotator, identifier);
+    if (!icon) {
+        throw `Failed to find icon with identifier ${identifier}`;
+    }
     let url = extractUrl(params);
     let cron = extractCron(params);
     let name = args.replace(url, "").replace(cron, "").replace(identifier, "").trim();
@@ -119,6 +126,9 @@ function editIcon(rotator, params, args) {
 
 function deleteIcon(rotator, params) {
     let icon = extractIcon(rotator, params[0]);
+    if (!icon) {
+        throw `Failed to find icon with identifier ${identifier}`;
+    }
     let index = rotator.icons
         .map((x, i) => { return { x, i } })
         .find(icons => icons.x.url === icon.url)?.i;
