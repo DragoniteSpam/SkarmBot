@@ -15,6 +15,7 @@ const {Zipf} = require("./guildClasses/zipf.js");
 const { ComicSubscriptions } = require("./guildClasses/comicSubscriptions.js");
 const { AnonymousPoll } = require("./guildClasses/anonymousPoll.js");
 const BirthdayAnnouncer = require("./guildClasses/BirthdayAnnouncer.js");
+const { IconRotator } = require("./guildClasses/IconRotator.js");
 
 
 const guilddb = "../skarmData/guilds.penguin";
@@ -66,6 +67,7 @@ const linkVariables = function(guild) {
     guild.shantyIterator = new ShantyIterator(guild.shantyIterator);
     guild.anonPoll = new AnonymousPoll(guild.anonPoll);
     guild.birthdayAnnouncer = new BirthdayAnnouncer(guild.birthdayAnnouncer, guild.id);
+    guild.iconRotator = new IconRotator(guild.iconRotator, guild.id);
 
     guild.zipf = new Zipf(guild.zipfMap, guild.zipf);
     if(guild.zipfMap) delete guild.zipfMap;
