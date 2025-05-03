@@ -170,9 +170,9 @@ class IconRotator {
 function isValidUrl(url) {
     // imgur-only URLs
     let regex = /https:\/\/imgur\.com\/[\w]+/;
-    console.log(`Matching ${url} against ${regex}`);
+    // console.log(`Matching ${url} against ${regex}`);
     let match = url.match(regex);
-    console.log(`Result: ${match}`);
+    // console.log(`Result: ${match}`);
     return match?.[0];
 }
 
