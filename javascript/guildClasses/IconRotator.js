@@ -109,21 +109,41 @@ class IconRotator {
             .filter(icon => icon.isValidCron());
     }
 
-    async catchUp() {
-        if (!this.enabled) return;
-
+    getNextState() {
         let validIcons = this.getValidIcons();
-        console.log(`[IconRotator] catching up among ${validIcons.length} valid icons`);
-        let response = validIcons
+        let next = validIcons.map(icon => {
+            let cron = icon.isValidCron();
+            let date = cron.getNextDate(new Date);
+            return { cron, date, icon };
+        })
+        .sort((a, b) => a.date.getTime() - b.date.getTime())[0];
+
+        let upcomingTime = next.date;
+        let nextState = next.icon;
+
+        return {nextState, upcomingTime};
+    }
+
+    getCurrentState() {
+        let validIcons = this.getValidIcons();
+        // console.log(`[IconRotator] catching up among ${validIcons.length} valid icons`);
+        return validIcons
             .map(icon => {
                 let cron = icon.isValidCron();
                 let date = cron.getPrevDate(new Date);
                 return { cron, date, icon };
             })
-            .sort((a, b) => a.date.getTime() - b.date.getTime())
-            .map(tuple => tuple.icon)[0]
-            ?.uploadToGuild(this.guildId);
+            .sort((a, b) => {
+                let diff = b.date.getTime() - a.date.getTime();
+                // console.log("Diff:", diff, a.icon.name, b.icon.name);
+                return diff;
+            })
+            .map(tuple => tuple.icon)[0];
+    }
 
+    async catchUp() {
+        if (!this.enabled) return;
+        let response = this.getCurrentState()?.uploadToGuild(this.guildId);
         this.updateTimestamp(response);
     }
 
