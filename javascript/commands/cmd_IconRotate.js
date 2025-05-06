@@ -76,7 +76,6 @@ module.exports = {
 }
 
 async function send(e, rotator) {
-    console.log("Catching up");
     await rotator.catchUp();
 
     let state = rotator.getCurrentState();
@@ -86,9 +85,9 @@ async function send(e, rotator) {
         title: "Server Icon Auto-rotation state",
         description: [
             rotator.enabled ? "Scheduled Rotations Enabled" : "Disabled",
-            `Last time checked (ET) ${new Date(rotator.lastUpdatedTime).toLocaleString('sv')}`,
-            `Current icon: ${state.name} ${state.url}`,
-            `Coming up next: ${nextState.name} ${nextState.url} ${upcomingTime.toLocaleString('sv')}`,
+            `Last time checked (ET) ${new Date(rotator?.lastUpdatedTime)?.toLocaleString('sv')}`,
+            `Current icon: ${state?.name} ${state?.url}`,
+            `Coming up next: ${nextState?.name} ${nextState?.url} ${upcomingTime?.toLocaleString('sv')}`,
         ].join("\n"),
         fields: rotator.icons.map((icon, i) => {
             let name = icon.name || "Unnamed";
