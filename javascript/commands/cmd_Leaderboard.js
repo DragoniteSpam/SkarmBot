@@ -9,6 +9,7 @@ module.exports = {
         examples: [
             {command: "e!leaderboard", effect: "Will cause Skarm to report the experience and ranks of the top 15 guild members."},
             {command: "e!leaderboard "+(Constants.Tables.MaxTableLength+1), effect: "Will cause Skarm to report the word and message counts of the "+(Constants.Tables.MaxTableLength + 1)+"th-"+(2 * Constants.Tables.MaxTableLength)+"th guild members."},
+            {command: "e!leaderboard -f", effect: "Include members who have left the guild."},
         ],
         ignoreHidden: true,
         category: "leveling",
@@ -16,10 +17,13 @@ module.exports = {
         execute(bot, e, userData, guildData) {
             let message = Skarm.commandParamString(e.message.content).toLowerCase();
             let tokens = Skarm.commandParamTokens(e.message.content);
+            let force = tokens.includes("-f");
             let startIndex = (tokens && tokens[0] && tokens[0] > 0) ? tokens[0] - 1 : 0;     // initialize start index to be the place in the table where the leaderboard begins
             let iteratingIdx = startIndex;
 
-            let table = guildData.getExpTable();
+            let guildMemberIDs = e.message.guild.members.map(mem => mem.id);
+
+            let table = guildData.getExpTable().filter(member => force || guildMemberIDs.includes(member.userID));
             let fullTableLen = table.length;
             table = table.splice(startIndex, Constants.Tables.MaxTableLength);     // extract desired elements
             for(let entry of table) {

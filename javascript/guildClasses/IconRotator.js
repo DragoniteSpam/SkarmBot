@@ -50,6 +50,10 @@ class Icon {
         let name = undefined;
         let icon = this.isValidUrl();
         if (!icon) return;
+        if (!guild) {
+            console.log("[IconRotator.uploadToGuild] Null guild", guildId);
+            return;
+        }
 
         // format URL to get the buffer response back
         let url = `${icon}.png`;
@@ -116,12 +120,12 @@ class IconRotator {
             let date = cron.getNextDate(new Date);
             return { cron, date, icon };
         })
-        .sort((a, b) => a.date.getTime() - b.date.getTime())[0];
+            .sort((a, b) => a.date.getTime() - b.date.getTime())[0];
 
         let upcomingTime = next.date;
         let nextState = next.icon;
 
-        return {nextState, upcomingTime};
+        return { nextState, upcomingTime };
     }
 
     getCurrentState() {
