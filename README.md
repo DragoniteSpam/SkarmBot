@@ -15,6 +15,50 @@
 
 ## Getting Started
 
+### Running Skarm as a Linux Service
+
+```sh
+mkdir /srv/skarm
+cd /srv/skarm
+git clone https://github.com/DragoniteSpam/SkarmBot.git
+
+sudo nano /etc/systemd/system/skarm.service
+```
+
+Inside of Nano, write:
+```ini
+[Unit]
+Description=Skarmbot
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10
+User=YOUR_USERNAME_GOES_HERE
+ExecStart=/usr/bin/pwsh /srv/skarm/SkarmBot/launcher.ps1 live
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Start the service by running
+```bash
+sudo systemctl enable skarm
+```
+
+### Service Control Commands
+```bash
+sudo systemctl status skarm
+sudo systemctl start skarm
+sudo systemctl restart skarm
+sudo systemctl stop skarm
+journalctl -u skarm.service # read log
+journalctl -u skarm.service -f # follow real-time log
+```
+
+
 ### Adding Skarmbot to a Server
 Skarmbot is hosted by the developers and can simply be added to a discord server with the link below.  
 [Ask your Server Administrators to add Skarm to your favorite server today!](https://discordapp.com/oauth2/authorize?client_id=319291086570913806&scope=bot)
