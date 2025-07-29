@@ -57,18 +57,8 @@ if ($Global:warnings -and $stopOnError) {
 Write-Host "Starting Skarmbot bootloop"
 if ($operationMode -eq "live") {
     if ($IsLinux) {
-        which node
-        node --version
-        Write-Host "NVM DIR: $NVM_DIR"
-        Write-Host "USER: $USER"
-
-        $nvm = ls /home/*/.nvm/versions/node/v*/bin/node
+        $nvm = Get-ChildItem /home/*/.nvm/versions/node/v*/bin/node | % FullName | Select -Last 1
         Write-Host "Available node versions: $nvm"
-
-        # https://nodejs.org/en/download
-        # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-        # \. "$HOME/.nvm/nvm.sh"
-        # nvm install 22
 
         . $nvm $PSScriptRoot/bot.js beta |
         foreach {
