@@ -60,11 +60,12 @@ if ($operationMode -eq "live") {
         which node
         node --version
         Write-Host "NVM DIR: $NVM_DIR"
+        Write-Host "USER: $USER"
 
         # https://nodejs.org/en/download
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-        \. "$HOME/.nvm/nvm.sh"
-        nvm install 22
+        # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+        # \. "$HOME/.nvm/nvm.sh"
+        # nvm install 22
 
         nvm run 22 $PSScriptRoot/bot.js beta |
         foreach {
