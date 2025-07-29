@@ -62,6 +62,9 @@ if ($operationMode -eq "live") {
         Write-Host "NVM DIR: $NVM_DIR"
         Write-Host "USER: $USER"
 
+        $nvm = ls /home/*/.nvm/versions/node/v*/bin/node
+        Write-Host "Available node versions: $nvm"
+
         # https://nodejs.org/en/download
         # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
         # \. "$HOME/.nvm/nvm.sh"
