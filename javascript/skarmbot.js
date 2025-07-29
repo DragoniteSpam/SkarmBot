@@ -76,6 +76,8 @@ class Bot {
 
         this.timer1min = setInterval(this.gameChanger, 1 * Constants.Time.MINUTES);
         this.gameChanger();
+
+        console.log("[MAIN] Ready to receive messages.");
     }
 
     // events
