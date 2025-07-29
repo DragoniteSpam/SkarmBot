@@ -70,7 +70,7 @@ if ($operationMode -eq "live") {
         # \. "$HOME/.nvm/nvm.sh"
         # nvm install 22
 
-        nvm run 22 $PSScriptRoot/bot.js beta |
+        . $nvm $PSScriptRoot/bot.js beta |
         foreach {
             $t = (get-date -format o).split(".")[0].Replace("T", " ")
             "[$t] $_"
