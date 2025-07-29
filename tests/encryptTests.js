@@ -1,7 +1,7 @@
 "use strict";
 const fs = require("fs");
 const crypto = require("crypto-js");
-const Encrypt= require("..\\javascript\\encryption.js");
+const Encrypt= require("../javascript/encryption.js");
 
 class EncryptTest {
 	static execute(string){

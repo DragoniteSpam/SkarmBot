@@ -10,7 +10,7 @@ class ComicNotifier {
 		this.interval = null;
 		this.enabled = true;
 		this.setSignature();
-		this.comicArchivePath = "..\\skarmData\\" + this.signature + ".penguin";
+		this.comicArchivePath = "../skarmData/" + this.signature + ".penguin";
 		if(!this.bot){
 			Skarm.logError("bot object is falsey for comic base class");
 		}
