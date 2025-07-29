@@ -657,7 +657,7 @@ class Bot {
 
         Skarm.saveLog("Beginning push to cloud storage...");
 
-        let savior = spawn('powershell.exe', [Constants.skarmRootPath + 'saveData.ps1']);
+        let savior = spawn('pwsh', [Constants.skarmRootPath + 'saveData.ps1']);
         savior.stdout.on("data", (data) => {
             data = data.toString().replaceAll("\r", "").replaceAll("\n", "");
             if (data.length > 1)

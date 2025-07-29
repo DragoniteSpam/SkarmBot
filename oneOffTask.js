@@ -49,7 +49,7 @@ client.Dispatcher.on(events.GATEWAY_READY, e => {
 	}
 	Constants.initializeDynamics(client, process);
 
-	let dataPuller = spawn('powershell.exe', [Constants.skarmRootPath + "pullData.ps1"]);
+	let dataPuller = spawn('pwsh', [Constants.skarmRootPath + "pullData.ps1"]);
     let skarmVersion = undefined;
 	Encrypt.initialize();
 	dataPuller.on('exit', (code) => {
