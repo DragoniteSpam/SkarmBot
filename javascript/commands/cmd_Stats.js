@@ -35,7 +35,7 @@ module.exports = {
                 "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
                 "Host: " + os.hostname() + "\n" +
                 "vPID: " + bot.pid + "\n" +
-                "Version: " + bot.version + "\n" +
+                "Version: " + bot.version?.trim() + "\n" +
                 "Uptime (probably): " + uptimeString + "```"
             );
         },
