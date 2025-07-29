@@ -3,12 +3,8 @@
  */
 
 "use strict";
-const Skarm = require("../skarm.js");
-const Constants = require("../constants.js");
-const Permissions = require("../permissions.js");
-const Skinner = require("../skinnerbox.js");
-const User = require("../user.js");
-const { parseCronExpression } = require("cron-schedule");
+import { Constants } from "../constants.js";
+import { parseCronExpression } from "cron-schedule";
 
 /**
  * since classes are serialized for Guilds.save, 
@@ -19,7 +15,7 @@ const { parseCronExpression } = require("cron-schedule");
  */
 let subIntervals = {};
 
-class Icon {
+export class Icon {
     constructor(self) {
         this.cron = self.cron || "";
         this.url = self.url || "";
@@ -85,7 +81,7 @@ class Icon {
     }
 }
 
-class IconRotator {
+export class IconRotator {
     constructor(self, guildId) {
         self ??= {}; // for initialization
         this.channels = self.channels || [];                  // list of channel ID's
@@ -171,7 +167,7 @@ class IconRotator {
     }
 }
 
-function isValidUrl(url) {
+export function isValidUrl(url) {
     // imgur-only URLs
     let regex = /https:\/\/imgur\.com\/[\w]+/;
     // console.log(`Matching ${url} against ${regex}`);
@@ -179,9 +175,3 @@ function isValidUrl(url) {
     // console.log(`Result: ${match}`);
     return match?.[0];
 }
-
-module.exports = {
-    IconRotator,
-    Icon,
-    isValidUrl
-};

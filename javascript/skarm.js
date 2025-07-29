@@ -6,7 +6,7 @@ const Permissions = require("./permissions.js");
 const discordie = require("discordie");
 
 // Static methods. Static methods everywhere.
-class Skarm {
+export class Skarm {
     static log(message) {
         console.log(message);
         Constants.Channels.LOG.sendMessage(message);
@@ -688,5 +688,3 @@ class Skarm {
         return text;
     }
 }
-
-module.exports = Skarm;

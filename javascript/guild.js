@@ -11,11 +11,11 @@ const { ShantyCollection, Shanty, ShantyIterator } = require("./shanties.js");
 const SarGroups = require("./guildClasses/sar.js");
 const Parrot = require("./guildClasses/parrot.js");
 const AutoPin = require("./guildClasses/autopin.js");
-const {Zipf} = require("./guildClasses/zipf.js");
+const { Zipf } = require("./guildClasses/zipf.js");
 const { ComicSubscriptions } = require("./guildClasses/comicSubscriptions.js");
 const { AnonymousPoll } = require("./guildClasses/anonymousPoll.js");
 const BirthdayAnnouncer = require("./guildClasses/BirthdayAnnouncer.js");
-const { IconRotator } = require("./guildClasses/IconRotator.js");
+import { IconRotator } from "./guildClasses/IconRotator.js";
 
 
 const guilddb = "../skarmData/guilds.penguin";
@@ -24,30 +24,30 @@ const MIN_LINES = 40;
 
 let defaultLines = ["please stand by"];
 
-let messageIsAction = function(message) {
+let messageIsAction = function (message) {
     if (message.startsWith("_") && message.endsWith("_")) return true;
     if (message.startsWith("*") && message.endsWith("*")) return true;
     return false;
 };
 
-fs.readFile("data/dynamicQuotes/dna/quotes.txt", function(err, data) {
+fs.readFile("data/dynamicQuotes/dna/quotes.txt", function (err, data) {
     defaultLines = data.toString().split("\n");
 });
 
 // I'm not a fan of this, but if you load an older version of an object it
 // won't contain new variables that you might have added
-const linkVariables = function(guild) {
-    if (guild.lines === undefined) guild.lines = { };
-    if (guild.actions === undefined) guild.actions = { };
-    if (guild.mayhemRoles === undefined) guild.mayhemRoles = { };
+const linkVariables = function (guild) {
+    if (guild.lines === undefined) guild.lines = {};
+    if (guild.actions === undefined) guild.actions = {};
+    if (guild.mayhemRoles === undefined) guild.mayhemRoles = {};
     if (guild.notificationChannels === undefined) guild.notificationChannels = {
-        NAME_CHANGE:        {},
+        NAME_CHANGE: {},
 
-        BAN:                {},
-        VOICE_CHANNEL:      {},
+        BAN: {},
+        VOICE_CHANNEL: {},
 
-        MEMBER_JOIN_LEAVE:  {},
-        ASYNC_HANDLER:      {},
+        MEMBER_JOIN_LEAVE: {},
+        ASYNC_HANDLER: {},
     };
     if (guild.notificationChannels.ASYNC_HANDLER === undefined) guild.notificationChannels.ASYNC_HANDLER = {};
 
@@ -56,10 +56,10 @@ const linkVariables = function(guild) {
 
     guild.flexActivityTable ??= {};
 
-    if (guild.hiddenChannels === undefined) {guild.hiddenChannels = {};}
-    if (guild.expBuffRoles === undefined) {guild.expBuffRoles = { };}
-    if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = { };
-    if (guild.selfAssignedRoles === undefined) guild.selfAssignedRoles = { };
+    if (guild.hiddenChannels === undefined) { guild.hiddenChannels = {}; }
+    if (guild.expBuffRoles === undefined) { guild.expBuffRoles = {}; }
+    if (guild.serverJoinRoles === undefined) guild.serverJoinRoles = {};
+    if (guild.selfAssignedRoles === undefined) guild.selfAssignedRoles = {};
     guild.parrot ??= new Parrot(guild.id);
     guild.autoPin ??= new AutoPin(guild.id);
 
@@ -70,17 +70,17 @@ const linkVariables = function(guild) {
     guild.iconRotator = new IconRotator(guild.iconRotator, guild.id);
 
     guild.zipf = new Zipf(guild.zipfMap, guild.zipf);
-    if(guild.zipfMap) delete guild.zipfMap;
+    if (guild.zipfMap) delete guild.zipfMap;
 
     guild.comicSubscriptions = new ComicSubscriptions(guild.comicChannels, guild.comicSubscriptions);
-    if(guild.comicChannels) delete guild.comicChannels;
-    
+    if (guild.comicChannels) delete guild.comicChannels;
+
     guild.deceptiveMarkdownLinkAlert ??= true;
 };
 
 // since de/serialized objects don't keep their functions
-const linkFunctions = function(guild) {
-    for(let groupName in guild.selfAssignedRoles){
+const linkFunctions = function (guild) {
+    for (let groupName in guild.selfAssignedRoles) {
         SarGroups.initialize(guild.selfAssignedRoles[groupName]);
     }
 
@@ -88,7 +88,7 @@ const linkFunctions = function(guild) {
     Parrot.initialize(guild.parrot);
     AutoPin.initialize(guild.autoPin);
 
-    guild.onMessage = function (e,bot){
+    guild.onMessage = function (e, bot) {
         guild.executeMayhem(bot.client.User);
         guild.updateEXP(e);
         guild.updateActivity(e);
@@ -96,11 +96,11 @@ const linkFunctions = function(guild) {
     };
 
 
-    guild.getName = function(){
+    guild.getName = function () {
         return Guild.client.Guilds.get(guild.id).name;
     }
 
-    guild.resolveUser = function(userid) {
+    guild.resolveUser = function (userid) {
         /**
         * Fetch the IUser object(s) representing a user in the current server
         * Examples:
@@ -122,7 +122,7 @@ const linkFunctions = function(guild) {
         return Guild.client.Users.get(members.id);
     };
 
-    guild.resolveMember = function(userid) {
+    guild.resolveMember = function (userid) {
         /**
         * Fetch the IGuildMember object(s) representing a user in the current server
         * Examples:
@@ -152,12 +152,12 @@ const linkFunctions = function(guild) {
         return potential;
     };
 
-    guild.botCanEditRole = function(roleID, botAccount) {
+    guild.botCanEditRole = function (roleID, botAccount) {
         let apiGuildData = Guild.getData(this.id);
 
         let targetRole;
-        for (let role of apiGuildData.roles){
-            if (role.id === roleID){
+        for (let role of apiGuildData.roles) {
+            if (role.id === roleID) {
                 targetRole = role;
                 break;
             }
@@ -181,10 +181,10 @@ const linkFunctions = function(guild) {
     }
 
     //functions executed after every message
-    guild.executeMayhem = function(botAccount) {
+    guild.executeMayhem = function (botAccount) {
         let apiGuildData = Guild.getData(this.id);
         for (let roleID in this.mayhemRoles) {
-            if(!this.mayhemRoles[roleID]) continue;             //double check to not toggle disabled mayhem roles
+            if (!this.mayhemRoles[roleID]) continue;             //double check to not toggle disabled mayhem roles
             for (let i = 0; i < apiGuildData.roles.length; i++) {
                 let roleData = apiGuildData.roles[i];
                 if (roleData.id === roleID && guild.botCanEditRole(roleID, botAccount)) {
@@ -205,19 +205,19 @@ const linkFunctions = function(guild) {
      * @param userId: the ID of the user to compare against the guild
      * @return Number: the amount of users that have equal or more EXP in the guild than the input user ID
      */
-    guild.getUserRank = function(userId){
+    guild.getUserRank = function (userId) {
         let rank = 0;
         let referenceExp = this.expTable[userId].exp;
-        for(let id in this.expTable){
+        for (let id in this.expTable) {
             let user = this.expTable[id];
-            if(user.exp >= referenceExp) rank++;
+            if (user.exp >= referenceExp) rank++;
         }
         return rank;
     };
 
-    guild.updateEXP = function(e) {
+    guild.updateEXP = function (e) {
         if (!this.expTable) {
-            this.expTable = { };
+            this.expTable = {};
         }
 
         let author = e.message.author;
@@ -231,20 +231,20 @@ const linkFunctions = function(guild) {
 
         //factor in buffs after base stats
         let roles = e.message.member.roles;
-        for(let role of roles){
-            if(role.id in guild.expBuffRoles){
-                baseExpGain       += guild.expBuffRoles[role.id].baseBuff - 0;
-                maxBonusExp       += guild.expBuffRoles[role.id].bonusBuff - 0;
+        for (let role of roles) {
+            if (role.id in guild.expBuffRoles) {
+                baseExpGain += guild.expBuffRoles[role.id].baseBuff - 0;
+                maxBonusExp += guild.expBuffRoles[role.id].bonusBuff - 0;
                 cooldownReduction += guild.expBuffRoles[role.id].cooldownBuff - 0;
-                luck              += guild.expBuffRoles[role.id].luckBuff - 0;
+                luck += guild.expBuffRoles[role.id].luckBuff - 0;
             }
         }
 
         cooldownTime = cooldownTime / cooldownReduction;
 
-        if(author.id in this.expTable) {
+        if (author.id in this.expTable) {
             if (this.expTable[author.id].lastMessage + cooldownTime >= Date.now()) return;
-        }else {
+        } else {
             this.expTable[author.id] = {
                 exp: 0,                                   //num: current exp
                 level: 0,                                 //num: level
@@ -256,9 +256,9 @@ const linkFunctions = function(guild) {
         let userEXPData = this.expTable[author.id];
 
         //catch the bug that you don't expect to exist
-        if(isNaN(userEXPData.exp)) userEXPData.exp = 0;
+        if (isNaN(userEXPData.exp)) userEXPData.exp = 0;
 
-        let bonusStrengthMod = Math.pow(Math.random(), baseLuck/luck);   // sqrt(x) where x<1 increases the value of x. baseLuck <= luck -> minor probability buff that is never completely trivial
+        let bonusStrengthMod = Math.pow(Math.random(), baseLuck / luck);   // sqrt(x) where x<1 increases the value of x. baseLuck <= luck -> minor probability buff that is never completely trivial
 
         //+1 due to the value being rounded down.  Math.random() will never generate 1.0 so 0-10 are equally likely at 1/11 odds each
         userEXPData.exp -= 0;   //cast to Number
@@ -268,16 +268,16 @@ const linkFunctions = function(guild) {
         // level up?
         let oldLevel = userEXPData.level;
         userEXPData.level = Skinner.getLevel(userEXPData.exp);
-        if(userEXPData.exp >= userEXPData.nextLevelEXP || isNaN(userEXPData.nextLevelEXP) || oldLevel !== userEXPData.level) {
+        if (userEXPData.exp >= userEXPData.nextLevelEXP || isNaN(userEXPData.nextLevelEXP) || oldLevel !== userEXPData.level) {
             userEXPData.nextLevelEXP = Skinner.getMinEXP(userEXPData.level);
 
             //set to >1 in case of level 0 role or for a hidden "point of trust" level
-            if(this.announcesLevels)
-                e.message.channel.sendMessage("Level up! " + e.message.member.nickMention+ " is now **Level " + userEXPData.level + ".**");
+            if (this.announcesLevels)
+                e.message.channel.sendMessage("Level up! " + e.message.member.nickMention + " is now **Level " + userEXPData.level + ".**");
 
             //assign level up roles if appropriate
             if (!this.rolesTable) {
-                this.rolesTable = { };
+                this.rolesTable = {};
             }
 
             this.roleCheck(e.message.member, userEXPData);
@@ -293,15 +293,15 @@ const linkFunctions = function(guild) {
      * userID: String User GUID
      * The most active member of the guild will be the first entry in the array
      */
-    guild.getExpTable = function() {
-        let memberObjList = [ ];
+    guild.getExpTable = function () {
+        let memberObjList = [];
         let members = Object.keys(this.expTable);
-        for (let member of members){
+        for (let member of members) {
             let obj = this.expTable[member];
             obj.userID = member;                // Add property User ID to each object before publishing it
             memberObjList.push(this.expTable[member]);
         }
-        memberObjList.sort((a,b) => {return b.exp - a.exp});
+        memberObjList.sort((a, b) => { return b.exp - a.exp });
         return memberObjList;
     };
 
@@ -325,55 +325,55 @@ const linkFunctions = function(guild) {
      *  The strength of the modifier.  Must be a non-negative number between 0 and 1,000
      *
      */
-    guild.modifyExpBuffRoles = function(channel, action, role, stat, modifier) {
+    guild.modifyExpBuffRoles = function (channel, action, role, stat, modifier) {
         let UPPER_MODIFIER_LIMIT = 1000;
         let LOWER_MODIFIER_LIMIT = 0;
 
         action = action.toLowerCase().trim();
-        if(action === "get"){
-            if(role in guild.expBuffRoles){
+        if (action === "get") {
+            if (role in guild.expBuffRoles) {
                 guild.reportExpBuffRole(channel, role);
-            }else{
+            } else {
                 Skarm.sendMessageDelay(channel, `No buffs configured for this role.`);
             }
             return;
         }
 
-        if(action === "set"){
-            if(stat === undefined){
+        if (action === "set") {
+            if (stat === undefined) {
                 Skarm.sendMessageDelay(channel, "Error: The status to be modified was not properly acquired.");
                 return;
             }
-            if(isNaN(modifier) || modifier < LOWER_MODIFIER_LIMIT || modifier > UPPER_MODIFIER_LIMIT){
+            if (isNaN(modifier) || modifier < LOWER_MODIFIER_LIMIT || modifier > UPPER_MODIFIER_LIMIT) {
                 Skarm.sendMessageDelay(channel, `Error: expected a number between ${LOWER_MODIFIER_LIMIT} and ${UPPER_MODIFIER_LIMIT}. Found: ${modifier}`);
                 return;
             }
 
-            if(!(role in guild.expBuffRoles)){  //create the role entry if it isn't present
+            if (!(role in guild.expBuffRoles)) {  //create the role entry if it isn't present
                 guild.expBuffRoles[role] = {
-                    baseBuff:     0,
-                    bonusBuff:    0,
+                    baseBuff: 0,
+                    bonusBuff: 0,
                     cooldownBuff: 0,
-                    luckBuff:     0
+                    luckBuff: 0
                 };
             }
             guild.expBuffRoles[role][stat] = modifier;
             let allZero = (modifier === 0);                         //check if role should be removed from table
-            for(let key of Object.keys(guild.expBuffRoles[role])){
-                if(guild.expBuffRoles[role][key] > 0){
+            for (let key of Object.keys(guild.expBuffRoles[role])) {
+                if (guild.expBuffRoles[role][key] > 0) {
                     allZero = false;
                     break;
                 }
             }
-            if(allZero){
+            if (allZero) {
                 action = "remove";
-            }else{
+            } else {
                 guild.reportExpBuffRole(channel, role);
                 return;
             }
         }
 
-        if(action === "remove"){
+        if (action === "remove") {
             delete guild.expBuffRoles[role];
             Skarm.sendMessageDelay(channel, "Role buffs removed.");
             return;
@@ -385,11 +385,11 @@ const linkFunctions = function(guild) {
     /**
      * Sends an embedded message detailing the current buffs applied by a given role
      */
-    guild.reportExpBuffRole = function(channel, roleID){
+    guild.reportExpBuffRole = function (channel, roleID) {
         let buffs = guild.expBuffRoles[roleID];
-        let fields = [{name: `Buffed role`, value: `<@&${roleID}>`, inline: false}];
-        for(let b of Object.keys(buffs)){
-            fields.push({name: b, value: buffs[b], inline:true});
+        let fields = [{ name: `Buffed role`, value: `<@&${roleID}>`, inline: false }];
+        for (let b of Object.keys(buffs)) {
+            fields.push({ name: b, value: buffs[b], inline: true });
         }
 
         channel.sendMessage(" ", false, {
@@ -401,21 +401,21 @@ const linkFunctions = function(guild) {
         });
     }
 
-    guild.updateActivity = function(e) {
+    guild.updateActivity = function (e) {
         let day = Date.now();
-        let wordCount = e.message.content.replaceAll("  "," ").replaceAll("\r\n","\n").replaceAll("\n\n","\n").replaceAll("\n"," ").split(" ").length;
-        day -= day % (24* 60* 60* 1000);
-        if(e.message.author.id in guild.flexActivityTable) {
+        let wordCount = e.message.content.replaceAll("  ", " ").replaceAll("\r\n", "\n").replaceAll("\n\n", "\n").replaceAll("\n", " ").split(" ").length;
+        day -= day % (24 * 60 * 60 * 1000);
+        if (e.message.author.id in guild.flexActivityTable) {
             let memberActivityObject = guild.flexActivityTable[e.message.author.id];
             if (day in memberActivityObject.days) {
                 memberActivityObject.days[day].wordCount += wordCount;
-                if(isNaN(memberActivityObject.days[day].wordCount)) {
+                if (isNaN(memberActivityObject.days[day].wordCount)) {
                     Skarm.spam(`Found a NaN day for ${e.message.author.id}, attempting automatic repair. Incoming message length: ${wordCount}`);
                     memberActivityObject.days[day].wordCount = wordCount;
                 }
                 memberActivityObject.days[day].messageCount++;
             } else {
-                memberActivityObject.days[day] = {wordCount: wordCount, messageCount: 1};
+                memberActivityObject.days[day] = { wordCount: wordCount, messageCount: 1 };
             }
             memberActivityObject.totalWordCount += wordCount;
             memberActivityObject.totalMessageCount++;
@@ -426,54 +426,54 @@ const linkFunctions = function(guild) {
         guild.flexActivityTable[e.message.author.id] = {
             days: {
                 day: {
-                    wordsCount:wordCount,
-                    messageCount:1,
+                    wordsCount: wordCount,
+                    messageCount: 1,
                 }
             },
-            totalMessageCount:1,
-            totalWordCount:wordCount
+            totalMessageCount: 1,
+            totalWordCount: wordCount
         };
 
     };
 
     //functions corresponding to commands
     guild.soap = function () {
-        if(this.lastSendLine) delete this.lines[this.lastSendLine];
+        if (this.lastSendLine) delete this.lines[this.lastSendLine];
         this.lastSendLine = undefined;
     };
 
-    guild.soapText = function() {
-        this.lines = { };
+    guild.soapText = function () {
+        this.lines = {};
         this.lastSendLine = undefined;
     };
 
-    guild.soapActions = function() {
-        this.actions = { };
+    guild.soapActions = function () {
+        this.actions = {};
         this.lastSendLine = undefined;
     };
 
-    guild.toggleMayhem = function(id) {
+    guild.toggleMayhem = function (id) {
         this.mayhemRoles[id] = this.mayhemRoles[id] ? undefined : id;
         return !!this.mayhemRoles[id];
     };
 
 
-    guild.getLineCount = function() {
+    guild.getLineCount = function () {
         return Object.keys(this.lines).length;
     };
 
-    guild.assignNewMemberRoles = function (member, iGuild, bot){
-        let validRoles = iGuild.roles.map(role=>role.id);
+    guild.assignNewMemberRoles = function (member, iGuild, bot) {
+        let validRoles = iGuild.roles.map(role => role.id);
         let roleList = Object.keys(guild.serverJoinRoles)
             .filter(role => validRoles.includes(role))
             .filter(role => guild.botCanEditRole(role, bot))
-        ;
+            ;
 
         // debugging spam    
         Skarm.spam("Joining member role list:", roleList);
         Skarm.spam("All valid role IDs:", validRoles);
 
-        if(roleList.length === 0){
+        if (roleList.length === 0) {
             return new Promise((resolve, reject) => {
                 resolve();  // instantly returns
             })
@@ -483,22 +483,22 @@ const linkFunctions = function(guild) {
     }
 
     //functions that are subroutines of parrot
-    guild.pruneActions = function() {
+    guild.pruneActions = function () {
         let keys = Object.keys(this.actions);
         if (keys.length <= Constants.Vars.LOG_CAPACITY) {
             return;
         }
 
-        for (let i = 0; i < keys.length; i+=2) {
+        for (let i = 0; i < keys.length; i += 2) {
             delete this.actions[keys[i]];
         }
     };
 
-    guild.getActionCount = function() {
+    guild.getActionCount = function () {
         return Object.keys(this.actions).length;
     };
 
-	guild.getRandomAction = function(e) {
+    guild.getRandomAction = function (e) {
         let message = e.message.content;
         message = message.substring(1, message.length - 1).toLowerCase();
         let keywords = message.split(" ");
@@ -510,8 +510,8 @@ const linkFunctions = function(guild) {
             return guild.parrot.getRandomLine(e.message.content, guild);
         }
 
-        let sort = function(array) {
-            array.sort(function(a, b) {
+        let sort = function (array) {
+            array.sort(function (a, b) {
                 return b.length - a.length;
             });
         }
@@ -543,7 +543,7 @@ const linkFunctions = function(guild) {
         return "_" + currentMessage + "_";
     };
 
-	guild.learnLine = function(e) {
+    guild.learnLine = function (e) {
         if (messageIsAction(e.message.content)) {
             guild.learnAction(e);
             return;
@@ -552,50 +552,50 @@ const linkFunctions = function(guild) {
         this.pruneLines();
     };
 
-    guild.learnAction = function(e) {
+    guild.learnAction = function (e) {
         let message = e.message.content;
         message = message.substring(1, message.length - 1).toLowerCase();
         this.actions[message] = true;
         this.pruneActions();
     };
 
-	guild.pruneLines = function() {
+    guild.pruneLines = function () {
         let keys = Object.keys(this.lines);
         if (keys.length <= Constants.Vars.LOG_CAPACITY) {
             return;
         }
 
-        for (let i = 0; i < keys.length; i+=2) {
+        for (let i = 0; i < keys.length; i += 2) {
             delete this.lines[keys[i]];
         }
     };
 
-    guild.queueMessage = function(channel,message,tts,object){
-        if(message.replaceAll("\r","").length === 0 && !object) return;        // don't enqueue empty messages -- no message and no object
-        if(!this.channelBuffer){
-            this.channelBuffer = { };
+    guild.queueMessage = function (channel, message, tts, object) {
+        if (message.replaceAll("\r", "").length === 0 && !object) return;        // don't enqueue empty messages -- no message and no object
+        if (!this.channelBuffer) {
+            this.channelBuffer = {};
         }
-        if(channel.id in this.channelBuffer){
-            this.channelBuffer[channel.id].push({_1: message, _2:tts, _3: object});
-        }else{
-            this.channelBuffer[channel.id]=[{_1: message, _2:tts, _3: object}];
+        if (channel.id in this.channelBuffer) {
+            this.channelBuffer[channel.id].push({ _1: message, _2: tts, _3: object });
+        } else {
+            this.channelBuffer[channel.id] = [{ _1: message, _2: tts, _3: object }];
         }
     };
 
     //utilities
 
-	guild.getRandomLine = function(e) {
+    guild.getRandomLine = function (e) {
         if (messageIsAction(e.message.content)) return this.getRandomAction(e);
 
         // handle the queue message buffer for e@5
         // console.log("checking the buffer...");
-        if(typeof(this.channelBuffer)==="undefined") {
+        if (typeof (this.channelBuffer) === "undefined") {
             // console.log(`redefining channel buffer: ${JSON.stringify(this.channelBuffer)}`);
-            this.channelBuffer = { };
+            this.channelBuffer = {};
         }
 
         //check channel buffer for any enqueued messages first
-        if(e.message.channel.id in this.channelBuffer) {
+        if (e.message.channel.id in this.channelBuffer) {
             if (this.channelBuffer[e.message.channel.id].length > 0) {
                 return this.channelBuffer[e.message.channel.id].shift()._1;
             }
@@ -604,77 +604,77 @@ const linkFunctions = function(guild) {
         return guild.parrot.getRandomLine(e.message.content, guild);
     };
 
-	guild.getPermissions = function(user) {
+    guild.getPermissions = function (user) {
         for (let mom in Constants.Moms) {
             if (Constants.Moms[mom].id == user.id) return Permissions.SUDO;
         }
         if (!user.memberOf(this)) return Permissions.NOT_IN_GUILD;
 
-		let server = Guild.client.Guilds.get(this.id);
-		let members = server.members;
-		for (let i in members) {
-			if (members[i].id == user.id) {
-				let perms=members[i].permissionsFor(server);
-				if (perms.General.ADMINISTRATOR)
-					return Permissions.ADMIN | Permissions.MOD;
-				break;
-			}
-		}
+        let server = Guild.client.Guilds.get(this.id);
+        let members = server.members;
+        for (let i in members) {
+            if (members[i].id == user.id) {
+                let perms = members[i].permissionsFor(server);
+                if (perms.General.ADMINISTRATOR)
+                    return Permissions.ADMIN | Permissions.MOD;
+                break;
+            }
+        }
 
-		if(this.moderators===undefined){
-			this.moderators={};
-		}
+        if (this.moderators === undefined) {
+            this.moderators = {};
+        }
 
-		if(user.id in this.moderators)
-			return Permissions.MOD;
+        if (user.id in this.moderators)
+            return Permissions.MOD;
 
         return Permissions.BASE;
     };
 
-	guild.hasPermissions = function(user, perm) {
+    guild.hasPermissions = function (user, perm) {
         return (this.getPermissions(user) >= perm);
     };
 
 
-	guild.getPinnedChannelState = function (channelID){
-	    return this.channelsPinUpvotes[channelID];
+    guild.getPinnedChannelState = function (channelID) {
+        return this.channelsPinUpvotes[channelID];
     };
 
-	guild.setPinnedChannel = function(channelID, threshold) {
-        if (!this.channelsPinUpvotes) this.channelsPinUpvotes = { };
+    guild.setPinnedChannel = function (channelID, threshold) {
+        if (!this.channelsPinUpvotes) this.channelsPinUpvotes = {};
         this.channelsPinUpvotes[channelID] = threshold;
         return this.channelsPinUpvotes[channelID];
     };
 
-	guild.roleCheck = function(member, userEXPData) {
-		if(Object.keys(guild.rolesTable).length === 0) return;
+    guild.roleCheck = function (member, userEXPData) {
+        if (Object.keys(guild.rolesTable).length === 0) return;
 
-		if(userEXPData === undefined){
-		    return;
+        if (userEXPData === undefined) {
+            return;
         }
 
-		//give users the role achieved at their level or the next one available bellow it
+        //give users the role achieved at their level or the next one available bellow it
         let i = userEXPData.level;
-		for (i; i >= 0; i--) {              //move down the roles table until you hit a level with an associated role
-			if (i in this.rolesTable) {     //hit the first rewarded role
-				member.assignRole(this.rolesTable[i]);      //assign the role for that level
+        for (i; i >= 0; i--) {              //move down the roles table until you hit a level with an associated role
+            if (i in this.rolesTable) {     //hit the first rewarded role
+                member.assignRole(this.rolesTable[i]);      //assign the role for that level
                 if (!this.roleStack) {                      //if the guild is configured to only keep the highest level reward, drop the lower level roles
                     setTimeout(() => {
                         let keepRoleLevel = i--;
                         for (i; i >= 0; i--) {                  //move down the list and purge any other lower-level roles
-                            if(i in this.rolesTable){
-                                if(this.rolesTable[i] !== this.rolesTable[keepRoleLevel]){
+                            if (i in this.rolesTable) {
+                                if (this.rolesTable[i] !== this.rolesTable[keepRoleLevel]) {
                                     member.unassignRole(this.rolesTable[i]);
                                 }
                             }
                         }
                     }, 500);
 
-					break;
-				}
-			}
-		}
-	};
+                    break;
+                }
+            }
+        }
+    };
 
     /**
      * Handles distributing notifications to guilds
@@ -687,17 +687,17 @@ const linkFunctions = function(guild) {
      *      2 - event not acted upon due to concurrent thread trigger. Occurs on voice channel join and leave
      *      3 - event thrown without proper cause
      */
-	guild.notify = function(client, notification, eventObject) {
-	    if(guild===undefined)
-	        return Skarm.logError("Undefined guild");
-	    if (notification === Constants.Notifications.MEMBER_LEAVE) {
+    guild.notify = function (client, notification, eventObject) {
+        if (guild === undefined)
+            return Skarm.logError("Undefined guild");
+        if (notification === Constants.Notifications.MEMBER_LEAVE) {
             let user = eventObject.user;
             for (let channelID in guild.notificationChannels.MEMBER_JOIN_LEAVE) {
                 Skarm.sendMessageDelay(client.Channels.get(channelID), " ", false, {
                     color: Constants.Colors.RED,
                     description: `**${user.username}** has left the server. (${user.id})`,
                     timestamp: new Date(),
-                    footer: {text: "User Leave"}
+                    footer: { text: "User Leave" }
                 });
             }
             return 0;
@@ -709,7 +709,7 @@ const linkFunctions = function(guild) {
                     color: Constants.Colors.GREEN,
                     description: `**${member.username}** has joined the server. (${member.id})`,
                     timestamp: new Date(),
-                    footer: {text: "User Join"}
+                    footer: { text: "User Join" }
                 });
             }
             return 0;
@@ -721,7 +721,7 @@ const linkFunctions = function(guild) {
                     color: Constants.Colors.RED,
                     description: `**${member.username}** has been banned from the server. (${member.id})`,
                     timestamp: new Date(),
-                    footer: {text: "User Banned"}
+                    footer: { text: "User Banned" }
                 });
             }
             return 0;
@@ -733,7 +733,7 @@ const linkFunctions = function(guild) {
                     color: Constants.Colors.GREEN,
                     description: `**${member.username}** has been unbanned from the server. (${member.id})`,
                     timestamp: new Date(),
-                    footer: {text: "Ban Removed"}
+                    footer: { text: "Ban Removed" }
                 });
             }
             return 0;
@@ -743,10 +743,10 @@ const linkFunctions = function(guild) {
             for (let channelID in guild.notificationChannels.VOICE_CHANNEL) {
                 //console.log("notify loop: " + JSON.stringify(eventObject));
                 let dsc = `**${member.username}** has joined the voice channel. **${eventObject.channel.name}**`;
-                if(guild.notificationChannels.ASYNC_HANDLER[member.id]===eventObject.channelId){
+                if (guild.notificationChannels.ASYNC_HANDLER[member.id] === eventObject.channelId) {
                     //console.log(`Previous state is equal to current state: ${guild.notificationChannels.ASYNC_HANDLER[member.id]}`);
                     return 2;
-                }else {
+                } else {
                     if (guild.notificationChannels.ASYNC_HANDLER[member.id] != null) {
                         dsc = `**${member.username}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.channelId).name}**`;
                     }
@@ -757,7 +757,7 @@ const linkFunctions = function(guild) {
                     color: Constants.Colors.GREEN,
                     description: dsc,
                     timestamp: new Date(),
-                    footer: {text: "Voice Channel Join"}
+                    footer: { text: "Voice Channel Join" }
                 });
             }
             return 0;
@@ -768,12 +768,12 @@ const linkFunctions = function(guild) {
                 let dsc = `**${member.username}** has left the voice channel. **${eventObject.channel.name}**`;
 
                 if (eventObject.newChannelId != null) {
-                    if(guild.notificationChannels.ASYNC_HANDLER[member.id]===eventObject.newChannelId){
+                    if (guild.notificationChannels.ASYNC_HANDLER[member.id] === eventObject.newChannelId) {
                         return 2;
-                    }else{
-                        if(!guild.notificationChannels.ASYNC_HANDLER[member.id]){
+                    } else {
+                        if (!guild.notificationChannels.ASYNC_HANDLER[member.id]) {
                             Skarm.logError("User channel swap data was lost during downtime.");
-                        }else {
+                        } else {
                             dsc = `**${member.username}** has switched from **${client.Channels.get(guild.notificationChannels.ASYNC_HANDLER[member.id]).name}** to **${client.Channels.get(eventObject.newChannelId).name}**`;
                             guild.notificationChannels.ASYNC_HANDLER[member.id] = eventObject.newChannelId;
                         }
@@ -785,18 +785,18 @@ const linkFunctions = function(guild) {
                     color: Constants.Colors.RED,
                     description: dsc,
                     timestamp: new Date(),
-                    footer: {text: "Voice Channel Leave"}
+                    footer: { text: "Voice Channel Leave" }
                 });
             }
             return 0;
         }
         if (notification === Constants.Notifications.NICK_CHANGE) {
             let member = eventObject.member;
-            let oldName="";
-            if(eventObject.previousNick){
-                oldName=eventObject.previousNick;
-            }else{
-                oldName=member.username;
+            let oldName = "";
+            if (eventObject.previousNick) {
+                oldName = eventObject.previousNick;
+            } else {
+                oldName = member.username;
             }
             console.log(eventObject);
             for (let channelID in guild.notificationChannels.NAME_CHANGE) {
@@ -804,7 +804,7 @@ const linkFunctions = function(guild) {
                     color: Constants.Colors.BLUE,
                     description: `User nickname update: **${oldName}** is now known as **${member.name}**!  (<@${member.id}>)`,
                     timestamp: new Date(),
-                    footer: {text: "Nickname change"}
+                    footer: { text: "Nickname change" }
                 });
             }
             return 0;
@@ -823,8 +823,8 @@ const linkFunctions = function(guild) {
             }
             Skarm.logError(`Might be sending out name change notification out to guild: ${JSON.stringify(guild.id)}\n Notification channel list: ${JSON.stringify(guild.notificationChannels)}`);
             console.log(eventObject);
-            Skarm.spam("Notification of name change: "+oldName +" -> " + JSON.stringify(eventObject.user));
-            if(oldName===undefined){// && !guild.hasPermissions(eventObject.user,Permissions.MOM)){
+            Skarm.spam("Notification of name change: " + oldName + " -> " + JSON.stringify(eventObject.user));
+            if (oldName === undefined) {// && !guild.hasPermissions(eventObject.user,Permissions.MOM)){
                 Skarm.logError(`scratch that. ${eventObject.user.name} was not detected to have changed names`);
                 return 3;
             }
@@ -836,7 +836,7 @@ const linkFunctions = function(guild) {
                     color: Constants.Colors.BLUE,
                     description: dsc,
                     timestamp: new Date(),
-                    footer: {text: "Username change"}
+                    footer: { text: "Username change" }
                 });
             }
             return 0;
@@ -845,44 +845,44 @@ const linkFunctions = function(guild) {
         Skarm.STDERR(`UNKNOWN NOTIFICATION ${notification}`);
     };
 
-	guild.toggleHiddenChannel = function (channelID) {
+    guild.toggleHiddenChannel = function (channelID) {
         this.hiddenChannels[channelID] = !this.hiddenChannels[channelID];
         return this.hiddenChannels[channelID];
     };
 
-	guild.getHiddenChannels = function () {
-	    let trulyHidden = [];
-	    for(let channel in this.hiddenChannels){
-	        if(this.hiddenChannels[channel])
-	            trulyHidden.push(channel);
-	        else
-	            delete this.hiddenChannels[channel];
+    guild.getHiddenChannels = function () {
+        let trulyHidden = [];
+        for (let channel in this.hiddenChannels) {
+            if (this.hiddenChannels[channel])
+                trulyHidden.push(channel);
+            else
+                delete this.hiddenChannels[channel];
         }
-	    return trulyHidden;
+        return trulyHidden;
     }
 }
 
-class Guild {
+export class Guild {
     constructor(id) {
         this.id = id;
-        if(id === null){
+        if (id === null) {
             Skarm.logError("Attempted to create guild with null ID");
         }
-        
-        this.mayhemRoles = { };
-        
-        this.lines = { };
-        this.actions = { };
-        this.channelsPinUpvotes = { };
+
+        this.mayhemRoles = {};
+
+        this.lines = {};
+        this.actions = {};
+        this.channelsPinUpvotes = {};
 
         /**
          * Channels which will be ignored by parrot and other later responses in the message creation reaction sequence
          * @type {{channelID -> boolean}}
          */
-        this.hiddenChannels = { };
-        
-		this.rolesTable = { };
-		this.roleStack = false;
+        this.hiddenChannels = {};
+
+        this.rolesTable = {};
+        this.roleStack = false;
 
         /**
          * A hashmap with an arbitrarily large collection of keys being guild member
@@ -894,13 +894,13 @@ class Guild {
          *  lastMessage: Date.now() (default initialized when user entry in table is created)
          * }
          */
-		this.expTable = { };
+        this.expTable = {};
 
-		this.boostTable = { };
-		this.moderators = { };
-		this.announcesLevels=false;
+        this.boostTable = {};
+        this.moderators = {};
+        this.announcesLevels = false;
 
-		this.aliases = { };  //Other names that skarm will respond to, changed through the Alias command
+        this.aliases = {};  //Other names that skarm will respond to, changed through the Alias command
 
         /**
          *
@@ -918,7 +918,7 @@ class Guild {
          *  }
          *
          */
-		this.flexActivityTable = { };
+        this.flexActivityTable = {};
 
         /**
          * Experience gain buffing roles
@@ -931,40 +931,40 @@ class Guild {
          * }
          *
          */
-        this.expBuffRoles = { };
+        this.expBuffRoles = {};
 
-		this.channelBuffer = { };
+        this.channelBuffer = {};
         /**
          * The collection of channels which have been opted by the moderators to receive various notifications:
          * The contents of each inner object are of the form {channel:String -> timestamp:Float}
          * timestamp correlates to when the value was added to the hashset.
          * @type {{NAME_CHANGE: {}, KICK_BAN: {}, VOICE_CHANNEL: {}, MEMBER_LEAVE: {}}}
          */
-		this.notificationChannels = {
+        this.notificationChannels = {
             /**
              * set of channels which receive name change notifications in this guild.
              * @type{channel:String -> timestamp:Float}
              */
-            NAME_CHANGE:            {},
+            NAME_CHANGE: {},
 
             /**
              * set of channels which receive ban notifications in this guild.
              * @type{channel:String -> timestamp:Float}
              */
-            BAN:                    {},
+            BAN: {},
 
             /**
              * set of channels which receive voice channel activity notifications in this guild.
              * @type{channel:String -> timestamp:Float}
              */
-            VOICE_CHANNEL:          {},
-            ASYNC_HANDLER:          {},
+            VOICE_CHANNEL: {},
+            ASYNC_HANDLER: {},
 
             /**
              * set of channels which receive member join and leave notifications in this guild.
              * @type{channel:String -> timestamp:Float}
              */
-            MEMBER_JOIN_LEAVE:      {},
+            MEMBER_JOIN_LEAVE: {},
         };
 
         /**
@@ -972,7 +972,7 @@ class Guild {
          * @Key: role ID
          * @value: timestamp when the role was added
          */
-		this.serverJoinRoles = { };
+        this.serverJoinRoles = {};
 
 
         /**
@@ -984,21 +984,21 @@ class Guild {
          *     "Sports": Class SarGroup(guild, "Sports"),
          * }
          */
-		this.selfAssignedRoles = { };
+        this.selfAssignedRoles = {};
 
-		this.welcoming = true;
-		this.welcomes = { };
-		
-		this.lastSendLine = undefined;
-		
-		Guild.add(this);
-        
+        this.welcoming = true;
+        this.welcomes = {};
+
+        this.lastSendLine = undefined;
+
+        Guild.add(this);
+
         linkVariables(this);
         linkFunctions(this);
     }
-    
+
     static initialize(client) {
-        Guild.guilds = { };
+        Guild.guilds = {};
         try {
             Guild.load();
             Guild.client = client;
@@ -1006,7 +1006,7 @@ class Guild {
             console.log("something bad happened when loading guilds: " + e);
         }
     }
-    
+
     static add(guild) {
         if (guild in Guild.guilds) {
             return false;
@@ -1014,7 +1014,7 @@ class Guild {
         Guild.guilds[guild.id] = guild;
         return true;
     }
-    
+
     static remove(guild) {
         if (!(guild.id in Guild.guilds)) {
             return false;
@@ -1022,40 +1022,38 @@ class Guild {
         delete Guild.guilds[guild.id];
         return true;
     }
-    
+
     static get(id) {
         return Guild.guilds[id] ? Guild.guilds[id] : new Guild(id);
     }
-    
+
     static getData(id) {
         return Guild.client.Guilds.get(id);
     }
-    
+
     static load() {
-        Encrypt.read(guilddb, function(data, filename) {
+        Encrypt.read(guilddb, function (data, filename) {
             Guild.guilds = JSON.parse(data);
             for (let g in Guild.guilds) {
                 linkVariables(Guild.guilds[g]);
                 linkFunctions(Guild.guilds[g]);
             }
-			console.log("[Guilds] Initialized "+ Object.keys(Guild.guilds).length + " Guilds");
+            console.log("[Guilds] Initialized " + Object.keys(Guild.guilds).length + " Guilds");
         });
     }
-    
+
     static save() {
         Encrypt.write(guilddb, JSON.stringify(Guild.guilds));
-		console.log("Saved Guild Data");
+        console.log("Saved Guild Data");
     }
-    
+
     static saveDebug() {
         fs.writeFile("debug/guilds.butt",
             JSON.stringify(Guild.guilds, null, 3),
             "utf8",
-            function(err) {
+            function (err) {
                 if (err) console.log("something went wrong: " + err);
             }
         );
     }
 }
-
-module.exports = Guild;

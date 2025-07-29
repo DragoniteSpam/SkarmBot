@@ -7,17 +7,17 @@
  * that allows for scalable onboarding of many comic classes
  */
 
-const fs = require("fs");
+import { readdirSync } from "fs";
 
-class ComicsCollection {
-    static initialize (bot) {
-        ComicsCollection.comicClasses = { };
-        ComicsCollection.comics = { };
-        ComicsCollection.signatures = [ ];
-        let dir = fs.readdirSync("./javascript/notificationServices/")
-                    .filter(filename => filename[0] != "_")
-                    .map(f => f.split(".")[0]);
-        
+export class ComicsCollection {
+    static initialize(bot) {
+        ComicsCollection.comicClasses = {};
+        ComicsCollection.comics = {};
+        ComicsCollection.signatures = [];
+        let dir = readdirSync("./javascript/notificationServices/")
+            .filter(filename => filename[0] != "_")
+            .map(f => f.split(".")[0]);
+
         for (let file of dir) {
             ComicsCollection.comicClasses[file] = require("./notificationServices/" + file);
             ComicsCollection.comics[file] = new ComicsCollection.comicClasses[file](bot);
@@ -34,25 +34,25 @@ class ComicsCollection {
         return ComicsCollection.signatures;
     }
 
-    static get (target) {
-        if(!target) return null;
+    static get(target) {
+        if (!target) return null;
         console.log("Requested", target, "from comics collection:", Object.keys(ComicsCollection.comics));
         return ComicsCollection.comics[target] || ComicsCollection.comics[target.toLowerCase()];
     }
 
-    static poll (target=undefined) {
+    static poll(target = undefined) {
         let comic = ComicsCollection.get(target);
-        if(comic) {
+        if (comic) {
             comic._poll();
         } else {
-            for(let c in ComicsCollection.comics){
+            for (let c in ComicsCollection.comics) {
                 ComicsCollection.comics[c]._poll();
             }
         }
     }
 
-    static poisonPill (target = undefined) {
-        if(target) {
+    static poisonPill(target = undefined) {
+        if (target) {
             return ComicsCollection.comics[target].poisonPill();
         }
         for (let comic in ComicsCollection.comics) {
@@ -60,8 +60,8 @@ class ComicsCollection {
         }
     }
 
-    static save (target = undefined) {
-        if(target) {
+    static save(target = undefined) {
+        if (target) {
             return ComicsCollection.comics[target].save();
         }
         for (let comic in ComicsCollection.comics) {
@@ -69,5 +69,3 @@ class ComicsCollection {
         }
     }
 }
-
-module.exports = ComicsCollection;

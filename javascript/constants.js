@@ -9,7 +9,7 @@ let DAYS = 24 * HOURS;
 // these aren't actually constants, since JS doesn't allow us to have nice
 // things, but they're in capital letters so if you try to modify any of them
 // I'm going to come to your house and whack you with a spoon.
-class Constants {
+export class Constants {
     // safe to run even when not yet connected
     static initialize(){
         Constants.MAX_MESSAGE_LENGTH = 2000;
@@ -142,5 +142,3 @@ class Constants {
         console.log("[Constants.Dynamics] Initialized constants...");
     }
 }
-
-module.exports = Constants;

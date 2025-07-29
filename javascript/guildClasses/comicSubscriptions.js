@@ -1,8 +1,7 @@
 "use strict";
-const fs = require("fs");
-const Skarm = require("../skarm.js");
-const Constants = require("../constants.js");
-const ComicsCollection = require("../comics.js");
+import { Skarm } from "../skarm.js";
+import { Constants } from "../constants.js";
+import { ComicsCollection } from "../comics.js";
 
 Constants.initialize();
 
@@ -13,7 +12,7 @@ Constants.initialize();
  */
 let subIntervals = {};
 
-class Subscription {
+export class Subscription {
     /**
      * An instance of a subscription object, tracking a comic-channel pair and their tracking configuration 
      * @param {string} channel The channel ID to send comics to
@@ -73,7 +72,7 @@ class Subscription {
     }
 }
 
-class ComicSubscriptions {
+export class ComicSubscriptions {
     constructor(oldChannels, self) {
         this.subscriptions = [];
 
@@ -114,9 +113,9 @@ class ComicSubscriptions {
         return this.subscriptions.filter(sub => sub.comic.toLowerCase() === comic.toLowerCase());
     }
 
-    next(channel, comic){
+    next(channel, comic) {
         let subscription = this.get(channel, comic);
-        if(subscription){
+        if (subscription) {
             // console.log("Posting catch-up for", subscription);
             subscription.postCatchup();
         } else {
@@ -128,8 +127,8 @@ class ComicSubscriptions {
     _get(channel, comic) {
         // returns as array with 0 or 1 elements
         return this.subscriptions
-        .filter(sub => sub.channel === channel)
-        .filter(sub => sub.comic.toLowerCase() === comic.toLowerCase());
+            .filter(sub => sub.channel === channel)
+            .filter(sub => sub.comic.toLowerCase() === comic.toLowerCase());
     }
 
     get(channel, comic) {
@@ -137,7 +136,7 @@ class ComicSubscriptions {
         return this._get(channel, comic)[0];
     }
 
-    isLive(channel, comic){
+    isLive(channel, comic) {
         return this._get(channel, comic).filter(c => c.live()).length > 0;
     }
 
@@ -164,8 +163,4 @@ class ComicSubscriptions {
             .filter(sub => sub.channel !== channel)
             .filter(sub => sub.comic.toLowerCase() !== comic.toLowerCase());
     }
-}
-
-module.exports = {
-    ComicSubscriptions
 }
