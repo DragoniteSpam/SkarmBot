@@ -57,7 +57,7 @@ if ($Global:warnings -and $stopOnError) {
 Write-Host "Starting Skarmbot bootloop"
 if ($operationMode -eq "live") {
     do {
-        node $PSScriptRoot\bot.js beta | foreach {
+        node $PSScriptRoot/bot.js beta | foreach {
             $t = (get-date -format o).split(".")[0].Replace("T"," ")
             "[$t] $_"
         }
@@ -69,7 +69,7 @@ if ($operationMode -eq "live") {
 
 # no persistence through failures during testing
 if ($operationMode -eq "test") {
-    node $PSScriptRoot\bot.js | foreach {
+    node $PSScriptRoot/bot.js | foreach {
         $t = (get-date -format o).split(".")[0].Replace("T"," ")
         "[$t] $_"
     }
