@@ -1,9 +1,8 @@
 "use strict";
 
-const fs = require("fs");
-const Constants = require("./constants.js");
-const Permissions = require("./permissions.js");
-const discordie = require("discordie");
+import { Constants } from "./constants.js";
+import { Permissions as SkarmPerm } from "./permissions.js";
+import { Permissions } from "discordie";
 
 // Static methods. Static methods everywhere.
 export class Skarm {
@@ -41,10 +40,10 @@ export class Skarm {
      */
     static spamBuffer(...message) {
         let MAX_MESSAGE_LENGTH = 1800;
-        
+
         // stringify any parts that aren't strings to avoid logging objects
         message = message.map(m => {
-            if (typeof (m) === "object") 
+            if (typeof (m) === "object")
                 return JSON.stringify(m);
             return m;
         });
@@ -130,7 +129,7 @@ export class Skarm {
         ];
 
         for (let permission of requiredTextPermissions) {
-            if (!Constants.client.User.can(discordie.Permissions.Text[permission], channel)) {
+            if (!Constants.client.User.can(Permissions.Text[permission], channel)) {
                 this.log(`Missing permission ${permission} in ${channel.name}`);
                 return;
             }
@@ -299,7 +298,7 @@ export class Skarm {
                 continue;
             }
             if (cmdData.perms === undefined) {
-                cmdData.perms = Permissions.BASE;
+                cmdData.perms = SkarmPerm.BASE;
             }
             for (let alias of cmdData.aliases) {
                 mapping["e" + cmdData.usageChar + alias] = cmdData;
