@@ -59,6 +59,7 @@ if ($operationMode -eq "live") {
     if ($IsLinux) {
         which node
         node --version
+        Write-Host "NVM DIR: $NVM_DIR"
 
         # https://nodejs.org/en/download
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
