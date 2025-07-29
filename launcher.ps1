@@ -45,7 +45,7 @@ $host.ui.RawUI.WindowTitle = $windowTitle
 Push-Location
 cd $PSScriptRoot
 Write-Host "Checking dependencies..."
-$failure = . "$PSScriptRoot\initialize-Dependencies.ps1" -test:$test
+# $failure = . "$PSScriptRoot/initialize-Dependencies.ps1" -test:$test
 
 # Reset window title as it may have gotten wiped when starting the dependency initializer
 $host.ui.RawUI.WindowTitle = $windowTitle
