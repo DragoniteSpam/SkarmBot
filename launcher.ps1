@@ -59,6 +59,12 @@ if ($operationMode -eq "live") {
     if ($IsLinux) {
         which node
         node --version
+
+        # https://nodejs.org/en/download
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+        \. "$HOME/.nvm/nvm.sh"
+        nvm install 22
+
         nvm run 22 $PSScriptRoot/bot.js beta |
         foreach {
             $t = (get-date -format o).split(".")[0].Replace("T", " ")
