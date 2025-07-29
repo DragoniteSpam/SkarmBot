@@ -32,7 +32,7 @@ module.exports = {
             Skarm.sendMessageDelay(e.message.channel,
                 "***Bot stats, and stuff:***\n```" +
                 "Users (probably): " + Object.keys(Users.users).length + "\n" +
-                "Memory usage (probably): " + process.memoryUsage().rss / 0x100000 + " MB\n" +
+                "Memory usage (probably): " + Math.floor(process.memoryUsage().rss / 0x100000 * 1000) / 1000 + " MB\n" +
                 "Host: " + os.hostname() + "\n" +
                 "vPID: " + bot.pid + "\n" +
                 "Version: " + bot.version?.trim() + "\n" +
