@@ -48,7 +48,7 @@ Start the service by running
 sudo systemctl enable skarm
 ```
 
-### Service Control Commands
+#### Service Control Commands
 ```bash
 sudo systemctl status skarm
 sudo systemctl start skarm
@@ -58,6 +58,29 @@ journalctl -u skarm.service # read log
 journalctl -u skarm.service -f # follow real-time log
 ```
 
+#### Getting Linux to play nice with Node
+```sh
+# https://nodejs.org/en/download/
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+\. "$HOME/.nvm/nvm.sh"
+```
+
+#### Setting up gh
+```sh
+sudo apt update
+sudo apt install gh
+
+# Validate that it worked
+gh pr list -s merged -L 2300
+
+# Restart the service to include those commands
+sudo systemctl restart skarm
+```
 
 ### Adding Skarmbot to a Server
 Skarmbot is hosted by the developers and can simply be added to a discord server with the link below.  
