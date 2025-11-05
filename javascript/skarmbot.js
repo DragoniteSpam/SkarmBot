@@ -78,6 +78,12 @@ class Bot {
         this.gameChanger();
 
         console.log("[MAIN] Ready to receive messages.");
+        try {
+            tempFunctions();
+        } catch (error) {
+            console.log("Encountered error, persisting", error);
+            console.error(error);
+        }
     }
 
     // events
@@ -424,7 +430,7 @@ class Bot {
             default:
                 break;
         }
-        
+
 
         // gets all the guilds that this user is in, and the open polls in each one
         let openPolls = userData.getGuilds().map(g => Guild.get(g)) // get all guilds the user is in
@@ -452,8 +458,8 @@ class Bot {
 
 
         let idx = (Number(msg) - 1);
-        if(idx in openPolls){ // validity check
-            let {guild, poll} = openPolls[idx];
+        if (idx in openPolls) { // validity check
+            let { guild, poll } = openPolls[idx];
             poll.submit(userData.id, userData.stagedImage);
             e.message.channel.sendMessage(`Submitted the image ${userData.stagedImage} to the poll ${poll.name} (${guild.getName()})`);
             userData.stagedImage = undefined; // drop the staged image from the user once it is pushed to the poll
@@ -722,3 +728,26 @@ class Bot {
 }
 
 module.exports = Bot;
+
+function tempFunctions() {
+    setPollMag();
+}
+
+function setPollMag() {
+    setInterval(pollMag, Constants.Time.HOURS * 8);
+    pollMag();
+}
+
+async function pollMag() {
+    if (Date.now() >= 1767225600000) return; // stop when its too late
+    let url = "https://super2026.reg.magfest.org/preregistration/form";
+    let res = await fetch(url);
+    let text = await res.text();
+
+    if (text.includes("sold out.")) {
+        Skarm.sendMessage("1435440389816320121", "still sold out...");
+    } else {
+        await Skarm.sendMessageDelay("1435440389816320121", `<@&1435440670113271840> A different screen has appeared! ${url}`);
+        await Skarm.sendMessageDelay("1435440389816320121", `${text.substring(0, 1990)}`);
+    }
+}
