@@ -43,6 +43,18 @@ ExecStart=/usr/bin/pwsh /srv/skarm/SkarmBot/launcher.ps1 live
 WantedBy=multi-user.target
 ```
 
+Next, set up the local environment variables:
+```sh
+sudo systemctl edit skarm
+```
+
+Add the following:
+```conf
+[Service]
+Environment="BACKUP_PATH=/path/to/your/backups"
+```
+
+
 Start the service by running
 ```bash
 sudo systemctl enable skarm
