@@ -28,12 +28,12 @@ if(-not(Test-Path $dataDestination)){
 }
 
 ### Purge clones
-ls $dataRemoval | Remove-Item -Verbose
+Get-ChildItem $dataRemoval | Remove-Item -Verbose
 
 
 ### Save data to Backup
-ls $dataSource | where {$_.Length -gt ".penguin".Length} |    # Take all the local penguin files
-foreach {
+Get-ChildItem $dataSource | Where-Object {$_.Length -gt ".penguin".Length} |    # Take all the local penguin files
+ForEach-Object {
     Write-Host "Saving $($_.Name) of size $($_.Length) to the cloud..."; 
     Copy-Item -Path $_ -Destination $dataDestination -Force    
 }
@@ -53,9 +53,9 @@ if($IsLinux) {
 }
 
 # repeat save to data backup destination
-ls $dataSource | 
-where {$_.Length -gt ".penguin".Length} | 
-foreach {
+Get-ChildItem $dataSource | 
+Where-Object {$_.Length -gt ".penguin".Length} | 
+ForEach-Object {
     Write-Host "Saving $($_.Name) of size $($_.Length) to the backup path $cloudBackupPath`..."; 
     Copy-Item -Path $_ -Destination $cloudBackupPath -Force
 }
