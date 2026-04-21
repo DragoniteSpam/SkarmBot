@@ -66,7 +66,11 @@ class Skarm {
      */
     static saveNoBuffer(message) {
         if (message.length > 0)
-            return Constants.Channels.SAVELOG.sendMessage(message);
+            return Constants.Channels.SAVELOG.sendMessage(`
+\`\`\`
+${message}
+\`\`\`
+        `);
     }
 
     static saveLog(message) {
@@ -74,8 +78,9 @@ class Skarm {
         if (Skarm.saveLogBufferString === undefined) {
             Skarm.saveLogBufferString = "";
             Skarm.saveLogBufferTimer = setInterval(function () {
-                Skarm.saveNoBuffer(Skarm.saveLogBufferString.substring(0, 2000));
-                Skarm.saveLogBufferString = Skarm.saveLogBufferString.substring(2000);
+                let bufferSendMaxSize = 1500;
+                Skarm.saveNoBuffer(Skarm.saveLogBufferString.substring(0, bufferSendMaxSize));
+                Skarm.saveLogBufferString = Skarm.saveLogBufferString.substring(bufferSendMaxSize);
             }, 2000);
         }
         Skarm.saveLogBufferString += message + "\r\n";

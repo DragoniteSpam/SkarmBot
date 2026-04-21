@@ -667,12 +667,12 @@ class Bot {
 
         let savior = spawn('pwsh', [Constants.skarmRootPath + 'saveData.ps1']);
         savior.stdout.on("data", (data) => {
-            data = data.toString().replaceAll("\r", "").replaceAll("\n", "");
+            data = data.toString();
             if (data.length > 1)
                 Skarm.saveLog(data);
         });
         savior.stderr.on("data", (data) => {
-            data = data.toString().replaceAll("\r", "").replaceAll("\n", "");
+            data = data.toString();
             if (data.length > 1)
                 Skarm.saveLog(data);
         });
