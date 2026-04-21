@@ -46,7 +46,11 @@ $d = (Get-Date -format "yyyy-MM-dd") -replace "-","/"
 $cloudBackupPath = Join-Path  $dataDestination $d                  # use cmdlet for clean/reliable path merging
 
 # make the date-based folder if it hasn't already been made
-mkdir -p $cloudBackupPath -ErrorAction SilentlyContinue | Out-Null
+if($IsLinux) {
+    mkdir -p $cloudBackupPath
+} else {
+    mkdir $cloudBackupPath -ErrorAction SilentlyContinue | Out-Null
+}
 
 # repeat save to data backup destination
 ls $dataSource | 
