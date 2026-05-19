@@ -6,17 +6,18 @@ const Discordie = require("discordie");
 const Constants = require("./constants");
 
 const userdb = "../skarmData/users.penguin";
+const USER_DIR = `../skarmData/users`;
 const SUMMON_COOLDOWN = 60000;
 
-const linkVariables = function(user) {
-    if (user.actionState === undefined) user.actionState = { };
-    if (user.ignoreSummons === undefined) user.ignoreSummons = { };
-    user.birthdayAllowedGuilds ??= { };
-    user.transcientActionStateData = { };    // clear on reboot
+const linkVariables = function (user) {
+    if (user.actionState === undefined) user.actionState = {};
+    if (user.ignoreSummons === undefined) user.ignoreSummons = {};
+    user.birthdayAllowedGuilds ??= {};
+    user.transcientActionStateData = {};    // clear on reboot
 }
 
-const linkFunctions = function(user) {
-    user.addSummon = function(term) {
+const linkFunctions = function (user) {
+    user.addSummon = function (term) {
         if (term in this.summons) {
             return false;
         }
@@ -25,7 +26,7 @@ const linkFunctions = function(user) {
         return true;
     }
 
-    user.ignoreSummon = function(term) {
+    user.ignoreSummon = function (term) {
         if (term in this.ignoreSummons) {
             return false;
         }
@@ -33,8 +34,8 @@ const linkFunctions = function(user) {
         User.save();
         return true;
     }
-    
-    user.removeSummon = function(term) {
+
+    user.removeSummon = function (term) {
         let removedTerm = (term in this.summons) || (term in this.ignoreSummons);
         if (!removedTerm) {
             return false;
@@ -44,30 +45,30 @@ const linkFunctions = function(user) {
         User.save();
         return true;
     }
-    
-    user.listSummons = function(v) {
-		v = v || "";
+
+    user.listSummons = function (v) {
+        v = v || "";
         let terms = [];
         for (let term in this.summons) {
-			if(term.includes(v)){
-				terms.push(term);
-			}
+            if (term.includes(v)) {
+                terms.push(term);
+            }
         }
         return terms.sort().join(", ");
     }
 
-    user.listIgnores = function(v) {
-		v = v || "";
+    user.listIgnores = function (v) {
+        v = v || "";
         let terms = [];
         for (let term in this.ignoreSummons) {
-			if(term.includes(v)){
-				terms.push(term);
-			}
+            if (term.includes(v)) {
+                terms.push(term);
+            }
         }
         return terms.sort().join(", ");
     }
 
-    user.attemptSummon = function(e, term) {
+    user.attemptSummon = function (e, term) {
         let userData = User.getData(this.id);
         // you must be in the same channel
         if (!userData.memberOf(e.message.channel.guild_id)) {
@@ -87,21 +88,21 @@ const linkFunctions = function(user) {
         }
         // issue the summons
         this.summonsLastTime = Date.now();
-        userData.openDM().then(function(dm) {
+        userData.openDM().then(function (dm) {
             dm.sendMessage("There was a message that we think you'll be " +
-                "interested in!\n```" + e.message.content +"``` by **" +
+                "interested in!\n```" + e.message.content + "``` by **" +
                 e.message.author.username + "** in <#" + e.message.channel_id +
                 "> (summon keyword: " + term + ")\n" +
                 `Direct message link: https://discord.com/channels/${e.message.guild.id}/${e.message.channel.id}/${e.message.id}`
             );
         });
     };
-    
-    user.memberOf = function(guild) {
-		if(guild.id==null)
-			return false;
-		if(User.client.Guilds.get(guild.id)==null)
-			return false;
+
+    user.memberOf = function (guild) {
+        if (guild.id == null)
+            return false;
+        if (User.client.Guilds.get(guild.id) == null)
+            return false;
         return !!User.client.Users.get(this.id).memberOf(User.client.Guilds.get(guild.id));
     };
 
@@ -126,7 +127,7 @@ const linkFunctions = function(user) {
             handler: callback,
             startTime: st,
             timeout: setTimeout(() => {     // state self-destruct timeout if state isn't progressed
-                if(user.actionState[channelID].startTime === st){
+                if (user.actionState[channelID].startTime === st) {
                     delete user.actionState[channelID];
                     Skarm.sendMessageDelay(channelID, "Timeout: received no user input.");
                 }
@@ -134,12 +135,12 @@ const linkFunctions = function(user) {
         };
     };
 
-    user.deleteTransientMessagePrev = function(channelID){
+    user.deleteTransientMessagePrev = function (channelID) {
         let transientData = this.transcientActionStateData[channelID];
 
-        if(transientData && transientData.deleteMessage){
+        if (transientData && transientData.deleteMessage) {
             let message = Constants.client.Messages.get(transientData.deleteMessage);
-            if(!message.deleted){
+            if (!message.deleted) {
                 message.delete();                   // send request for discord to delete message
                 delete transientData.deleteMessage; // remove instruction from data
             }
@@ -147,7 +148,7 @@ const linkFunctions = function(user) {
 
     };
 
-    user.getGuilds = function(){
+    user.getGuilds = function () {
         // Retrieves all guild objects that this user is in
         let u = User.client.Users.get(user.id);
         return User.client.Guilds
@@ -177,7 +178,7 @@ class User {
          * @type String "YYYY-MM-DD"
          */
         this.birthday = undefined;
-        
+
         /**
          * Guilds where the user has allowed their birthday to be announced
          * key: guid, 
@@ -194,14 +195,14 @@ class User {
          *     timeout: self-destruct timeout if state is not acted upon within the duration given
          * }
          */
-        this.actionState = { };
-        this.transcientActionStateData = { };        // keys: channel ID, values: {anything} but only while action State exists in that channel
+        this.actionState = {};
+        this.transcientActionStateData = {};        // keys: channel ID, values: {anything} but only while action State exists in that channel
 
         User.add(this);
-        
+
         linkFunctions(this);
     }
-    
+
     static initialize(client) {
         User.users = {};
         User.guilds = {};
@@ -212,7 +213,7 @@ class User {
             console.log("something bad happened when loading users: " + e);
         }
     }
-    
+
     static add(user) {
         if (user in User.users) {
             return false;
@@ -220,7 +221,7 @@ class User {
         User.users[user.id] = user;
         return true;
     }
-    
+
     static remove(user) {
         if (!(user in User.users)) {
             return false;
@@ -228,31 +229,31 @@ class User {
         delete User.users[user.id];
         return true;
     }
-    
+
     static get(id) {
-		if(User.users)
-			return User.users[id] ? User.users[id] : new User(id);
-		return null;
+        if (User.users)
+            return User.users[id] ? User.users[id] : new User(id);
+        return null;
     }
-    
+
     static getData(id) {
         return User.client.Users.get(id);
     }
-    
+
     static load() {
-        Encrypt.read(userdb, function(data, filename) {
+        Encrypt.read(userdb, function (data, filename) {
             User.users = JSON.parse(data);
             for (let u in User.users) {
                 linkFunctions(User.users[u]);
                 linkVariables(User.users[u]);
             }
-			console.log("Reloaded "+Object.keys(User.users).length + " Users");
+            console.log("Reloaded " + Object.keys(User.users).length + " Users");
         });
     }
 
     static loadFromDebug() {
         try {
-            fs.readFile("./debug/users.butt", function (err, data){
+            fs.readFile("./debug/users.butt", function (err, data) {
                 data = data.toString();
                 // console.log("Received data", data);
                 let _users = JSON.parse(data);
@@ -262,7 +263,7 @@ class User {
                     User.users[u] = _users[u];
                     // console.log("Re-initialized user", u, _users[u]);
                 }
-                console.log("[Users.loadFromDebug] Re-initialized "+Object.keys(User.users).length + " Users");
+                console.log("[Users.loadFromDebug] Re-initialized " + Object.keys(User.users).length + " Users");
             });
         } catch (error) {
             console.trace(error);
@@ -270,16 +271,33 @@ class User {
         }
     }
 
-    static save() {
-        Encrypt.write(userdb, JSON.stringify(User.users));
-		console.log("Saved User Data");
+    static async save() {
+        try {
+            // legacy monolith save file
+            await Encrypt.write(userdb, JSON.stringify(User.users));
+
+            // not yet the source of truth, but creating artifacts
+            // per-guild save files to enable easier rollback
+            // in the event of any single point of critical failure
+            for (let id in User.users) {
+                await Encrypt.write(
+                    `${USER_DIR}/${id}.penguin`,
+                    JSON.stringify(User.users[id])
+                );
+            }
+
+            console.log("Saved User Data");
+        } catch (error) {
+            Skarm.STDERR(`Failed to save guild data! Error: ${error}`);
+        }
+
     }
-    
+
     static saveDebug() {
         fs.writeFile("debug/users.butt",
             JSON.stringify(User.users, null, 4),
             "utf8",
-            function(err) {
+            function (err) {
                 if (err) console.log("something went wrong: " + err);
             }
         );
