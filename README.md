@@ -39,6 +39,9 @@ RestartSec=10
 User=YOUR_USERNAME_GOES_HERE
 ExecStart=/usr/bin/pwsh /srv/skarm/SkarmBot/launcher.ps1 live
 
+# Allow exit by e!exit over status code 42
+RestartPreventExitStatus=42
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -98,6 +101,7 @@ sudo systemctl restart skarm
 Skarmbot is hosted by the developers and can simply be added to a discord server with the link below.  
 [Ask your Server Administrators to add Skarm to your favorite server today!](https://discordapp.com/oauth2/authorize?client_id=319291086570913806&scope=bot)
 
+<!-- 
 ### Hosting Skarmbot
 1. Clone the repository locally by running `git clone https://github.com/DragoniteSpam/SkarmBot.git`
 2. Install Box Drive and log in with credentials that have access to the database repository `skarmData`
@@ -105,3 +109,4 @@ Skarmbot is hosted by the developers and can simply be added to a discord server
 4. Resolve any errors identified by the initialization script so that another run of it confirms that all node packages are installed, all data files are present, and all tokens are present
 5. Run the powershell script `.\launcher.ps1 -operationMode live` to host the live instance of SkarmBot
 6. Run the powershell script `.\launcher.ps1 -operationMode test` to host the test instance of SkarmBot
+-->
