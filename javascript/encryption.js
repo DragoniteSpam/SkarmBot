@@ -7,10 +7,16 @@ class Encrypt {
     static initialize() {
         Encrypt.dataToken = fs.readFileSync("../aes.txt").toString();
     }
-    
+
+    static readSync(filename) {
+        console.log("Loading in encrypted file:", filename);
+        let data = fs.readFileSync(filename);
+        return crypto.AES.decrypt(data.toString(), Encrypt.dataToken).toString(crypto.enc.Utf8);
+    }
+
     static read(filename, callback) {
         console.log("Loading in encrypted file:", filename);
-        fs.readFile(filename, function(err, data) {
+        fs.readFile(filename, function (err, data) {
             console.log("Loaded encrypted file:", filename);
             if (err) return Skarm.logError(err);
             callback(
@@ -19,18 +25,26 @@ class Encrypt {
             );
         });
     }
-    
+
     static write(filename, data) {
-        fs.writeFile(filename,
-            crypto.AES.encrypt(data, Encrypt.dataToken).toString(),
-            function(err) {
-                if (err) return Skarm.logError(err);
-            }
-        );
+        return new Promise((res, rej) => {
+            fs.writeFile(
+                filename,
+                crypto.AES.encrypt(data, Encrypt.dataToken).toString(),
+                function (err) {
+                    if (err) {
+                        Skarm.logError(err);
+                        rej(err);
+                    } else {
+                        res();
+                    }
+                }
+            );
+        });
     }
-    
+
     static append(filename, data) {
-        Encrypt.read(filename, function(existing, filename) {
+        Encrypt.read(filename, function (existing, filename) {
             Encrypt.write(filename, existing + data);
         });
     }
