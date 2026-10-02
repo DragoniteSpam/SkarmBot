@@ -1,0 +1,13 @@
+{
+	"triggerWeights":{
+		"camus":        0.25,
+		"begin again":  0.5,
+		"begin":        0.01,
+		"again":        0.01,
+		"sisyphus":     0.25,
+		"cycle":        0.01,
+		"boulder":      0.01,
+		"uphill":       0.01
+	},
+	"everythingWeight": 0.3
+}
