@@ -9,3 +9,4 @@ temp
 *.log
 .vscode/launch.json
 work_chronicles.json
+/archives
