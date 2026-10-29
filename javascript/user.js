@@ -288,7 +288,7 @@ class User {
 
             console.log("Saved User Data");
         } catch (error) {
-            Skarm.STDERR(`Failed to save guild data! Error: ${error}`);
+            Skarm.STDERR(`Failed to save user data! Error: ${error}`);
         }
 
     }
