@@ -33,7 +33,7 @@ String.prototype.replaceAll = function(search, replacement) {
 
 Constants.initialize();
 
-console.log(`Attempting to connect with token from: ${target}`);
+console.log(`Attempting to connect with token from: ${tokenPath}`);
 client.connect({token: token});
 
 let uptimeController = {
