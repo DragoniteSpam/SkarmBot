@@ -20,10 +20,11 @@ const Users = require("./javascript/user.js");
 const Guilds = require("./javascript/guild.js");
 
 // i'm in?
-var target = "../descrution.txt";
-if(process.argv.length>2 && process.argv[2]==="beta")
-	target="../token.txt";
-const token = fs.readFileSync(target).toString();
+let tokenPath = "../discord_prod_token.txt";
+if(process.env["SKARM_MODE"] === "test") {
+	tokenPath = "../discord_test_token.txt";
+}
+const token = fs.readFileSync(tokenPath).toString().trim();
 
 // javascript
 String.prototype.replaceAll = function(search, replacement) {
@@ -32,6 +33,7 @@ String.prototype.replaceAll = function(search, replacement) {
 
 Constants.initialize();
 
+console.log(`Attempting to connect with token from: ${target}`);
 client.connect({token: token});
 
 let uptimeController = {
@@ -110,7 +112,6 @@ client.Dispatcher.on(events.MESSAGE_REACTION_ADD, e => {
 	if(bot)
 		bot.OnMessageReactionAdd(e);
 });
-
 
 client.Dispatcher.on(events.GUILD_MEMBER_ADD, e => {
 	if(bot)

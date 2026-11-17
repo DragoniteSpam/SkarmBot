@@ -56,11 +56,20 @@ if ($Global:warnings -and $stopOnError) {
 }
 Write-Host "Starting Skarmbot bootloop"
 if ($operationMode -eq "live") {
+    $env:SKARM_MODE = "prod"
     if ($IsLinux) {
-        $nvm = Get-ChildItem /home/*/.nvm/versions/node/v*/bin/node | % FullName | Select -Last 1
-        Write-Host "Available node versions: $nvm"
+        $versions = Get-ChildItem /home/*/.nvm/versions/node/v*/bin/npx | ForEach-Object FullName
+        $npx = $versions | Select-Object -Last 1
+        $binDir = Split-Path $npx -Parent
 
-        . $nvm $PSScriptRoot/bot.js beta |
+        # prioritize this bin over all the other instances found in path
+        $env:PATH = "$binDir$([System.IO.Path]::PathSeparator)$env:PATH"
+
+        Write-Host "Available npx versions:"
+        $versions | ForEach-Object { Write-Host "`t$_" }
+        Write-Host "Running NPX Version: $npx | (Node confirmation: $(node -v))"
+
+        node $PSScriptRoot/bot.js beta |
         foreach {
             $t = (get-date -format o).split(".")[0].Replace("T", " ")
             "[$t] $_"
@@ -84,6 +93,7 @@ if ($operationMode -eq "live") {
 
 # no persistence through failures during testing
 if ($operationMode -eq "test") {
+    $env:SKARM_MODE = "test"
     node $PSScriptRoot/bot.js | foreach {
         $t = (get-date -format o).split(".")[0].Replace("T", " ")
         "[$t] $_"
