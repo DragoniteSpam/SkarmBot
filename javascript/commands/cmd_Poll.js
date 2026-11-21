@@ -9,7 +9,6 @@ module.exports = {
     examples: [
         { command: "e!poll", effect: "Skarm will poll all the comics." },
         { command: "e!poll XKCD", effect: "Skarm will poll the XKCD channel for new releases." },
-        { command: "e!poll WorkChronicles", effect: "Skarm will poll the WorkChronicles channel for new releases." },
     ],
     ignoreHidden: false,
     perms: Permissions.MOM,

@@ -9,7 +9,7 @@
     The following actions will be performed by the script in order to prepare the execution environment
     1. Make sure that the latest version of node.js is installed
     2. Make sure that all required NPM modules are installed
-    3. Make sure that the skarmData local and Box directories are connected
+    3. Make sure that the skarmData local directories are connected
     4. Make sure that all required secret tokens exist at the expected path
 #>
 
@@ -49,16 +49,16 @@ $softwareName = "Node.js"
 
 Function get-LatestVersionData {
     # Returns an object containing the current version and download URL for the software
-    $VersionSite     = "https://github.com/nodejs/node/releases?q=lts&expanded=true"
+    $VersionSite = "https://github.com/nodejs/node/releases?q=lts&expanded=true"
     $ProgressPreference = "SilentlyContinue"
     $content = Invoke-WebRequest -UseBasicParsing -Uri $VersionSite
-    $path = $content.Links | % href | ? {$_ -like "*/releases/tag/v*"} | select -first 1
+    $path = $content.Links | % href | ? { $_ -like "*/releases/tag/v*" } | select -first 1
     $vversion = $path.split("/")[-1]
-    $cv = $vversion.Replace("v","")
+    $cv = $vversion.Replace("v", "")
     
     [PSCustomObject]@{
         currentVersion = $cv
-        downloadUrl = "https://nodejs.org/dist/v$cv/node-v$cv-x64.msi"
+        downloadUrl    = "https://nodejs.org/dist/v$cv/node-v$cv-x64.msi"
     }
 }
 
@@ -66,7 +66,7 @@ Function get-InstalledVersion {
     <#
         Returns the version data if the software is installed, and no value otherwise
     #>
-    Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | where {$_.DisplayName -and $_.DisplayName.Contains("Node.js")} | foreach {$_.DisplayVersion}
+    Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\* | where { $_.DisplayName -and $_.DisplayName.Contains("Node.js") } | foreach { $_.DisplayVersion }
 }
 
 Function get-upToDateStatus {
@@ -74,8 +74,8 @@ Function get-upToDateStatus {
     $installed = get-InstalledVersion
     [pscustomobject]@{
         IsInstalled = $latest -in $installed 
-        Latest = $latest
-        Installed = $installed
+        Latest      = $latest
+        Installed   = $installed
     }
 }
 
@@ -94,12 +94,13 @@ $latestData = get-LatestVersionData
 $currentVersion = $latestData.currentVersion
 
 $status = get-upToDateStatus
-if($status.IsInstalled){
+if ($status.IsInstalled) {
     Write-Host -ForegroundColor Green "Latest version is already installed: $softwareName - $currentVersion"
     exit
-} else {
+}
+else {
     Write-Host "Not already installed: $softwareName - $currentVersion"
-    if($status.Installed){
+    if ($status.Installed) {
         Write-Host "Currently installed version:" $status.Installed
     }
 }
@@ -109,12 +110,13 @@ if($status.IsInstalled){
 # install-LatestVersion -currentVersion $currentVersion -downloadUrl $latestData.downloadUrl
 
 # Verify installation was successful
-if(get-upToDateStatus){
+if (get-upToDateStatus) {
     Write-Host -ForegroundColor Green "Latest version has been installed: $softwareName - $currentVersion"
 
-	# Refresh Environment Variable after the install
-	$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
-} else {
+    # Refresh Environment Variable after the install
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+}
+else {
     Write-Error "Failed to install latest version of $softwareName - $currentVersion"
 }
 
@@ -159,9 +161,8 @@ if ($allPackagesInsatlled) {
 }
 
 
-### 3. local/Box skarm data
+### 3. skarm data
 $skarmDataPath = "$PSScriptRoot/../skarmData"
-$skarmDataBox = "~/Box/skarmData"
 
 if (-not(Test-Path $skarmDataPath)) {
     $skarmDataDir = mkdir $skarmDataPath
@@ -180,12 +181,8 @@ $skarmDataFiles = @(
 
 $missingFiles = $false
 $skarmDataFiles | foreach {
-    if (-not (Test-Path "$skarmDataPath/$_") -and -not (Test-Path "$skarmDataBox/$_")) {
-        reportWarn "$_ is missing from skarmData on both Box and locally"
-        $missingFiles = $true
-    }
-    if (     (Test-Path "$skarmDataPath/$_") -and -not (Test-Path "$skarmDataBox/$_")) {
-        reportWarn "$_ is missing from skarmData on Box"
+    if (-not (Test-Path "$skarmDataPath/$_")) {
+        reportWarn "$_ is missing from skarmData"
         $missingFiles = $true
     }
 }
@@ -208,18 +205,11 @@ else {
 $missingTokens = $false
 $privateTokens.Keys | foreach {
     $tokenPath = "$PSScriptRoot/../$_"
-    $boxTokenPath = "~/Box/skarmData/tokens/$_"
     if (-not (Test-Path $tokenPath)) {
-        if (Test-Path $boxTokenPath) {
-            Copy-Item -Path $boxTokenPath -Destination $tokenPath -Verbose
-        }
-        else {
-            reportWarn "The following token is missing: $tokenPath"
-            reportWarn "    Not found at $boxTokenPath"
-            reportWarn $privateTokens[$_]
-            Write-Host ""
-            $missingTokens = $true
-        }
+        reportWarn "The following token is missing: $tokenPath"
+        reportWarn $privateTokens[$_]
+        Write-Host ""
+        $missingTokens = $true
     }
 }
 if (-not $missingTokens) {

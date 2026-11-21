@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-    Copies in the encrypted databases used by skarm into the path SkarmBot\..\skarmData\ from cloud copies accessed via Box Drive
+    Copies in the encrypted databases used by skarm into the path SkarmBot\..\skarmData\
 
 #>
 
@@ -11,22 +11,13 @@ Push-Location
 cd $PSScriptRoot
 
 Function get-WindowsData {
-    $dataSource = "~\Box\skarmData\*.penguin"
-    $dataRemoval = "~\Box\skarmData\*(*).penguin"
     $dataDestination = "$PSScriptRoot\..\skarmData\"
     
     if (-not (Test-Path $dataSource)) {
-        try {
-            Start-Process 'C:\Program Files\Box\Box\Box.exe'
-            Write-Host "Starting up box drive..."
-            Start-Sleep 15
-        }
-        catch {
-            Write-Error "database files not found.  Please verify that the path ~\Box\skarmData exists and that Box Drive is working properly."
-            Start-Sleep 1
-            $Host.SetShouldExit(-1)
-            exit
-        }
+        Write-Error "database files not found."
+        Start-Sleep 1
+        $Host.SetShouldExit(-1)
+        exit
     }
     
     Write-Host "Copying files..."
@@ -47,7 +38,8 @@ Function get-LinuxData {
 
 if ($IsLinux) {
     get-LinuxData
-} else {
+}
+else {
     get-WindowsData
 }
 
